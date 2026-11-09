@@ -1,0 +1,13 @@
+{
+  "title": "Quarter Inserted, falls into coin return",
+  "author": "bassmosphere",
+  "license": "CC0-1.0",
+  "source": "https://freesound.org/people/bassmosphere/sounds/384700/",
+  "download": "https://raw.githubusercontent.com/ncase/trust/6ec45d73befdb922bd40654dd1c1c903a953562f/assets/sounds/coin_insert.mp3",
+  "mirror_project": "The Evolution of Trust \u2014 Nicky Case",
+  "mirror_revision": "6ec45d73befdb922bd40654dd1c1c903a953562f",
+  "download_sha256": "8f727934b3f8ebaa04ba0dc767847fdbcf7a3deb81cad0c86534a541c86edb9e",
+  "adaptation": "Converted the mirror MP3 to mono 44100 Hz signed 16-bit PCM WAV with FFmpeg; no gain change.",
+  "packaged_file": "sound/hypcade-coin.wav",
+  "packaged_sha256": "ffabce809ffe48d15a7f7900524e54aacd17c796a1ed4c5e0ace51b4ec333ea9"
+}

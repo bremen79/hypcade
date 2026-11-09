@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * $Id$
  * Retro path library
@@ -180,6 +182,10 @@ void lua_setmeta(void* d, size_t n, long long s)
 
 void lua_rampath(const char *src, char *dst, int dstsize)
 {
+#ifdef __ANDROID__
+    if (android_save_path(src, dst, (size_t)dstsize) != 0) dst[0] = '\0';
+    return;
+#endif
     const char *ramdir = get_ramdir_path();
     size_t ramdir_len = strlen(ramdir);
 

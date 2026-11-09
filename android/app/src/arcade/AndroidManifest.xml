@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true" />
+        <property android:name="android.window.PROPERTY_COMPAT_ALLOW_ORIENTATION_OVERRIDE" android:value="false" />
+        <activity android:name=".LauncherActivity"
+            android:screenOrientation="landscape" android:resizeableActivity="false" />
+        <activity android:name=".HypseusActivity"
+            android:screenOrientation="landscape" android:resizeableActivity="false"
+            tools:replace="android:screenOrientation" />
+    </application>
+</manifest>

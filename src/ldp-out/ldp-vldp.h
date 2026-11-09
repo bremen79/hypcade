@@ -112,7 +112,7 @@ class ldp_vldp : public ldp
     bool read_frame_conversions();
     bool first_video_file_exists();
     bool last_video_file_parsed();
-    void parse_all_video();
+    bool parse_all_video();
 
     // Attempts to precache all video, returns false if there isn't enough RAM
     // and we aren't overriding the safety check

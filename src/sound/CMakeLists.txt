@@ -1,3 +1,5 @@
+# Hypcade modification notice (2026-11-08): Android arcade adaptation.
+# See MODIFICATIONS.md; original notices are retained.
 set( LIB_SOURCES
     sound.cpp
     ssi263.cpp
@@ -11,8 +13,13 @@ set( LIB_SOURCES
     tonegen.cpp
     samples.cpp
     mix.cpp
-    mix_mmx-gas.s
 )
+
+# Legacy x86 MMX assembly uses absolute relocations and cannot be loaded in an
+# Android shared library. Android uses the existing portable C mixer.
+if(NOT ANDROID)
+    list(APPEND LIB_SOURCES mix_mmx-gas.s)
+endif()
 
 set( LIB_HEADERS
     dac.h

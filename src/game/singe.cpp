@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 * ____ DAPHNE COPYRIGHT NOTICE ____
 *
@@ -29,6 +31,9 @@
 #include "config.h"
 
 #include "singe.h"
+#ifdef __ANDROID__
+#include "../sound/sound.h"
+#endif
 #include "singe/singe_interface.h"
 
 // Win32 doesn't use strcasecmp, it uses stricmp (lame)
@@ -330,6 +335,10 @@ void singe::shutdown()
 
 void singe::input_enable(Uint8 input, Sint8 mouseID)
 {
+#ifdef __ANDROID__
+    if (input == SWITCH_COIN1 || input == SWITCH_COIN2)
+        sound::coin_input(input - SWITCH_COIN1, true);
+#endif
     if (singe_joymouse)
     {
         switch (input)
@@ -359,6 +368,10 @@ void singe::input_enable(Uint8 input, Sint8 mouseID)
 
 void singe::input_disable(Uint8 input, Sint8 mouseID)
 {
+#ifdef __ANDROID__
+    if (input == SWITCH_COIN1 || input == SWITCH_COIN2)
+        sound::coin_input(input - SWITCH_COIN1, false);
+#endif
     if (singe_joymouse)
     {
         switch (input)
@@ -403,7 +416,7 @@ void singe::ProcessJoyStruct()
 // game-specific command line arguments handled here
 bool singe::handle_cmdline_arg(const char *arg)
 {
-    const int len            = 256;
+    const int len            = 4096; // Android app-private paths and nested game data.
     bool bResult             = false;
     static bool bInit        = false;
     static bool scriptLoaded = false;

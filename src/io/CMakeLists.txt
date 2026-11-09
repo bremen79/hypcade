@@ -1,3 +1,5 @@
+# Hypcade modification notice (2026-11-08): Android arcade adaptation.
+# See MODIFICATIONS.md; original notices are retained.
 set( LIB_SOURCES
     cmdline.cpp conout.cpp error.cpp fileparse.cpp homedir.cpp input.cpp
     toolbox.cpp mpo_fileio.cpp parallel.cpp keycodes.cpp serialib.cpp
@@ -8,11 +10,16 @@ set( LIB_SOURCES
 set( LIB_HEADERS
     cmdline.h conout.h configfile.h error.h fileparse.h homedir.h
     input.h limits.h mpo_fileio.h mpo_mem.h my_stdio.h keycodes.h
-    serialib.h network.h numstr.h parallel.h sram.h unzip.h zippp.h
+    serialib.h network.h numstr.h parallel.h sram.h unzip.h zippp.h sdl_path.h
 )
 
 find_package(ZLIB REQUIRED)
 
+if(TARGET libzip::zip)
+    # Android builds libzip in the same CMake project. Its generated zipconf.h
+    # and source include directory are propagated by the target.
+    set(LIBZIP_LIBRARY libzip::zip)
+else()
 find_path(LIBZIP_INCLUDE_DIR NAMES zip.h)
 mark_as_advanced(LIBZIP_INCLUDE_DIR)
 
@@ -65,6 +72,7 @@ if (LIBZIP_FOUND)
 else()
     message(FATAL_ERROR "libzip not found")
 endif()
+endif()
 
 include_directories( ${ZLIB_INCLUDE_DIRS} )
 
@@ -78,6 +86,10 @@ set_source_files_properties( zippp.cpp PROPERTIES COMPILE_FLAGS -Wno-deprecated-
 
 add_library( io ${LIB_SOURCES} ${LIB_HEADERS} )
 target_link_libraries( io PRIVATE ldp-out game plog manymouse ${ZLIB_LIBRARIES} ${LIBZIP_LIBRARY} sdl3_deps )
+if(ANDROID)
+    # Bionic exposes the POSIX name, not serialib's historical BSD alias.
+    target_compile_definitions(io PRIVATE FNDELAY=O_NONBLOCK)
+endif()
 if(APPLE)
     target_link_libraries(io PRIVATE "-framework CoreFoundation" "-framework IOKit")
 endif()

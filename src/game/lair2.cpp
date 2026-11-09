@@ -1,3 +1,8 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
+#ifdef __ANDROID__
+#include "../../android/app/jni/arcade_guidance.h"
+#endif
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -52,6 +57,9 @@ NORMAL_MODE = 0x20
 #include <stdio.h>
 #include <plog/Log.h>
 #include "lair2.h"
+#ifdef __ANDROID__
+#include "../scoreboard/scoreboard_collection.h"
+#endif
 #include "../ldp-out/ldp.h"
 #include "../ldp-in/ldp1000.h"
 #include "../ldp-in/vp932.h"
@@ -333,9 +341,57 @@ void ace91::set_version(int version)
 bool lair2::init()
 {
     cpu::init();
+#ifdef __ANDROID__
+    if (m_software_scoreboard) {
+        // Memory layout below belongs only to the CRC-checked US 3.19 ROM.
+        if (g_dl2_ver != 6 || strcmp(m_shortgamename, "lair2") != 0) {
+            LOGE << "DL2 scoreboard requires the US 3.19 ROM (-version 6)";
+            return false;
+        }
+        m_android_scoreboard = ScoreboardCollection::GetInstance();
+        if (!m_android_scoreboard || !ScoreboardCollection::AddType(
+                m_android_scoreboard, ScoreboardFactory::IMAGE)) return false;
+    }
+#endif
     g_ldp->pre_play(); // the LDP-1450 automatically begins playback
     return true;
 }
+
+#ifdef __ANDROID__
+void lair2::shutdown()
+{
+    if (m_android_scoreboard) {
+        m_android_scoreboard->PreDeleteInstance();
+        m_android_scoreboard = nullptr;
+    }
+    game::shutdown();
+}
+
+void lair2::update_android_scoreboard()
+{
+    if (!m_android_scoreboard) return;
+    // US 3.19 copies its code/data into segment 0x1000. Read little-endian
+    // words without alignment assumptions. No ROM or RAM values are modified.
+    const auto word = [this](unsigned offset) {
+        return unsigned(m_cpumem[0x10000 + offset]) |
+               (unsigned(m_cpumem[0x10000 + offset + 1]) << 8);
+    };
+    for (unsigned player = 0; player < 2; ++player) {
+        unsigned score = word(0x56b0 + player * 2) / 10;
+        for (int digit = 5; digit >= 0; --digit) {
+            m_android_scoreboard->update_player_score(digit, score % 10, player);
+            score /= 10;
+        }
+        const unsigned lives = word(0x56ac + player * 2);
+        // This shared artwork has one lives digit; blank unrepresentable values.
+        m_android_scoreboard->update_player_lives(lives <= 9 ? lives : 0xf, player);
+    }
+    const unsigned credits = word(0xa156);
+    m_android_scoreboard->update_credits(0, credits <= 99 ? credits / 10 : 0xf);
+    m_android_scoreboard->update_credits(1, credits <= 99 ? credits % 10 : 0xf);
+    m_android_scoreboard->RepaintIfNeeded();
+}
+#endif
 
 void lair2::set_version(int version)
 {
@@ -508,6 +564,12 @@ void lair2::patch_roms()
                 m_cpumem[0xF2804] = 0x90;
                 m_cpumem[0xF2805] = 0x90;
             }
+#ifdef __ANDROID__
+            // The launcher owns visual hints on Android, independently of audio
+            // cues and -cheat. NOP enables the LDP1450 text prompts at every level;
+            // JMP skips the prompt branch entirely when visuals are disabled.
+            arcade_configure_dl2_hints(m_cpumem, sizeof(m_cpumem), arcade_visual_hints_enabled());
+#endif
 
             // FIX compiler bugs that make laserdisc access problematic
 
@@ -612,6 +674,9 @@ int lair2_irq_callback(int irqline)
 // raise IRQ line
 void lair2::do_irq(unsigned int which_irq)
 {
+#ifdef __ANDROID__
+    if (which_irq == 0 && arcade_guidance_enabled()) arcade_guidance_dl2(m_cpumem, sizeof(m_cpumem), g_dl2_ver == 6 && strcmp(m_shortgamename, "lair2") == 0, g_ldp->get_status() == LDP_PLAYING);
+#endif
     if (m_bSerialHack) {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
         while (ldp1000::result_ready()) {
@@ -687,6 +752,9 @@ void lair2::do_irq(unsigned int which_irq)
         // else we have no room
     }
 
+#ifdef __ANDROID__
+    if (which_irq == 0) update_android_scoreboard();
+#endif
     if (m_game_uses_video_overlay && m_video_overlay_needs_update) blit();
 }
 

@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -34,6 +36,7 @@
 #include "conout.h"
 #include "keycodes.h"
 #include "homedir.h"
+#include "sdl_path.h"
 #include "../video/video.h"
 #include "../hypseus.h"
 #include "../timer/timer.h"
@@ -448,8 +451,10 @@ static void CFG_System()
         } else if (strcasecmp(key.c_str(), "MANYMOUSE") == 0) {
             g_game->set_manymouse(parse_bool(val));
         } else if (strcasecmp(key.c_str(), "GAMEPAD") == 0) {
+#ifndef __ANDROID__
             g_use_gamepad = parse_bool(val);
             g_use_joystick = !g_use_gamepad;
+#endif
 #ifdef BUILD_SINGE
         } else if (strcasecmp(key.c_str(), "FULLALPHA") == 0) {
                 if (parse_bool(val) && thisGame == GAME_SINGE) {
@@ -1062,7 +1067,7 @@ int SDL_input_init()
         if (mpo_file_exists(strGCdb.c_str()))
         {
             LOGI << "Found " << strGCdb;
-            int num = SDL_AddGamepadMappingsFromFile(strGCdb.c_str());
+            int num = SDL_AddGamepadMappingsFromFile(sdl_read_path(strGCdb).c_str());
             if (num > 0)
             {
                 LOGI << fmt("Loaded %d Game Controller mappings", num);
@@ -1224,8 +1229,33 @@ void SDL_check_input()
 }
 
 // processes incoming input
+#ifdef __ANDROID__
+extern Uint32 hypseus_android_arcade_event_type();
+#endif
 void process_event(SDL_Event *event)
 {
+#ifdef __ANDROID__
+    if (event->type == hypseus_android_arcade_event_type()) {
+        static const Uint8 actions[] = { SWITCH_UP, SWITCH_DOWN, SWITCH_LEFT, SWITCH_RIGHT,
+            SWITCH_BUTTON1, SWITCH_BUTTON2, SWITCH_BUTTON3, SWITCH_COIN1, SWITCH_START1,
+            SWITCH_PAUSE, SWITCH_QUIT, SWITCH_SERVICE, SWITCH_START2 };
+        const int action = event->user.code;
+        if (action < 0 || action >= static_cast<int>(sizeof(actions) / sizeof(actions[0]))) return;
+        const Uint8 move = actions[action];
+        const bool down = event->user.data1 != nullptr;
+        if (down) reset_idle();
+        // Singe has no emulated coin-switch CPU; deliver its logical controls
+        // directly, as its keyboard handler does. Keep universal pause/quit.
+        if (thisGame == GAME_SINGE && move != SWITCH_PAUSE && move != SWITCH_QUIT) {
+            if (down) g_game->input_enable(move, NOMOUSE);
+            else g_game->input_disable(move, NOMOUSE);
+        } else {
+            if (down) input_enable(move, NOMOUSE);
+            else input_disable(move, NOMOUSE);
+        }
+        return;
+    }
+#endif
     unsigned int i = 0;
 
     // by RDG2010
@@ -1461,6 +1491,14 @@ void process_event(SDL_Event *event)
         }
         break;
     }
+#ifdef __ANDROID__
+    case SDL_EVENT_RENDER_DEVICE_RESET:
+        // This renderer owns textures in several subsystems. Exit cleanly on
+        // device loss rather than using invalid textures after a context reset.
+        LOGE << "Android graphics device was reset; return to the launcher and restart the game.";
+        set_quitflag();
+        break;
+#endif
     case SDL_EVENT_QUIT:
         // if they are trying to close the window
         set_quitflag();
@@ -1843,6 +1881,10 @@ void process_joystick_hat_motion(SDL_Event *event)
 // if user has pressed a key/moved the joystick/pressed a button
 void input_enable(Uint8 move, Sint8 mouseID)
 {
+#ifdef __ANDROID__
+    if (move == SWITCH_COIN1 || move == SWITCH_COIN2)
+        sound::coin_input(move - SWITCH_COIN1, true);
+#endif
     // first test universal input, then pass unknown input on to the game driver
 
     switch (move)
@@ -1889,6 +1931,10 @@ void input_enable(Uint8 move, Sint8 mouseID)
 // position
 void input_disable(Uint8 move, Sint8 mouseID)
 {
+#ifdef __ANDROID__
+    if (move == SWITCH_COIN1 || move == SWITCH_COIN2)
+        sound::coin_input(move - SWITCH_COIN1, false);
+#endif
     if (move == SWITCH_PAUSE && thisGame == GAME_SINGE)
         g_game->input_disable(move, mouseID);
 

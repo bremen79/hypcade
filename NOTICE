@@ -1,0 +1,43 @@
+Hypcade — Android arcade-focused fork and adaptation of Hypseus
+Modification notice: 2026-11-09
+
+Based on Hypseus Singe 3.0.2, commit
+ a16e2521ee3233ef20c44e562008c47f4b4293df
+ https://github.com/DirtBagXon/hypseus-singe
+
+Original project copyright notices:
+ Hypseus Singe: Copyright (C) 2021-2026 DirtBagXon
+ Hypseus: Copyright (C) 2016 Jeffrey Clark
+ Daphne: Copyright (C) 1999-2013 Matt Ownby
+Singe LUA support was originally created by Scott Duensing.
+Additional authors, dates, licenses and notices are preserved in source files
+and android/THIRD_PARTY_NOTICES.md. This summary does not replace them.
+
+Hypcade contributors modified the engine and added Android arcade integration,
+a launcher, storage/lifecycle/input changes, rendering/decoding improvements
+and move guidance. See MODIFICATIONS.md for the summary of changes.
+Hypcade-specific development used OpenAI GPT-6-Astra and Codex for AI assistance
+with implementation, debugging, tests, builds and documentation. This is a
+process disclosure, not a replacement for upstream authorship or attribution.
+
+Hypcade is free software under GNU GPL version 3 or, at your option, any later
+version. Redistribution and modification are permitted under those terms.
+There is NO WARRANTY, including no implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See LICENSE for the complete license.
+Component-specific licenses remain in force for their respective files.
+
+The corresponding source archive accompanies the APK release and includes the
+modified engine, Android launcher, build scripts and pinned dependency sources.
+Keep that matching archive available when redistributing an APK. The upstream
+repository alone does not contain Hypcade's modifications.
+
+Independent project; no affiliation with or endorsement by upstream authors
+is claimed. Hypdroid was consulted as a documentation reference, not a code base.
+
+Original Hypseus Singe trademark notice (retained verbatim):
+The "Hypseus Singe" mark is used to uniquely identify this project as an Arcade
+Laserdisc Emulator.  Any direct or indirect commercial use of the mark
+"Hypseus" is strictly prohibited without express permission.
+
+The preceding trademark notice concerns the upstream mark; it does not add a
+noncommercial restriction to the GPL permissions for the software.

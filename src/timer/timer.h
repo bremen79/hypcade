@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 #ifndef TIMER_H
 #define TIMER_H
 
@@ -27,7 +29,20 @@
 
 #include <SDL3/SDL.h>
 
+#ifdef __ANDROID__
+// Exclude time spent suspended by Android from emulation/laserdisc clocks.
+// Keep the same 64-bit millisecond units as SDL_GetTicks().
+#ifdef __cplusplus
+extern "C" {
+#endif
+Uint64 hypseus_android_ticks(void);
+#ifdef __cplusplus
+}
+#endif
+#define GET_TICKS hypseus_android_ticks
+#else
 #define GET_TICKS SDL_GetTicks
+#endif
 #define MAKE_DELAY SDL_Delay
 
 unsigned int elapsed_ms_time(unsigned int previous_time);

@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  *  homedir.cpp
  */
@@ -80,7 +82,10 @@ void homedir::set_romdir(const string &s)
         m_romdir.pop_back();
     }
 
+    // Android ROM directories are read-only sources.
+#ifndef __ANDROID__
     make_dir(m_romdir);
+#endif
 }
 
 void homedir::set_ramdir(const string &s)

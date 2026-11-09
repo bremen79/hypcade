@@ -29,16 +29,7 @@
 
 #include <mpeg2.h>
 
-// this is which version of the .dat file format we are using
-#define DAT_VERSION 3
-
-// header for the .DAT files that are generated
-struct dat_header {
-    uint8_t version;     // which version of the DAT file this is
-    uint8_t finished;    // whether the parse finished parsing or was interrupted
-    uint8_t uses_fields; // whether the stream uses fields or frames
-    uint64_t length;     // length of the m2v stream
-};
+#include "index_format.h"
 
 struct precache_entry_s {
     void *ptrBuf;         // buffer that holds precached file

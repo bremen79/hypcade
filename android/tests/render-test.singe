@@ -1,0 +1,24 @@
+-- Deterministic screenshot fixture; use with media-test.txt and its MPEG.
+-- GPL-3.0-or-later. Run plain, with -rotate 90, and with -scanlines.
+singeSetGameName("Android renderer comparison")
+singeWantsCrosshairs(false)
+discSetFPS(29.97)
+colorBackground(0, 0, 0)
+discSearch(150)
+discPause()
+local reported = false
+
+function onOverlayUpdate()
+    overlayClear()
+    overlayPrint(12, 15, "RENDER COMPARISON")
+    overlayPrint(12, 40, "FRAME " .. tostring(discGetFrame()))
+    if discGetFrame() == 150 and not reported then
+        debugPrint("ANDROID_RENDER_TEST READY: frame 150")
+        reported = true
+    end
+    return 1
+end
+
+function onShutdown()
+    debugPrint("ANDROID_RENDER_TEST SHUTDOWN")
+end

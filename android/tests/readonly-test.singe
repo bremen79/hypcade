@@ -1,0 +1,64 @@
+local appendFile = "singe/media-test/append.cfg"
+local append = assert(io.open(appendFile, "a")); append:write("+"); append:close()
+local appended = assert(io.open(appendFile, "r")); assert(appended:read("*a"):sub(1, 4) == "seed"); appended:close()
+-- GPL-3.0-or-later: verifies private settings with an unchanged source folder.
+local name = "singe/media-test/settings.cfg"
+local old = io.open(name, "r")
+local count = 0
+if old then count = tonumber(old:read("*a")) or 0; old:close() end
+local saved = assert(io.open(name, "w"))
+saved:write(tostring(count + 1)); saved:close()
+local readback = assert(io.open(name, "r"))
+assert(tonumber(readback:read("*a")) == count + 1); readback:close()
+local renameFrom = "singe/media-test/rename-a.cfg"
+local renameTo = "singe/media-test/rename-b.cfg"
+local temporary = assert(io.open(renameFrom, "w")); temporary:write("ok"); temporary:close()
+assert(os.rename(renameFrom, renameTo))
+local renamed = assert(io.open(renameTo, "r")); assert(renamed:read("*a") == "ok"); renamed:close()
+assert(os.remove(renameTo))
+io.output("singe/media-test/output.cfg"); io.write("output-test\n"); io.close()
+for line in io.lines("singe/media-test/output.cfg") do assert(line == "output-test") end
+debugPrint("ANDROID_PRIVATE_SETTINGS PASS: count " .. tostring(count + 1))
+-- Synthetic integration fixture for the Android port; GPL-3.0-or-later.
+-- Contains no commercial game code or artwork.
+singeSetGameName("Android media test")
+singeWantsCrosshairs(false)
+discSetFPS(29.97)
+colorBackground(0, 0, 0)
+discSearch(0)
+discPlay()
+debugPrint("ANDROID_MEDIA_TEST START: Lua loaded")
+
+local reported = false
+local lastInput = "Touch a control or use a gamepad"
+
+function onOverlayUpdate()
+    local frame = discGetFrame()
+    overlayClear()
+    overlayPrint(12, 15, "ANDROID 8 / MPEG-2 + VORBIS + LUA")
+    overlayPrint(12, 40, "FRAME " .. tostring(frame))
+    overlayPrint(12, 65, lastInput)
+    if frame >= 60 and not reported then
+        debugPrint("ANDROID_MEDIA_TEST PASS: playback advanced past frame 60")
+        reported = true
+    end
+    if frame >= 270 then
+        discSearch(0)
+        discPlay()
+    end
+    return 1
+end
+
+function onInputPressed(key, mouse)
+    lastInput = "PRESSED " .. tostring(key)
+    debugPrint("ANDROID_MEDIA_TEST INPUT DOWN " .. tostring(key))
+end
+
+function onInputReleased(key, mouse)
+    lastInput = "RELEASED " .. tostring(key)
+    debugPrint("ANDROID_MEDIA_TEST INPUT UP " .. tostring(key))
+end
+
+function onShutdown()
+    debugPrint("ANDROID_MEDIA_TEST SHUTDOWN")
+end

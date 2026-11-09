@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-09): Android coin feedback through
+ * the existing sample mixer. See MODIFICATIONS.md. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -225,6 +227,10 @@ bool init();
 void shutdown();
 bool play(Uint32 whichone);
 bool play_saveme();
+#ifdef __ANDROID__
+// Feedback for logical coin press edges; uses the existing sample mixer.
+void coin_input(unsigned coin, bool down);
+#endif
 int load_waves();
 void free_waves();
 int get_initialized();

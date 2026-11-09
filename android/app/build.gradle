@@ -1,0 +1,181 @@
+plugins {
+    id 'com.android.application'
+}
+
+def portAbis = (project.findProperty('abis') ?: 'arm64-v8a,armeabi-v7a').split(',')
+def generatedAssets = layout.buildDirectory.dir('generated/hypseus-assets')
+
+// Secrets live outside the source tree/archive; no debug-key fallback for release.
+def signingPath = providers.environmentVariable('HYPCADE_SIGNING_PROPERTIES').orNull
+def releaseKeys = new Properties()
+if (signingPath) {
+    file(signingPath).withInputStream { releaseKeys.load(it) }
+    ['storeFile', 'storePassword', 'keyAlias', 'keyPassword'].each { name ->
+        if (!releaseKeys.getProperty(name)) throw new GradleException("Missing release signing property: ${name}")
+    }
+}
+
+android {
+    namespace 'org.hypseus.android'
+    compileSdk 36
+    ndkVersion '28.2.13676358'
+
+    defaultConfig {
+        applicationId 'org.hypseus.android'
+        minSdk 25
+        targetSdk 36
+        versionCode 39
+        versionName '0.1'
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_shared',
+                          '-DCMAKE_BUILD_TYPE=Release',
+                          '-DCMAKE_POLICY_VERSION_MINIMUM=3.10'
+                targets 'hypseus', 'SDL3-shared'
+                cppFlags '-std=c++11'
+            }
+        }
+    }
+
+    signingConfigs {
+        if (signingPath) {
+            release {
+                storeFile file(releaseKeys.getProperty('storeFile'))
+                storePassword releaseKeys.getProperty('storePassword')
+                keyAlias releaseKeys.getProperty('keyAlias')
+                keyPassword releaseKeys.getProperty('keyPassword')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            // Native release optimization matters for software MPEG decoding.
+            debuggable true
+            jniDebuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' 
+        }
+        release {
+            debuggable false
+            jniDebuggable false
+            if (signingPath) signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' 
+        }
+    }
+
+    buildFeatures { buildConfig true }
+    flavorDimensions += 'device'
+    productFlavors {
+        arcade {
+            dimension 'device'
+            ndk { abiFilters 'armeabi-v7a' }
+            buildConfigField 'boolean', 'ARCADE', 'true'
+        }
+        mobile {
+            dimension 'device'
+            ndk { abiFilters 'arm64-v8a' }
+            buildConfigField 'boolean', 'ARCADE', 'false'
+        }
+        arcadeEmulator {
+            dimension 'device'
+            ndk { abiFilters 'x86' }
+            buildConfigField 'boolean', 'ARCADE', 'true'
+        }
+        mobileEmulator {
+            dimension 'device'
+            ndk { abiFilters 'x86_64' }
+            buildConfigField 'boolean', 'ARCADE', 'false'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('jni/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+
+    sourceSets {
+        arcadeEmulator {
+            java.srcDir 'src/arcade/java'
+            manifest.srcFile 'src/arcade/AndroidManifest.xml'
+        }
+        mobileEmulator {
+            java.srcDir 'src/mobile/java'
+            manifest.srcFile 'src/mobile/AndroidManifest.xml'
+        }
+        main {
+            // Native and Java SDL code MUST come from the same pinned checkout.
+            java.srcDir '../third_party/SDL/android-project/app/src/main/java'
+            assets.srcDir generatedAssets
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // SDLActivity opens libmain.so by its nativeLibraryDir pathname.
+            useLegacyPackaging true
+        }
+    }
+
+    lint {
+        abortOnError true
+        checkReleaseBuilds true
+    }
+}
+
+tasks.register('prepareHypseusAssets', Sync) {
+    inputs.property('bundledWavSuffix', '.wav.bin')
+    into generatedAssets
+    into('hypseus') {
+        from('../../') {
+            include 'pics/**', 'fonts/**', 'sound/**'
+            exclude '**/.git*'
+            // AAPT stores .wav files uncompressed. A neutral asset suffix permits
+            // ZIP deflate; the contents remain WAV and SDL reads their header.
+            filesMatching('sound/**/*.wav') { details -> details.name += '.bin' }
+        }
+        from('../../doc') {
+            include 'hypinput.ini', 'hypinput_gamepad.ini'
+        }
+    }
+}
+
+tasks.named('preBuild').configure {
+    dependsOn 'prepareHypseusAssets'
+    doFirst {
+        if (!file('../third_party/SDL/android-project/app/src/main/java/org/libsdl/app/SDLActivity.java').exists()) {
+            throw new GradleException('Native dependencies are missing. Run: python3 bootstrap-deps.py')
+        }
+    }
+}
+
+// Keep -Pabis compatible with the old build command while giving each ABI its
+// own Java/manifest policy. No APK can accidentally combine arcade and phone UI.
+def flavorAbis = [arcade: 'armeabi-v7a', mobile: 'arm64-v8a',
+                  arcadeEmulator: 'x86', mobileEmulator: 'x86_64']
+if (portAbis.any { !flavorAbis.values().contains(it) }) {
+    throw new GradleException('Unsupported ABI in -Pabis')
+}
+androidComponents {
+    beforeVariants(selector().all()) { variant ->
+        def flavor = variant.productFlavors.find { it.first == 'device' }.second
+        variant.enable = portAbis.contains(flavorAbis[flavor])
+    }
+}
+
+// Preserve the documented aggregate lint command across the new flavors.
+tasks.register('lintDebug') {
+    dependsOn flavorAbis.findAll { flavor, abi -> portAbis.contains(abi) }
+            .collect { flavor, abi -> "lint${flavor.capitalize()}Debug" }
+}

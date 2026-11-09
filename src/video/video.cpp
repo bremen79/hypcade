@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ HYPSEUS COPYRIGHT NOTICE ____
  *
@@ -27,6 +29,8 @@
 #include "../io/error.h"
 #include "../io/mpo_fileio.h"
 #include "../io/mpo_mem.h"
+#include "../io/sdl_path.h"
+#include "../io/homedir.h"
 #include "icon.h"
 #include "video.h"
 #include <SDL3_image/SDL_image.h>
@@ -35,8 +39,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#ifdef __ANDROID__
+#include "../../android/app/jni/android_crt.h"
+#include "../../android/app/jni/arcade_guidance.h"
+#include <mutex>
+#include <vector>
+#endif
 
 namespace video {
+#ifdef __ANDROID__
+static bool g_android_mobile_display = false;
+void set_android_mobile_display(bool enabled) { g_android_mobile_display = enabled; }
+#endif
+
 
 uint64_t g_vflags                       = VSYNC | INTRO;
 
@@ -72,6 +87,54 @@ unsigned int g_probe_height             = g_video_height;
 
 TTF_Font *g_font                       = nullptr;
 TTF_Font *g_ttfont                     = nullptr;
+#ifdef __ANDROID__
+static bool g_show_fps = false;
+static Uint64 g_fps_start = 0;
+static unsigned g_fps_frames = 0;
+static char g_fps_label[64] = "FPS: --";
+
+void set_show_fps(bool enabled)
+{
+    g_show_fps = enabled;
+    g_fps_start = 0;
+    g_fps_frames = 0;
+}
+
+static void draw_fps(SDL_Renderer *renderer, int height)
+{
+    if (!g_show_fps) return;
+    const Uint64 now = SDL_GetTicks();
+    if (!g_fps_start || now - g_fps_start > 2000) {
+        g_fps_start = now;
+        g_fps_frames = 0;
+    }
+    if (now - g_fps_start >= 1000) {
+        const double fps = g_fps_frames * 1000.0 / (now - g_fps_start);
+        const double maximum = g_game ? g_game->get_nominal_render_fps() : 0.0;
+        if (maximum > 0.0)
+            snprintf(g_fps_label, sizeof(g_fps_label), "FPS: %.1f (max %.1f)", fps, maximum);
+        else
+            snprintf(g_fps_label, sizeof(g_fps_label), "FPS: %.1f", fps);
+        g_fps_frames = 0;
+        g_fps_start = now;
+    }
+    ++g_fps_frames;
+    float sx, sy;
+    Uint8 r, g, b, a;
+    SDL_GetRenderScale(renderer, &sx, &sy);
+    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    const float scale = height >= 1080 ? 3.0f : height >= 600 ? 2.0f : 1.0f;
+    SDL_SetRenderScale(renderer, sx * scale, sy * scale);
+    const float y = height / scale - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderDebugText(renderer, 5, y + 1, g_fps_label);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderDebugText(renderer, 4, y, g_fps_label);
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderScale(renderer, sx, sy);
+}
+#endif
+
 TTF_TextEngine *g_font_engine          = nullptr;
 
 SDL_Window *g_window                   = NULL;
@@ -88,10 +151,30 @@ SDL_Surface *g_aux_blit_surface        = NULL;
 SDL_Surface *g_scoreboard_blit_surface = NULL;
 
 SDL_Texture *g_overlay_texture         = NULL;
+#ifdef __ANDROID__
+static SDL_Texture *g_hint_font = nullptr;
+#endif
 SDL_Texture *g_yuv_texture             = NULL;
 SDL_Texture *g_scoreboard_texture      = NULL;
 SDL_Texture *g_bezel_texture           = NULL;
 SDL_Texture *g_aux_texture             = NULL;
+
+#ifdef __ANDROID__
+// The VLDP decoder replaces YUV surfaces when media dimensions change. Keep
+// its pointer/mutex lifetime separate from each individual surface, and defer
+// GPU destruction to the SDL thread. A synchronous main-thread callback here
+// could deadlock a decoder command or shutdown that waits without event pumps.
+static std::recursive_mutex g_android_yuv_mutex;
+static std::vector<SDL_Texture *> g_android_retired_yuv_textures;
+
+// Caller holds g_android_yuv_mutex and is running on the SDL renderer thread.
+static void android_release_retired_yuv_textures()
+{
+    for (SDL_Texture *texture : g_android_retired_yuv_textures)
+        SDL_DestroyTexture(texture);
+    g_android_retired_yuv_textures.clear();
+}
+#endif
 
 SDL_FRect fScaleRect;
 SDL_FRect fOverlayRect;
@@ -120,8 +203,10 @@ int8_t g_yuv_luma                      = YUV_FLAG_LUMA;
 
 uint64_t g_bezelhash                   = 0;
 
+#ifndef __ANDROID__
 uint8_t g_scanline_alpha               = 128;
 uint8_t g_scanline_shunt               = 2;
+#endif
 uint8_t g_bSubtitleShown               = 0;
 uint8_t g_yuv_flags                    = 0;
 
@@ -225,6 +310,13 @@ static uint64_t calcHash(const void* data, size_t size)
 
 static void resize_cleanup()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+    android_release_retired_yuv_textures();
+    SDL_DestroyTexture(g_yuv_texture);
+    g_yuv_texture = NULL;
+    g_yuv_video_needs_update = true;
+#endif
     VIDEO_CLEAR(BEZEL_LOAD);
 
     SDL_DestroySurface(g_overlay_surface);
@@ -249,6 +341,10 @@ static void resize_cleanup()
     g_ttfont = nullptr;
     g_font_engine = nullptr;
 
+#ifdef __ANDROID__
+    SDL_DestroyTexture(g_hint_font);
+    g_hint_font = nullptr;
+#endif
     SDL_DestroyTexture(g_overlay_texture);
     SDL_DestroyTexture(g_mix_texture.t);
 
@@ -256,6 +352,9 @@ static void resize_cleanup()
     {
         SDL_RenderClear(g_renderer);
         SDL_RenderPresent(g_renderer);
+#ifdef __ANDROID__
+        android_crt_reset(g_renderer);
+#endif
         SDL_DestroyRenderer(g_renderer);
     }
 
@@ -296,8 +395,8 @@ static void load_fonts()
 
     int size = VIDEO_HAS(LEGACY_OVERLAY) ? 12 : (VIDEO_HAS(LUA_GAME) ? 12 : 6);
 
-    g_font = TTF_OpenFont(base, fs);
-    g_ttfont = TTF_OpenFont(ttfont, size);
+    g_font = TTF_OpenFont(sdl_read_path(base).c_str(), fs);
+    g_ttfont = TTF_OpenFont(sdl_read_path(ttfont).c_str(), size);
 
     TTF_SetFontStyle(g_font, TTF_STYLE_NORMAL);
 
@@ -463,6 +562,12 @@ bool init_display()
     constexpr char title[] = "HYPSEUS Singe: Multiple Arcade Laserdisc Emulator";
 
     Uint32 sdl_flags = 0;
+#ifdef __ANDROID__
+    if (g_android_mobile_display) {
+        sdl_flags |= SDL_WINDOW_RESIZABLE;
+        VIDEO_SET(PRESERVE_ASPECT);
+    }
+#endif
     Uint32 sdl_scoreboard_flags = SDL_WINDOW_BORDERLESS;
     const char *driver = SDL_GetCurrentVideoDriver();
     const char *sdl_render_flags = NULL;
@@ -692,6 +797,10 @@ bool init_display()
             if (VIDEO_HAS(FULLSCREEN))
             {
                 g_logical_rect = displayDimensions[g_display];
+#ifdef __ANDROID__
+                if (g_android_mobile_display)
+                    SDL_GetWindowSizeInPixels(g_window, &g_logical_rect.w, &g_logical_rect.h);
+#endif
 
                 if (!g_bezel_file.empty())
                     VIDEO_SET(BEZEL_TOGGLE);
@@ -815,8 +924,10 @@ bool init_display()
             if (VIDEO_HAS(GRAB_MOUSE))
                 SDL_SetWindowMouseGrab(g_window, true);
 
+#ifndef __ANDROID__
             if (VIDEO_HAS(SCANLINES))
                 SDL_SetRenderDrawBlendMode(g_renderer, SDL_BLENDMODE_BLEND);
+#endif
 
             if (g_game->get_outline_border())
                 g_scale_h_shift = g_scale_v_shift = 100;
@@ -848,6 +959,21 @@ bool init_display()
             ConvertSurface(&g_other_bmps[B_OVERLAY_LDP1450], g_overlay_surface->format);
             colorkey = SDL_MapSurfaceRGB(g_other_bmps[B_OVERLAY_LDP1450], 0, 0, 0);
             SDL_SetSurfaceColorKey(g_other_bmps[B_OVERLAY_LDP1450], true, colorkey);
+#ifdef __ANDROID__
+            const char *hint_game = g_game->get_shortgamename();
+            if (arcade_visual_hints_enabled() &&
+                (strcmp(hint_game, "dle21") == 0 || strcmp(hint_game, "ace") == 0)) {
+                g_hint_font = SDL_CreateTextureFromSurface(g_renderer, g_other_bmps[B_OVERLAY_LDP1450]);
+                if (!g_hint_font) {
+                    LOGE << fmt("Cannot create move-hint font: %s", SDL_GetError());
+                    set_quitflag();
+                    goto exit;
+                }
+                SDL_SetTextureBlendMode(g_hint_font, SDL_BLENDMODE_BLEND);
+                SDL_SetTextureScaleMode(g_hint_font, VIDEO_HAS(SCALE_LINEAR) ?
+                    SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
+            }
+#endif
 
             g_overlay_texture = SDL_CreateTexture(g_renderer, SDL_PIXELFORMAT_RGBA32,
                                     g_texture_access, g_overlay_width, g_overlay_height);
@@ -890,16 +1016,24 @@ void reset_yuv_overlay()
 
 void vid_free_yuv_overlay()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     // Here we free both the YUV surface and YUV texture.
-    SDL_DestroyMutex (g_yuv_surface->mutex);
-   
-    free(g_yuv_surface->Yplane);
-    free(g_yuv_surface->Uplane);
-    free(g_yuv_surface->Vplane);
-    free(g_yuv_surface);
+    if (g_yuv_surface) {
+        SDL_DestroyMutex (g_yuv_surface->mutex);
+        free(g_yuv_surface->Yplane);
+        free(g_yuv_surface->Uplane);
+        free(g_yuv_surface->Vplane);
+        free(g_yuv_surface);
+    }
 
     if (g_yuv_texture)
+#ifdef __ANDROID__
+        g_android_retired_yuv_textures.push_back(g_yuv_texture);
+#else
         SDL_DestroyTexture(g_yuv_texture);
+#endif
 
     g_yuv_surface = NULL;
     g_yuv_texture = NULL;
@@ -911,6 +1045,12 @@ void vid_free_yuv_overlay()
 // returns true if successful, false if failure
 bool deinit_display()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+    android_release_retired_yuv_textures();
+    SDL_DestroyTexture(g_yuv_texture);
+    g_yuv_texture = NULL;
+#endif
     SDL_SetWindowMouseGrab(g_window, false);
 
     SDL_DestroyTexture(g_scoreboard_texture);
@@ -952,8 +1092,15 @@ bool deinit_display()
     g_bezel_texture = NULL;
     g_aux_texture = NULL;
 
+#ifdef __ANDROID__
+    SDL_DestroyTexture(g_hint_font);
+    g_hint_font = nullptr;
+#endif
     SDL_DestroyTexture(g_overlay_texture);
     SDL_DestroyTexture(g_mix_texture.t);
+#ifdef __ANDROID__
+    android_crt_reset(g_renderer);
+#endif
     SDL_DestroyRenderer(g_renderer);
     SDL_DestroyWindow(g_window);
 
@@ -1017,10 +1164,10 @@ static SDL_Surface *load_led_strip(const char *filename)
 {
     std::string filepath = fmt("pics/%s", filename);
 
-    SDL_Surface *result  = SDL_LoadBMP(filepath.c_str());
+    SDL_Surface *result  = SDL_LoadBMP(sdl_read_path(filepath).c_str());
 
     if (!result)
-        LOGE << fmt("Could not load bitmap: %s", filepath.c_str());
+        LOGE << fmt("Could not load bitmap: %s (%s)", filepath.c_str(), SDL_GetError());
     else
       colorLeds(result);
 
@@ -1037,7 +1184,7 @@ static SDL_Surface *load_one_bmp(const char *filename, bool bezel)
     if (!mpo_file_exists(filepath.c_str()))
         filepath = fmt("pics/%s", filename);
 
-    SDL_Surface *result  = SDL_LoadBMP(filepath.c_str());
+    SDL_Surface *result  = SDL_LoadBMP(sdl_read_path(filepath).c_str());
 
     if (!result)
     {
@@ -1054,11 +1201,11 @@ static SDL_Surface *load_one_png(const char *filename)
     if (!mpo_file_exists(filepath.c_str()))
         filepath = fmt("pics/%s", filename);
 
-    SDL_Surface *result = IMG_Load(filepath.c_str());
+    SDL_Surface *result = IMG_Load(sdl_read_path(filepath).c_str());
 
     if (!result)
     {
-        LOGE << fmt("Could not load png: %s", filepath.c_str());
+        LOGE << fmt("Could not load png: %s (%s)", filepath.c_str(), SDL_GetError());
     }
 
     return (result);
@@ -1272,6 +1419,40 @@ void draw_overlay_leds(unsigned int values[], int num_digits,
     VIDEO_SET(BLOCK_DRIVER_OVERLAY);
 }
 
+#ifdef __ANDROID__
+// Match DL2 3.19's LDP1450 prompt: position (32,47), third text line,
+// mapped by ldp1000.cpp to (86,200) in a 320x240 overlay. Reuse its bitmap,
+// colour key, glyph size and spacing, and render in the same video viewport.
+static void draw_move_hint(const SDL_FRect &picture)
+{
+    if (!g_hint_font) return;
+    const unsigned controls = arcade_visual_controls();
+    if (!controls) return;
+    static unsigned previous = 0;
+    static char text[64] = {};
+    if (controls != previous) {
+        const char *names[] = {"UP", "DOWN", "LEFT", "RIGHT", "BUTTON"};
+        text[0] = 0;
+        for (unsigned i = 0; i < 5; ++i) if (controls & (1u << i)) {
+            if (text[0]) strcat(text, " + ");
+            strcat(text, names[i]);
+        }
+        previous = controls;
+    }
+    const float sx = picture.w / 320.0f, sy = picture.h / 240.0f;
+    const float fit = std::min(1.0f, 226.0f / (15 * strlen(text) + 1));
+    SDL_FRect destination = {picture.x + 86 * sx, picture.y + 200 * sy,
+                            16 * sx * fit, 16 * sy * fit};
+    for (const char *c = text; *c; ++c) {
+        const int glyph = *c >= 0x26 && *c <= 0x39 ? *c - 0x25
+                        : *c >= 'A' && *c <= 'Z' ? *c - 0x2a : 0x31;
+        const SDL_FRect source = {float(glyph * 16), 0, 16, 16};
+        SDL_RenderTexture(g_renderer, g_hint_font, &source, &destination);
+        destination.x += 15 * sx * fit;
+    }
+}
+#endif
+
 void draw_singleline_LDP1450(char *LDP1450_String, int start_x, int y)
 {
     SDL_Rect src, dest;
@@ -1431,8 +1612,10 @@ void set_intro(bool value) { VIDEO_ASSIGN(INTRO, value); }
 void set_logo(bool value) { VIDEO_ASSIGN(LOGO, value); }
 void set_yuv_blue(bool value) { VIDEO_ASSIGN(YUV_BLUE, value); }
 void set_scanlines(bool value) { VIDEO_ASSIGN(SCANLINES, value); }
+#ifndef __ANDROID__
 void set_shunt(uint8_t value) { g_scanline_shunt = value; }
 void set_alpha(uint8_t value) { g_scanline_alpha = value; }
+#endif
 void set_queue_screenshot(bool value) { VIDEO_ASSIGN(TAKE_SCREENSHOT, value); }
 void set_scale_linear(bool value) { VIDEO_ASSIGN(SCALE_LINEAR, value); }
 void set_sboverlay_characterset(int value) { sboverlay_characterset = value; }
@@ -1530,14 +1713,20 @@ void toggle_bilinearscale()
 
 void set_yuv_flash()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     g_yuv_display = YUV_FLASH;
 }
 
 void set_yuv_blank(int value)
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     g_yuv_display = value;
 
-    if (value == YUV_BLANK)
+    if (value == YUV_BLANK && g_yuv_surface)
         vid_update_yuv_overlay(g_yuv_surface->Yplane, g_yuv_surface->Uplane,
             g_yuv_surface->Vplane, g_yuv_surface->Ypitch, g_yuv_surface->Upitch,
             g_yuv_surface->Vpitch);
@@ -1588,6 +1777,9 @@ void set_rotate_degrees(float fDegrees)
 
 void set_scoreboard_bezel(bool bEnabled)
 {
+#ifdef __ANDROID__
+     std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
      if (bEnabled)
      {
          if (!VIDEO_HAS(FULLSCREEN) && g_yuv_surface)
@@ -2058,6 +2250,10 @@ void vid_toggle_fullscreen()
 
 void vid_toggle_scanlines()
 {
+#ifdef __ANDROID__
+    VIDEO_ASSIGN(SCANLINES, !VIDEO_HAS(SCANLINES));
+    draw_subtitle(VIDEO_HAS(SCANLINES) ? "CRT scanlines on" : "CRT scanlines off", 1, true);
+#else
     char s[16] = "scanlines off";
 
     if (VIDEO_HAS(SCANLINES))
@@ -2082,6 +2278,7 @@ void vid_toggle_scanlines()
     if (VIDEO_HAS(SCANLINES)) snprintf(s, sizeof(s), "shunt: %d", g_scanline_shunt);
 
     draw_subtitle(s, 1, true);
+#endif
 }
 
 void vid_toggle_bezel()
@@ -2124,6 +2321,9 @@ void vid_scoreboard_switch()
 
 void vid_setup_yuv_overlay (int width, int height)
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     // Prepare the YUV overlay, wich means setting up both the YUV surface and YUV texture.
 
     // If we have already been here, free things first.
@@ -2276,6 +2476,10 @@ static SDL_Texture *vid_create_yuv_texture(int width, int height)
 int vid_update_yuv_overlay(uint8_t *Yplane, uint8_t *Uplane, uint8_t *Vplane,
 	int Ypitch, int Upitch, int Vpitch)
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+    if (!g_yuv_surface) return 0;
+#endif
     // This function is called from the vldp thread, so access to the
     // yuv surface is protected (mutexed).
     // As a reminder, mutexes are very simple: this fn tries to lock(=get)
@@ -2382,9 +2586,14 @@ void vid_update_overlay_surface(SDL_Surface *overlay)
 static void take_screenshot()
 {
     struct       stat info;
-    char         filename[64];
+    char         filename[4096];
     int32_t      screenshot_num = 0;
-    const char   dir[12] = "screenshots";
+#ifdef __ANDROID__
+    const std::string screenshot_dir = g_homedir.get_homedir() + "/screenshots";
+    const char *dir = screenshot_dir.c_str();
+#else
+    const char dir[12] = "screenshots";
+#endif
 
     if (stat(dir, &info ) != 0 )
     {
@@ -2425,7 +2634,7 @@ static void take_screenshot()
             break;
     }
 
-    if (IMG_SavePNG(screenshot, filename))
+    if (IMG_SavePNG(screenshot, sdl_file_path(filename).c_str()))
         LOGI << fmt("Wrote screenshot: %s", filename);
     else
         LOGE <<  fmt("Could not write screenshot: %s !! - %s", filename, SDL_GetError());
@@ -2433,6 +2642,7 @@ static void take_screenshot()
     SDL_DestroySurface(screenshot);
 }
 
+#ifndef __ANDROID__
 static void draw_scanlines(int l)
 {
     int xe = g_scaling_rect.x + g_scaling_rect.w;
@@ -2459,6 +2669,8 @@ static void draw_scanlines(int l)
 
     SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 }
+
+#endif
 
 static void draw_border(int s, int c)
 {
@@ -2542,7 +2754,7 @@ static void vid_render_aux()
         if (VIDEO_HAS(KEYBOARD_BEZEL))
         {
             g_aux_needs_update = false;
-            g_aux_texture = IMG_LoadTexture(g_renderer, g_tqkeys.c_str());
+            g_aux_texture = IMG_LoadTexture(g_renderer, sdl_read_path(g_tqkeys).c_str());
 
             if (!g_aux_texture)
             {
@@ -2601,7 +2813,7 @@ static void vid_render_bezels()
             size_t fileSize = 0;
             std::string bezelpath =  g_bezel_path + std::string(PATH_SEPARATOR) + g_bezel_file;
 
-            void* fileData = SDL_LoadFile(bezelpath.c_str(), &fileSize);
+            void* fileData = SDL_LoadFile(sdl_read_path(bezelpath).c_str(), &fileSize);
 
             g_bezelhash = calcHash(fileData, fileSize);
 
@@ -2648,6 +2860,10 @@ static void vid_render_bezels()
 
 void vid_blit()
 {
+#ifdef __ANDROID__
+    std::unique_lock<std::recursive_mutex> lock(g_android_yuv_mutex);
+    android_release_retired_yuv_textures();
+#endif
     // *IF* we get to SDL_VIDEO_BLIT from game::blit(), then the access to the
     // overlay and scoreboard textures is done from the "hypseus" thread, that blocks
     // until all blitting operations are completed and only then loops again, so NO
@@ -2657,6 +2873,20 @@ void vid_blit()
     // the YUV texture from the YUV surface), so access to that surface and it's
     // boolean DO need to be protected with a mutex.
 
+#ifdef __ANDROID__
+    // Foldables and multi-window can change the drawable without restarting SDL.
+    // Use the actual surface, not the display dimensions cached at game startup.
+    // Arcade builds retain their fixed panel geometry and skip this query.
+    if (g_android_mobile_display && g_window && VIDEO_HAS(FULLSCREEN)) {
+        int width = 0, height = 0;
+        if (SDL_GetWindowSizeInPixels(g_window, &width, &height) && width > 0 && height > 0
+                && (width != g_logical_rect.w || height != g_logical_rect.h)) {
+            g_logical_rect = {0, 0, width, height};
+            format_fullscreen_render();
+            LOGI << fmt("Android mobile drawable resized: %dx%d", width, height);
+        }
+    }
+#endif
     // Handle any rescaling that occurred.
     switch(g_rescale)
     {
@@ -2674,10 +2904,33 @@ void vid_blit()
     // Prevents stroboscopic effects on the background in fullscreen mode,
     // and is recommended by SDL_Rendercopy() documentation.
 
-    if (!mixTexture(&g_mix_texture)) return;
+    bool direct_render = false;
+#ifdef __ANDROID__
+    // Unrotated output needs no intermediate RGBA framebuffer. Composite YUV
+    // and overlays directly on the window, saving one full-screen GPU pass and
+    // width*height*4 bytes (2.64 MiB at 960x720). Keep the original path for
+    // rotation and unusual crops; clipping matches its final source rectangle.
+    direct_render = !VIDEO_HAS(ROTATED_MEDIA)
+        && g_scaling_rect.x >= 0 && g_scaling_rect.y >= 0
+        && g_scaling_rect.x + g_scaling_rect.w <= g_logical_rect.w
+        && g_scaling_rect.y + g_scaling_rect.h <= g_logical_rect.h;
+    static int previous_render_path = -1;
+    if (previous_render_path != static_cast<int>(direct_render)) {
+        LOGI << fmt("Android rendering: %s (%s, %dx%d)",
+            direct_render ? "direct" : "intermediate texture",
+            SDL_GetRendererName(g_renderer), g_logical_rect.w, g_logical_rect.h);
+        previous_render_path = static_cast<int>(direct_render);
+    }
+#endif
+    if (!direct_render && !mixTexture(&g_mix_texture)) return;
+    if (direct_render && g_mix_texture.t) {
+        SDL_DestroyTexture(g_mix_texture.t);
+        g_mix_texture.t = NULL;
+    }
 
-    SDL_SetRenderTarget(g_renderer, g_mix_texture.t);
+    SDL_SetRenderTarget(g_renderer, direct_render ? NULL : g_mix_texture.t);
     SDL_RenderClear(g_renderer);
+    if (direct_render) SDL_SetRenderClipRect(g_renderer, &g_scaling_rect);
 
     // Does YUV texture need update from the YUV surface
     if (g_yuv_surface)
@@ -2719,31 +2972,48 @@ void vid_blit()
 
     SDL_RectToFRect(&g_scaling_rect, &fScaleRect);
 
-    if (g_yuv_texture)
-        SDL_RenderTexture(g_renderer, g_yuv_texture, g_yuv_frect[0], &fScaleRect);
+    if (g_yuv_texture) {
+#ifdef __ANDROID__
+        if (!VIDEO_HAS(SCANLINES) || !android_crt_draw(g_renderer, g_yuv_texture,
+                                                      g_yuv_frect[0], fScaleRect))
+#endif
+            SDL_RenderTexture(g_renderer, g_yuv_texture, g_yuv_frect[0], &fScaleRect);
+    }
 
     SDL_RectToFRect(&g_limit_rect, &fOverlayRect);
 
     if (!VIDEO_HAS(OVERLAY_LAST))
         SDL_RenderTexture(g_renderer, g_overlay_texture, &fOverlayRect, &fScaleRect);
 
+#ifdef __ANDROID__
+    draw_move_hint(fScaleRect);
+#endif
     if (g_aux_needs_update) vid_render_aux();
 
+#ifndef __ANDROID__
     if (VIDEO_HAS(SCANLINES))
         draw_scanlines(g_scanline_shunt);
+#endif
 
     if (g_game->get_outline_border())
         draw_border(g_game->get_outline_border(),
             g_game->get_outline_border_color());
 
-    SDL_SetRenderTarget(g_renderer, NULL);
-    SDL_RenderClear(g_renderer);
+    if (direct_render) {
+        SDL_SetRenderClipRect(g_renderer, NULL);
+    } else {
+        SDL_SetRenderTarget(g_renderer, NULL);
+        SDL_RenderClear(g_renderer);
 
-    if (VIDEO_HAS(ROTATED_MEDIA))
-        SDL_RenderTextureRotated(g_renderer, g_mix_texture.t,  &fScaleRect,
-             &fScaleRect, g_fRotateDegrees, NULL, SDL_FLIP_NONE);
-    else
-        SDL_RenderTexture(g_renderer, g_mix_texture.t, &fScaleRect,  &fScaleRect);
+        // Source and destination are the same final-size rectangle: this copy
+        // does not resize the CRT pattern. Explicit media rotation rotates the
+        // image and its scanlines together; phone resize uses direct rendering.
+        if (VIDEO_HAS(ROTATED_MEDIA))
+            SDL_RenderTextureRotated(g_renderer, g_mix_texture.t,  &fScaleRect,
+                 &fScaleRect, g_fRotateDegrees, NULL, SDL_FLIP_NONE);
+        else
+            SDL_RenderTexture(g_renderer, g_mix_texture.t, &fScaleRect,  &fScaleRect);
+    }
 
     // If there's a subtitle overlay
     if (g_bSubtitleShown)
@@ -2755,12 +3025,21 @@ void vid_blit()
 
     if (VIDEO_HAS(BEZEL_TOGGLE)) vid_render_bezels();
 
+#ifdef __ANDROID__
+    draw_fps(g_renderer, g_logical_rect.h);
+#endif
     if (VIDEO_HAS(TAKE_SCREENSHOT))
     {
         VIDEO_CLEAR(TAKE_SCREENSHOT);
         take_screenshot();
     }
 
+    // The decoder may now prepare the next frame while the GPU/vsync finishes.
+    // It only retires old textures; destruction stays on this rendering thread
+    // at the next vid_blit(), after the queued rendering has been presented.
+#ifdef __ANDROID__
+    lock.unlock();
+#endif
     SDL_RenderPresent(g_renderer);
 
     if (g_scoreboard_needs_update)
@@ -2774,18 +3053,27 @@ void vid_blit()
 
 int get_yuv_overlay_width()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     if (g_yuv_surface) return g_yuv_surface->width;
     return 0;
 }
 
 int get_yuv_overlay_height()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     if (g_yuv_surface) return g_yuv_surface->height;
     return 0;
 }
 
 bool get_yuv_overlay_ready()
 {
+#ifdef __ANDROID__
+    std::lock_guard<std::recursive_mutex> lock(g_android_yuv_mutex);
+#endif
     if (g_yuv_surface && g_yuv_texture) return true;
     return false;
 }

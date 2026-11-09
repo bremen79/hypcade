@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 * ____ DAPHNE COPYRIGHT NOTICE ____
 *
@@ -38,6 +40,7 @@
 #include "../io/conout.h"
 #include "../io/mpo_mem.h"
 #include "../io/numstr.h"
+#include "../io/sdl_path.h"
 #include "../ldp-out/ldp-vldp.h" // added by JFA for -startsilent
 #include "dac.h"
 #include "gisound.h"
@@ -55,6 +58,11 @@ SDL_AudioStream *g_audio_device = NULL;
 sample_s g_samples[MAX_NUM] = {{0}};
 sample_s g_sample_saveme; // the special saveme wav which is loaded
                           // independently of any game
+
+#ifdef __ANDROID__
+static sample_s g_sample_coin = {};
+static unsigned g_coin_held = 0;
+#endif
 
 bool g_sound_enabled = true; // whether sound is enabled
 
@@ -216,6 +224,25 @@ bool play(Uint32 whichone)
     return (result);
 }
 
+#ifdef __ANDROID__
+void coin_input(unsigned coin, bool down)
+{
+    if (coin >= 2) return;
+    const unsigned bit = 1u << coin;
+    const bool was_down = (g_coin_held & bit) != 0;
+    if (down) g_coin_held |= bit;
+    else g_coin_held &= ~bit;
+    if (down && !was_down && g_sound_initialized && is_enabled()
+            && !g_bSoundMuted && g_sample_coin.pu8Buf) {
+        // The SDL stream callback consumes sample slots under this same lock.
+        if (SDL_LockAudioStream(g_audio_device)) {
+            samples::play(g_sample_coin.pu8Buf, g_sample_coin.uLength, g_sample_coin.uChannels);
+            SDL_UnlockAudioStream(g_audio_device);
+        }
+    }
+}
+#endif
+
 // plays the 'saveme' sound
 bool play_saveme()
 {
@@ -248,7 +275,7 @@ int load_waves()
         g_samples[i].uLength = 0;
 
         // if loading the .wav file succeeds
-        if (SDL_LoadWAV(filename.c_str(), &spec, &g_samples[i].pu8Buf,
+        if (SDL_LoadWAV(sdl_read_path(filename).c_str(), &spec, &g_samples[i].pu8Buf,
                         &g_samples[i].uLength)) {
             // make sure audio specs are correct
             if (((spec.channels == CHANNELS) || (spec.channels == 1)) &&
@@ -272,11 +299,25 @@ int load_waves()
     }
 
     // load "saveme" sound in
-    if (!SDL_LoadWAV("sound/grumble.wav", &spec, &g_sample_saveme.pu8Buf,
+    if (!SDL_LoadWAV(sdl_read_path("sound/grumble.wav").c_str(), &spec, &g_sample_saveme.pu8Buf,
                      &g_sample_saveme.uLength)) {
         LOGW << "Loading 'grumble.wav' failed...";
         result = 0;
     }
+
+#ifdef __ANDROID__
+    g_coin_held = 0;
+    // Loaded once from APK support assets, then reused without file I/O per coin.
+    if (SDL_LoadWAV(sdl_read_path("sound/hypcade-coin.wav").c_str(), &spec,
+            &g_sample_coin.pu8Buf, &g_sample_coin.uLength)
+            && spec.channels == 1 && spec.freq == FREQ && spec.format == SDL_AUDIO_S16) {
+        g_sample_coin.uChannels = 1;
+    } else {
+        SDL_free(g_sample_coin.pu8Buf);
+        g_sample_coin = {};
+        LOGW << "Coin feedback sample unavailable";
+    }
+#endif
 
     // if something went wrong, eject ...
     if (!result) {
@@ -289,6 +330,11 @@ int load_waves()
 // free all allocated waves
 void free_waves()
 {
+#ifdef __ANDROID__
+    SDL_free(g_sample_coin.pu8Buf);
+    g_sample_coin = {};
+    g_coin_held = 0;
+#endif
     unsigned int i = 0;
 
     for (; i < g_game->get_num_sounds(); i++) {

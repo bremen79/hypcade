@@ -2,9 +2,12 @@
 
 # Hypseus Singe for Windows
 
+This inherited guide covers the upstream Windows build. For Hypcade on Android,
+use the [project README](../README.md) and [Android build guide](../android/README.md).
+
 ## Download
 
-**Download latest version:** [here](https://github.com/DirtBagXon/hypseus-singe/releases)
+Download an upstream Windows build from [Hypseus Singe releases](https://github.com/DirtBagXon/hypseus-singe/releases).
 
 Latest SDL3 build is:
 

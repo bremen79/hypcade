@@ -1,3 +1,5 @@
+# Hypcade modification notice (2026-11-08): Android arcade adaptation.
+# See MODIFICATIONS.md; original notices are retained.
 cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0074 NEW)
 
@@ -42,7 +44,7 @@ if (ASAN)
     add_compile_options(-fsanitize=address -fno-omit-frame-pointer -g)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 include(TargetArch)
 target_architecture(CMAKE_TARGET_ARCHITECTURES)
@@ -58,20 +60,33 @@ include(GetGitRevisionDescription)
 include(InstallRequiredSystemLibraries)
 include(FindPkgConfig)
 include(ExternalProject)
-include(BuildLibMPEG2)
+if(NOT ANDROID)
+    include(BuildLibMPEG2)
+endif()
 
 set (CMAKE_CXX_STANDARD 11)
 
-build_libmpeg2( )
+if(NOT ANDROID)
+    build_libmpeg2( )
+elseif(NOT TARGET libmpeg2)
+    message(FATAL_ERROR "Use android/app/jni/CMakeLists.txt for an Android build")
+endif()
 
 message(STATUS "Target: ${CMAKE_SYSTEM_NAME} ${CMAKE_TARGET_ARCHITECTURES}")
 
+if(ANDROID)
+    # Android source distributions need not contain a .git directory. Keep the
+    # native version deterministic and independent of third-party git tags.
+    set(VER_TAG ${PKG_VERSION})
+    set(VER_GIT_COUNT "0")
+else()
 git_describe(VER_TAG --tags --abbrev=0)
 if("${VER_TAG}" MATCHES "-NOTFOUND")
     set(VER_TAG  ${PKG_VERSION})
     set(VER_GIT_COUNT "0")
 else()
     git_revlist(VER_GIT_COUNT --count ${VER_TAG}..HEAD)
+endif()
 endif()
 string(REGEX REPLACE "^v" "" RESULT ${VER_TAG})
 string(REGEX REPLACE "[-\\.]" ";" RESULT ${RESULT})
@@ -81,9 +96,11 @@ list(GET RESULT 2 VER_PATCH)
 if(NOT "${VER_GIT_COUNT}" EQUAL "0")
     set(VER_TAG "${VER_TAG}-${VER_GIT_COUNT}")
 endif()
+if(NOT ANDROID)
 git_describe(VER_GIT_DIRTY --always --dirty)
 if("${VER_GIT_DIRTY}" MATCHES "-dirty")
     set(VER_TAG "${VER_TAG}-dirty")
+endif()
 endif()
 message(STATUS "Version: ${VER_TAG}")
 
@@ -101,16 +118,26 @@ configure_file(
     "${PROJECT_BINARY_DIR}/config.h"
 )
 
-find_package(SDL3 CONFIG REQUIRED)
+if(NOT TARGET SDL3::SDL3)
+    find_package(SDL3 CONFIG REQUIRED)
+endif()
 
 if( TARGET SDL3::SDL3-shared AND NOT TARGET SDL3::SDL3 )
     add_library( SDL3::SDL3 ALIAS SDL3::SDL3-shared )
 endif()
 
-find_package(SDL3_ttf CONFIG REQUIRED)
-find_package(SDL3_image CONFIG REQUIRED)
-find_package(SDL3_mixer CONFIG REQUIRED)
-find_package(Vorbis REQUIRED)
+if(NOT TARGET SDL3_ttf::SDL3_ttf)
+    find_package(SDL3_ttf CONFIG REQUIRED)
+endif()
+if(NOT TARGET SDL3_image::SDL3_image)
+    find_package(SDL3_image CONFIG REQUIRED)
+endif()
+if(NOT TARGET SDL3_mixer::SDL3_mixer)
+    find_package(SDL3_mixer CONFIG REQUIRED)
+endif()
+if(NOT TARGET Vorbis::vorbis)
+    find_package(Vorbis REQUIRED)
+endif()
 
 message(STATUS "SDL3 version: ${SDL3_VERSION}")
 message(STATUS "SDL3_ttf version: ${SDL3_ttf_VERSION}")
@@ -146,8 +173,25 @@ add_dependencies( ldp-out vldp )
 add_dependencies( game vldp )
 add_dependencies( sound vldp )
 
-add_executable( hypseus hypseus.cpp globals.h )
+if(ANDROID)
+    add_library(hypseus SHARED hypseus.cpp globals.h
+        "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni/android_bridge.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni/android_clock.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni/arcade_guidance.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni/android_video_codec.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni/mpeg2_packets.cpp")
+    target_include_directories(hypseus PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../android/app/jni")
+    # SDLActivity loads libmain.so and resolves its exported SDL_main symbol.
+    set_target_properties(hypseus PROPERTIES OUTPUT_NAME main)
+else()
+    add_executable( hypseus hypseus.cpp globals.h )
+endif()
 target_link_libraries( hypseus plog io timer sound video cpu game ${Vorbis_Enc_LIBRARY} Vorbis::vorbis ${OGG_LIBRARIES} ${VORBISFILE_LIBRARIES} ${Vorbis_File_LIBRARY} SDL3::SDL3 SDL3::Headers SDL3_ttf::SDL3_ttf SDL3_image::SDL3_image SDL3_mixer::SDL3_mixer ${LIBZIP_LIBRARY} )
+
+if(ANDROID)
+    target_link_libraries(hypseus log android)
+    target_link_options(hypseus PRIVATE "-Wl,--no-undefined")
+endif()
 
 if(ASAN)
     target_link_options(hypseus PRIVATE -fsanitize=address -fno-omit-frame-pointer -g)

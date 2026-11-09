@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!-- Keep the pinned SDL Java source identical to its matching native release.
+         We deliberately declare no BLUETOOTH/BLUETOOTH_CONNECT permission:
+         HIDDeviceManager.initializeBluetooth() checks it and returns before
+         creating raw BLE devices. Standard Android InputDevice gamepads work
+         independently. Lint does not trace that central initialization guard. -->
+    <issue id="MissingPermission">
+        <ignore path="../third_party/SDL/android-project/app/src/main/java/org/libsdl/app/HIDDeviceManager.java" />
+        <ignore path="../third_party/SDL/android-project/app/src/main/java/org/libsdl/app/HIDDeviceBLESteamController.java" />
+    </issue>
+    <!-- SDL selects SDLGenericMotionListener_API29 only on SDK >= 29. -->
+    <issue id="NewApi">
+        <ignore path="../third_party/SDL/android-project/app/src/main/java/org/libsdl/app/SDLControllerManager.java" />
+    </issue>
+    <!-- The API >= 33 branch immediately above the reported legacy call
+         supplies Context.RECEIVER_EXPORTED; older OS versions use the old API. -->
+    <issue id="UnspecifiedRegisterReceiverFlag">
+        <ignore path="../third_party/SDL/android-project/app/src/main/java/org/libsdl/app/HIDDeviceManager.java" />
+    </issue>
+</lint>

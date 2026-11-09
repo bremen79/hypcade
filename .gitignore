@@ -1,10 +1,49 @@
+# Local workspace state and private tooling
+/.local-tools/
+/.agents/
+/.codex/
+/.aws/
+/.idea/
+/.vscode/
+.env
+.env.*
+!.env.example
+
+# Compiler, editor and test output
 *.o
 *.d
 *.a
 *.so
-*.zip
 *.rej
 *.orig
-roms
-build
-hypseus
+*.swp
+*~
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+/hypseus
+
+# Games and local runs; support assets under fonts/, pics/ and sound/ are source.
+/roms/
+*.zip
+*.apk
+*.aab
+*.apks
+*.log
+
+# Private signing material (keep the public certificate separate)
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.key
+signing.properties
+release-signing.properties
+
+# Manifest of a generated source bundle, not a source input
+/SOURCE-ARCHIVE.json
+
+# Maintainer-only release checklist
+/doc/RELEASING.md

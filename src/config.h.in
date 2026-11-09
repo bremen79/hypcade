@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 #define hypseus_VERSION_MAJOR    @VER_MAJOR@
 #define hypseus_VERSION_MINOR    @VER_MINOR@
 #define hypseus_VERSION_POINT    @VER_PATCH@
@@ -22,6 +24,12 @@
 #define LINUX
 #endif
 
+/* Bionic has POSIX files/sockets, but Android apps cannot access desktop
+   Linux console, raw input, parallel-port, or window-manager interfaces. */
+#ifdef TARGET_ANDROID
+#define UNIX
+#endif
+
 #ifdef TARGET_WINDOWS
 #ifndef WIN32
 #define WIN32
@@ -32,7 +40,7 @@
 #define MAC_OSX
 #endif
 
-#ifdef TARGET_I386
+#if defined(TARGET_I386) && !defined(__ANDROID__)
 #define USE_MMX
 #endif
 

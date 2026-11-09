@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 * ____ DAPHNE COPYRIGHT NOTICE ____
 *
@@ -41,6 +43,7 @@
 #include "config.h"
 
 #include <string>
+#include <cerrno>
 #include "io/my_stdio.h"
 
 using namespace std;
@@ -50,6 +53,11 @@ using namespace std;
 #endif
 
 #include <SDL3/SDL.h>
+#ifdef __ANDROID__
+#include <SDL3/SDL_main.h>
+#include "android_clock.h"
+int hypseus_android_smoke_test();
+#endif
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_mixer/SDL_mixer.h>
 
@@ -152,6 +160,27 @@ void set_cur_dir(const char *exe_loc)
 
 /////////////////////// MAIN /////////////////////
 
+#ifdef __ANDROID__
+static bool android_set_data_directory()
+{
+    char current[4096];
+    if (!getcwd(current, sizeof(current))) return false;
+    const std::string directory = current;
+    if (directory.empty() || directory[0] != '/') {
+        printerror("Android requires an absolute -homedir for its game data.");
+        return false;
+    }
+    if (!change_dir(directory.c_str())) {
+        const std::string error = "Cannot enter Android game data directory: " +
+                                  directory + ": " + strerror(errno);
+        printerror(error.c_str());
+        return false;
+    }
+    SDL_Log("HYPSEUS_ANDROID_DATA_DIR %s", directory.c_str());
+    return true;
+}
+#endif
+
 // the main function for both Windows and Linux <grin>
 int main(int argc, char **argv)
 {
@@ -161,6 +190,11 @@ int main(int argc, char **argv)
 
     // initialize SDL with audio and video subsystems
     SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+#ifdef __ANDROID__
+    // OpenGL ES 2 is available across the Android 8 device range; avoid
+    // choosing a desktop-only backend or relying on early Vulkan drivers.
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengles2");
+#endif
 
     if (!SDL_Init(SDL_INIT_VIDEO |
                   SDL_INIT_AUDIO |
@@ -172,16 +206,36 @@ int main(int argc, char **argv)
         goto cleanup;
     }
 
+#ifdef __ANDROID__
+    if (!hypseus_android_clock_install()) {
+        printerror(SDL_GetError());
+        goto cleanup;
+    }
+#endif
+
     if (!TTF_Init()) {
         printerror(SDL_GetError());
         goto cleanup;
     }
 
+#ifdef __ANDROID__
+    // No ROMs or game data are needed for the launcher's device diagnostic.
+    if (argc == 2 && strcmp(argv[1], "--android-smoke-test") == 0) {
+        result_code = hypseus_android_smoke_test();
+        TTF_Quit();
+        goto cleanup;
+    }
+#endif
+
     // parse the command line (which allocates game and ldp) and continue if no
     // errors this is important!  if game_type or ldp_type fails to allocate
     // g_game and g_ldp, then the program will segfault and hypseus must NEVER
     // segfault!  hehe
-    if (parse_cmd_line(argc, argv)) {
+    if (parse_cmd_line(argc, argv)
+#ifdef __ANDROID__
+            && android_set_data_directory()
+#endif
+       ) {
         // MATT : we have to wait until after the command line is parsed before
         // we do anything with the LEDs in case the
         // user does not enable them
@@ -220,6 +274,11 @@ int main(int argc, char **argv)
                                 if (g_game->pre_init()) // initialize all cpu's
                                 {
                                     LOGD << "Booting ROM ...";
+#ifdef __ANDROID__
+                                    // Allocating a game object does not mean
+                                    // its video, audio, ROMs, and player booted.
+                                    result_code = 0;
+#endif
                                     g_game->start(); // HERE IS THE MAIN LOOP
                                                      // RIGHT HERE
                                     g_game->pre_shutdown();
@@ -280,7 +339,9 @@ int main(int argc, char **argv)
     // if our g_game class was allocated
     if (g_game) {
         if (g_game->get_manymouse()) ManyMouse_Quit();
+#ifndef __ANDROID__
         result_code = 0;
+#endif
         delete (g_game);
     }
 
@@ -298,6 +359,9 @@ int main(int argc, char **argv)
     TTF_Quit();
 
 cleanup:
+#ifdef __ANDROID__
+    hypseus_android_clock_remove();
+#endif
     SDL_Quit();
     return result_code;
 }
@@ -327,9 +391,13 @@ void reset_logfile(int argc, char **argv)
 {
     int i = 0;
     string str;
-    char logname[64];
+    char logname[4096];
 
+#ifdef __ANDROID__
+    snprintf(logname, sizeof(logname), "%s/logs/hypseus.log", g_homedir.get_homedir().c_str());
+#else
     snprintf(logname, sizeof(logname), "logs%shypseus.log", PATH_SEPARATOR);
+#endif
     static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
     static plog::RollingFileAppender<plog::TxtFormatter> fileAppender(logname, 50000, 3);
     plog::init(LOGLEVEL, &consoleAppender).addAppender(&fileAppender);

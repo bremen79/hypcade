@@ -1,3 +1,8 @@
+#ifdef __ANDROID__
+#include "../../android/app/jni/android_video_codec.h"
+#endif
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -86,6 +91,10 @@ char **g_argv   = NULL;
 int g_arg_index = 0;
 bool g_altmouse = true;
 
+// Include the full Android application data path; do not depend on desktop
+// PATH_MAX, which can be smaller than the previously supported argument size.
+static const int PATH_ARGUMENT_SIZE = 4096;
+
 // Win32 doesn't use strcasecmp, it uses stricmp (lame)
 #ifdef WIN32
 #define strcasecmp stricmp
@@ -106,7 +115,7 @@ bool invalid_arg(const char *s)
 bool parse_homedir()
 {
     bool result      = true;
-    char s[81]       = {0};
+    char s[PATH_ARGUMENT_SIZE] = {0};
     char e[128];
     bool bHomeDirSet = false; // whether set_homedir was called
 
@@ -176,7 +185,7 @@ bool parse_homedir()
 // found and valid (or not found)
 bool parse_romdir() {
     bool result = true;
-    char s[81] = {0};
+    char s[PATH_ARGUMENT_SIZE] = {0};
     char e[128];
 
     for (;;) {
@@ -205,7 +214,7 @@ bool parse_romdir() {
 
 bool parse_ramdir() {
     bool result = true;
-    char s[81] = {0};
+    char s[PATH_ARGUMENT_SIZE] = {0};
     char e[128];
 
     for (;;) {
@@ -576,7 +585,7 @@ bool parse_cmd_line(int argc, char **argv)
 {
     bool result = true;
     bool filter = false;
-    char s[400] = {0}; // in case they pass in a huge folder as part of the framefile
+    char s[PATH_ARGUMENT_SIZE] = {0}; // Android app-private paths can be long.
     int i = 0;
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -941,7 +950,14 @@ bool parse_cmd_line(int argc, char **argv)
                 lair *game_lair_or_sa = dynamic_cast<lair *>(g_game);
                 thayers *game_thayers = dynamic_cast<thayers *>(g_game);
 
-                if ((game_lair_or_sa || game_thayers) && !get_scoreboard()) {
+                bool supported = game_lair_or_sa || game_thayers;
+#ifdef __ANDROID__
+                // Final ROM-revision validation happens in lair2::init(), after
+                // all arguments (including -version) have been parsed.
+                supported = supported || (dynamic_cast<lair2 *>(g_game) &&
+                    g_game->get_game_type() == GAME_LAIR2);
+#endif
+                if (supported && !get_scoreboard()) {
                     video::set_scoreboard_bezel(true);
                     g_game->m_software_scoreboard = true;
                     printline("Enabling Scoreboard bezel...");
@@ -1087,6 +1103,11 @@ bool parse_cmd_line(int argc, char **argv)
             }
             // hacks roms for certain games such as DL, SA, and CH to bypass
             // slow boot process
+#ifdef __ANDROID__
+            else if (strcasecmp(s, "-showfps") == 0) {
+                video::set_show_fps(true);
+            }
+#endif
             else if (strcasecmp(s, "-fastboot") == 0) {
                 g_game->set_fastboot(true);
             }
@@ -1160,6 +1181,11 @@ bool parse_cmd_line(int argc, char **argv)
                 video::set_forcetop(true);
                 printline("Setting WINDOW_ALWAYS_ON_TOP");
             }
+#ifdef __ANDROID__
+            else if (strcasecmp(s, "-software_video") == 0) {
+                android_video_disable();
+            }
+#endif
             else if (strcasecmp(s, "-novsync") == 0) {
                 video::set_vsync(false);
             }
@@ -1180,6 +1206,7 @@ bool parse_cmd_line(int argc, char **argv)
                 printline("Preserving video aspect ratio within display area.");
                 video::set_preserve_aspect_ratio(true);
             }
+#ifndef __ANDROID__
             else if (strcasecmp(s, "-scanline_shunt") == 0) {
                 get_next_word(s, sizeof(s));
                 i = atoi(s);
@@ -1200,6 +1227,7 @@ bool parse_cmd_line(int argc, char **argv)
                     result = false;
                 }
             }
+#endif
             else if (strcasecmp(s, "-screen") == 0) {
                 get_next_word(s, sizeof(s));
                 i = atoi(s);

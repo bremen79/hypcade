@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Hypseus.Base" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#F4C542</item>
+        <item name="android:windowBackground">#160F0D</item>
+        <item name="android:colorBackground">#160F0D</item>
+        <item name="android:statusBarColor">#160F0D</item>
+        <item name="android:navigationBarColor">#160F0D</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+    <style name="Theme.Hypseus" parent="Theme.Hypseus.Base" />
+    <style name="Theme.Hypseus.Game" parent="Theme.Hypseus">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">#000000</item>
+    </style>
+</resources>

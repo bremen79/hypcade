@@ -172,6 +172,11 @@ class game
     // generic function to ensure that the video buffer gets drawn to the
     // screen, will call repaint()
     // this will not do anything if m_video_overlay_needs_update is false
+#ifdef __ANDROID__
+    // Nominal presentation rate where the driver has a fixed screen-update timer.
+    // Zero means no known fixed rate, not an uncapped performance promise.
+    virtual double get_nominal_render_fps() const { return 0.0; }
+#endif
     void blit();
 
     // forces the screen to always be redrawn (useful if you know the screen has

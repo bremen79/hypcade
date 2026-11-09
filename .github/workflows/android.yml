@@ -1,0 +1,68 @@
+name: Hypcade Android builds
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['android/**', 'src/**', '.github/workflows/android.yml']
+  pull_request:
+    paths: ['android/**', 'src/**', '.github/workflows/android.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install pinned native toolchain
+        run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0' 'ndk;28.2.13676358' 'cmake;3.22.1'
+      - name: Fetch pinned sources
+        working-directory: android
+        run: python3 bootstrap-deps.py
+      - name: Check suspend and resume clock
+        run: python3 android/tests/test_android_clock.py
+      - name: Check launcher arguments and file validation
+        run: python3 android/tests/test_launcher_logic.py
+      - name: Check video index validation and publication
+        run: python3 android/tests/test_video_indexes.py
+      - name: Check coin feedback and licensed audio asset
+        run: python3 android/tests/test_coin_feedback.py
+      - name: Build and lint both ARM architectures
+        working-directory: android
+        run: ./gradlew --no-daemon :app:assembleDebug :app:lintDebug
+      - name: Check arcade and phone APK policies
+        run: >-
+          python3 android/tests/test_apk_flavors.py
+          --arcade android/app/build/outputs/apk/arcade/debug/app-arcade-debug.apk
+          --mobile android/app/build/outputs/apk/mobile/debug/app-mobile-debug.apk
+          --aapt "$ANDROID_HOME/build-tools/35.0.0/aapt"
+      - name: Check lossless sound packaging
+        run: >-
+          python3 android/tests/test_wav_packaging.py
+          --apk android/app/build/outputs/apk/arcade/debug/app-arcade-debug.apk
+          --apk android/app/build/outputs/apk/mobile/debug/app-mobile-debug.apk
+      - name: Prepare external release notices
+        run: python3 android/package-notices.py
+      - name: Upload installable debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hypcade-android-apks
+          path: |
+            android/app/build/outputs/apk/*/debug/*.apk
+            android/artifacts/hypcade-licenses.txt
+          if-no-files-found: error
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-lint
+          path: android/app/build/reports/lint-results-*.*
+          if-no-files-found: ignore

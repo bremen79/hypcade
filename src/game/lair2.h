@@ -26,6 +26,9 @@
 #define LAIR2_H
 
 #include "game.h"
+#ifdef __ANDROID__
+class IScoreboard;
+#endif
 
 #define DL2_OVERLAY_W 320
 #define DL2_OVERLAY_H 240
@@ -76,6 +79,9 @@ class lair2 : public game
   public:
     lair2();
     bool init();
+#ifdef __ANDROID__
+    void shutdown();
+#endif
     void do_irq(unsigned int);
     void cpu_mem_write(Uint32 addr, Uint8 value);
     Uint8 port_read(Uint16);
@@ -88,6 +94,9 @@ class lair2 : public game
     void patch_roms();
     void ldp_fill_buf(); // gets our ldp info and fills DL2 buffer
     void repaint();
+#ifdef __ANDROID__
+    double get_nominal_render_fps() const override { return 1000.0 / LAIR2_IRQ_PERIOD; }
+#endif
     void EEPROM_9536_write(Uint8 value);
 
   protected:
@@ -96,6 +105,10 @@ class lair2 : public game
     Uint16 EEPROM_9536[0x80];
 
   private:
+#ifdef __ANDROID__
+    IScoreboard *m_android_scoreboard = nullptr;
+    void update_android_scoreboard();
+#endif
     unsigned char m_u8SerialBuf[DL2_BUF_SIZE]; // buffer of serial data received
                                                // from laserdisc player
     unsigned int m_uSerialBufSize; // how many bytes are currently in the buffer

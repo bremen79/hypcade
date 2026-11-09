@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 ** LuaFileSystem
 ** Copyright Kepler Project 2003 (http://www.keplerproject.org/luafilesystem)
@@ -239,6 +241,15 @@ static int lfs_lock_dir(lua_State *L) {
     lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2;
   }
   strcpy(ln, path); strcat(ln, lockfile);
+#ifdef __ANDROID__
+  char private_lock[4096];
+  if (android_save_path(ln, private_lock, sizeof(private_lock)) != 0) {
+    free(ln); lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2;
+  }
+  free(ln);
+  ln = strdup(private_lock);
+  if (!ln) { lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2; }
+#endif
   if((fd = CreateFile(ln, GENERIC_WRITE, 0, NULL, CREATE_NEW, 
 	  	FILE_ATTRIBUTE_NORMAL | FILE_FLAG_DELETE_ON_CLOSE, NULL)) == INVALID_HANDLE_VALUE) {
   	int en = GetLastError();
@@ -278,6 +289,15 @@ static int lfs_lock_dir(lua_State *L) {
     lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2;
   }
   strcpy(ln, path); strcat(ln, lockfile);
+#ifdef __ANDROID__
+  char private_lock[4096];
+  if (android_save_path(ln, private_lock, sizeof(private_lock)) != 0) {
+    free(ln); lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2;
+  }
+  free(ln);
+  ln = strdup(private_lock);
+  if (!ln) { lua_pushnil(L); lua_pushstring(L, strerror(errno)); return 2; }
+#endif
   if(symlink("lock", ln) == -1) {
     free(ln); lua_pushnil(L); 
     lua_pushstring(L, strerror(errno)); return 2;

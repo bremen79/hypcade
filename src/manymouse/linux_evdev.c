@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * Support for Linux evdevs...the /dev/input/event* devices.
  *
@@ -8,7 +10,7 @@
 
 #include "manymouse.h"
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__ANDROID__)
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * singeproxy.cpp
  *
@@ -27,10 +29,12 @@
 #include "../../vldp/vldp_nonstd.h"
 #include "../../video/palette.h"
 #include "../../sound/sound.h"
+#include "../../timer/timer.h"
 #include "../../io/zippp.h"
 #include "../../io/limits.h"
 #include "../../io/homedir.h"
 #include "../../io/mpo_fileio.h"
+#include "../../io/sdl_path.h"
 #include "sdl3_gfx/SDL3_rotozoom.h"
 
 #include <plog/Log.h>
@@ -2143,7 +2147,7 @@ static int sep_font_load(lua_State *L)
                fontpath = filepath;
            }
 
-           temp = TTF_OpenFont(fontpath.c_str(), points);
+           temp = TTF_OpenFont(sdl_read_path(fontpath).c_str(), points);
         }
 
         if (temp) {
@@ -3108,7 +3112,7 @@ static int sep_sound_load(lua_State *L)
               filepath = tmpPath;
           }
 
-          load = SDL_LoadWAV(filepath.c_str(), &temp.audioSpec,
+          load = SDL_LoadWAV(sdl_read_path(filepath).c_str(), &temp.audioSpec,
                           &temp.buffer, &temp.length);
 
       }
@@ -3208,7 +3212,7 @@ static int sep_music_load(lua_State *L)
               mixpath = tmpPath;
           }
 
-          tmpAud = MIX_LoadAudio(m_mixer, mixpath.c_str(), false);
+          tmpAud = MIX_LoadAudio(m_mixer, sdl_read_path(mixpath).c_str(), false);
           tmpTrk = MIX_CreateTrack(m_mixer);
 
           if (tmpTrk && tmpAud)
@@ -3467,8 +3471,8 @@ static int sep_sprite_draw(lua_State *L)
               if (!sep_sprite_valid(L, id, m_sprites[id].present, __func__)) return 0;
 
               if (m_sprites[id].animation != NULL && SPRITE_HAS(m_sprites[id], SPR_ANIMATING)) {
-                  m_sprites[id].ticks += SDL_GetTicks() - m_sprites[id].last;
-                  m_sprites[id].last = SDL_GetTicks();
+                  m_sprites[id].ticks += GET_TICKS() - m_sprites[id].last;
+                  m_sprites[id].last = GET_TICKS();
                   while (SPRITE_HAS(m_sprites[id], SPR_ANIMATING)) {
                       if (m_sprites[id].animation->delays[m_sprites[id].flow] < m_sprites[id].ticks) {
                           m_sprites[id].ticks -= m_sprites[id].animation->delays[m_sprites[id].flow];
@@ -3702,7 +3706,7 @@ static int sep_sprite_load(lua_State *L)
                lua_espath(filepath.c_str(), tmpPath, REWRITE_MAXPATH);
                filepath = tmpPath;
            }
-           temp = IMG_LoadAnimation(filepath.c_str());
+           temp = IMG_LoadAnimation(sdl_read_path(filepath).c_str());
        }
 
        if (temp) {
@@ -3717,7 +3721,7 @@ static int sep_sprite_load(lua_State *L)
 
                SDL_Surface *image = NULL;
                if (SEP_HAS(SEP_ROM_ZIP)) image = sep_surface_zip(filepath);
-               else image = IMG_Load(filepath.c_str());
+               else image = IMG_Load(sdl_read_path(filepath).c_str());
 
                if (!image) {
                    sep_trace(L);
@@ -3817,7 +3821,7 @@ static int sep_sprite_loadframes(lua_State *L)
                    filepath = tmpPath;
                }
 
-               temp = IMG_Load(filepath.c_str());
+               temp = IMG_Load(sdl_read_path(filepath).c_str());
             }
 
             if (temp) {
@@ -5252,7 +5256,7 @@ static int sep_sprite_play(lua_State *L)
             id = lua_tonumber(L, 1);
             if (!sep_animation_valid(L, id, m_sprites[id].animation, __func__)) return 0;
             if (!SPRITE_HAS(m_sprites[id], SPR_ANIMATING)) {
-                m_sprites[id].last = SDL_GetTicks();
+                m_sprites[id].last = GET_TICKS();
             }
             SPRITE_SET(m_sprites[id], SPR_ANIMATING);
        }

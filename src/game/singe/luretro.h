@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * $Id$
  * Auxiliary functions from Lua API
@@ -28,7 +30,14 @@
 #ifndef luretro_h
 #define luretro_h
 
+#ifdef __ANDROID__
+#include <stdio.h>
+#define REWRITE_MAXPATH 4096
+int android_save_path(const char *source, char *output, size_t size);
+FILE *android_script_fopen(const char *source, const char *mode);
+#else
 #define REWRITE_MAXPATH 128
+#endif
 
 unsigned char get_espath();
 unsigned char get_zipath();

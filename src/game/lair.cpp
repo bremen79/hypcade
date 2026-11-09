@@ -1,3 +1,8 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
+#ifdef __ANDROID__
+#include "../../android/app/jni/arcade_guidance.h"
+#endif
 /*
 * ____ DAPHNE COPYRIGHT NOTICE ____
 *
@@ -495,6 +500,18 @@ void lairalt::set_preset(int preset)
 // raise IRQ line
 void lair::do_irq(unsigned int which_irq)
 {
+#ifdef __ANDROID__
+    if (arcade_guidance_enabled()) {
+        unsigned lives0 = 0, lives1 = 0;
+        if (m_pScoreboard) {
+            m_pScoreboard->pre_get_digit(lives0, IScoreboard::LIVES0);
+            m_pScoreboard->pre_get_digit(lives1, IScoreboard::LIVES1);
+        }
+        bool alive = (lives0 > 0 && lives0 <= 9) || (lives1 > 0 && lives1 <= 9);
+        arcade_guidance_cine(m_cpumem, sizeof(m_cpumem), m_shortgamename,
+            alive && g_ldp->get_status() == LDP_PLAYING, g_ldp->get_current_frame());
+    }
+#endif
     // assume that the IRQ is 0 since we only have 1 IRQ
     Z80_ASSERT_IRQ;
 }

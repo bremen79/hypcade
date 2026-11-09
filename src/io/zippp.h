@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 
 #ifndef LIBZIPPP_H
 #define LIBZIPPP_H
@@ -37,6 +39,7 @@
 */
 
 #include <cstdio>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <functional>
@@ -63,9 +66,10 @@ struct zip_source;
         #define LIBZIPPP_SHARED_LIBRARY_EXPORT __declspec(dllexport)
         #define LIBZIPPP_SHARED_LIBRARY_IMPORT
 #else
-        //standard ISO c++ does not support long long
-        typedef long int libzippp_int64;
-        typedef unsigned long int libzippp_uint64;
+        // A long is only 32 bits on Android armeabi-v7a; libzip offsets and
+        // sizes remain 64 bits on every supported ABI.
+        typedef std::int64_t libzippp_int64;
+        typedef std::uint64_t libzippp_uint64;
         typedef unsigned int libzippp_uint32;
         typedef unsigned short libzippp_uint16;
         

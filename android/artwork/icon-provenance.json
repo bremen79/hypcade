@@ -1,0 +1,15 @@
+{
+  "tool": "Built-in image_gen",
+  "source": "hypcade-icon.png",
+  "usage": "Hypcade launcher icon and Android TV banner",
+  "packaging": "ImageMagick resize and WebP compression: adaptive 314px image padded to 432px (66dp safe circle), legacy 240px image centered in 192px canvas, TV 240px image on 320x180px background; foreground alpha preserved",
+  "date": "2026-11-09",
+  "source_sha256": "397922790594cea1e6cd79e79fc339599b7efb4593d1528c75e7b3fa7f1428b7",
+  "original_prompt": "Use case: logo-brand. Create one polished launcher icon foreground for Hypcade, an Android laserdisc arcade emulator. A bold compact front-facing arcade cabinet with a luminous CRT screen containing a single unmistakable geometric uppercase H; a partially visible silver laserdisc tucked behind the cabinet connects it to laserdisc games. Use the project's mint teal (#69DFC0), deep blue-black (#10171D), and restrained silver/white highlights. Tasteful sculpted arcade hardware, crisp silhouette, broad simple shapes, subtle depth, strong contrast, excellent readability at 48 pixels. A small joystick and one large button integrated into the cabinet control panel; no tiny decoration. The H is the only text. One centered isolated mark, transparent background, square canvas; keep the entire mark inside the central 62% of canvas width and height so Android adaptive-icon masks cannot crop it. No background tile, no border, no mockup, no additional words, no watermark, no copyrighted game characters. Deliver a clean finished icon asset.",
+  "prompt": "Recolor the existing Hypcade cabinet/H/laserdisc mark: golden yellow #F4C542, crimson #8F2028, warm black #160F0D; preserve silver disc, composition and transparency. Dragon\u2019s Lair-inspired palette, no game characters or added text.",
+  "palette": {
+    "gold": "#F4C542",
+    "crimson": "#8F2028",
+    "background": "#160F0D"
+  }
+}

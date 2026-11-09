@@ -1,6 +1,10 @@
-# Bezels
+# Bezels and video placement
 
-Refer also to **CmdLine arguments** [here](CmdLine.md)
+Bezels add artwork around the game video. These upstream options control
+artwork, video placement and scoreboards. Hypcade manages its display size and
+scoreboard toggle through the launcher; some desktop options do not apply.
+
+See the full [command-line reference](CmdLine.md).
 
 ## Video Positional Arguments
 | Option    | Description                   |

@@ -1,3 +1,4 @@
+# Hypcade modification (2026-11-09): Android hardware decoding recovery.
 set( LIB_SOURCES
     vldp.cpp
     vldp_nonstd.cpp
@@ -21,3 +22,8 @@ include_directories( ${MPEG2_INCLUDE_DIRS} )
 
 add_library( vldp ${LIB_SOURCES} ${LIB_HEADERS} )
 target_link_libraries( vldp PRIVATE plog ${MPEG2_LIBRARIES} sdl3_deps )
+
+if(ANDROID)
+    target_sources(vldp PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../android/app/jni/mpeg2_replay.cpp")
+    target_include_directories(vldp PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../android/app/jni")
+endif()

@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 * ____ DAPHNE COPYRIGHT NOTICE ____
 *
@@ -27,6 +29,13 @@
 #include <string>
 #include "../singe.h"
 #include "../../io/homedir.h"
+#ifdef __ANDROID__
+#include "../../io/android_storage.h"
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+#endif
 
 bool net_send_enabled();
 
@@ -50,6 +59,54 @@ const char* get_ramdir_path()
 
     return dir.c_str();
 }
+
+#ifdef __ANDROID__
+// Script settings are overlays in private storage; reads fall back to the source.
+int android_save_path(const char *source, char *output, size_t size)
+{
+    std::string path = android_absolute_path(source);
+    std::string ram = get_ramdir_path();
+    std::string result = path.compare(0, ram.size(), ram) == 0 ? path :
+        ram + android_path_key(path) + ".save";
+    if (result.size() >= size) { errno = ENAMETOOLONG; return -1; }
+    memcpy(output, result.c_str(), result.size() + 1);
+    return 0;
+}
+
+FILE *android_script_fopen(const char *source, const char *mode)
+{
+    char saved[4096];
+    if (android_save_path(source, saved, sizeof(saved)) != 0) return NULL;
+    bool writing = strpbrk(mode, "wa+") != NULL;
+    if (writing) {
+        // Preserve small source settings when a script appends or updates them.
+        // Never seed a private copy of a large media file.
+        if ((mode[0] == 'a' || strchr(mode, '+')) && access(saved, F_OK) != 0) {
+            struct stat original = {};
+            if (stat(source, &original) == 0 && S_ISREG(original.st_mode)) {
+                if (original.st_size > 1024 * 1024) { errno = EFBIG; return NULL; }
+                FILE *input = fopen(source, "rb");
+                if (!input) return NULL;
+                FILE *output = fopen(saved, "wb");
+                if (!output) { fclose(input); return NULL; }
+                char buffer[8192];
+                size_t count;
+                bool ok = true;
+                while ((count = fread(buffer, 1, sizeof(buffer), input)) != 0) {
+                    if (fwrite(buffer, 1, count, output) != count) { ok = false; break; }
+                }
+                if (ferror(input)) ok = false;
+                fclose(input);
+                if (fclose(output) != 0) ok = false;
+                if (!ok) { remove(saved); errno = EIO; return NULL; }
+            }
+        }
+        return fopen(saved, mode);
+    }
+    FILE *file = fopen(saved, mode);
+    return file ? file : fopen(source, mode);
+}
+#endif
 
 unsigned char socket_disabled()
 {

@@ -1,15 +1,19 @@
-# CmdLine
+# Hypseus command-line reference
 
-#### Derived from Daphne [CmdLine](https://www.daphne-emu.com:9443/mediawiki/index.php/CmdLine)
+Based on the [Daphne command-line documentation](https://www.daphne-emu.com:9443/mediawiki/index.php/CmdLine).
 
-### Command Line Format
+This is the upstream option reference. Some desktop options are unavailable
+on Android. For Hypcade, put supported game switches in a `.commands` file;
+see [format and GUI precedence](../android/README.md#game-command-files).
+
+## Command format
 The command line format is:
 
     hypseus <game type> vldp -framefile ... <options>
 
 The game type and framefile argument are required.
 
-Refer also to **bezel arguments** [here](Bezels.md)
+See also the [bezel and video-position options](Bezels.md).
 
 ## Game Types
 | Game Type    | Description                   |

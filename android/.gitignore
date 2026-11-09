@@ -1,0 +1,14 @@
+# Downloaded dependencies and local Android tool configuration
+/third_party/
+/local.properties
+
+# Gradle/CMake output and local diagnostics
+.gradle/
+.cxx/
+build/
+/native-check/
+/artifacts/
+
+# Optional hint exploration output; campaign JSON and required baselines stay in Git.
+/hints/offline/
+/hints/legacy/arcade_moves-android8.inc

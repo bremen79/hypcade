@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -29,7 +31,7 @@
 
 // This used to say: this code only applies to x86-based systems, I believe
 // But MAC_OSX but is x86 has no parallel port...
-#if defined(NATIVE_CPU_X86) && !defined(MAC_OSX)
+#if defined(NATIVE_CPU_X86) && !defined(MAC_OSX) && !defined(__ANDROID__)
 
 // Code to control the parallel port
 

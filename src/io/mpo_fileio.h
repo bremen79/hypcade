@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * mpo_fileio.h
  *
@@ -47,7 +49,7 @@
 #define MPO_HANDLE FILE *
 #define MPO_BYTES_READ size_t
 
-#ifdef LINUX
+#if defined(LINUX) || defined(__ANDROID__)
 #define MPO_FOPEN fopen64
 #define MPO_FSEEK fseeko64
 #define MPO_FTELL ftello64

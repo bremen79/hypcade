@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "upstream": {
+    "url": "https://github.com/DirtBagXon/hypseus-singe.git",
+    "commit": "a16e2521ee3233ef20c44e562008c47f4b4293df",
+    "version": "3.0.2"
+  },
+  "dependencies": [
+    {
+      "name": "SDL",
+      "url": "https://github.com/libsdl-org/SDL.git",
+      "version": "3.4.20",
+      "commit": "f00dc919ca35b9756316e86c4777392de442f9b2"
+    },
+    {
+      "name": "SDL_image",
+      "url": "https://github.com/libsdl-org/SDL_image.git",
+      "version": "3.4.8",
+      "commit": "0891fc30428b518e7d018677bd6fa95c1a50f4c6"
+    },
+    {
+      "name": "SDL_ttf",
+      "url": "https://github.com/libsdl-org/SDL_ttf.git",
+      "version": "3.2.2",
+      "commit": "a1ce3670aec736ecbf0936c43f2f0cc53aa61e5b",
+      "submodules": {
+        "external/freetype": "9973564cfa63763a3e4ac67c09147899539b1e07"
+      }
+    },
+    {
+      "name": "SDL_mixer",
+      "url": "https://github.com/libsdl-org/SDL_mixer.git",
+      "version": "3.2.4",
+      "commit": "72a81869b45e249e8e67102db4e98dd2441f05a1",
+      "submodules": {
+        "external/ogg": "936fdd822a4e4fc963197b3eda931b89b52859a0",
+        "external/vorbis": "eefe62244630a2d2c37ba5e6fb1a1fd8ad93ece5"
+      }
+    },
+    {
+      "name": "libzip",
+      "url": "https://github.com/nih-at/libzip.git",
+      "version": "1.11.4",
+      "commit": "6f8a0cdd24a0dc6cce9dac4a7679da784ab124ea"
+    }
+  ],
+  "source_adaptations": [
+    {
+      "name": "laser-vault arcade move-window layouts",
+      "url": "https://github.com/jeffnyman/laser-vault",
+      "commit": "1f12c84dfabf3c8e5d028c8804b2f96678c798fa",
+      "license": "GPL-3.0",
+      "files": [
+        "src/games/cinematronics/autoplay.c",
+        "src/games/leland/board.c"
+      ]
+    }
+  ]
+}

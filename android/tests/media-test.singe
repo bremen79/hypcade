@@ -1,0 +1,43 @@
+-- Synthetic integration fixture for the Android port; GPL-3.0-or-later.
+-- Contains no commercial game code or artwork.
+singeSetGameName("Android media test")
+singeWantsCrosshairs(false)
+discSetFPS(29.97)
+colorBackground(0, 0, 0)
+discSearch(0)
+discPlay()
+debugPrint("ANDROID_MEDIA_TEST START: Lua loaded")
+
+local reported = false
+local lastInput = "Touch a control or use a gamepad"
+
+function onOverlayUpdate()
+    local frame = discGetFrame()
+    overlayClear()
+    overlayPrint(12, 15, "ANDROID 8 / MPEG-2 + VORBIS + LUA")
+    overlayPrint(12, 40, "FRAME " .. tostring(frame))
+    overlayPrint(12, 65, lastInput)
+    if frame >= 60 and not reported then
+        debugPrint("ANDROID_MEDIA_TEST PASS: playback advanced past frame 60")
+        reported = true
+    end
+    if frame >= 270 then
+        discSearch(0)
+        discPlay()
+    end
+    return 1
+end
+
+function onInputPressed(key, mouse)
+    lastInput = "PRESSED " .. tostring(key)
+    debugPrint("ANDROID_MEDIA_TEST INPUT DOWN " .. tostring(key))
+end
+
+function onInputReleased(key, mouse)
+    lastInput = "RELEASED " .. tostring(key)
+    debugPrint("ANDROID_MEDIA_TEST INPUT UP " .. tostring(key))
+end
+
+function onShutdown()
+    debugPrint("ANDROID_MEDIA_TEST SHUTDOWN")
+end

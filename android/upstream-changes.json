@@ -1,0 +1,393 @@
+{
+  "schema": 1,
+  "upstream": "https://github.com/DirtBagXon/hypseus-singe",
+  "revision": "a16e2521ee3233ef20c44e562008c47f4b4293df",
+  "notice_date": "2026-11-09",
+  "scope": "Public source set compared against pinned upstream Git commit; generated files, downloaded dependencies and private workspace files excluded.",
+  "modified": [
+    {
+      "path": ".gitignore",
+      "upstream_sha256": "346f489187ebb64e1f4d89441e892a20a734eb9157b6d42ec3ff442da6f4de67"
+    },
+    {
+      "path": "README.md",
+      "upstream_sha256": "76313f338a3b3ffa5e0f0632481af26a68947a2a49bc400ae871435e93a05ec6"
+    },
+    {
+      "path": "doc/Bezels.md",
+      "upstream_sha256": "0926e0e3d52e5aa33b5c7a0c9c17145be7235a6ee82fe2ce900a8f448297e0fd"
+    },
+    {
+      "path": "doc/CmdLine.md",
+      "upstream_sha256": "a72e6d3716d17e8af0b6715819f7b04cb882d6def5fcf3b66d2eac271963e957"
+    },
+    {
+      "path": "src/CMakeLists.txt",
+      "upstream_sha256": "317c977c98b2ccd79786681bd8973883b61d2e592c7ea8143fbfbb500d8cb2a7"
+    },
+    {
+      "path": "src/cmake/modules/TargetArch.cmake",
+      "upstream_sha256": "d48b6a6579c8c33dda3baa89de35c5f10b45dd31ea1e1fbaff50b3baf6f6882e"
+    },
+    {
+      "path": "src/config.h.in",
+      "upstream_sha256": "0b1df8224ca96d89927cc23acee9197fff1b786c1afa822cc9640c18aec4cd62"
+    },
+    {
+      "path": "src/game/game.h",
+      "upstream_sha256": "cfb993c85ff147dafc1f0ad643dec8169b1568a27c551fa53bdb5c4fa630d17b"
+    },
+    {
+      "path": "src/game/lair.cpp",
+      "upstream_sha256": "8960783e8847188ae2a0705fd864b6bc44142be0002e3128489673d6e82e3bf1"
+    },
+    {
+      "path": "src/game/lair2.cpp",
+      "upstream_sha256": "c9548bc7bd032698639bd4888bd111c22fd9f9237bac68580a0dfa442b06a3e9"
+    },
+    {
+      "path": "src/game/lair2.h",
+      "upstream_sha256": "8b9952360032e818af0b87b1ba6d49a04a63b3ebcf1be4be417aaf285183c2c9"
+    },
+    {
+      "path": "src/game/singe.cpp",
+      "upstream_sha256": "ff968c4af782a6ff5ce9ad85449df93475b2e7905e51e5c51deb68ba94de9a83"
+    },
+    {
+      "path": "src/game/singe/lfs.c",
+      "upstream_sha256": "5b33ed8f1e56840989762146c3f458adf7b672d8fc63c788af9be6b140dd7767"
+    },
+    {
+      "path": "src/game/singe/liolib.c",
+      "upstream_sha256": "fc3322876636b9208bbc75df5f90589975fa83cf81da5d54644cb76384554276"
+    },
+    {
+      "path": "src/game/singe/loslib.c",
+      "upstream_sha256": "c2ea61cd1e5ba03e45bb0b65b12fc6cec097254d442529b5573729c53cf46f0a"
+    },
+    {
+      "path": "src/game/singe/luretro.c",
+      "upstream_sha256": "03dc18386c4a179ad2145a44fe0f210f19be82267e7d677b78fb5034461af582"
+    },
+    {
+      "path": "src/game/singe/luretro.h",
+      "upstream_sha256": "8ca6ac30d2aed7bcd6cabc665e0a9e2923c8de77038515a09257e1205e7183fa"
+    },
+    {
+      "path": "src/game/singe/singe_utils.cpp",
+      "upstream_sha256": "13304348a4dd4e277f7d794328042189b444ad619b9940504b22cadea79afa83"
+    },
+    {
+      "path": "src/game/singe/singeproxy.cpp",
+      "upstream_sha256": "92733ea8dce44bd79fc76052f75bea895ecd5e90b9e8afead16316a84ad74d71"
+    },
+    {
+      "path": "src/hypseus.cpp",
+      "upstream_sha256": "efa7c7713707bdcf7c1f0d23a03a80400ed89486811651bf422dabf3010b87ff"
+    },
+    {
+      "path": "src/io/CMakeLists.txt",
+      "upstream_sha256": "1060492736ea20d7a3eb5672a0959849698e4732d2f9d8ae426b7a84483f9aea"
+    },
+    {
+      "path": "src/io/cmdline.cpp",
+      "upstream_sha256": "8ad7fde129709522bd4329bf0b7ade27c942a040a1224738afb931309b1e0756"
+    },
+    {
+      "path": "src/io/error.cpp",
+      "upstream_sha256": "f98bbe545f35a1567eaa954b5b50e527c35f5c16c190137ebca2c72e92fd4390"
+    },
+    {
+      "path": "src/io/homedir.cpp",
+      "upstream_sha256": "2145d8fe2b3570a763e87ebb35a523ba9fa51fb4d9defdb1a3cbc757fda3af1d"
+    },
+    {
+      "path": "src/io/input.cpp",
+      "upstream_sha256": "eae46aa20ebd40f3dcf46460b2e824381c319d2e71e7e47b5e27b5154df77fc2"
+    },
+    {
+      "path": "src/io/mpo_fileio.h",
+      "upstream_sha256": "d994c6214b1de16d88cc012b42a7336bdf9b2c74636b4e23a667aa0089ebe080"
+    },
+    {
+      "path": "src/io/network.cpp",
+      "upstream_sha256": "c51d285c234778c520dd7c4929bbb09be1a3c7d0f165caf26401ca66afba7fc4"
+    },
+    {
+      "path": "src/io/parallel.cpp",
+      "upstream_sha256": "42ab557c06d4cd4d109ce7843af6c51390ef207531af06b3f3be1ebf0ca1cbf3"
+    },
+    {
+      "path": "src/io/zippp.h",
+      "upstream_sha256": "fec9ca054e93999f98aa04ff4080203ebf92244d44dedd5f4b8f99ccdbee78c0"
+    },
+    {
+      "path": "src/ldp-out/CMakeLists.txt",
+      "upstream_sha256": "927ef9725442e8529dbd1d9222adf88e164cedc24cb170724dec0b8516235f7a"
+    },
+    {
+      "path": "src/ldp-out/ldp-vldp.cpp",
+      "upstream_sha256": "ae3403c5c69c6ee3f4de1ca11303cff41dee203b8c1cc5daa2f8d48f5b8ab850"
+    },
+    {
+      "path": "src/ldp-out/ldp-vldp.h",
+      "upstream_sha256": "60f99a210c219b84402ee3044cd52fdfb2e20020ab649d872adbb3ef55ffe5cb"
+    },
+    {
+      "path": "src/manymouse/linux_evdev.c",
+      "upstream_sha256": "17f59e53fdbd649c8f5ce8692945475d670d0c41096ada48d81b41f8e082291e"
+    },
+    {
+      "path": "src/manymouse/x11_xinput2.c",
+      "upstream_sha256": "d0dc55ca3c8dd25d9f389df2d63a957069daa3df51d0d77efec1f30174219364"
+    },
+    {
+      "path": "src/sound/CMakeLists.txt",
+      "upstream_sha256": "2d50b490c13a35e0e00b1ab59dece3f5c677c5bf6cf04f61b49f39dc31dcb98e"
+    },
+    {
+      "path": "src/sound/sound.cpp",
+      "upstream_sha256": "52ce0c74d225add83dda3cd77df9e81f6b02b33b057f99d1dd3a9d4d0dd024ea"
+    },
+    {
+      "path": "src/sound/sound.h",
+      "upstream_sha256": "7521cc48aa8f1c3d4f2ffe815250c38f83f65013d52d9af6ccfcbb7c9ea5fc24"
+    },
+    {
+      "path": "src/timer/timer.h",
+      "upstream_sha256": "9468725dcd461f45fe2d19e5044ef6511c59f77e76e26229bd9b6d4c86ebef52"
+    },
+    {
+      "path": "src/video/CMakeLists.txt",
+      "upstream_sha256": "3d3781e26dc0f85ec47204cb71b7bd25bc2ebe06650b9a1926e5426f9ea0b268"
+    },
+    {
+      "path": "src/video/splash.cpp",
+      "upstream_sha256": "6ce5cf8f8f1ac8c994029b3975d232bb822c5c0294e82a3f4aa7160a4c1c3f48"
+    },
+    {
+      "path": "src/video/video.cpp",
+      "upstream_sha256": "b475eeebcd01739c0855c7f144751b9b71d0a639b382aa702c54bccce71a226b"
+    },
+    {
+      "path": "src/video/video.h",
+      "upstream_sha256": "57c6291cde8dfc6e6b602b557c2454b70b2519878fde5d9c219e85bcaf33e828"
+    },
+    {
+      "path": "src/vldp/CMakeLists.txt",
+      "upstream_sha256": "ea87d674d109561e537f41ba33b8f107eb463812882c61779c3ace20028a650a"
+    },
+    {
+      "path": "src/vldp/vldp_internal.cpp",
+      "upstream_sha256": "43decbc9fa8b224fc5474c0e872470bb3c9305928d55b61fb252184ebb142c58"
+    },
+    {
+      "path": "src/vldp/vldp_internal.h",
+      "upstream_sha256": "4d8fd98b5cc07bd7b791e2672df16e4efd20e964ea0fdbb179521b47c6daad02"
+    },
+    {
+      "path": "win32/README.md",
+      "upstream_sha256": "29610a02603f434e17da82efaa33bc9cd13bc17480a8f1f1fd83505c0bb14b61"
+    }
+  ],
+  "added": [
+    ".github/workflows/android.yml",
+    "AGENTS.md",
+    "MODIFICATIONS.md",
+    "NOTICE",
+    "android/.gitignore",
+    "android/BUILD-PROVENANCE.json",
+    "android/DEVICE-CAPABILITIES.md",
+    "android/README.md",
+    "android/THIRD_PARTY_NOTICES.md",
+    "android/VALIDATION.md",
+    "android/app/build.gradle",
+    "android/app/jni/CMakeLists.txt",
+    "android/app/jni/android_bridge.cpp",
+    "android/app/jni/android_clock.cpp",
+    "android/app/jni/android_clock.h",
+    "android/app/jni/android_crt.cpp",
+    "android/app/jni/android_crt.h",
+    "android/app/jni/android_crt_shader.h",
+    "android/app/jni/android_video_codec.cpp",
+    "android/app/jni/android_video_codec.h",
+    "android/app/jni/arcade_guidance.cpp",
+    "android/app/jni/arcade_guidance.h",
+    "android/app/jni/arcade_moves.inc",
+    "android/app/jni/arcade_signature.h",
+    "android/app/jni/mpeg2_idct_neon.c",
+    "android/app/jni/mpeg2_motion_dispatch.c",
+    "android/app/jni/mpeg2_motion_neon.c",
+    "android/app/jni/mpeg2_packets.cpp",
+    "android/app/jni/mpeg2_packets.h",
+    "android/app/jni/mpeg2_replay.cpp",
+    "android/app/jni/mpeg2_replay.h",
+    "android/app/lint.xml",
+    "android/app/proguard-rules.pro",
+    "android/app/src/arcade/AndroidManifest.xml",
+    "android/app/src/arcade/java/org/hypseus/android/GameOverlay.java",
+    "android/app/src/main/AndroidManifest.xml",
+    "android/app/src/main/java/org/hypseus/android/ArcadeDisplay.java",
+    "android/app/src/main/java/org/hypseus/android/ArcadeInput.java",
+    "android/app/src/main/java/org/hypseus/android/ControlMap.java",
+    "android/app/src/main/java/org/hypseus/android/ControlWizard.java",
+    "android/app/src/main/java/org/hypseus/android/ControllerNavigation.java",
+    "android/app/src/main/java/org/hypseus/android/GameCommands.java",
+    "android/app/src/main/java/org/hypseus/android/GameData.java",
+    "android/app/src/main/java/org/hypseus/android/GameScanner.java",
+    "android/app/src/main/java/org/hypseus/android/GuidanceSupport.java",
+    "android/app/src/main/java/org/hypseus/android/HypseusActivity.java",
+    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java",
+    "android/app/src/main/java/org/hypseus/android/MoveGuidance.java",
+    "android/app/src/main/java/org/hypseus/android/Mpeg2HardwareDecoder.java",
+    "android/app/src/main/java/org/hypseus/android/Mpeg2PacketReader.java",
+    "android/app/src/main/java/org/hypseus/android/SetupSettings.java",
+    "android/app/src/main/java/org/hypseus/android/VideoOptions.java",
+    "android/app/src/main/res/drawable-nodpi/ic_hypcade_foreground.webp",
+    "android/app/src/main/res/drawable-nodpi/ic_hypcade_legacy.webp",
+    "android/app/src/main/res/drawable-nodpi/tv_banner.webp",
+    "android/app/src/main/res/drawable-v26/ic_launcher.xml",
+    "android/app/src/main/res/drawable/ic_launcher.xml",
+    "android/app/src/main/res/values-v27/styles.xml",
+    "android/app/src/main/res/values-v28/styles.xml",
+    "android/app/src/main/res/values/colors.xml",
+    "android/app/src/main/res/values/strings.xml",
+    "android/app/src/main/res/values/styles.xml",
+    "android/app/src/mobile/AndroidManifest.xml",
+    "android/app/src/mobile/java/org/hypseus/android/GameOverlay.java",
+    "android/app/src/mobile/java/org/hypseus/android/TouchControls.java",
+    "android/artwork/hypcade-icon.png",
+    "android/artwork/icon-provenance.json",
+    "android/audio-sources/coin/coin_insert.mp3",
+    "android/audio-sources/coin/provenance.json",
+    "android/bootstrap-deps.py",
+    "android/build.gradle",
+    "android/dependencies.lock.json",
+    "android/gradle.properties",
+    "android/gradle/LICENSE",
+    "android/gradle/NOTICE",
+    "android/gradle/wrapper/gradle-wrapper.jar",
+    "android/gradle/wrapper/gradle-wrapper.properties",
+    "android/gradlew",
+    "android/gradlew.bat",
+    "android/hints/campaigns/ace-ace.json",
+    "android/hints/campaigns/ace-cadet.json",
+    "android/hints/campaigns/ace-captain.json",
+    "android/hints/campaigns/dle21-0.json",
+    "android/hints/campaigns/dle21-1.json",
+    "android/hints/campaigns/dle21-2.json",
+    "android/hints/campaigns/dle21-3.json",
+    "android/hints/campaigns/dle21-4.json",
+    "android/hints/campaigns/dle21-5.json",
+    "android/hints/campaigns/dle21-6.json",
+    "android/hints/campaigns/dle21-7.json",
+    "android/hints/campaigns/manifest.json",
+    "android/hints/legacy/arcade_moves-android10.inc",
+    "android/licenses/CC0-1.0.txt",
+    "android/licenses/EMBEDDED-NOTICES.txt",
+    "android/licenses/HIDAPI-BSD.txt",
+    "android/licenses/NDK-LLVM-NOTICE.txt",
+    "android/licenses/Nofrendo-LGPL-2.0.txt",
+    "android/licenses/libmpeg2-COPYING.txt",
+    "android/package-notices.py",
+    "android/settings.gradle",
+    "android/shaders/SOURCE.json",
+    "android/shaders/zfast_crt.glsl",
+    "android/tests/ArcadeSetupTest.java",
+    "android/tests/HardwareVideoProbe.java",
+    "android/tests/LauncherLogicTest.java",
+    "android/tests/arcade_guidance_test.cpp",
+    "android/tests/asset-benchmark/Main.java",
+    "android/tests/asset-benchmark/README.md",
+    "android/tests/asset-benchmark/bench.cpp",
+    "android/tests/asset-benchmark/build.py",
+    "android/tests/asset-test.singe",
+    "android/tests/generate_arcade_moves.py",
+    "android/tests/make-media-test.py",
+    "android/tests/media-test.singe",
+    "android/tests/mpeg2_hardware_reference.c",
+    "android/tests/mpeg2_motion_test.c",
+    "android/tests/mpeg2_replay_test.cpp",
+    "android/tests/mpeg2_stream_test.c",
+    "android/tests/readonly-test.singe",
+    "android/tests/render-test.singe",
+    "android/tests/stubs/android/util/Base64.java",
+    "android/tests/test_android_clock.py",
+    "android/tests/test_apk_flavors.py",
+    "android/tests/test_arcade_guidance.py",
+    "android/tests/test_bundled_hints.py",
+    "android/tests/test_coin_feedback.py",
+    "android/tests/test_crt_shader.py",
+    "android/tests/test_hardware_video.py",
+    "android/tests/test_launcher_logic.py",
+    "android/tests/test_mpeg2_neon.py",
+    "android/tests/test_mpeg2_replay.py",
+    "android/tests/test_sdl_asset_paths.py",
+    "android/tests/test_video_indexes.py",
+    "android/tests/test_wav_packaging.py",
+    "android/upstream-changes.json",
+    "doc/UPSTREAM-README.md",
+    "sound/hypcade-coin.wav",
+    "src/io/android_storage.h",
+    "src/io/sdl_path.h",
+    "src/vldp/android_index.h",
+    "src/vldp/index_format.h",
+    "tools/offline-hints/.gitignore",
+    "tools/offline-hints/README.md",
+    "tools/offline-hints/extract.c",
+    "tools/offline-hints/hints.py",
+    "tools/offline-hints/retry_probe.c",
+    "tools/offline-hints/run_campaigns.py",
+    "tools/offline-hints/test_hints.py",
+    "tools/offline-hints/test_retries.py",
+    "tools/offline-hints/vendor/LICENSE",
+    "tools/offline-hints/vendor/NOTICE",
+    "tools/offline-hints/vendor/provenance.json",
+    "tools/offline-hints/vendor/src/audio/ay8910.c",
+    "tools/offline-hints/vendor/src/audio/ay8910.h",
+    "tools/offline-hints/vendor/src/cpu/z80.c",
+    "tools/offline-hints/vendor/src/cpu/z80.h",
+    "tools/offline-hints/vendor/src/games/cinematronics/autoplay.c",
+    "tools/offline-hints/vendor/src/games/cinematronics/autoplay.h",
+    "tools/offline-hints/vendor/src/games/cinematronics/board.c",
+    "tools/offline-hints/vendor/src/games/cinematronics/board.h",
+    "tools/offline-hints/vendor/src/ldp/ldp.c",
+    "tools/offline-hints/vendor/src/ldp/ldp.h",
+    "tools/offline-hints/vendor/src/ldp/ldv1000.c",
+    "tools/offline-hints/vendor/src/ldp/ldv1000.h",
+    "tools/offline-hints/vendor/src/util/roms.c",
+    "tools/offline-hints/vendor/src/util/roms.h",
+    "tools/offline-hints/vendor/src/util/zip.c",
+    "tools/offline-hints/vendor/src/util/zip.h",
+    "tools/offline-hints/verify_roms.py"
+  ],
+  "removed": [
+    "roms/cputest/branchtest.asm",
+    "roms/cputest/branchtest.bin",
+    "roms/cputest/prelim.com",
+    "roms/cputest/prog1.bin",
+    "roms/cputest/prog2.bin",
+    "roms/cputest/savage.com",
+    "roms/cputest/zexall.com",
+    "roms/cputest/zexdoc.com",
+    "screenshots/bezel.png",
+    "screenshots/borf.png",
+    "screenshots/borfabout.png",
+    "screenshots/hypseus-logo.png",
+    "screenshots/hypseus-logofull.png",
+    "screenshots/hypsinge-logo.png",
+    "screenshots/hypsinge-logo.svg",
+    "screenshots/scoreboard.png",
+    "screenshots/screenshot.png",
+    "screenshots/singe.png"
+  ],
+  "generated_and_local_exclusions": [
+    "android/third_party/ (downloaded pinned sources; included separately in complete source bundles)",
+    "android/artifacts/ and build/cache directories",
+    "Local tools, agent metadata, private keys/settings and game data",
+    "Optional offline hint exploration output and obsolete baseline; manifest-referenced baseline retained",
+    "doc/RELEASING.md (maintainer-only checklist; excluded at maintainer request)"
+  ],
+  "removed_note": "Paths absent from the public branch, including upstream CPU-test ROM fixtures omitted by the source selection policy."
+}

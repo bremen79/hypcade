@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "scope": "Prepared Hypcade 0.1 release artifacts; publication is not recorded or implied. Documentation-only preparation did not rebuild APKs.",
+  "project_name": "Hypcade",
+  "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
+  "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
+  "upstream_commit": "a16e2521ee3233ef20c44e562008c47f4b4293df",
+  "upstream_version": "3.0.2",
+  "port_version": "0.1",
+  "build_date": "2026-11-09",
+  "min_sdk": 25,
+  "target_sdk": 36,
+  "compile_sdk": 36,
+  "android_gradle_plugin": "8.13.2",
+  "gradle": "8.13",
+  "jdk": "17",
+  "jdk_detail": "JetBrains JBR 17.0.12",
+  "ndk": "28.2.13676358",
+  "cmake": "3.22.1",
+  "build_tools": "35.0.0",
+  "dependency_lock": "dependencies.lock.json",
+  "gradle_distribution_sha256": "20f1b1176237254a6fc204d8434196fa11a4cfb387567519c61556e8710aed78",
+  "gradle_wrapper_jar_sha256": "81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f",
+  "bundled_libmpeg2_archive_sha256": "5cbf94a93995b485ffe0040bf3221264c2dfe836d316d24c33b58fe808d985b5",
+  "build_variant": "release",
+  "signing": "Dedicated Hypcade release certificate; private key excluded from source archives",
+  "release_certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
+  "debuggable": false,
+  "native_build_type": "Release",
+  "native_lto": "Clang/LLD ThinLTO in Release builds",
+  "build_flavors": {
+    "arcade": "armeabi-v7a",
+    "mobile": "arm64-v8a",
+    "arcadeEmulator": "x86",
+    "mobileEmulator": "x86_64"
+  },
+  "distribution_abis": [
+    "arm64-v8a",
+    "armeabi-v7a"
+  ],
+  "distribution_apks": [
+    {
+      "filename": "hypcade-mobile-arm64-v8a-release.apk",
+      "abi": "arm64-v8a",
+      "size_bytes": 6343875,
+      "sha256": "1e741bda386c2f3a437a161959f4726d651893eed27644eb9e671f1ff072b490",
+      "uncompressed_native_bytes": 7129536,
+      "uncompressed_support_bytes": 4293786
+    },
+    {
+      "filename": "hypcade-arcade-armeabi-v7a-release.apk",
+      "abi": "armeabi-v7a",
+      "size_bytes": 6031841,
+      "sha256": "363b388d84dfda33e57c9bfa9b460989ea4102944eac3cf966aecbc8d07d51fb",
+      "uncompressed_native_bytes": 5048348,
+      "uncompressed_support_bytes": 4293786
+    }
+  ],
+  "test_apks": [
+    {
+      "filename": "hypcade-mobile-x86_64-release.apk",
+      "abi": "x86_64",
+      "size_bytes": 6797218,
+      "sha256": "8e7d8e969c885032a2100bef4855fe38c4d9d54c60cdab2b7a835c421931673f",
+      "uncompressed_native_bytes": 8065136,
+      "uncompressed_support_bytes": 4293786
+    },
+    {
+      "filename": "hypcade-arcade-x86-release.apk",
+      "abi": "x86",
+      "size_bytes": 6786217,
+      "sha256": "4bb45088b20625627fa1c2ebef3af135bd307c3f12914c8a249a483d979fe683",
+      "uncompressed_native_bytes": 7842260,
+      "uncompressed_support_bytes": 4293786
+    }
+  ],
+  "release_notices": {
+    "filename": "hypcade-licenses.txt",
+    "size_bytes": 438599,
+    "sha256": "ff364c32d333d80c63831bc2942c027514465948cbbb823a6c941b174436d222",
+    "packaging": "External companion file; no license assets or license browser inside APK"
+  },
+  "byte_for_byte_reproducibility_claimed": false,
+  "application_id": "org.hypseus.android",
+  "version_code": 39,
+  "validation_document": "VALIDATION.md",
+  "modification_notice": "../MODIFICATIONS.md",
+  "upstream_file_changes": "upstream-changes.json",
+  "source_distribution": {
+    "repository_dependencies": "Fetched by bootstrap-deps.py at dependencies.lock.json revisions; third_party checkouts are not committed.",
+    "complete_bundle": "Include pinned dependency sources and required submodules in the matching tagged-release source bundle. No new bundle generated during documentation preparation.",
+    "excluded": "Private keys, local settings, toolchain installations, caches, build outputs and game data."
+  },
+  "packaging": {
+    "abis": "One ABI per flavor; arcade excludes touch controls; mobile includes them.",
+    "native_libraries": "Compressed/extracted native libraries for SDL filesystem loading.",
+    "shrinking": "R8 and resource shrinking enabled for release; ThinLTO native builds.",
+    "support_assets": "Fonts, pictures and sounds read directly from APK. Only two input defaults (5447 bytes) extracted. WAV contents use lossless .wav.bin packaging.",
+    "notices": "External companion file, not APK assets or an in-app license browser."
+  },
+  "runtime": {
+    "storage": "Games read in place; private settings, saves and logs. Validate all clip indexes before play; publish beside writable media with private fallback.",
+    "video": "Optional MediaCodec MPEG-2 reconstruction with ARM NEON/portable libmpeg2 recovery. Existing VLDP timing retained.",
+    "crt": "Single-pass zfast-derived YUV/GLES shader; scanlines and mask follow output pixels. Plain-video fallback.",
+    "input": "Global required arcade map; mobile requires touch or complete map. SDL gamepad mapping always enabled; optional Start 2 and Service bindings.",
+    "commands": "Import matching commands once on discovery; saved GUI settings override supported switches; rescans preserve settings. Native -blend remains available.",
+    "guidance": "DLE21 and Ace A3 semantic tables plus retained baseline; DL2 3.19 ROM prompts; Singe native script menus.",
+    "scoreboard": "Existing scorebezel for supported drivers; DL2 US 3.19 added using ROM RAM. Live DL2 counters and two-player behavior remain unverified.",
+    "configuration": "Current schema only; no old-development-configuration migrations."
+  },
+  "hint_table_sha256": "14d10b885b4b04a922b929a976419dbbd7f769b094daa8737944ca1ea700c853",
+  "hint_generation_manifest": "hints/campaigns/manifest.json",
+  "ai_assistance": {
+    "tools": [
+      "OpenAI GPT-6-Astra",
+      "Codex"
+    ],
+    "disclosure": "../README.md#ai-assisted-development"
+  },
+  "artwork": {
+    "source": "artwork/hypcade-icon.png",
+    "provenance": "artwork/icon-provenance.json",
+    "packaged_formats": "WebP, API25 legacy drawable, API26 adaptive icon, TV banner",
+    "generation": "Built-in image_gen tool; ImageMagick resource sizing/compression"
+  },
+  "validation": {
+    "release_0_1": "All four signed release APKs assembled. Final public-version and label changes were not installed or runtime-tested.",
+    "preceding_build": "Four release lint tasks, APK inspection and launcher regression checks passed for the DL2 scoreboard build.",
+    "physical_device": "Yoga Flame MT8168/API29/ARMv7: synthetic hardware-decoder probes, DL2 attract playback and scoreboard display. See DEVICE-CAPABILITIES.md.",
+    "emulators": "Selected API25 x86, API28 x86/translated ARMv7 and API35 x86_64/translated ARM64 scenarios during development; not all rerun on final APK.",
+    "limits": "No comprehensive full-game, audible-sync, sustained-performance or final physical input validation. See VALIDATION.md for exact boundaries."
+  }
+}

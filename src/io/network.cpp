@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * network.cpp
  *
@@ -235,7 +237,7 @@ static std::string getUid()
         RegCloseKey(hKey);
     }
     return k;
-#elif defined(__linux__)
+#elif defined(LINUX)
     std::string id = read_id();
     if (id.empty()) return k;
 

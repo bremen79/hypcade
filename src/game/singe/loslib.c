@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 ** $Id$
 ** Standard Operating System library
@@ -19,6 +21,9 @@
 #include "luretro.h"
 #include "lauxlib.h"
 #include "lualib.h"
+#ifdef __ANDROID__
+#include "luretro.h"
+#endif
 
 #ifndef _WIN32
 #include <sys/time.h>
@@ -52,6 +57,11 @@ static int os_execute (lua_State *L) {
 
 static int os_remove (lua_State *L) {
   const char *filename = luaL_checkstring(L, 1);
+#ifdef __ANDROID__
+  char saved[4096];
+  if (android_save_path(filename, saved, sizeof(saved)) != 0) return os_pushresult(L, 0, filename);
+  filename = saved;
+#endif
   return os_pushresult(L, remove(filename) == 0, filename);
 }
 
@@ -59,6 +69,13 @@ static int os_remove (lua_State *L) {
 static int os_rename (lua_State *L) {
   const char *fromname = luaL_checkstring(L, 1);
   const char *toname = luaL_checkstring(L, 2);
+#ifdef __ANDROID__
+  char savedfrom[4096], savedto[4096];
+  if (android_save_path(fromname, savedfrom, sizeof(savedfrom)) != 0 ||
+      android_save_path(toname, savedto, sizeof(savedto)) != 0) return os_pushresult(L, 0, fromname);
+  fromname = savedfrom;
+  toname = savedto;
+#endif
   return os_pushresult(L, rename(fromname, toname) == 0, fromname);
 }
 

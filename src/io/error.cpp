@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -56,7 +58,9 @@ void printerror(const char *s)
 #endif
 
     if (!plog::get())
-#ifdef LINUX
+#if defined(__ANDROID__)
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s", s);
+#elif defined(LINUX)
         fprintf(stderr, "[ error ] \033[31;1m%s\033[0m\n", s);
 #elif __APPLE__
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", s, NULL);

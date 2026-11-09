@@ -46,6 +46,9 @@
 #include "../vldp/vldp.h" // to get the vldp structs
 #include "framemod.h"
 #include "ldp-vldp.h"
+#ifdef __ANDROID__
+#include "../vldp/android_index.h"
+#endif
 #include <plog/Log.h>
 #include <set>
 #include <stdlib.h>
@@ -143,11 +146,16 @@ bool ldp_vldp::init_player()
         if (first_video_file_exists()) {
             // if the last video file has not been parsed, assume none have been
             // This is safe because if parsed, it will just skip them
+#ifdef __ANDROID__
+            // Open every clip before gameplay: the decoder validates/reuses its index.
+            need_to_parse = true;
+#else
             if (!last_video_file_parsed()) {
                 printnotice("Parsing video file(s). "
                             "This may take a while. ");
                 need_to_parse = true;
             }
+#endif
 
             if (audio_init() && !get_quitflag()) {
                 g_local_info.prepare_frame         = prepare_frame_callback;
@@ -193,7 +201,7 @@ bool ldp_vldp::init_player()
 
                     // if we need to parse all the video
                     if (need_to_parse) {
-                        parse_all_video();
+                        bPreCacheOK = parse_all_video() && bPreCacheOK;
                     }
 
                     // if precaching succeeded or we didn't request
@@ -1110,11 +1118,16 @@ bool ldp_vldp::last_video_file_parsed()
 
 // opens (and closes) all video files, forcing any unparsed video files to get
 // parsed
-void ldp_vldp::parse_all_video()
+bool ldp_vldp::parse_all_video()
 {
     unsigned int i = 0;
 
     for (i = 0; i < m_file_index; i++) {
+        if (get_quitflag()) return false;
+#ifdef __ANDROID__
+        // Valid tables need no video decoding or MediaCodec initialization.
+        if (android_video_index_ready(m_mpeg_path + m_mpeginfo[i].name, g_homedir.get_homedir())) continue;
+#endif
         // if the file can be opened...
         if (open_and_block(m_mpeginfo[i].name)) {
             g_vldp_info->search_and_block(0, 0); // search to frame 0 to render
@@ -1125,9 +1138,10 @@ void ldp_vldp::parse_all_video()
             LOGW << fmt(
                 "Could not parse video because file %s could not be opened.",
                 m_mpeginfo[i].name.c_str());
-            break;
+            return false;
         }
     }
+    return !get_quitflag();
 }
 
 bool ldp_vldp::precache_all_video()

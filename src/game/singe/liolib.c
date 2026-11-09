@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
 ** $Id$
 ** Standard I/O (and system) library
@@ -18,6 +20,9 @@
 #include "lauxlib.h"
 #include "lualib.h"
 #include "luretro.h"
+#ifdef __ANDROID__
+#define fopen android_script_fopen
+#endif
 
 
 

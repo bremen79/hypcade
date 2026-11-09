@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-09): Android GPU CRT integration.
+ * See MODIFICATIONS.md; original notices are retained below. */
 /*
  * ____ HYPSEUS COPYRIGHT NOTICE ____
  *
@@ -67,6 +69,10 @@
 
 namespace video
 {
+#ifdef __ANDROID__
+void set_show_fps(bool enabled);
+#endif
+
 // 16 is normal, the 17th is for the 'A' in SAE
 static const uint8_t LED_RANGE          = 18;
 static const uint8_t OVERLAY_LED_WIDTH  = 8;
@@ -234,8 +240,10 @@ void set_force_aspect_ratio(bool bEnabled);
 void set_ignore_aspect_ratio(bool bEnabled);
 void set_preserve_aspect_ratio(bool bEnabled);
 void set_scanlines(bool value);
+#ifndef __ANDROID__
 void set_shunt(uint8_t value);
 void set_alpha(uint8_t value);
+#endif
 void set_yuv_blank(int value);
 void set_yuv_flash();
 int get_scalefactor();           // by RDG2010

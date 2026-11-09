@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * Support for the X11 XInput extension.
  *
@@ -10,7 +12,7 @@
 
 /* Try to use this on everything but Windows and Mac OS by default... */
 #ifndef SUPPORT_XINPUT2
-#if ( (defined(_WIN32) || defined(__CYGWIN__)) )
+#if ( (defined(_WIN32) || defined(__CYGWIN__) || defined(__ANDROID__)) )
 #define SUPPORT_XINPUT2 0
 #elif ( (defined(__MACH__)) && (defined(__APPLE__)) )
 #define SUPPORT_XINPUT2 0

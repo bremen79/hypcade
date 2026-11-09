@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-08): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ HYPSEUS COPYRIGHT NOTICE ____
  *
@@ -25,6 +27,7 @@
 #include "splash.h"
 #include "video.h"
 #include "../hypseus.h"
+#include "../io/sdl_path.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
@@ -42,7 +45,7 @@ void splash(bool eon) {
     Uint32 current_frame = 0;
     Uint32 start_time = SDL_GetTicks();
     Uint32 frame_switch = start_time;
-    TTF_Font *font = TTF_OpenFont("fonts/default.ttf", 16);
+    TTF_Font *font = TTF_OpenFont(sdl_read_path("fonts/default.ttf").c_str(), 16);
 
     if (!font) return;
 

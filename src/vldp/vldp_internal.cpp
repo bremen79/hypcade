@@ -1,3 +1,5 @@
+/* Hypcade modification notice (2026-11-09): modified for Android arcade
+ * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*
  * ____ VLDP COPYRIGHT NOTICE ____
  *
@@ -35,6 +37,14 @@
 #include "mpegscan.h"
 #include "../video/video.h"
 #include "../io/conout.h"
+#ifdef __ANDROID__
+#include "../io/homedir.h"
+#include "../io/android_storage.h"
+#include "android_video_codec.h"
+#include "android_index.h"
+#include "mpeg2_replay.h"
+#include <string>
+#endif
 
 #include <plog/Log.h>
 
@@ -113,6 +123,21 @@ static Uint8 g_buffer[BUFFER_SIZE]; // buffer to hold mpeg2 file as we read it
 #define HEADER_BUF_SIZE 200
 static Uint8 g_header_buf[HEADER_BUF_SIZE];
 static uint32_t g_header_buf_size = 0; // size of the header buffer
+#ifdef __ANDROID__
+// libmpeg2 still parses frame order/timing. Only reconstruction moves to hardware.
+static std::string s_video_path;
+static bool s_hardware=false, s_hardware_failed=false, s_hardware_waiting_i=true, s_hardware_layout=true;
+static uint64_t s_video_start=0, s_video_frames=0;
+static void begin_android_video(uint64_t offset) {
+    s_video_start=offset;s_video_frames=0;s_hardware_waiting_i=true;s_hardware_layout=true;
+    s_hardware=!s_hardware_failed && !s_video_path.empty() && !g_out_info.uses_fields && g_totalframes>=12 &&
+        android_video_start(s_video_path.c_str(),offset,g_header_buf,g_header_buf_size,g_out_info.w,g_out_info.h);
+    mpeg2_skip(g_mpeg_data,s_hardware?1:0);
+    if(!s_hardware) {android_video_close();s_hardware_failed=true;}
+    LOGI << (s_hardware ? "Android MPEG-2: MediaCodec hardware reconstruction" : "Android MPEG-2: software reconstruction");
+}
+#endif
+
 
 // how many frames we will stall after beginning playback (should be 1, because
 // presumably before we start playing, the disc has been paused showing the same
@@ -423,10 +448,23 @@ static void decode_mpeg2(uint8_t *current, uint8_t *end)
     // loop until we return (state is -1)
     while (1) {
         state = mpeg2_parse(g_mpeg_data);
+        info = mpeg2_info(g_mpeg_data);
         switch (state) {
         case STATE_BUFFER:
             return;
         case STATE_SEQUENCE:
+        case STATE_SEQUENCE_REPEATED:
+        case STATE_SEQUENCE_MODIFIED:
+#ifdef __ANDROID__
+            s_hardware_layout=(info->sequence->flags&SEQ_FLAG_MPEG2) && info->sequence->chroma_width*2==info->sequence->width &&
+                info->sequence->chroma_height*2==info->sequence->height &&
+                info->sequence->width==((g_out_info.w+15u)&~15u) &&
+                info->sequence->height==((g_out_info.h+15u)&~15u) &&
+                info->sequence->picture_width==g_out_info.w && info->sequence->picture_height==g_out_info.h;
+            if(s_hardware && !s_hardware_layout && s_video_frames==0) {
+                android_video_close();s_hardware=false;s_hardware_failed=true;mpeg2_skip(g_mpeg_data,0);
+            }
+#endif
             break;
         case STATE_SLICE:
         case STATE_END:
@@ -434,6 +472,48 @@ static void decode_mpeg2(uint8_t *current, uint8_t *end)
             /* draw current picture */
             /* might free frame buffer */
             if (info->display_fbuf) {
+#ifdef __ANDROID__
+                if(s_hardware) {
+                    // Open GOP seeks: MediaCodec discards leading B pictures
+                    // needing an unavailable previous reference; libmpeg2 emits
+                    // them. VLDP already skips this preroll. Do not consume the
+                    // hardware I picture until the parser reaches that same I.
+                    bool first_i=info->display_picture &&
+                        (info->display_picture->flags&7)==PIC_FLAG_CODING_TYPE_I;
+                    if(s_hardware_waiting_i && !first_i && (s_frames_to_skip || s_skip_all)) {
+                        ++s_video_frames;draw_frame(info);break;
+                    }
+                    const uint8_t *pixels=s_hardware_layout && (!s_hardware_waiting_i || first_i)
+                        ? android_video_next(s_hardware_waiting_i ? static_cast<int>(info->display_picture->temporal_reference) : -1) : nullptr;
+                    s_hardware_waiting_i=false;
+                    if(pixels) {
+                        mpeg2_info_t hardware_info=*info;
+                        mpeg2_fbuf_t frame=*info->display_fbuf;
+                        size_t y=info->sequence->width*info->sequence->height;
+                        frame.buf[0]=const_cast<uint8_t *>(pixels);
+                        frame.buf[1]=frame.buf[0]+y;frame.buf[2]=frame.buf[1]+y/4;
+                        hardware_info.display_fbuf=&frame;
+                        ++s_video_frames;
+                        draw_frame(&hardware_info);
+                        break;
+                    }
+                    // Reconstruct precisely this display event in software. The
+                    // replacement keeps the unconsumed portion of this input buffer.
+                    s_hardware=false;s_hardware_failed=true;android_video_close();
+                    FILE *replay=fopen(s_video_path.c_str(),"rb");
+                    off_t position=g_mpeg_handle?ftello(g_mpeg_handle):-1;
+                    mpeg2dec_t *replacement=position>=end-current ? mpeg2_replay(replay,s_video_start,
+                        static_cast<uint64_t>(position)-(end-current),g_header_buf,g_header_buf_size,
+                        current,end,s_video_frames+1):nullptr;
+                    if(replay)fclose(replay);
+                    if(!replacement) {
+                        LOGE << "Android MPEG-2 software recovery failed";
+                        g_out_info.status=STAT_ERROR;s_skip_all=1;return;
+                    }
+                    mpeg2_close(g_mpeg_data);g_mpeg_data=replacement;info=mpeg2_info(g_mpeg_data);
+                    LOGW << "Android MPEG-2: recovered current frame with software decoder";
+                }
+#endif
                 draw_frame(info);
             }
             break;
@@ -584,6 +664,9 @@ void idle_handler_open()
                                               // faster seeking
 
                 io_seek(0); // seek back to beginning of file
+#ifdef __ANDROID__
+                begin_android_video(0);
+#endif
 
                 g_out_info.status = STAT_STOPPED; // now that the file is open,
                                                   // we're ready to play
@@ -827,6 +910,9 @@ void ivldp_render()
             // beginning of the file
             mpeg2_reset(g_mpeg_data, 1);
             io_seek(0);                   // seek to the beginning of the file
+#ifdef __ANDROID__
+            begin_android_video(0);
+#endif
             g_out_info.current_frame = 0; // set frame # to beginning of file
                                           // where it belongs
         }
@@ -1032,6 +1118,9 @@ void idle_handler_search(int skip)
 #endif
 
         io_seek(proposed_pos);
+#ifdef __ANDROID__
+        begin_android_video(proposed_pos);
+#endif
         // go to the place in the stream where the I frame begins
         // fseek(g_mpeg_handle, proposed_pos, SEEK_SET);
 
@@ -1064,8 +1153,10 @@ void idle_handler_search(int skip)
 // taken place earlier
 VLDP_BOOL ivldp_get_mpeg_frame_offsets(char *mpeg_name)
 {
-    char datafilename[320]       = {0};
+    char datafilename[4096]       = {0};
+#ifndef __ANDROID__
     VLDP_BOOL mpeg_datafile_good = VLDP_FALSE;
+#endif
     FILE *data_file              = NULL;
     VLDP_BOOL result             = VLDP_TRUE;
     uint64_t mpeg_size           = 0;
@@ -1076,8 +1167,33 @@ VLDP_BOOL ivldp_get_mpeg_frame_offsets(char *mpeg_name)
 
     // change extension of file to be dat instead of (presumably) m2v
     SAFE_STRCPY(datafilename, mpeg_name, sizeof(datafilename));
+    if (strlen(mpeg_name) < 3 || strlen(mpeg_name) >= sizeof(datafilename)) return VLDP_FALSE;
     strcpy(&datafilename[strlen(mpeg_name) - 3], "dat");
-
+#ifdef __ANDROID__
+    const std::string cache_name = android_index_cache(mpeg_name, mpeg_size, g_homedir.get_homedir());
+    const std::string source_name = datafilename;
+    auto valid = [&](const std::string &name) { return android_index_file_valid(name, mpeg_size); };
+    std::string selected;
+    if (valid(source_name)) selected = source_name;
+    else if (valid(cache_name)) selected = cache_name;
+    else {
+        auto generate = [&](char *temporary) {
+            return io_seek(0) && ivldp_parse_mpeg_frame_offsets(temporary, mpeg_size) && valid(temporary);
+        };
+        if (source_name != mpeg_name && android_index_publish(source_name, generate)) selected = source_name;
+        else if (android_index_publish(cache_name, generate)) selected = cache_name;
+    }
+    if (selected.empty()) {
+        LOGE << "Unable to prepare video index: " << mpeg_name;
+        return VLDP_FALSE;
+    }
+    data_file = fopen(selected.c_str(), "rb");
+    if (!data_file || fread(&header, sizeof(header), 1, data_file) != 1) {
+        if (data_file) fclose(data_file);
+        return VLDP_FALSE;
+    }
+    g_out_info.uses_fields = header.uses_fields;
+#else
     // loop until we get a good datafile or until we get an error
     while (!mpeg_datafile_good && result) {
         data_file = fopen(datafilename, "rb"); // check to see if datafile
@@ -1123,6 +1239,8 @@ VLDP_BOOL ivldp_get_mpeg_frame_offsets(char *mpeg_name)
             }
         } // end if mpeg parsing was not necessary
     }     // end while we don't have a good datafile and haven't gotten an error
+
+#endif
 
     // if we didn't exit the loop because of an error, then we need to read the
     // datafile
@@ -1173,7 +1291,7 @@ VLDP_BOOL ivldp_parse_mpeg_frame_offsets(char *datafilename, uint64_t mpeg_size)
 {
     VLDP_BOOL result = VLDP_TRUE;
     FILE *data_file  = fopen(datafilename, "wb"); // create file
-    struct dat_header header; // header to put inside .DAT file
+    struct dat_header header = {}; // header to put inside .DAT file
 
     // if we could create the file successfully, then we need to populate it
     if (data_file) {
@@ -1229,7 +1347,8 @@ VLDP_BOOL ivldp_parse_mpeg_frame_offsets(char *datafilename, uint64_t mpeg_size)
 
         // we have to close data file because it's write-only
         // and it needs to be re-opened read-only
-        fclose(data_file);
+        const bool write_failed = ferror(data_file) != 0;
+        if (fclose(data_file) != 0 || write_failed) result = VLDP_FALSE;
         data_file = NULL;
 
         // if the mpeg did not finish parsing gracefully, we've got problems
@@ -1265,7 +1384,12 @@ VLDP_BOOL io_open(const char *cpszFilename)
     // make sure everything is closed
     if ((!s_bPreCacheEnabled) && (!g_mpeg_handle)) {
         g_mpeg_handle = fopen(cpszFilename, "rb");
-        if (g_mpeg_handle) bResult = VLDP_TRUE;
+        if (g_mpeg_handle) {
+            bResult = VLDP_TRUE;
+#ifdef __ANDROID__
+            s_video_path=cpszFilename;s_hardware_failed=false;
+#endif
+        }
     }
     return bResult;
 }
@@ -1343,6 +1467,9 @@ VLDP_BOOL io_seek(uint64_t uPos)
 
 void io_close()
 {
+#ifdef __ANDROID__
+    android_video_close();s_video_path.clear();s_hardware=false;
+#endif
     if (g_mpeg_handle) {
         fclose(g_mpeg_handle);
         g_mpeg_handle = NULL;
