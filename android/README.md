@@ -102,7 +102,10 @@ Its extra timing-cue switch is disabled because the video already contains cues.
 Singe games use their own Lua options menus: assign **Game options / Service**
 or press **Options** on mobile. Unsupported ROM revisions have disabled hint
 controls. Hints do not play the game for you, and coverage is not guaranteed
-for every branch, DIP setting or later round.
+for every branch, DIP setting or later round. Offline generation tests each
+available control against a no-input ROM simulation and includes only controls
+that raise the score. It samples random screen orders across repeated runs; it
+does not prove coverage of every possible sequence.
 
 Device media volume controls overall loudness. Command files can also set
 `-volume_vldp` (video audio) and `-volume_nonvldp` (other game audio), from 0 to 64.
@@ -182,6 +185,19 @@ scan error rather than silently starting with partial settings.
 
 ## Build the app
 
+For a one-command build, run `./build-apks.sh release` from this directory.
+It checks/prepares the pinned native dependencies and builds the two ARM release
+APKs. Use `./build-apks.sh debug` for ARM debug APKs, or add `all` as the second
+argument to include x86 and x86_64 emulator APKs. The script uses your configured
+JDK and Android SDK (`ANDROID_HOME`, `ANDROID_SDK_ROOT`, or `local.properties`).
+Set `HYPCADE_SIGNING_PROPERTIES` to sign release APKs with your private release
+key during the build. Otherwise, build unsigned APKs and run `./sign-apks.sh`
+afterward. The signer handles the ARM arcade and mobile APKs by default; use
+`./sign-apks.sh all` to include the x86 emulator APKs. It looks for
+`local-tools/release-signing/signing.properties` (or the sibling
+`local-tools/release-signing/signing.properties`); set
+`HYPCADE_SIGNING_PROPERTIES` to use another location.
+
 Tested toolchain configuration:
 
 | Component | Version |
@@ -205,7 +221,7 @@ usual `android/local.properties` with `sdk.dir=...`). Then, from this directory:
 python3 bootstrap-deps.py
 sdkmanager 'platforms;android-36' 'build-tools;35.0.0' \
   'ndk;28.2.13676358' 'cmake;3.22.1'
-# Set this to a private properties file (format below) to sign release APKs.
+# Optional: have Gradle sign during the build instead of running sign-apks.sh.
 export HYPCADE_SIGNING_PROPERTIES=/absolute/private/path/signing.properties
 ./gradlew :app:assembleRelease :app:lintArcadeRelease :app:lintMobileRelease
 ```
@@ -218,10 +234,11 @@ dependencies. Release builds disable Java/native debugging and retain optimized
 native code, R8 and resource shrinking. No private signing key is included in
 source distributions.
 
-`HYPCADE_SIGNING_PROPERTIES` names a private Java properties file:
+`HYPCADE_SIGNING_PROPERTIES` names a private Java properties file. `storeFile`
+may be an absolute path or a path relative to that properties file:
 
 ```properties
-storeFile=/absolute/private/path/hypcade-release.p12
+storeFile=hypcade-release.p12
 storePassword=YOUR_PRIVATE_PASSWORD
 keyAlias=hypcade
 keyPassword=YOUR_PRIVATE_PASSWORD
@@ -292,8 +309,7 @@ python3 tests/test_launcher_logic.py
 ./gradlew :app:lintDebug
 ```
 
-See [VALIDATION.md](VALIDATION.md) for completed checks and their limits, and the
-[offline hint tool](../tools/offline-hints/README.md) for generating ROM guidance
+See the [offline hint tool](../tools/offline-hints/README.md) for generating ROM guidance
 without video or real-time waits.
 
 ### How the Android build fits together

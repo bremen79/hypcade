@@ -1,9 +1,7 @@
 # Contributor guide: Hypcade
 
-This guide applies to the whole repository. Keep it current when the architecture,
-build process or validation scope changes. Record user-facing behavior in the
-README and technical test results in `android/VALIDATION.md`, rather than adding
-a chronological handoff log here.
+This guide applies to the whole repository. 
+Ask the user permission to change it when the architecture, build process or validation scope changes. Ask the user if to record user-facing behavior in the README. Never add a chronological handoff log here.
 
 ## Project scope
 
@@ -15,7 +13,7 @@ is secondary. Keep SDL and the small launcher scope.
 
 Minimum Android is 7.1 / API 25, including 7.1.2. Compile and target SDK are 36.
 The application ID is `org.hypseus.android`. Public version `0.1` and internal
-versionCode `39` are defined in `android/app/build.gradle`; main-screen and About
+versionCode `40` are defined in `android/app/build.gradle`; main-screen and About
 labels use `BuildConfig.VERSION_NAME`. Keep the upstream engine version separate.
 
 There are no saved-configuration migrations. Do not add compatibility with old
@@ -25,8 +23,7 @@ development configurations unless the maintainer explicitly requests it.
 
 - `README.md`: installation, game directory layout, options, credits and AI disclosure.
 - `android/README.md`: detailed setup, build, signing and development instructions.
-- `android/VALIDATION.md`: completed checks and remaining gaps; a build is not a runtime test.
-- `MODIFICATIONS.md`: a thematic summary of changes from upstream, not a changelog.
+- `MODIFICATIONS.md`: a thematic and synthetic summary of changes from upstream, not a changelog.
 - `android/THIRD_PARTY_NOTICES.md`, `NOTICE` and component licenses: attribution and packaging.
 - `android/dependencies.lock.json` and `android/BUILD-PROVENANCE.json`: source pins and release identity.
 - `doc/CmdLine.md`: native command-line behavior.
@@ -101,8 +98,10 @@ development configurations unless the maintainer explicitly requests it.
   as `-blend`, banks and ROM versions, subject to launch validation.
 - Hint controls are enabled only for supported ROM revisions. DL2 uses its own
   ROM prompts; Singe uses its native script menu through Service. Do not duplicate
-  Lua menu behavior. Keep the hint baseline referenced by the campaign manifest:
-  its `legacy` directory name does not make it disposable.
+  Lua menu behavior. DLE21 and Ace A3 tables retain only controls with a ROM score
+  increase against a simultaneous no-input run. Each table key includes the exact
+  control. Repeated randomized starts sample route changes; they do not prove every
+  possible branch. Do not merge old acceptance-only tables into these tables.
 - The DL2 shared scoreboard currently supports US 3.19 only. Its stored score
   is ten times the displayed score. Other revisions must remain disabled until
   their layouts are established. See the Android guide for the RAM field mapping.
@@ -110,7 +109,17 @@ development configurations unless the maintainer explicitly requests it.
 ## Build and checks
 
 Use JDK 17, Python 3.9+, Git, SDK 36, build-tools 35.0.0, NDK 28.2.13676358,
-CMake 3.22.1 and the Gradle 8.13 wrapper (AGP 8.13.2). From `android/`:
+CMake 3.22.1 and the Gradle 8.13 wrapper (AGP 8.13.2). From `android/`,
+`./build-apks.sh release` prepares/verifies dependencies and builds both ARM
+release APKs. Use `./build-apks.sh release all` for all four device/emulator
+flavors or `./build-apks.sh debug` for ARM debug APKs. Release signing requires
+the private `HYPCADE_SIGNING_PROPERTIES` file. For direct Gradle development
+builds, pass its path through that environment variable. To sign an unsigned
+release build afterward, run `./sign-apks.sh` for ARM APKs or
+`./sign-apks.sh all` for all four flavors. Set `HYPCADE_SIGNING_PROPERTIES` to
+override the signing properties path; otherwise the script searches
+`local-tools/release-signing/` and then the repository-level `release-signing/`.
+For direct Gradle development builds:
 
 ```bash
 python3 bootstrap-deps.py
@@ -143,6 +152,23 @@ before running it. Java/resource changes normally need assembly and lint; native
 changes need both ARM builds. Input, storage, lifecycle and decoding changes need
 the affected runtime scenario. Documentation-only changes do not need an APK build.
 Honor explicit requests not to test or install on a device.
+
+## Local tools and data
+
+Do not create manually managed hidden directories for project tools, emulator
+profiles, scratch data or private settings. Keep local-only work under the
+visible root `local-tools/` directory, which is ignored by Git. Required
+repository/provider metadata (such as `.git` and `.github`), environment-managed
+integration directories, and tool-generated build caches are not project
+work-data locations; leave them where their tools expect them.
+
+Before installing a tool locally, check whether a system-wide or shared
+installation already provides it. If it does not, ask the maintainer whether
+they want a system-wide/shared installation before installing a project-local
+copy. Only install locally after that option has been considered; put the copy
+under `local-tools/`, never under a dot-directory. Prefer the shared
+`ANDROID_HOME` SDK and its side-by-side packages over project-local SDK or NDK
+copies. Keep local signing keys out of Git.
 
 Inspect new release APK signatures, SDK/ABI declarations and flavor policies;
 update release hashes and build provenance. Preserve warnings and test limitations

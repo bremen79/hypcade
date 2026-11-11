@@ -6,7 +6,7 @@ Hypcade **0.1** is an Android arcade adaptation of
 engine as well as a new Android launcher. It is an independent project, not an
 official Hypseus Singe release.
 
-**Modification notice — 2026-11-09:** Hypcade contributors modified the upstream
+**Modification notice — 2026-11-11:** Hypcade contributors modified the upstream
 sources for Android arcade use. This document summarizes the changes for the
 first public release. Original copyright and license notices remain in place.
 
@@ -77,7 +77,10 @@ II it also shows the driver's nominal 18.2 fps limit.
 ## Game assistance and scoreboards
 
 Dragon's Lair Enhanced 2.1 and Space Ace A3 have optional move hints and timing
-cues. Their hint tables are generated offline from user-supplied ROMs. Hints
+cues. Their hint tables are generated offline by comparing each available
+control with a simultaneous no-input ROM simulation and retaining only inputs
+that increase a player's score. The control is included in the runtime match.
+Campaigns repeat with varied start times to sample randomly ordered screens. Hints
 appear near the bottom in white text on a transparent background, using the
 same bitmap font as Dragon's Lair II. Recognition accounts for retries after
 death. Coverage is specific to the supported ROM revisions and explored paths.
@@ -86,6 +89,14 @@ Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
 setting. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
 a duplicate hint system from Hypcade.
+
+Supported games also offer Watch Mode. It inserts coins until the game's own
+credit counter confirms a credit, then retries Player 1 Start until the ROM
+spends a credit or reports active lives. This waits through ROM startup that
+ignores early input. Watch Mode then replays the same native move events used
+by the hint system. During automatic play, ordinary controls are blocked;
+Pause and Exit remain available. Dragon's Lair II enables its ROM prompt data
+for automation even when the separate visual-hints setting is off.
 
 The optional score-and-lives display reuses Hypseus's graphical scoreboard.
 For Dragon's Lair II US 3.19, Hypcade adds a read-only connection to both players'
@@ -97,6 +108,13 @@ Fast startup uses the existing shortcut in supported game drivers and skips
 the emulator splash. A short coin-slot sound confirms a coin-button press;
 credit acceptance remains the game's responsibility. Player 2 Start uses the
 emulator's existing input and supports alternating play where the game allows it.
+
+The offline generator tests every distinct available control at each prompt on
+a death-free route. It runs the candidate input alongside a no-input simulation
+and retains only the exact controls that increase either player's ROM score.
+Repeated starts sample randomized screen orders. The generated tables are keyed
+by game state, outcome, control and frame; coverage remains limited to the
+tested ROM revisions and sampled routes.
 
 ## Android integration and smaller packages
 
@@ -129,7 +147,7 @@ kept in [tools/offline-hints/vendor](tools/offline-hints/vendor/).
 Hypcade has its own cabinet-and-laserdisc logo, Android icons and TV banner.
 its prompt and provenance are in [android/artwork](android/artwork/).
 
-Development used **GPT-6-Astra and Codex** extensively for implementation,
+Development used **GPT and Codex** extensively for implementation,
 refactoring, debugging, builds, tests and documentation. I provided requirements,
 feedback and cabinet testing. See the
 [AI-assistance disclosure](README.md#ai-assisted-development).

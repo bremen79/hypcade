@@ -16,7 +16,7 @@ release. Hypseus Singe and its predecessors remain the foundation of the emulati
 
 ## Arcade cabinets first
 
-The primary build is for Android arcades: physical controls, fixed landscape,
+The primary build is for Arcade1Up Android arcades: physical controls, fixed landscape,
 native-panel output (1280×960 on the Yoga Flame) with aspect-ratio preservation, and no on-screen control overlay.
 The ARMv7 arcade APK targets the cabinet configuration used during development.
 The ARM64 mobile build is a secondary convenience for phones and testing, with
@@ -27,9 +27,9 @@ touch controls and mobile orientation behavior retained.
 - Read ROMs, videos and scripts in place; keep small saves, settings and logs
   in private storage. Store video indexes beside writable media, with an internal fallback.
 - Use hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
-  rendering, with optional
-  scanlines and other video settings.
-- Enable move guidance for some Dragon’s Lair I, Dragon’s Lair II and Space Ace ROMs.
+  rendering, with optional scanlines and other video settings.
+- Enable score-verified move guidance for some Dragon’s Lair I and Space Ace ROMs,
+  plus Dragon’s Lair II’s own ROM prompts.
 
 No commercial game ROMs or laserdisc media are included. Supply your own game
 files. The repository only includes emulator support assets and synthetic test data
@@ -145,8 +145,9 @@ Unavailable options are grayed out.
 | Fast startup | Shortens startup in supported games. |
 | Show score and lives | Enables the optional scoreboard in supported games. |
 
-Move guidance is available for Dragon's Lair Enhanced 2.1, Space Ace A3, and
-Dragon's Lair II 3.19. Dragon's Lair I and Space Ace show white action text near
+Move guidance is available for Dragon's Lair Enhanced 2.1 and Space Ace A3
+when the selected move has ROM evidence of a score increase; Dragon's Lair II
+3.19 uses its native prompts. Dragon's Lair I and Space Ace show white action text near
 the bottom of the video and offer an optional timing cue. Dragon's Lair II uses
 its own ROM prompts and the cues already in its video.
 
@@ -215,7 +216,7 @@ no Hypdroid code was imported for this work.
 
 ## AI-assisted development
 
-Hypcade-specific development used **OpenAI GPT-6-Astra and Codex** extensively
+Hypcade-specific development used **OpenAI GPT-6 and Codex** extensively
 for implementation, refactoring, debugging, test creation and execution, build
 work, and documentation. Project requirements and feedback, including the
 cabinet testing, came from me.
