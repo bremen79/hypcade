@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "scope": "Prepared Hypcade 0.1 release artifacts; publication is not recorded or implied. Documentation-only preparation did not rebuild APKs.",
+  "scope": "Hypcade 0.1 signed release APKs with ROM-derived Max score / Fewest moves sets, Show moves selection and matching Watch Mode policy; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
   "upstream_commit": "a16e2521ee3233ef20c44e562008c47f4b4293df",
   "upstream_version": "3.0.2",
   "port_version": "0.1",
-  "build_date": "2026-11-09",
+  "build_date": "2026-11-12",
   "min_sdk": 25,
   "target_sdk": 36,
   "compile_sdk": 36,
   "android_gradle_plugin": "8.13.2",
   "gradle": "8.13",
   "jdk": "17",
-  "jdk_detail": "JetBrains JBR 17.0.12",
+  "jdk_detail": "Shared JetBrains JBR 17.0.12",
   "ndk": "28.2.13676358",
   "cmake": "3.22.1",
   "build_tools": "35.0.0",
@@ -40,55 +40,51 @@
   ],
   "distribution_apks": [
     {
-      "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "abi": "arm64-v8a",
-      "size_bytes": 6343875,
-      "sha256": "1e741bda386c2f3a437a161959f4726d651893eed27644eb9e671f1ff072b490",
-      "uncompressed_native_bytes": 7129536,
+      "filename": "hypcade-arcade-armeabi-v7a-release.apk",
+      "size_bytes": 6025541,
+      "sha256": "4b37a5bbe3133f676e40b0e7ecbfe3d908ab8fda9a779496667044ccb748d58c",
+      "uncompressed_native_bytes": 5038972,
       "uncompressed_support_bytes": 4293786
     },
     {
-      "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "abi": "armeabi-v7a",
-      "size_bytes": 6031841,
-      "sha256": "363b388d84dfda33e57c9bfa9b460989ea4102944eac3cf966aecbc8d07d51fb",
-      "uncompressed_native_bytes": 5048348,
+      "filename": "hypcade-mobile-arm64-v8a-release.apk",
+      "size_bytes": 6339415,
+      "sha256": "e065e176c250fe542b60a4f32f1f71c6259a568824bf4afd5e792e8e4e534aae",
+      "uncompressed_native_bytes": 7123392,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "test_apks": [
     {
-      "filename": "hypcade-mobile-x86_64-release.apk",
-      "abi": "x86_64",
-      "size_bytes": 6797218,
-      "sha256": "8e7d8e969c885032a2100bef4855fe38c4d9d54c60cdab2b7a835c421931673f",
-      "uncompressed_native_bytes": 8065136,
+      "filename": "hypcade-arcade-x86-release.apk",
+      "size_bytes": 6779377,
+      "sha256": "32a518b7e05e719f1efa16e7a2f82d39a59d9133ae45c035e06c32bc61c72494",
+      "uncompressed_native_bytes": 7833156,
       "uncompressed_support_bytes": 4293786
     },
     {
-      "filename": "hypcade-arcade-x86-release.apk",
-      "abi": "x86",
-      "size_bytes": 6786217,
-      "sha256": "4bb45088b20625627fa1c2ebef3af135bd307c3f12914c8a249a483d979fe683",
-      "uncompressed_native_bytes": 7842260,
+      "filename": "hypcade-mobile-x86_64-release.apk",
+      "size_bytes": 6791146,
+      "sha256": "3c7bd0f0e8225bfe6bf1fc6e4dc94cac843cbba1b1a82d3dfca69920854092ac",
+      "uncompressed_native_bytes": 8056608,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 438599,
-    "sha256": "ff364c32d333d80c63831bc2942c027514465948cbbb823a6c941b174436d222",
+    "size_bytes": 440887,
+    "sha256": "671d3c1a4081edd19a6964ed107bbf7f86acaf8eec7f545c7c89af1e633b8ed8",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
   "application_id": "org.hypseus.android",
-  "version_code": 39,
-  "validation_document": "VALIDATION.md",
+  "version_code": 40,
+  "validation_document": "moves/rom-tables/watch-verification.json",
   "modification_notice": "../MODIFICATIONS.md",
   "upstream_file_changes": "upstream-changes.json",
   "source_distribution": {
     "repository_dependencies": "Fetched by bootstrap-deps.py at dependencies.lock.json revisions; third_party checkouts are not committed.",
-    "complete_bundle": "Include pinned dependency sources and required submodules in the matching tagged-release source bundle. No new bundle generated during documentation preparation.",
+    "complete_bundle": "Pinned dependency sources remain included separately in complete source bundles. No new source archive was generated for this Watch Mode change.",
     "excluded": "Private keys, local settings, toolchain installations, caches, build outputs and game data."
   },
   "packaging": {
@@ -104,12 +100,16 @@
     "crt": "Single-pass zfast-derived YUV/GLES shader; scanlines and mask follow output pixels. Plain-video fallback.",
     "input": "Global required arcade map; mobile requires touch or complete map. SDL gamepad mapping always enabled; optional Start 2 and Service bindings.",
     "commands": "Import matching commands once on discovery; saved GUI settings override supported switches; rescans preserve settings. Native -blend remains available.",
-    "guidance": "DLE21 and Ace A3 semantic tables plus retained baseline; DL2 3.19 ROM prompts; Singe native script menus.",
+    "guidance": "DLE21 and Ace A3 moves: new individually replay-verified routes prioritized over existing fallback entries; score-positive controls plus proven necessary zero-score ending rescue. Combined policy coverage remains incomplete. DL2 ROM prompts and Singe native menus unchanged.",
     "scoreboard": "Existing scorebezel for supported drivers; DL2 US 3.19 added using ROM RAM. Live DL2 counters and two-player behavior remain unverified.",
-    "configuration": "Current schema only; no old-development-configuration migrations."
+    "configuration": "Current schema only; no old-development-configuration migrations.",
+    "watch_mode": "Enabled for games with matching bundled guidance. Repeats coin pulses until the game's credit counter changes, then retries Player 1 Start at spaced intervals until the ROM spends a credit or reports active lives. This handles coin ratios and input-ignoring startup delays. Dragon's Lair II waits for the ROM to consume each coin before sending another, avoiding a boot-time input backlog. Only Pause and Exit remain exposed while playback runs.",
+    "difficulty": "DIP-controlled games share one catalog and reader/writer, with explicit choices initialized from effective bank settings and revision-specific native defaults. All Game default placeholders are removed. DL2 US 3.19 uses the existing -preset 0\u20134 hook and reads saved EEPROM difficulty; Space Ace has separate saved operator difficulty and skill.",
+    "mobile_service_menu": "Raw Options / Service switch in the top touch-button row for Singe, Dragon's Lair II and Space Ace 91; hidden in Watch Mode. No automatic button combinations. Mobile touch controls use the same logical Android input dispatch as mapped arcade controls.",
+    "space_ace_difficulty": "Original US Space Ace: four explicit native DIP combinations (after 3/5 consecutive episodes; slow/fast progression), initialized from effective -bank values and saved per game. Separate saved Cadet/Captain/Ace skill uses existing native skill inputs on Start. Neither control has a default placeholder. DIP-controlled games share one catalog and reader/writer; no additional native Space Ace code."
   },
-  "hint_table_sha256": "14d10b885b4b04a922b929a976419dbbd7f769b094daa8737944ca1ea700c853",
-  "hint_generation_manifest": "hints/campaigns/manifest.json",
+  "move_table_sha256": "94b117d8884fc247d203e7938c093f029bfde60f003d4854f4d3a18584e23974",
+  "move_generation_manifest": "moves/rom-tables/manifest.json",
   "ai_assistance": {
     "tools": [
       "OpenAI GPT-6-Astra",
@@ -124,10 +124,83 @@
     "generation": "Built-in image_gen tool; ImageMagick resource sizing/compression"
   },
   "validation": {
-    "release_0_1": "All four signed release APKs assembled. Final public-version and label changes were not installed or runtime-tested.",
-    "preceding_build": "Four release lint tasks, APK inspection and launcher regression checks passed for the DL2 scoreboard build.",
-    "physical_device": "Yoga Flame MT8168/API29/ARMv7: synthetic hardware-decoder probes, DL2 attract playback and scoreboard display. See DEVICE-CAPABILITIES.md.",
-    "emulators": "Selected API25 x86, API28 x86/translated ARMv7 and API35 x86_64/translated ARM64 scenarios during development; not all rerun on final APK.",
-    "limits": "No comprehensive full-game, audible-sync, sustained-performance or final physical input validation. See VALIDATION.md for exact boundaries."
-  }
+    "build": "All four signed release flavors assembled; ARM arcade/mobile release lint passed with shared JDK 17 and pinned NDK/CMake.",
+    "host": "ROM-table, delayed-score, scene grouping, policy, launcher, Watch lifecycle, bundled evidence and DL2 Off/Watch text-gating checks passed.",
+    "watch": "96 complete unassisted plays: four profiles, eight independent start delays, modes Off/Max score/Fewest moves. No life loss in successful headless runs.",
+    "android_runtime": {
+      "android": "9 / API 28",
+      "abi": "x86",
+      "display": "960x720",
+      "launch_path": "LauncherActivity",
+      "max_score": {
+        "game": "DLE21",
+        "score": 333333,
+        "completed": true
+      },
+      "fewest_moves": {
+        "game": "DLE21",
+        "native_policy": 2,
+        "score_at_stop": 128475,
+        "lives_at_stop": 5,
+        "completed": false
+      },
+      "gui": "Off, Max score and Fewest moves presented; Fewest moves selected and saved through the launcher.",
+      "inspection": "Read-only RAM/scoreboard inspection using the matching unstripped binary; no game-memory writes or injected seeks.",
+      "limitations": "No physical ARM run. Fewest moves was stopped before its ending. Two emulator launches crashed during concurrent builds; the separate runtime run was stable. A subsequent DL2-only display guard and shared configuration extraction passed host checks and all four cross-builds."
+    },
+    "limitations": "No physical ARM test, global-optimum proof, complete retry/context proof or full DL2 Watch game in this change.",
+    "warnings": [
+      "Existing upstream missing-override compiler warnings.",
+      "SDK XML v4/v3 tool warning.",
+      "Intentional 32-bit flavor Google Play warnings.",
+      "Gradle deprecation warnings."
+    ]
+  },
+  "move_generation": {
+    "method": "Revision-pinned ROM scene/step records, timing windows, outcomes and score/death flags; natural execution and independent exact replay; successful Watch training followed by unassisted verification.",
+    "manifest": "moves/rom-tables/manifest.json",
+    "manifest_sha256": "389fce395d404b4cbfe07d8f713bb74f2c1412718f3369e6704278761e09640d",
+    "counts": {
+      "dle21": {
+        "shortest": 382,
+        "highest-score": 394
+      },
+      "ace": {
+        "shortest": 1103,
+        "highest-score": 1740
+      }
+    },
+    "exact_full_replays": 64,
+    "watch_training_full_games": 96,
+    "unassisted_watch_full_games": 96,
+    "all_scenes_proven": false,
+    "global_optimum_proven": false,
+    "configuration": "DLE21 standard mode and Ace A3 default DIP settings at Cadet, Captain and Ace; randomized start delays. Other DIP combinations and all retry contexts are not established."
+  },
+  "build_script": "build-apks.sh release [arm|all]",
+  "build_resource_limits": "Sequential Gradle invocations; final build max-workers=1, 1536 MiB heap, native compile pool=2 and ThinLTO link jobs=2. Emulator runtime separated from builds.",
+  "dl2_difficulty_source_sha256": {
+    "src/game/lair2.cpp": "f4904c4bdabe1f4072ab39b410ff474541023eed9dd17d5d39063e759b237059",
+    "src/game/lair2.h": "02b4727a15a03b28b0065e794b1be3f72e033ba897d4d82e95f5a52b7aeb129e",
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4bbbfdc643b4d11cc9fe7d66a5cad899cda0ddb481617314f90a66f0b73807a5"
+  },
+  "settings_source_sha256": {
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4bbbfdc643b4d11cc9fe7d66a5cad899cda0ddb481617314f90a66f0b73807a5",
+    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "b09b38c748c56d677dd8ced0ebbfd30db8e9815afda1650f580850fb47f2dbba",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "7bcb1fc4916813b17233411d0c46f0196a1d7b8d169e9b12beb4b0acb0212393",
+    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "0e9f42e7dbb4064de0c1396c40daf6a001dd139ec72cdf6c654f7e1c723a6c43"
+  },
+  "settings_references": [
+    {
+      "title": "Cinematronics operations/maintenance manual, Appendix C, dated 2.3.84",
+      "url": "https://www.crazykong.com/manuals/DragonsLair.man.pdf",
+      "pdf_page": 35,
+      "use": "Original Space Ace A2/A3 DIP polarity and difficulty progression; facts only, manual not redistributed."
+    },
+    {
+      "title": "MAME Dragon's Lair input-port definitions",
+      "url": "https://github.com/mamedev/mame/blob/master/src/mame/cinematronics/dlair.cpp",
+      "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
+    }
+  ]
 }

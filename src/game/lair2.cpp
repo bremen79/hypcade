@@ -55,6 +55,7 @@ NORMAL_MODE = 0x20
 #endif
 
 #include <stdio.h>
+#include <zlib.h>
 #include <plog/Log.h>
 #include "lair2.h"
 #ifdef __ANDROID__
@@ -341,6 +342,27 @@ void ace91::set_version(int version)
 bool lair2::init()
 {
     cpu::init();
+    if (m_difficulty_requested) {
+        if (m_difficulty < 0 || m_difficulty > 4) {
+            LOGE << "DL2 -preset expects a difficulty level from 0 to 4";
+            return false;
+        }
+        if (!m_difficulty_rom_verified) {
+            LOGE << "DL2 -preset requires the verified US 3.19 ROM (-version 6)";
+            return false;
+        }
+        // US 3.19 reads 60 EEPROM words into 1000:9c14 (ROM 40f6).
+        // Word 14 is the service-menu difficulty at 1000:9c30 (ROM 4c47).
+        // Preserve valid saved settings. On a new/invalid EEPROM, use the same
+        // factory data that the ROM would write before applying this one field.
+        if (EEPROM_9536[0] != 0x1241) {
+            for (unsigned i = 0; i < 60; ++i)
+                EEPROM_9536[i] = m_cpumem[0xf9c14 + 2 * i] |
+                                (Uint16(m_cpumem[0xf9c15 + 2 * i]) << 8);
+        }
+        EEPROM_9536[14] = static_cast<Uint16>(m_difficulty);
+        LOGI << fmt("DL2 operator difficulty: %d", m_difficulty);
+    }
 #ifdef __ANDROID__
     if (m_software_scoreboard) {
         // Memory layout below belongs only to the CRC-checked US 3.19 ROM.
@@ -467,6 +489,12 @@ void lair2::set_version(int version)
     }
 }
 
+void lair2::set_preset(int preset)
+{
+    m_difficulty = preset;
+    m_difficulty_requested = true;
+}
+
 // game-specific command line arguments handled here
 bool lair2::handle_cmdline_arg(const char *arg)
 {
@@ -491,6 +519,10 @@ bool lair2::handle_cmdline_arg(const char *arg)
 
 void lair2::patch_roms()
 {
+    // Check the original bytes before the existing serial/move patches run.
+    if (m_difficulty_requested)
+        m_difficulty_rom_verified = g_dl2_ver == 6 && strcmp(m_shortgamename, "lair2") == 0 &&
+            crc32(crc32(0L, Z_NULL, 0), m_cpumem + 0xf0000, 0x10000) == 0xe9453a1b;
     if (strcasecmp(m_shortgamename, "lair2") == 0)
     {
         switch (g_dl2_ver) {
@@ -559,16 +591,17 @@ void lair2::patch_roms()
             // m_cpumem[0x140f6] = 0xc3;
             // m_cpumem[0x140b0] = 0xc3;
 
-            // enable hints for all levels cheat
+            // enable moves for all levels cheat
             if (m_cheat_requested) {
                 m_cpumem[0xF2804] = 0x90;
                 m_cpumem[0xF2805] = 0x90;
             }
 #ifdef __ANDROID__
-            // The launcher owns visual hints on Android, independently of audio
+            // The launcher owns visual moves on Android, independently of audio
             // cues and -cheat. NOP enables the LDP1450 text prompts at every level;
             // JMP skips the prompt branch entirely when visuals are disabled.
-            arcade_configure_dl2_hints(m_cpumem, sizeof(m_cpumem), arcade_visual_hints_enabled());
+            arcade_configure_dl2_moves(m_cpumem, sizeof(m_cpumem),
+                arcade_visual_moves_enabled() || arcade_watch_mode_enabled());
 #endif
 
             // FIX compiler bugs that make laserdisc access problematic
@@ -675,7 +708,24 @@ int lair2_irq_callback(int irqline)
 void lair2::do_irq(unsigned int which_irq)
 {
 #ifdef __ANDROID__
-    if (which_irq == 0 && arcade_guidance_enabled()) arcade_guidance_dl2(m_cpumem, sizeof(m_cpumem), g_dl2_ver == 6 && strcmp(m_shortgamename, "lair2") == 0, g_ldp->get_status() == LDP_PLAYING);
+    if (which_irq == 0 && arcade_guidance_enabled()) {
+        if (arcade_watch_mode_enabled()) {
+            const unsigned credits = unsigned(m_cpumem[0x1a156]) |
+                (unsigned(m_cpumem[0x1a157]) << 8);
+            const unsigned lives0 = unsigned(m_cpumem[0x156ac]) |
+                (unsigned(m_cpumem[0x156ad]) << 8);
+            const unsigned lives1 = unsigned(m_cpumem[0x156ae]) |
+                (unsigned(m_cpumem[0x156af]) << 8);
+            arcade_watch_publish_credits(credits <= 99 ? int(credits) : -1);
+            arcade_watch_publish_coin_pending(m_uCoinCount[0] > 0);
+            arcade_watch_publish_game_started(
+                (lives0 > 0 && lives0 <= 9 || lives1 > 0 && lives1 <= 9) &&
+                g_ldp->get_status() == LDP_PLAYING);
+        }
+        arcade_guidance_dl2(m_cpumem, sizeof(m_cpumem),
+            g_dl2_ver == 6 && strcmp(m_shortgamename, "lair2") == 0,
+            g_ldp->get_status() == LDP_PLAYING);
+    }
 #endif
     if (m_bSerialHack) {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN

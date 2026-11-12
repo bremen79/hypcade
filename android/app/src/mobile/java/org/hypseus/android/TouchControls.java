@@ -36,10 +36,15 @@ final class TouchControls extends FrameLayout {
     private final FrameLayout actions;
     private final LinearLayout utility;
     private final Button toggle;
+    private final KeyButton coinButton;
+    private final KeyButton startButton;
+    private final KeyButton startTwoButton;
+    private final KeyButton pauseButton;
     private final KeyButton gameOptions;
     private boolean controlsVisible;
+    private boolean watchMode;
 
-    TouchControls(Context context, boolean visible, boolean singe, Input input) {
+    TouchControls(Context context, boolean visible, boolean serviceMenu, boolean watchMode, Input input) {
         super(context);
         this.input = input;
         setMotionEventSplittingEnabled(true);
@@ -57,21 +62,19 @@ final class TouchControls extends FrameLayout {
         utility = new LinearLayout(context);
         utility.setGravity(Gravity.CENTER);
         utility.setMotionEventSplittingEnabled(true);
-        for (KeyButton key : new KeyButton[]{
-                keyButton("Coin", "Insert coin", KeyEvent.KEYCODE_5),
-                keyButton("Start", "Start player one", KeyEvent.KEYCODE_1),
-                keyButton("Start 2", "Start two players", KeyEvent.KEYCODE_2),
-                keyButton("Pause", "Pause or resume", KeyEvent.KEYCODE_P)}) {
-            LinearLayout.LayoutParams item = new LinearLayout.LayoutParams(dp(58), dp(44));
+        coinButton = keyButton("Coin", "Insert coin", KeyEvent.KEYCODE_5);
+        startButton = keyButton("Start", "Start player one", KeyEvent.KEYCODE_1);
+        startTwoButton = keyButton("Start 2", "Start two players", KeyEvent.KEYCODE_2);
+        pauseButton = keyButton("Pause", "Pause or resume", KeyEvent.KEYCODE_P);
+        gameOptions = serviceMenu ? keyButton("Options", "Game options / Service switch",
+                KeyEvent.KEYCODE_9) : null;
+        for (KeyButton key : new KeyButton[]{coinButton,startButton,startTwoButton,pauseButton,gameOptions}) {
+            if (key == null) continue;
+            LinearLayout.LayoutParams item = new LinearLayout.LayoutParams(dp(key == gameOptions ? 76 : 58), dp(44));
             item.setMargins(dp(2), 0, dp(2), 0);
             utility.addView(key, item);
         }
-        addView(utility, position(248, 44, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 10, 0, 0));
-
-        gameOptions = singe ? keyButton("Options", "Open the game’s original options menu",
-                KeyEvent.KEYCODE_9) : null;
-        if (gameOptions != null)
-            addView(gameOptions, position(76, 44, Gravity.TOP | Gravity.START, 12, 62, 0, 0));
+        addView(utility, position(gameOptions != null ? 328 : 248, 44, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 10, 0, 0));
 
         pad = new DirectionPad(context);
         addView(pad, position(164, 164, Gravity.BOTTOM | Gravity.START, 14, 0, 0, 14));
@@ -85,7 +88,8 @@ final class TouchControls extends FrameLayout {
         actions.addView(keyButton("C", "Action three", KeyEvent.KEYCODE_SPACE),
                 position(54, 54, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 0));
         addView(actions, position(144, 142, Gravity.BOTTOM | Gravity.END, 0, 0, 20, 20));
-        showControls(visible);
+        if (watchMode) showWatchMode();
+        else showControls(visible);
     }
 
     private LayoutParams position(int width, int height, int gravity,
@@ -143,6 +147,10 @@ final class TouchControls extends FrameLayout {
 
     void showControls(boolean visible) {
         releaseAll();
+        if (watchMode) {
+            showWatchMode();
+            return;
+        }
         controlsVisible = visible;
         int visibility = visible ? VISIBLE : GONE;
         pad.setVisibility(visibility);
@@ -150,6 +158,23 @@ final class TouchControls extends FrameLayout {
         utility.setVisibility(visibility);
         if (gameOptions != null) gameOptions.setVisibility(visibility);
         toggle.setText(visible ? "Hide touch" : "Show touch");
+    }
+
+    private void showWatchMode() {
+        releaseAll();
+        watchMode = true;
+        // Consume empty overlay areas too, so taps cannot reach SDL as game input.
+        setOnClickListener(view -> { });
+        controlsVisible = false;
+        pad.setVisibility(GONE);
+        actions.setVisibility(GONE);
+        coinButton.setVisibility(GONE);
+        startButton.setVisibility(GONE);
+        startTwoButton.setVisibility(GONE);
+        pauseButton.setVisibility(VISIBLE);
+        utility.setVisibility(VISIBLE);
+        if (gameOptions != null) gameOptions.setVisibility(GONE);
+        toggle.setVisibility(GONE);
     }
 
     void releaseAll() {

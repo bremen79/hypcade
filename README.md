@@ -35,6 +35,19 @@ No commercial game ROMs or laserdisc media are included. Supply your own game
 files. The repository only includes emulator support assets and synthetic test data
 with their existing notices.
 
+
+**Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
+ROM revisions. Max score follows the recorded route with the higher score;
+Fewest moves follows the route with fewer joystick/button actions. Watch Mode
+uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
+while keeping the move display hidden. Dragon’s Lair II uses its native ROM
+moves for either policy; Singe games keep their own script menus.
+
+The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
+tables and checked through complete games without a lost life. Randomized
+starts and all three Space Ace skills are tested. These checks do not prove
+that every retry context is covered or that the routes are globally optimal.
+
 ## Install and run
 
 1. Install the Hypcade arcade APK.
@@ -175,7 +188,7 @@ The mobile build also follows window changes when a phone folds or
 unfolds. Both preserve the game's aspect ratio.
 
 The CRT effect runs in the existing GPU draw, after video sampling, with one
-dark row every two display pixels. Hints and game overlays remain sharp.
+dark row every two display pixels. Moves and game overlays remain sharp.
 Unsupported renderers show plain video.
 
 ## Status and testing
@@ -186,7 +199,7 @@ The tested scenarios and remaining gaps, including two-player starts and DL2
 scoreboard counters, are recorded alongside automated checks and Android
 7.1/9/15 emulator results in
 [VALIDATION.md](android/VALIDATION.md). These include storage, playback, input,
-launcher and selected hint/retry scenarios.
+launcher and selected move/retry scenarios.
 
 ## Upstream and attribution
 
@@ -198,7 +211,7 @@ The base is **Hypseus Singe 3.0.2**, pinned to commit
 - **Daphne — Matt Ownby and contributors.** Copyright (C) 1999–2013 Matt Ownby.
 - **Singe — Scott Duensing**, with subsequent work by Hypseus Singe contributors.
 - **Jeff Nyman’s laser-vault** supplies the attributed foundation for parts of
-  the move-guidance and offline hint-generation work.
+  the move-guidance and offline move-generation work.
 
 These credits summarize the lineage; original per-file copyrights and license
 notices remain authoritative. See [NOTICE](NOTICE), the preserved

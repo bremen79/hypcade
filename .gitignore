@@ -1,5 +1,5 @@
-# Local workspace state and private tooling
-/.local-tools/
+# Local workspace state and private tooling (visible directory by policy)
+/local-tools/
 /.agents/
 /.codex/
 /.aws/

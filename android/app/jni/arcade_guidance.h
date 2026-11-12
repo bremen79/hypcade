@@ -2,12 +2,20 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include "arcade_move_policy.h"
+
+void arcade_set_move_policy(int mode);
+void arcade_configure_guidance(int mode, bool cue, bool watch);
+bool arcade_hide_dl2_move_text(const char *game, unsigned x, unsigned y, unsigned line);
 
 struct ArcadeMove {
     uint8_t controls = 0; // up, down, left, right, action
     bool ready = false;
     uint64_t window = 0;
 };
+bool arcade_score_move_matches(const ArcadeScoreMove *entries, size_t count,
+                               uint64_t headers, uint8_t outcome, uint8_t control,
+                               unsigned frame);
 ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame);
 ArcadeMove arcade_decode_dl2(const uint8_t *memory, size_t size);
 void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame);
@@ -15,6 +23,10 @@ void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, boo
 
 bool arcade_guidance_enabled();
 
-bool arcade_visual_hints_enabled();
+bool arcade_visual_moves_enabled();
+bool arcade_watch_mode_enabled();
+void arcade_watch_publish_credits(int credits);
+void arcade_watch_publish_coin_pending(bool pending);
+void arcade_watch_publish_game_started(bool started);
 unsigned arcade_visual_controls();
-void arcade_configure_dl2_hints(uint8_t *memory, size_t size, bool visual);
+void arcade_configure_dl2_moves(uint8_t *memory, size_t size, bool visual);

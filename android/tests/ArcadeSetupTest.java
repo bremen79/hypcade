@@ -20,7 +20,7 @@ public final class ArcadeSetupTest {
         check(!GuidanceSupport.forArguments(new String[]{"ace","-version","1","-version","2"}).cue, "Repeated revision cannot bypass guard");
         check(!GuidanceSupport.forArguments(new String[]{"lair"}).visual, "No table for original lair");
         GuidanceSupport singeSupport = GuidanceSupport.forArguments(new String[]{"singe","-script","SAe.singe"});
-        check(singeSupport.scriptControlled && !singeSupport.visual && !singeSupport.cue, "Lua owns hints and cues");
+        check(singeSupport.scriptControlled && !singeSupport.visual && !singeSupport.cue, "Lua owns moves and cues");
         check(!GuidanceSupport.forArguments(null).visual, "Smoke test has no guidance");
         check(ControlMap.KEYS[11] == 16 && ControlMap.optional(11), "Game options maps to native service key 9");
         Path root=Files.createDirectories(Path.of(args[0],"scan-games"));
@@ -58,7 +58,7 @@ public final class ArcadeSetupTest {
                 && !importedArgs.contains("-nojoystick") && !importedArgs.contains("2"), "Android owns paths, display, controls and score");
         importedVideo.scanlines=false; importedVideo.vsync=true; importedVideo.hardware=true;
         LaunchConfig edited = new LaunchConfig(imported.id, imported.name, imported.game, imported.framefile,
-                imported.script, importedVideo.arguments(importedArgs), false, false, false);
+                imported.script, importedVideo.arguments(importedArgs), MoveMode.OFF, false, false);
         Files.writeString(commands, "-scanlines -novsync -fastboot -bank 0 1111");
         LaunchConfig rescanned = GameScanner.scan(root.toFile(), Collections.singletonList(edited), ()->false)
                 .games.stream().filter(c->c.id.equals(edited.id)).findFirst().orElseThrow();
@@ -77,9 +77,9 @@ public final class ArcadeSetupTest {
         check(!GameScanner.scan(root.toFile(), Collections.emptyList(), ()->false).commandErrors.isEmpty(), "Reject escaped command symlink");
         Files.delete(commands);
         LaunchConfig original=found.games.get(0);
-        LaunchConfig saved=new LaunchConfig(original.id,"My custom settings",original.game,original.framefile,"","-fastboot",true,true);
+        LaunchConfig saved=new LaunchConfig(original.id,"My custom settings",original.game,original.framefile,"","-fastboot",MoveMode.MAX_SCORE,true);
         GameScanner.Result again=GameScanner.scan(root.toFile(),Collections.singletonList(saved),()->false);
-        check(again.games.stream().anyMatch(c->c.id.equals(saved.id) && c.showMoves && c.extraArguments.equals("-fastboot")),"Preserve saved settings");
+        check(again.games.stream().anyMatch(c->c.id.equals(saved.id) && c.moveMode == MoveMode.MAX_SCORE && c.extraArguments.equals("-fastboot")),"Preserve saved settings");
         check(GameScanner.scan(root.toFile(),Collections.emptyList(),()->true).games.isEmpty(),"Cancellation");
         Files.delete(root.resolve("ace.daphne/video.m2v"));
         check(GameScanner.scan(root.toFile(),Collections.emptyList(),()->false).games.size()==2,"Exclude missing media");

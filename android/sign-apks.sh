@@ -44,6 +44,11 @@ done
 apks=()
 for flavor in "${flavors[@]}"; do
     apk="$script_dir/app/build/outputs/apk/$flavor/release/app-$flavor-release.apk"
+    # Gradle names an unsigned release explicitly; keep that build output and
+    # write its signed counterpart to the normal release filename.
+    if [[ -f "${apk%.apk}-unsigned.apk" ]]; then
+        apk="${apk%.apk}-unsigned.apk"
+    fi
     if [[ ! -f "$apk" ]]; then
         printf 'Release APK not found: %s\nBuild the requested flavor(s) first.\n' "$apk" >&2
         exit 1
@@ -155,6 +160,10 @@ trap cleanup EXIT
 
 for apk in "${unsigned_apks[@]}"; do
     apk_dir="$(dirname -- "$apk")"
+    signed_output="$apk"
+    if [[ "$apk" == *-unsigned.apk ]]; then
+        signed_output="${apk%-unsigned.apk}.apk"
+    fi
     temporary_dir="$(mktemp -d "$apk_dir/hypcade-sign.XXXXXX")"
     aligned_apk="$temporary_dir/aligned.apk"
     signed_apk="$temporary_dir/signed.apk"
@@ -169,8 +178,8 @@ for apk in "${unsigned_apks[@]}"; do
         --out "$signed_apk" \
         "$aligned_apk"
     "$apksigner" verify "$signed_apk"
-    mv -- "$signed_apk" "$apk"
+    mv -- "$signed_apk" "$signed_output"
     rm -rf -- "$temporary_dir"
     temporary_dir=""
-    printf 'Signed: %s\n' "$apk"
+    printf 'Signed: %s\n' "$signed_output"
 done

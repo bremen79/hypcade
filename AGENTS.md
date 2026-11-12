@@ -40,9 +40,9 @@ development configurations unless the maintainer explicitly requests it.
 | Filesystem and APK assets | `src/io/sdl_path.h`, `src/io/android_storage.h`, Android storage helpers |
 | Video and decoding | `src/video/`, `src/vldp/`, `src/ldp-out/`, JNI MPEG-2 and MediaCodec helpers |
 | GPU CRT effect | `android/app/jni/android_crt*`, original source and provenance in `android/shaders/` |
-| ROM guidance | JNI `arcade_guidance.*`, `arcade_signature.h`, `arcade_moves.inc`; generator in `tools/offline-hints/` |
+| ROM guidance | JNI `arcade_guidance.*`, `arcade_signature.h`, `arcade_moves.inc`; generator in `tools/offline-moves/` |
 | Game drivers and Singe | `src/game/` |
-| Tests and original fixtures | `android/tests/`, `tools/offline-hints/` |
+| Tests and original fixtures | `android/tests/`, `tools/offline-moves/` |
 
 ## Integration rules
 
@@ -63,7 +63,7 @@ development configurations unless the maintainer explicitly requests it.
   MediaCodec is optional; NEON/portable libmpeg2 remains the fallback. A faster
   synthetic decode probe is not evidence of full-speed gameplay.
 - The single zfast-crt option combines YUV conversion and filtering in one GPU
-  draw. Its pattern follows output pixels; hints and overlays are drawn afterward.
+  draw. Its pattern follows output pixels; moves and overlays are drawn afterward.
   Unsupported renderers retain plain video. Keep desktop behavior behind guards.
 - Arcade builds use fixed landscape, native-panel dimensions and no touch code.
   Mobile builds follow window size changes. Arcade play requires a complete
@@ -96,7 +96,7 @@ development configurations unless the maintainer explicitly requests it.
   initializes a game only on first discovery. Saved GUI settings take priority;
   rescanning must not overwrite them. Retain unrepresented native options such
   as `-blend`, banks and ROM versions, subject to launch validation.
-- Hint controls are enabled only for supported ROM revisions. DL2 uses its own
+- Move controls are enabled only for supported ROM revisions. DL2 uses its own
   ROM prompts; Singe uses its native script menu through Service. Do not duplicate
   Lua menu behavior. DLE21 and Ace A3 tables retain only controls with a ROM score
   increase against a simultaneous no-input run. Each table key includes the exact
@@ -143,7 +143,7 @@ host checks from the repository root are:
 python3 android/bootstrap-deps.py --verify
 python3 android/tests/test_android_clock.py
 python3 android/tests/test_launcher_logic.py
-python3 android/tests/test_bundled_hints.py
+python3 android/tests/test_bundled_moves.py
 ```
 
 Other focused tests cover guidance, asset paths, coin input, WAV packaging,
@@ -182,7 +182,7 @@ checks must go through the launcher rather than exporting the emulator activity.
 
 ## Public repository and releases
 
-Commit source, build scripts, wrapper JAR, original support assets, required hint
+Commit source, build scripts, wrapper JAR, original support assets, required move
 inputs, tests, licenses and documentation. Keep downloaded `android/third_party/`
 checkouts out of Git; the lock file and bootstrap script fetch exact revisions.
 Never reset a modified dependency checkout. Preserve local adaptations as source

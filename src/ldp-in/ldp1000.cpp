@@ -31,6 +31,10 @@
 // It is also compatible with the Sony LDP-1450, used in Dragon's Lair 2 and
 //  Space Ace '91.
 
+#ifdef __ANDROID__
+#include "../../android/app/jni/arcade_guidance.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h> // for atoi
 #include <string.h> // memset, strcpy
@@ -270,6 +274,13 @@ void write(unsigned char value)
                     // Display LDP1450 overlay
                     for (i = 0; i < 3; i++) {
 
+#ifdef __ANDROID__
+                        // Keep DL2's ROM move data active for Watch Mode, while
+                        // Show moves controls only its known third-line prompt.
+                        bool hidden_move = arcade_hide_dl2_move_text(g_game->get_shortgamename(),
+                            g_LDP1450_TextControl.TextXPos, g_LDP1450_TextControl.TextYPos, i);
+                        if (!hidden_move)
+#endif
                         video::draw_singleline_LDP1450(g_LDP1450_Strings[i].String,
                                             overlay_ldp1450_x, overlay_ldp1450_y);
                         overlay_ldp1450_y += video::OVERLAY_LDP1450_LINE_SPACING; // line spacing

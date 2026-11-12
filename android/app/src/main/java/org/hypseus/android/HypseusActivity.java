@@ -22,10 +22,14 @@ public final class HypseusActivity extends SDLActivity {
     static final String EXTRA_CONTROLS = "controls";
     static final String EXTRA_TOUCH = "touch_controls";
     static final String EXTRA_SMOKE = "smoke_test";
+    static final String EXTRA_WATCH = "watch_mode";
+    static final String EXTRA_START_SKILL = "start_skill";
     static final String EXTRA_EXIT_CODE = "exit_code";
     private final Handler handler = new Handler(Looper.getMainLooper());
     private GameOverlay controls;
     private boolean exiting;
+    private boolean watchMode;
+    private WatchModeController watchController;
     private MoveGuidance guidance;
     private ArcadeInput arcadeInput;
     private android.hardware.input.InputManager inputManager;
@@ -38,16 +42,32 @@ public final class HypseusActivity extends SDLActivity {
         if (mBrokenLibraries || exiting) return;
         if (code == android.view.KeyEvent.KEYCODE_ESCAPE) { if (down) requestExit(); return; }
         for (int action=0;action<ControlMap.KEYS.length;action++) if (ControlMap.KEYS[action]==code) {
+            if (watchMode && action != 9) return;
+            if (watchMode && action == 9 && down && watchController != null)
+                watchController.toggleUserPause();
             nativeArcadeInput(action, down); break;
         }
     }
-    private void releaseMapped() { if (arcadeInput != null) arcadeInput.release(this::mappedKey); }
+    private void releaseMapped() {
+        if (arcadeInput != null) arcadeInput.release(this::mappedKey);
+    }
     @Override public boolean dispatchKeyEvent(android.view.KeyEvent event) {
         if (arcadeInput != null && !mBrokenLibraries && arcadeInput.key(event, this::mappedKey)) return true;
+        if (watchMode) {
+            int code=event.getKeyCode();
+            if (code==android.view.KeyEvent.KEYCODE_ESCAPE) {
+                if (event.getAction()==android.view.KeyEvent.ACTION_DOWN) requestExit();
+                return true;
+            }
+            if (code!=android.view.KeyEvent.KEYCODE_BACK && code!=android.view.KeyEvent.KEYCODE_VOLUME_UP
+                    && code!=android.view.KeyEvent.KEYCODE_VOLUME_DOWN
+                    && code!=android.view.KeyEvent.KEYCODE_VOLUME_MUTE) return true;
+        }
         return super.dispatchKeyEvent(event);
     }
     @Override public boolean dispatchGenericMotionEvent(android.view.MotionEvent event) {
         if (arcadeInput != null && !mBrokenLibraries && arcadeInput.motion(event, this::mappedKey)) return true;
+        if (watchMode) return true;
         return super.dispatchGenericMotionEvent(event);
     }
 
@@ -55,8 +75,16 @@ public final class HypseusActivity extends SDLActivity {
     public static native void nativeConfigureDisplay(boolean mobile);
     public static native void nativeConfigureVideo(boolean enabled);
     public static native void nativeArcadeInput(int action, boolean down);
-    public static native void nativeEnableGuidance(boolean visual, boolean cue);
+    public static native void nativeConfigureStartSkill(int skill);
+    public static native void nativeEnableGuidance(int mode, boolean cue, boolean watch);
+    public static native int nativeWatchCredits();
+    public static native boolean nativeWatchCoinPending();
+    public static native boolean nativeWatchGameStarted();
     public static native long nativeGuidance();
+    public static native long nativeTakeWatchMove();
+    public static native void nativeSetWatchAutomation(boolean active);
+    public static native void nativeRequestCurrentWatchMove();
+    public static native boolean nativeEmulatorReady();
 
     @Override protected String[] getLibraries() {
         return new String[]{"SDL3", "main"};
@@ -71,9 +99,11 @@ public final class HypseusActivity extends SDLActivity {
     @Override protected String[] getArguments() {
         nativeConfigureDisplay(!BuildConfig.ARCADE);
         nativeConfigureVideo(true);
+        nativeConfigureStartSkill(getIntent().getIntExtra(EXTRA_START_SKILL, 0));
         nativeEnableGuidance(GuidanceSupport.forArguments(
                 getIntent().getStringArrayExtra(EXTRA_ARGUMENTS)).visual
-                && getIntent().getBooleanExtra("move_hints", false), useTimingCue());
+                ? MoveMode.selected(getIntent().getIntExtra("move_mode", MoveMode.OFF)) : MoveMode.OFF, useTimingCue(),
+                getIntent().getBooleanExtra(EXTRA_WATCH, false));
         String[] arguments = getIntent().getStringArrayExtra(EXTRA_ARGUMENTS);
         if (arguments == null) return new String[]{"--android-smoke-test"};
         if (!BuildConfig.ARCADE) return arguments;
@@ -84,7 +114,8 @@ public final class HypseusActivity extends SDLActivity {
 
     @Override protected void main() {
         // Retain SDL's outer thread setup/teardown while reporting the native exit status.
-        boolean configured = ControlMap.decode(getIntent().getStringExtra(EXTRA_CONTROLS))
+        boolean configured = getIntent().getBooleanExtra(EXTRA_WATCH, false)
+                || ControlMap.decode(getIntent().getStringExtra(EXTRA_CONTROLS))
                 .canPlay(BuildConfig.ARCADE, getIntent().getBooleanExtra(EXTRA_TOUCH, true));
         int result = (configured || getIntent().getBooleanExtra(EXTRA_SMOKE, false))
                 ? SDLActivity.nativeRunMain(getMainSharedObject(), getMainFunction(), getArguments()) : 1;
@@ -100,6 +131,7 @@ public final class HypseusActivity extends SDLActivity {
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+        watchMode = getIntent().getBooleanExtra(EXTRA_WATCH, false);
         super.onCreate(savedInstanceState);
         if (mBrokenLibraries) return;
         arcadeInput = new ArcadeInput(ControlMap.decode(getIntent().getStringExtra(EXTRA_CONTROLS)));
@@ -108,12 +140,11 @@ public final class HypseusActivity extends SDLActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!BuildConfig.ARCADE) {
             controls = new GameOverlay(this, getIntent().getBooleanExtra(EXTRA_TOUCH, true),
+                watchMode,
                 new GameOverlay.Input() {
                     @Override public void key(int code, boolean pressed) {
                         if (mBrokenLibraries || exiting) return;
-                        // SDL's Android keyboard path updates modifier state as well as its event queue.
-                        if (pressed) SDLActivity.onNativeKeyDown(code);
-                        else SDLActivity.onNativeKeyUp(code);
+                        mappedKey(code, pressed);
                     }
 
                     @Override public void exit() {
@@ -121,7 +152,11 @@ public final class HypseusActivity extends SDLActivity {
                     }
                 });
         }
-        // Visual hints are drawn natively; only optional timing audio needs polling.
+        if (watchMode) {
+            watchController = new WatchModeController();
+            watchController.start();
+        }
+        // Visual moves are drawn natively; only optional timing audio needs polling.
         if (useTimingCue()) guidance = new MoveGuidance();
         immersive();
     }
@@ -137,12 +172,14 @@ public final class HypseusActivity extends SDLActivity {
         super.onResume();
         if (!mBrokenLibraries) immersive();
         if (guidance != null) guidance.start();
+        if (watchController != null) watchController.setLifecyclePaused(false);
     }
 
     @Override protected void onPause() {
         releaseMapped();
         if (controls != null) controls.releaseAll();
         if (guidance != null) guidance.stop();
+        if (watchController != null) watchController.setLifecyclePaused(true);
         super.onPause();
     }
 
@@ -164,6 +201,7 @@ public final class HypseusActivity extends SDLActivity {
         if (controls != null) controls.releaseAll();
         exiting = true;
         if (guidance != null) guidance.stop();
+        if (watchController != null) watchController.stop();
         if (!mBrokenLibraries) nativeQuit();
         // Normal SDL main completion finishes the activity. Bound a stalled initialization too.
         handler.postDelayed(() -> {
@@ -175,6 +213,7 @@ public final class HypseusActivity extends SDLActivity {
         releaseMapped();
         if (inputManager != null) inputManager.unregisterInputDeviceListener(deviceListener);
         if (guidance != null) guidance.close();
+        if (watchController != null) watchController.close();
         handler.removeCallbacksAndMessages(null);
         if (controls != null) controls.releaseAll();
         // SDL sends quit, joins the native main thread for up to one second, then releases its state.

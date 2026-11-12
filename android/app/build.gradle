@@ -8,10 +8,19 @@ def generatedAssets = layout.buildDirectory.dir('generated/hypseus-assets')
 // Secrets live outside the source tree/archive; no debug-key fallback for release.
 def signingPath = providers.environmentVariable('HYPCADE_SIGNING_PROPERTIES').orNull
 def releaseKeys = new Properties()
+def signingPropertiesFile = signingPath ? file(signingPath) : null
+def releaseKeyStore = null
 if (signingPath) {
-    file(signingPath).withInputStream { releaseKeys.load(it) }
+    signingPropertiesFile.withInputStream { releaseKeys.load(it) }
     ['storeFile', 'storePassword', 'keyAlias', 'keyPassword'].each { name ->
         if (!releaseKeys.getProperty(name)) throw new GradleException("Missing release signing property: ${name}")
+    }
+    def configuredStoreFile = new File(releaseKeys.getProperty('storeFile'))
+    releaseKeyStore = configuredStoreFile.isAbsolute()
+            ? configuredStoreFile
+            : new File(signingPropertiesFile.parentFile, configuredStoreFile.path)
+    if (!releaseKeyStore.isFile()) {
+        throw new GradleException("Release keystore not found: ${releaseKeyStore}")
     }
 }
 
@@ -24,7 +33,7 @@ android {
         applicationId 'org.hypseus.android'
         minSdk 25
         targetSdk 36
-        versionCode 39
+        versionCode 40
         versionName '0.1'
 
         externalNativeBuild {
@@ -41,7 +50,7 @@ android {
     signingConfigs {
         if (signingPath) {
             release {
-                storeFile file(releaseKeys.getProperty('storeFile'))
+                storeFile releaseKeyStore
                 storePassword releaseKeys.getProperty('storePassword')
                 keyAlias releaseKeys.getProperty('keyAlias')
                 keyPassword releaseKeys.getProperty('keyPassword')

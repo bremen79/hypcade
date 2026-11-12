@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-/** Optional timing audio; visual hints share the native video renderer. */
+/** Optional timing audio; visual moves share the native video renderer. */
 final class MoveGuidance implements Runnable {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private ToneGenerator tone;

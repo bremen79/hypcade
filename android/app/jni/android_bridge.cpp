@@ -1,6 +1,58 @@
 // Android integration for the unofficial Android port. GPL-3.0-or-later.
 #include <SDL3/SDL.h>
 #include <jni.h>
+#include <atomic>
+#include "../../../src/io/input.h"
+
+// Read the active Hypseus keymap instead of assuming desktop key defaults.
+extern int g_key_defs[SWITCH_COUNT][2];
+static int android_start_skill = 0;
+static unsigned android_start_buttons = 0;
+static SDL_Keycode android_skill_key = SDLK_UNKNOWN;
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeConfigureStartSkill(JNIEnv *, jclass, jint skill)
+{
+    android_start_skill = skill >= 1 && skill <= 3 ? skill : 0;
+}
+
+// Queue the existing skill key before Start and release it with Start. This
+// works for physical mappings, mobile controls and Watch Mode on the emulator
+// thread, without changing game drivers or the global controller action IDs.
+static void android_start_skill_input(int action, bool down)
+{
+    if (!android_start_skill || (action != 8 && action != 12)) return;
+    const unsigned bit = action == 8 ? 1 : 2;
+    if (down && (android_start_buttons & bit)) return;
+    if (!down && !(android_start_buttons & bit)) return;
+    if (down && !android_start_buttons) {
+        android_skill_key = static_cast<SDL_Keycode>(g_key_defs[SWITCH_SKILL1 + android_start_skill - 1][0]);
+        if (android_skill_key == SDLK_UNKNOWN)
+            android_skill_key = static_cast<SDL_Keycode>(g_key_defs[SWITCH_SKILL1 + android_start_skill - 1][1]);
+    }
+    const bool transition = down ? !android_start_buttons : android_start_buttons == bit;
+    android_start_buttons = down ? android_start_buttons | bit : android_start_buttons & ~bit;
+    if (!transition || android_skill_key == SDLK_UNKNOWN) return;
+    SDL_Event event = {};
+    event.type = down ? SDL_EVENT_KEY_DOWN : SDL_EVENT_KEY_UP;
+    event.key.key = android_skill_key;
+    event.key.down = down;
+    SDL_PushEvent(&event);
+    if (!down) android_skill_key = SDLK_UNKNOWN;
+}
+
+static std::atomic<bool> android_emulator_ready{false};
+
+extern "C" void hypseus_android_mark_emulator_ready()
+{
+    android_emulator_ready.store(true, std::memory_order_release);
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeEmulatorReady(JNIEnv *, jclass)
+{
+    return android_emulator_ready.load(std::memory_order_acquire) ? JNI_TRUE : JNI_FALSE;
+}
 
 // The Java overlay uses SDLActivity's official key methods, which update SDL's
 // keyboard/modifier state as well as its event queue. Quit is queued so that
@@ -26,6 +78,7 @@ extern "C" JNIEXPORT void JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeArcadeInput(JNIEnv *, jclass, jint action, jboolean down)
 {
     if (action < 0 || action > 12 || SDL_WasInit(SDL_INIT_EVENTS) == 0) return;
+    android_start_skill_input(action, down == JNI_TRUE);
     SDL_Event event = {};
     event.type = hypseus_android_arcade_event_type();
     if (!event.type) return;

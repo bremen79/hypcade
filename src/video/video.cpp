@@ -152,7 +152,7 @@ SDL_Surface *g_scoreboard_blit_surface = NULL;
 
 SDL_Texture *g_overlay_texture         = NULL;
 #ifdef __ANDROID__
-static SDL_Texture *g_hint_font = nullptr;
+static SDL_Texture *g_move_font = nullptr;
 #endif
 SDL_Texture *g_yuv_texture             = NULL;
 SDL_Texture *g_scoreboard_texture      = NULL;
@@ -342,8 +342,8 @@ static void resize_cleanup()
     g_font_engine = nullptr;
 
 #ifdef __ANDROID__
-    SDL_DestroyTexture(g_hint_font);
-    g_hint_font = nullptr;
+    SDL_DestroyTexture(g_move_font);
+    g_move_font = nullptr;
 #endif
     SDL_DestroyTexture(g_overlay_texture);
     SDL_DestroyTexture(g_mix_texture.t);
@@ -960,17 +960,17 @@ bool init_display()
             colorkey = SDL_MapSurfaceRGB(g_other_bmps[B_OVERLAY_LDP1450], 0, 0, 0);
             SDL_SetSurfaceColorKey(g_other_bmps[B_OVERLAY_LDP1450], true, colorkey);
 #ifdef __ANDROID__
-            const char *hint_game = g_game->get_shortgamename();
-            if (arcade_visual_hints_enabled() &&
-                (strcmp(hint_game, "dle21") == 0 || strcmp(hint_game, "ace") == 0)) {
-                g_hint_font = SDL_CreateTextureFromSurface(g_renderer, g_other_bmps[B_OVERLAY_LDP1450]);
-                if (!g_hint_font) {
-                    LOGE << fmt("Cannot create move-hint font: %s", SDL_GetError());
+            const char *move_game = g_game->get_shortgamename();
+            if (arcade_visual_moves_enabled() &&
+                (strcmp(move_game, "dle21") == 0 || strcmp(move_game, "ace") == 0)) {
+                g_move_font = SDL_CreateTextureFromSurface(g_renderer, g_other_bmps[B_OVERLAY_LDP1450]);
+                if (!g_move_font) {
+                    LOGE << fmt("Cannot create move font: %s", SDL_GetError());
                     set_quitflag();
                     goto exit;
                 }
-                SDL_SetTextureBlendMode(g_hint_font, SDL_BLENDMODE_BLEND);
-                SDL_SetTextureScaleMode(g_hint_font, VIDEO_HAS(SCALE_LINEAR) ?
+                SDL_SetTextureBlendMode(g_move_font, SDL_BLENDMODE_BLEND);
+                SDL_SetTextureScaleMode(g_move_font, VIDEO_HAS(SCALE_LINEAR) ?
                     SDL_SCALEMODE_LINEAR : SDL_SCALEMODE_NEAREST);
             }
 #endif
@@ -1093,8 +1093,8 @@ bool deinit_display()
     g_aux_texture = NULL;
 
 #ifdef __ANDROID__
-    SDL_DestroyTexture(g_hint_font);
-    g_hint_font = nullptr;
+    SDL_DestroyTexture(g_move_font);
+    g_move_font = nullptr;
 #endif
     SDL_DestroyTexture(g_overlay_texture);
     SDL_DestroyTexture(g_mix_texture.t);
@@ -1423,9 +1423,9 @@ void draw_overlay_leds(unsigned int values[], int num_digits,
 // Match DL2 3.19's LDP1450 prompt: position (32,47), third text line,
 // mapped by ldp1000.cpp to (86,200) in a 320x240 overlay. Reuse its bitmap,
 // colour key, glyph size and spacing, and render in the same video viewport.
-static void draw_move_hint(const SDL_FRect &picture)
+static void draw_recorded_move(const SDL_FRect &picture)
 {
-    if (!g_hint_font) return;
+    if (!g_move_font) return;
     const unsigned controls = arcade_visual_controls();
     if (!controls) return;
     static unsigned previous = 0;
@@ -1447,7 +1447,7 @@ static void draw_move_hint(const SDL_FRect &picture)
         const int glyph = *c >= 0x26 && *c <= 0x39 ? *c - 0x25
                         : *c >= 'A' && *c <= 'Z' ? *c - 0x2a : 0x31;
         const SDL_FRect source = {float(glyph * 16), 0, 16, 16};
-        SDL_RenderTexture(g_renderer, g_hint_font, &source, &destination);
+        SDL_RenderTexture(g_renderer, g_move_font, &source, &destination);
         destination.x += 15 * sx * fit;
     }
 }
@@ -2986,7 +2986,7 @@ void vid_blit()
         SDL_RenderTexture(g_renderer, g_overlay_texture, &fOverlayRect, &fScaleRect);
 
 #ifdef __ANDROID__
-    draw_move_hint(fScaleRect);
+    draw_recorded_move(fScaleRect);
 #endif
     if (g_aux_needs_update) vid_render_aux();
 

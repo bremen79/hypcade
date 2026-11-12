@@ -9,7 +9,7 @@ layout, credits and licensing. This guide covers setup details and development.
 
 - [Set up controls](#set-up-controls)
 - [Find and launch games](#find-and-launch-games)
-- [Video, sound and hints](#video-sound-and-hints)
+- [Video, sound and moves](#video-sound-and-moves)
 - [Storage and permissions](#storage-and-permissions)
 - [Game command files](#game-command-files)
 - [Build the app](#build-the-app)
@@ -72,7 +72,20 @@ APK is ARM64 and follows window changes, including folding and unfolding. A
 when choosing an APK. Both variants share the application ID
 `org.hypseus.android` and replace one another when installed.
 
-## Video, sound and hints
+## Video, sound and moves
+
+**Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
+ROM revisions. Max score follows the recorded route with the higher score;
+Fewest moves follows the route with fewer joystick/button actions. Watch Mode
+uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
+while keeping the move display hidden. Dragon’s Lair II uses its native ROM
+moves for either policy; Singe games keep their own script menus.
+
+The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
+tables and checked through complete games without a lost life. Randomized
+starts and all three Space Ace skills are tested. These checks do not prove
+that every retry context is covered or that the routes are globally optimal.
+
 
 **Video & performance** has hardware decoding, CRT scanlines, smoothing,
 V-sync and Show FPS. **Game Options** has Fast startup and Show
@@ -88,7 +101,7 @@ emulated CPU timing or disc frame numbers.
 CRT scanlines use a lightweight zfast-crt GPU shader. Video sampling, colour
 conversion and the CRT pattern share one draw. Scanlines follow the final video
 rectangle, with one dark row every two output pixels, independent of the source
-resolution. Hints, subtitles and game overlays are drawn afterward. An
+resolution. Moves, subtitles and game overlays are drawn afterward. An
 unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
@@ -100,8 +113,8 @@ Lair II, with a transparent background and a small dark shadow.
 Dragon's Lair II 3.19 (`lair2`, default version 6) uses its original ROM prompts.
 Its extra timing-cue switch is disabled because the video already contains cues.
 Singe games use their own Lua options menus: assign **Game options / Service**
-or press **Options** on mobile. Unsupported ROM revisions have disabled hint
-controls. Hints do not play the game for you, and coverage is not guaranteed
+or press **Options** on mobile. Unsupported ROM revisions have disabled move
+controls. Moves do not play the game for you, and coverage is not guaranteed
 for every branch, DIP setting or later round. Offline generation tests each
 available control against a no-input ROM simulation and includes only controls
 that raise the score. It samples random screen orders across repeated runs; it
@@ -309,7 +322,7 @@ python3 tests/test_launcher_logic.py
 ./gradlew :app:lintDebug
 ```
 
-See the [offline hint tool](../tools/offline-hints/README.md) for generating ROM guidance
+See the [offline move tool](../tools/offline-moves/README.md) for generating ROM guidance
 without video or real-time waits.
 
 ### How the Android build fits together

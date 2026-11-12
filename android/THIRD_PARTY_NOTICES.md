@@ -91,7 +91,7 @@ Dependency sources:
 The move-window decoders adapt RAM-layout knowledge and code from Jeff Nyman's
 [laser-vault](https://github.com/jeffnyman/laser-vault), commit
 `1f12c84dfabf3c8e5d028c8804b2f96678c798fa`, under GNU GPL version 3 or later (Copyright (C) 2026 Jeff Nyman).
-See `app/jni/arcade_guidance.cpp` and `../tools/offline-hints/`.
+See `app/jni/arcade_guidance.cpp` and `../tools/offline-moves/`.
 The compact observed-outcome tables contain hashes and frame context, not ROM
 bytes or media. The optional generator uses a separately obtained pinned
 laser-vault checkout and user-owned ROMs; its CPU/look-ahead engine is not
@@ -106,21 +106,22 @@ file. Motion compensation and dispatch additions are GPL-3.0-or-later. The pinne
 libmpeg2 archive remains unchanged. No additional decoder library is bundled.
 Intrinsics follow the [Arm ACLE reference](https://arm-software.github.io/acle/neon_intrinsics/advsimd.html).
 
-## Offline hint extractor (host tools)
+## Offline move extractor (host tools)
 
 The pinned upstream README explicitly grants GPL-3.0-or-later; that grant is
-retained in `tools/offline-hints/vendor/NOTICE`.
+retained in `tools/offline-moves/vendor/NOTICE`.
 
-`tools/offline-hints/vendor/` contains the minimal Z80/Cinematronics/LD-V1000,
+`tools/offline-moves/vendor/` contains the minimal Z80/Cinematronics/LD-V1000,
 AY-8910 and ROM/ZIP source subset from the same Jeff Nyman laser-vault revision
 above, under GPL-3.0. Its local changes and file hashes are recorded in
 `vendor/provenance.json`, and its full license is included in `vendor/LICENSE`.
 The explorer adds branch/timing trials and treats inconclusive look-ahead
 as unresolved. Campaign mode follows a death-free route to ROM-driven victory,
 tests every open control against a simultaneous no-input simulation, and
-compiles only score-increasing controls into the Android hint table. It is a
+derives ROM scene/step policies and compiles independently replayed moves into
+two Android tables. Required zero-score actions are retained. It is a
 laptop build tool, not linked into or packaged in the APK. See
-`tools/offline-hints/README.md` for its source and reproduction instructions.
+`tools/offline-moves/README.md` for its source and reproduction instructions.
 
 ## zfast-crt shader
 

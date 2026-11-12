@@ -103,7 +103,7 @@ See also the [bezel and video-position options](Bezels.md).
 | -pal_sa_sc                       | Tells Hypseus that you are using a PAL Software Corner Space Ace disc instead of an NTSC Space Ace disc. *Only relevant when playing the USA version of Space Ace.* |
 | -prefer_samples                  | Same games can emulate sound or use samples of sounds. If both emulated and sampled sounds are available, this option will force sampled sounds to be used. Otherwise, emulated sounds will always be used. |
 | -preserve_aspect_ratio           | Ensure the video aspect ratio is maintained and fully displayed within the visible screen area. |
-| -preset \<number>                | A simple way to pass arguments directly to the game driver. Tells the game driver to use a specific preset configuration. Different for each game. |
+| -preset \<number>                | Selects a game-specific configuration. For Dragon's Lair II US 3.19, values 0–4 set the EEPROM difficulty at startup (0 easiest, 4 hardest), preserving other saved operator data and high scores. Requires the verified ROM and `-version 6` (the default). Omit it to retain the saved difficulty. Other games keep their own preset meanings. |
 | -rawmouse                        | Restore raw MouseMotion values for SDL mouse.          |
 | -ramdir \<path>                  | Sets an alternate `ram` directory path.                |
 | -relative-mice                   | Enable SDL3 multiple mouse support (RelativeMouseMode) |

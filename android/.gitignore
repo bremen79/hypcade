@@ -9,6 +9,5 @@ build/
 /native-check/
 /artifacts/
 
-# Optional hint exploration output; campaign JSON and required baselines stay in Git.
-/hints/offline/
-/hints/legacy/arcade_moves-android8.inc
+# Optional move exploration output; campaign JSON and required baselines stay in Git.
+/moves/offline/

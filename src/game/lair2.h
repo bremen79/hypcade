@@ -90,6 +90,7 @@ class lair2 : public game
     void input_disable(Uint8, Sint8);
     bool set_bank(unsigned char, unsigned char);
     void set_version(int);
+    void set_preset(int) override;
     bool handle_cmdline_arg(const char *arg);
     void patch_roms();
     void ldp_fill_buf(); // gets our ldp info and fills DL2 buffer
@@ -105,6 +106,9 @@ class lair2 : public game
     Uint16 EEPROM_9536[0x80];
 
   private:
+    int m_difficulty = 0;
+    bool m_difficulty_requested = false;
+    bool m_difficulty_rom_verified = false;
 #ifdef __ANDROID__
     IScoreboard *m_android_scoreboard = nullptr;
     void update_android_scoreboard();

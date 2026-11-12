@@ -12,50 +12,36 @@
 #include <jni.h>
 #endif
 
-struct SafeOutcome { uint64_t headers; uint8_t outcome; unsigned frame; };
 #include "arcade_moves.inc"
 
-static bool known(uint64_t headers, uint8_t outcome, bool ace, unsigned frame, bool canonical) {
-    const SafeOutcome *begin = canonical ? (ace ? ace_canonical_moves : dle21_canonical_moves)
-                                         : (ace ? ace_moves : dle21_moves);
-    size_t count = canonical ? (ace ? sizeof(ace_canonical_moves)/sizeof(*ace_canonical_moves)
-                                    : sizeof(dle21_canonical_moves)/sizeof(*dle21_canonical_moves))
-                            : (ace ? sizeof(ace_moves)/sizeof(*ace_moves) : sizeof(dle21_moves)/sizeof(*dle21_moves));
-    const SafeOutcome *entry = std::lower_bound(begin, begin + count, headers,
-        [](const SafeOutcome &item, uint64_t key) { return item.headers < key; });
-    for (; entry != begin + count && entry->headers == headers; ++entry)
-        if (entry->outcome == outcome && frame + 24 >= entry->frame && frame <= entry->frame + 24) return true;
+bool arcade_score_move_matches(const ArcadeScoreMove *entries, size_t count,
+                               uint64_t headers, uint8_t outcome, uint8_t control,
+                               unsigned frame) {
+    if (!entries || !count) return false;
+    const ArcadeScoreMove *entry = std::lower_bound(entries, entries + count, headers,
+        [](const ArcadeScoreMove &item, uint64_t key) { return item.headers < key; });
+    for (; entry != entries + count && entry->headers == headers; ++entry) {
+        unsigned end = entry->frame + ((entry->timing & 255) * 786U + 999U) / 1000U + 2;
+        if (entry->outcome == outcome && entry->control == control &&
+            frame >= entry->frame && frame <= end) return true;
+    }
     return false;
 }
 
+static std::atomic<int> selected_move_policy{1};
+void arcade_set_move_policy(int mode) {
+    selected_move_policy.store(mode==2 ? 2 : 1,std::memory_order_relaxed);
+}
 ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame) {
     ArcadeMove result;
-    if (size < 0xa1e0) return result;
-    uint64_t hash = UINT64_C(14695981039346656037);
-    for (int e = 0; e < 16; ++e) {
-        const uint8_t *x = memory + 0xa0e0 + e * 16;
-        if (!(x[0] & 0x80)) break;
-        for (int k = 0; k < 12; ++k) { hash ^= x[k]; hash *= UINT64_C(1099511628211); }
-    }
-    uint64_t canonical = arcade_cine_signature(memory + 0xa0e0, 256);
-    unsigned earliest = 1000;
-    for (int e = 0; e < 16; ++e) {
-        const uint8_t *x = memory + 0xa0e0 + e * 16;
-        if (!(x[0] & 0x80)) break;
-        unsigned delay = x[12];
-        for (unsigned w = 0; w < (x[1] & 3); ++w) {
-            unsigned duration = x[13 + w];
-            if (!duration) continue;
-            uint8_t outcome = x[2 + ((x[1] >> (2 + 2*w)) & 3)];
-            if (outcome != 0xff && delay <= 12 && delay < earliest && (known(canonical, outcome, ace, frame, true) || known(hash, outcome, ace, frame, false))) {
-                result.controls = (x[0] & 15) ? (x[0] & 15) : 16;
-                result.ready = delay == 0;
-                result.window = canonical ^ (uint64_t(e + 1) << 40) ^ (uint64_t(w + 1) << 32);
-                earliest = delay;
-            }
-            delay += duration;
-        }
-    }
+    if(size<0xa1e0)return result;
+    bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
+    const ArcadeRomMove *entries=ace ? (fewest ? ace_moves_fewest : ace_moves_max)
+                                     : (fewest ? dle21_moves_fewest : dle21_moves_max);
+    size_t count=ace ? (fewest ? sizeof(ace_moves_fewest)/sizeof(*ace_moves_fewest) : sizeof(ace_moves_max)/sizeof(*ace_moves_max))
+                     : (fewest ? sizeof(dle21_moves_fewest)/sizeof(*dle21_moves_fewest) : sizeof(dle21_moves_max)/sizeof(*dle21_moves_max));
+    auto selected=arcade_select_rom_move(entries,count,memory+0xa000,frame,ace);
+    result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
     return result;
 }
 
@@ -87,10 +73,27 @@ ArcadeMove arcade_decode_dl2(const uint8_t *memory, size_t size) {
 
 static std::atomic<bool> enabled{false};
 static std::atomic<bool> visual_enabled{false};
-bool arcade_visual_hints_enabled() { return visual_enabled.load(std::memory_order_relaxed); }
+static std::atomic<bool> watch_mode_enabled{false};
+static std::atomic<bool> watch_automation_active{false};
+static std::atomic<uint64_t> pending_watch_event{0};
+static std::atomic<int> watch_credit_count{-1};
+static std::atomic<bool> watch_coin_pending{false};
+static std::atomic<bool> watch_game_started{false};
+bool arcade_visual_moves_enabled() { return visual_enabled.load(std::memory_order_relaxed); }
+bool arcade_watch_mode_enabled() { return watch_mode_enabled.load(std::memory_order_relaxed); }
+void arcade_watch_publish_credits(int credits) {
+    watch_credit_count.store(credits >= 0 && credits <= 99 ? credits : -1,
+                             std::memory_order_release);
+}
+void arcade_watch_publish_coin_pending(bool pending) {
+    watch_coin_pending.store(pending, std::memory_order_release);
+}
+void arcade_watch_publish_game_started(bool started) {
+    watch_game_started.store(started, std::memory_order_release);
+}
 static std::atomic<uint64_t> published{0};
 unsigned arcade_visual_controls() {
-    return arcade_visual_hints_enabled() ? unsigned(published.load(std::memory_order_relaxed)) & 31 : 0;
+    return arcade_visual_moves_enabled() ? unsigned(published.load(std::memory_order_relaxed)) & 31 : 0;
 }
 bool arcade_guidance_enabled() { return enabled.load(std::memory_order_relaxed); }
 // These fields are accessed only by the emulation thread.
@@ -98,12 +101,20 @@ static uint64_t previous_window = 0;
 static bool previous_ready = false;
 static uint32_t sequence = 0;
 static void publish(ArcadeMove move) {
-    if (move.ready && (!previous_ready || previous_window != move.window)) ++sequence;
+    bool new_move = move.ready && (!previous_ready || previous_window != move.window);
+    if (new_move) ++sequence;
     previous_ready = move.ready;
     previous_window = move.window;
+    // Publish readiness before exposing the event to the Android input thread.
+    // Otherwise it can consume the event while still seeing the previous state.
     published.store((uint64_t(sequence) << 32) | (move.ready ? 256 : 0) | move.controls,
-                    std::memory_order_relaxed);
+                    std::memory_order_release);
+    if (!move.ready) pending_watch_event.store(0, std::memory_order_release);
+    else if (new_move && watch_automation_active.load(std::memory_order_relaxed))
+        pending_watch_event.store((uint64_t(sequence) << 32) | move.controls,
+                                  std::memory_order_release);
 }
+
 void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame) {
     if (!enabled.load(std::memory_order_relaxed)) return;
     bool ace = std::strcmp(game, "ace") == 0;
@@ -114,19 +125,74 @@ void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, boo
     if (!enabled.load(std::memory_order_relaxed)) return;
     publish(playing && supported ? arcade_decode_dl2(memory, size) : ArcadeMove{});
 }
+void arcade_configure_guidance(int mode, bool cue, bool watch) {
+    bool visual=mode==1 || mode==2;
+    arcade_set_move_policy(mode);
+    visual_enabled.store(visual, std::memory_order_relaxed);
+    watch_mode_enabled.store(watch, std::memory_order_relaxed);
+    watch_automation_active.store(false, std::memory_order_relaxed);
+    pending_watch_event.store(0, std::memory_order_relaxed);
+    watch_credit_count.store(-1, std::memory_order_relaxed);
+    watch_coin_pending.store(false, std::memory_order_relaxed);
+    watch_game_started.store(false, std::memory_order_relaxed);
+    enabled.store(visual || cue || watch, std::memory_order_relaxed);
+}
+bool arcade_hide_dl2_move_text(const char *game, unsigned x, unsigned y, unsigned line) {
+    return game && std::strcmp(game,"lair2")==0 && x==32 && y==47 && line==2 &&
+        arcade_watch_mode_enabled() && !arcade_visual_moves_enabled();
+}
 #ifndef HYPSEUS_GUIDANCE_HOST_TEST
 extern "C" JNIEXPORT void JNICALL
-Java_org_hypseus_android_HypseusActivity_nativeEnableGuidance(JNIEnv *, jclass, jboolean visual, jboolean cue) {
-    visual_enabled.store(visual, std::memory_order_relaxed);
-    enabled.store(visual || cue, std::memory_order_relaxed);
+Java_org_hypseus_android_HypseusActivity_nativeEnableGuidance(JNIEnv *, jclass, jint mode,
+                                                              jboolean cue, jboolean watch) {
+    arcade_configure_guidance(mode, cue, watch);
+}
+extern "C" JNIEXPORT jint JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeWatchCredits(JNIEnv *, jclass) {
+    return watch_credit_count.load(std::memory_order_acquire);
+}
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeWatchCoinPending(JNIEnv *, jclass) {
+    return watch_coin_pending.load(std::memory_order_acquire) ? JNI_TRUE : JNI_FALSE;
+}
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeWatchGameStarted(JNIEnv *, jclass) {
+    return watch_game_started.load(std::memory_order_acquire) ? JNI_TRUE : JNI_FALSE;
 }
 extern "C" JNIEXPORT jlong JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeGuidance(JNIEnv *, jclass) {
     return static_cast<jlong>(published.load(std::memory_order_relaxed));
 }
+extern "C" JNIEXPORT void JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeSetWatchAutomation(JNIEnv *, jclass, jboolean active) {
+    if (!active) {
+        watch_automation_active.store(false, std::memory_order_release);
+        pending_watch_event.store(0, std::memory_order_release);
+        return;
+    }
+    pending_watch_event.store(0, std::memory_order_relaxed);
+    watch_automation_active.store(true, std::memory_order_release);
+}
+extern "C" JNIEXPORT void JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeRequestCurrentWatchMove(JNIEnv *, jclass) {
+    uint64_t state = published.load(std::memory_order_acquire);
+    if ((state & UINT64_C(256)) && (state & UINT64_C(31))) {
+        uint64_t expected = 0;
+        pending_watch_event.compare_exchange_strong(expected,
+            (state & UINT64_C(0xffffffff00000000)) | (state & 31),
+            std::memory_order_release, std::memory_order_relaxed);
+    }
+}
+extern "C" JNIEXPORT jlong JNICALL
+Java_org_hypseus_android_HypseusActivity_nativeTakeWatchMove(JNIEnv *, jclass) {
+    uint64_t event = pending_watch_event.exchange(0, std::memory_order_acq_rel);
+    uint64_t current = published.load(std::memory_order_acquire);
+    if (!(current & 256) || (current >> 32) != (event >> 32) || (current & 31) != (event & 31)) return 0;
+    return static_cast<jlong>(event);
+}
 #endif
 
-void arcade_configure_dl2_hints(uint8_t *memory, size_t size, bool visual) {
+void arcade_configure_dl2_moves(uint8_t *memory, size_t size, bool visual) {
     if (!memory || size <= 0xf2805) return;
     memory[0xf2804] = visual ? 0x90 : 0xeb;
     memory[0xf2805] = visual ? 0x90 : 0x4a;

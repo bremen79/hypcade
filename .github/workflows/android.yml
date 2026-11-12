@@ -3,9 +3,9 @@ name: Hypcade Android builds
 on:
   workflow_dispatch:
   push:
-    paths: ['android/**', 'src/**', '.github/workflows/android.yml']
+    paths: ['android/**', 'src/**', 'tools/offline-moves/**', '.github/workflows/android.yml']
   pull_request:
-    paths: ['android/**', 'src/**', '.github/workflows/android.yml']
+    paths: ['android/**', 'src/**', 'tools/offline-moves/**', '.github/workflows/android.yml']
 
 permissions:
   contents: read
@@ -31,6 +31,11 @@ jobs:
         run: python3 android/tests/test_android_clock.py
       - name: Check launcher arguments and file validation
         run: python3 android/tests/test_launcher_logic.py
+      - name: Check offline move minimization and bundled evidence
+        run: |
+          python3 tools/offline-moves/test_moves.py
+          python3 android/tests/test_bundled_moves.py
+          python3 android/tests/test_arcade_guidance.py
       - name: Check video index validation and publication
         run: python3 android/tests/test_video_indexes.py
       - name: Check coin feedback and licensed audio asset

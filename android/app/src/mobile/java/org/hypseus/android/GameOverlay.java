@@ -7,10 +7,11 @@ import android.view.WindowInsets;
 final class GameOverlay {
     interface Input { void key(int code, boolean down); void exit(); }
     private final TouchControls controls;
-    GameOverlay(Activity activity, boolean visible, Input input) {
+    GameOverlay(Activity activity, boolean visible, boolean watchMode, Input input) {
         String[] arguments = activity.getIntent().getStringArrayExtra(HypseusActivity.EXTRA_ARGUMENTS);
-        boolean singe = arguments != null && arguments.length > 0 && "singe".equals(arguments[0]);
-        controls = new TouchControls(activity, visible, singe, new TouchControls.Input() {
+        boolean serviceMenu = arguments != null && arguments.length > 0
+                && ("singe".equals(arguments[0]) || "lair2".equals(arguments[0]) || "ace91".equals(arguments[0]));
+        controls = new TouchControls(activity, visible, serviceMenu, watchMode, new TouchControls.Input() {
             @Override public void key(int code, boolean down) { input.key(code, down); }
             @Override public void exit() { input.exit(); }
         });

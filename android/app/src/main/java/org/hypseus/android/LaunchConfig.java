@@ -47,9 +47,11 @@ public final class LaunchConfig {
     public final String framefile;
     public final String script;
     public final String extraArguments;
-    public final boolean showMoves;
+    public final int moveMode;
     public final boolean timingCue;
     public final boolean showScore;
+    public final int difficulty;
+    public final int skill;
 
     private static final Set<String> MANAGED_OPTIONS = new HashSet<>(Arrays.asList(
             "-homedir", "-datadir", "-romdir", "-ramdir", "-framefile", "-script", "-zlua", "-scorebezel", "-useoverlaysb"));
@@ -58,22 +60,35 @@ public final class LaunchConfig {
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments) {
-        this(id, name, game, framefile, script, extraArguments, false, false);
+        this(id, name, game, framefile, script, extraArguments, MoveMode.OFF, false);
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments,
-                        boolean showMoves, boolean timingCue) {
-        this(id, name, game, framefile, script, extraArguments, showMoves, timingCue, true);
+                        int moveMode, boolean timingCue) {
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, true);
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
-                        String extraArguments, boolean showMoves, boolean timingCue, boolean showScore) {
+                        String extraArguments, int moveMode, boolean timingCue, boolean showScore) {
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, showScore,
+                GameDifficulty.importedSelection(clean(game).toLowerCase(Locale.ROOT), splitArguments(clean(extraArguments))));
+    }
+
+    public LaunchConfig(String id, String name, String game, String framefile, String script,
+                        String extraArguments, int moveMode, boolean timingCue, boolean showScore, int difficulty) {
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, showScore, difficulty, 0);
+    }
+
+    public LaunchConfig(String id, String name, String game, String framefile, String script,
+                        String extraArguments, int moveMode, boolean timingCue, boolean showScore, int difficulty, int skill) {
         this.showScore = showScore;
-        this.showMoves = showMoves;
+        this.moveMode = MoveMode.selected(moveMode);
         this.id = clean(id);
         this.name = clean(name);
         this.game = clean(game).toLowerCase(Locale.ROOT);
+        this.difficulty = GameDifficulty.selected(this.game, difficulty);
+        this.skill = GameDifficulty.selectedSkill(skill);
         this.timingCue = timingCue;
         this.framefile = clean(framefile);
         this.script = clean(script);
@@ -86,7 +101,7 @@ public final class LaunchConfig {
 
     public LaunchConfig withId(String newId) {
         return new LaunchConfig(newId, name, game, framefile, script,
-                extraArguments, showMoves, timingCue, showScore);
+                extraArguments, moveMode, timingCue, showScore, difficulty, skill);
     }
 
     static boolean supportsScore(String game) {
@@ -166,7 +181,7 @@ public final class LaunchConfig {
             args.add(lua.getPath());
         }
         if (showScore && supportsScore(game, splitArguments(extraArguments))) args.add("-scorebezel");
-        args.addAll(splitArguments(extraArguments));
+        args.addAll(GameDifficulty.arguments(game, difficulty, splitArguments(extraArguments)));
         for (String argument : args) checkArgument(argument);
         return args.toArray(new String[0]);
     }

@@ -53,6 +53,10 @@
 
 #include <stack>	// for cpu pausing operations
 
+#ifdef __ANDROID__
+extern "C" void hypseus_android_mark_emulator_ready();
+#endif
+
 using namespace std;
 
 namespace cpu
@@ -358,6 +362,9 @@ void execute()
 	int i = 0;
 	Uint32 last_inputcheck = 0; //time we last polled for input events
 	struct def *cpu = g_head;
+#ifdef __ANDROID__
+	bool android_ready_reported = false;
+#endif
 
 	// flush the cpu timers one time so we don't begin with the cpu's running too quickly
 	g_expected_elapsed_ms = 0;
@@ -675,6 +682,13 @@ void execute()
 			{
 				last_inputcheck = refresh_ms_time();
 				SDL_check_input();	// check for input events (keyboard, joystick, etc)
+#ifdef __ANDROID__
+				if (!android_ready_reported)
+				{
+					hypseus_android_mark_emulator_ready();
+					android_ready_reported = true;
+				}
+#endif
 			}
 
 			// be nice to cpu if we're looping here ...

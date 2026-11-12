@@ -24,9 +24,28 @@ for a second-player start, pause and the game's service menu.
 
 The ARMv7 arcade build uses the panel's landscape resolution and has no touch
 controls or rotation setting. A secondary ARM64 mobile build provides on-screen
-controls, including Start 2 and a Singe Options button. It also follows window
-size changes on foldable phones. Mobile users can play with touch controls or a
+controls, including Start 2 and an Options / Service button for Singe, Dragon's
+Lair II and Space Ace '91. The Options button sits in the top button row and
+passes the original Service switch without adding a button combination. The mobile
+build follows window size changes on foldable phones. Users can play with touch controls or a
 configured controller; at least one must be available.
+
+Space Ace has separate operator difficulty and skill choices. Operator difficulty
+uses the existing DIP switches: increase after three or five consecutive episodes,
+at a slow or fast rate. The launcher reads the effective bank settings, saves the
+chosen combination per game and preserves unrelated switches. Cadet, Captain and
+Ace are saved separately and applied using the original skill input when Start
+is pressed. All supported difficulty menus show concrete choices, initialized
+from the effective DIP settings or saved EEPROM level. DIP layouts share a
+small catalog and a common reader/writer.
+
+Game Options exposes difficulty for supported games. For Dragon's Lair II US
+3.19, a small driver addition uses the existing `-preset` hook for levels 0–4
+to set the EEPROM difficulty at startup. It preserves other valid saved
+operator data and high scores, and checks the original ROM's checksum before
+using this mapping. The launcher reads the saved level when initializing the
+choice and refreshes it after a successful session. Other DL2 ROM revisions
+keep this control disabled.
 
 ## Games stay on the SD card
 
@@ -76,27 +95,29 @@ II it also shows the driver's nominal 18.2 fps limit.
 
 ## Game assistance and scoreboards
 
-Dragon's Lair Enhanced 2.1 and Space Ace A3 have optional move hints and timing
-cues. Their hint tables are generated offline by comparing each available
-control with a simultaneous no-input ROM simulation and retaining only inputs
-that increase a player's score. The control is included in the runtime match.
-Campaigns repeat with varied start times to sample randomly ordered screens. Hints
-appear near the bottom in white text on a transparent background, using the
-same bitmap font as Dragon's Lair II. Recognition accounts for retries after
-death. Coverage is specific to the supported ROM revisions and explored paths.
+Dragon's Lair Enhanced 2.1 and Space Ace A3 have optional recorded moves and
+timing cues. The offline tool decodes revision-pinned ROM scene/step tables,
+input windows, transitions, score awards and death/scene-exit flags. It derives
+separate candidate routes for Max score and Fewest moves, executes the ROM at
+maximum speed without media, and independently replays successful full games.
+The APK identifies recorded moves by ROM scene, step and branch context.
+Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
+set, defaulting to Max score when the move display is Off. Local route selection
+and sampled successful games are not a proof of global optimality or complete
+context coverage.
 
 Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
 setting. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
-a duplicate hint system from Hypcade.
+a duplicate move system from Hypcade.
 
 Supported games also offer Watch Mode. It inserts coins until the game's own
 credit counter confirms a credit, then retries Player 1 Start until the ROM
 spends a credit or reports active lives. This waits through ROM startup that
 ignores early input. Watch Mode then replays the same native move events used
-by the hint system. During automatic play, ordinary controls are blocked;
-Pause and Exit remain available. Dragon's Lair II enables its ROM prompt data
-for automation even when the separate visual-hints setting is off.
+by the move system. During automatic play, ordinary controls are blocked;
+Pause and Exit remain available. Dragon's Lair II reads its native move data
+for automation while the Show moves setting independently controls visibility.
 
 The optional score-and-lives display reuses Hypseus's graphical scoreboard.
 For Dragon's Lair II US 3.19, Hypcade adds a read-only connection to both players'
@@ -138,11 +159,11 @@ Their source notices remain preserved where applicable.
 ## Tools, artwork and attribution
 
 The Android build, packaging tools, automated checks and synthetic media fixtures
-are additions to the upstream project. The offline hint generator runs game
+are additions to the upstream project. The offline move generator runs game
 logic faster than real time without decoding videos. It includes an attributed
 GPL-3.0-or-later subset of **Jeff Nyman's laser-vault**, pinned to revision
 `1f12c84dfabf3c8e5d028c8804b2f96678c798fa`; its notices and source provenance are
-kept in [tools/offline-hints/vendor](tools/offline-hints/vendor/).
+kept in [tools/offline-moves/vendor](tools/offline-moves/vendor/).
 
 Hypcade has its own cabinet-and-laserdisc logo, Android icons and TV banner.
 its prompt and provenance are in [android/artwork](android/artwork/).

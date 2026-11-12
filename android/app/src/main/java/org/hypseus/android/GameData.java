@@ -38,10 +38,12 @@ final class GameData {
     static final class LaunchRequest {
         final LaunchConfig config;
         final String[] arguments;
+        final boolean watchMode;
 
-        LaunchRequest(LaunchConfig config, String[] arguments) {
+        LaunchRequest(LaunchConfig config, String[] arguments, boolean watchMode) {
             this.config = config;
             this.arguments = arguments;
+            this.watchMode = watchMode;
         }
     }
 
@@ -160,18 +162,18 @@ final class GameData {
             }
         }
 
-        void validate(LaunchConfig config) {
+        void validate(LaunchConfig config, boolean watchMode) {
             if (!ready) return;
             execute("Checking game files…", () -> {
                 requireMountedStorage();
-                if (!new SetupSettings(context).canPlay()) {
+                if (!watchMode && !new SetupSettings(context).canPlay()) {
                     throw new IOException(BuildConfig.ARCADE ? "Configure and save a controller before starting a game."
                             : "Enable on-screen controls or configure a controller before starting a game.");
                 }
                 trimIndexes(new File(stateHome, "indexes"));
                 String[] arguments = config.arguments(home, stateHome);
                 synchronized (this) {
-                    launch = new LaunchRequest(config, arguments);
+                    launch = new LaunchRequest(config, arguments, watchMode);
                 }
                 return "Starting " + (config.name.isEmpty() ? config.game : config.name) + "…";
             });

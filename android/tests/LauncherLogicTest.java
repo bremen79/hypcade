@@ -57,9 +57,10 @@ public final class LauncherLogicTest {
         check(LaunchConfig.inferGame("dle21.daphne/lair.txt").isEmpty(), "Ambiguous revision must ask");
         check(LaunchConfig.inferGame("unknown/video.txt").isEmpty(), "Unknown must ask");
         LaunchConfig defaults = config("dle21", "game.txt", "", "");
-        check(!defaults.showMoves && !defaults.timingCue, "New profiles default assistance off");
-        LaunchConfig assisted = new LaunchConfig("old", "Game", "dle21", "game.txt", "", "", true, true).withId("new");
-        check(assisted.showMoves && assisted.timingCue, "Profile identity changes preserve assistance");
+        check(defaults.moveMode == MoveMode.OFF && !defaults.timingCue, "New profiles default assistance off");
+        check(MoveMode.selected(-1) == MoveMode.OFF && MoveMode.selected(3) == MoveMode.OFF, "Reject invalid move modes");
+        LaunchConfig assisted = new LaunchConfig("old", "Game", "dle21", "game.txt", "", "", MoveMode.MAX_SCORE, true).withId("new");
+        check(assisted.moveMode == MoveMode.MAX_SCORE && assisted.timingCue, "Profile identity changes preserve assistance");
         check(LaunchConfig.splitArguments(null).isEmpty(), "Null extra options should be empty");
         check(LaunchConfig.splitArguments("  \t \n ").isEmpty(), "Whitespace should be empty");
         List<String> actual = LaunchConfig.splitArguments(
@@ -105,7 +106,7 @@ public final class LauncherLogicTest {
         LaunchConfig arcade = config("LAIR", "vldp/demo/frames.txt", "", "-fastboot -linear_scale");
         List<String> argv = Arrays.asList(arcade.arguments(root));
         check(argv.contains("-scorebezel"), "Score/lives default on for supported games");
-        LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", false, false, false);
+        LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
         check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel"), "Score/lives can be disabled");
         check(!noScore.withId("new").showScore, "Preserve disabled score preference");
         for (String unsupported : new String[]{ "ace91", "singe", "laireuro", "aceeuro", "cliff"})
@@ -185,10 +186,101 @@ public final class LauncherLogicTest {
                 "Framefile redirected video outside the game root");
     }
 
+    private static int lastBank(List<String> options, int bank) {
+        int value = -1;
+        for (int i = 0; i + 2 < options.size(); i++)
+            if (options.get(i).equals("-bank") && options.get(i + 1).equals(Integer.toString(bank)))
+                value = Integer.parseInt(options.get(i + 2), 2) ^ 255;
+        return value;
+    }
+
+    private static void difficulties() {
+        List<String> inherited = Arrays.asList("-bank", "0", "11011101", "-bank", "1", "00100111", "-blend");
+        for (int level = 0; level < 4; level++) {
+            List<String> options = GameDifficulty.arguments("lair", level, inherited);
+            check((lastBank(options, 0) & ~4) == (0x22 & ~4), "Difficulty changed coinage/lives in bank A");
+            check((lastBank(options, 1) & ~0x90) == (0xd8 & ~0x90), "Difficulty changed other bank B switches");
+            check(options.contains("-blend"), "Difficulty dropped native options");
+            check((lastBank(options, 0) & 4) == (level < 2 ? 4 : 0), "Wrong DL difficulty mode");
+            check((lastBank(options, 1) & 0x90) == (level == 0 || level == 3 ? 0x10 : 0), "Wrong DL difficulty progression");
+        }
+        List<String> duplicate = Arrays.asList("-bank", "0", "11111111", "-bank", "0", "10101010");
+        check((lastBank(GameDifficulty.arguments("lair", 2, duplicate), 0) & ~4) == (0x55 & ~4), "Last bank setting not preserved");
+        check(GameDifficulty.choices("dle21").length == 1, "DLE21 must not expose difficulty");
+        check(GameDifficulty.choices("lair2").length == 5, "DL2 must show actual levels, with no default choice");
+        check(GameDifficulty.choices("lair2", Arrays.asList("-version", "5")).length == 1, "Unverified DL2 revision enabled");
+        for (int i = 0; i <= 4; i++) {
+            List<String> options = GameDifficulty.arguments("lair2", i, Arrays.asList("-preset", "2", "-blend"));
+            check(options.get(options.size() - 2).equals("-preset"), "DL2 must use the existing preset hook");
+            check(options.get(options.size() - 1).equals(Integer.toString(i)), "Wrong DL2 difficulty argument");
+            check(options.contains("-blend"), "DL2 difficulty dropped other options");
+        }
+        check(GameDifficulty.importedSelection("lair2", Arrays.asList("-preset", "3")) == 3, "Command-file difficulty not imported");
+        List<String> aceBanks = Arrays.asList("-bank", "0", "11000010", "-bank", "1", "00000001", "-blend");
+        int[] aceBits = {0x0c, 4, 8, 0};
+        check(GameDifficulty.choices("ace").length == 4, "Space Ace operator difficulty should have four explicit DIP choices");
+        check(GameDifficulty.importedSelection("ace", Arrays.asList()) == 0, "Space Ace factory DIP setting decoded incorrectly");
+        for (int i = 0; i < aceBits.length; i++) {
+            List<String> options = GameDifficulty.arguments("ace", i, aceBanks);
+            check((lastBank(options, 0) & 0x0c) == aceBits[i], "Wrong Space Ace difficulty DIP polarity");
+            check((lastBank(options, 0) & ~0x0c) == (0x3d & ~0x0c), "Space Ace difficulty changed coinage, lives or audio");
+            check(lastBank(options, 1) == 0xfe && options.contains("-blend"), "Space Ace difficulty changed unrelated options");
+            check(GameDifficulty.importedSelection("ace", options) == i, "Saved Space Ace difficulty did not read back");
+        }
+        for (int i = 0; i < 3; i++) check(GameDifficulty.startSkill("ace", i) == i + 1, "Wrong Ace skill switch");
+        check(GameDifficulty.startSkill("lair", 2) == 0, "Skill switch leaked into another game");
+        check(GameDifficulty.selected("ace", 9) == 0, "Out-of-range difficulty accepted");
+        check((lastBank(GameDifficulty.arguments("cliff", 0, Arrays.asList()), 0) & 15) == 15, "Wrong easiest Cliff setting");
+        check((lastBank(GameDifficulty.arguments("cliff", 15, Arrays.asList()), 0) & 15) == 0, "Wrong hardest Cliff setting");
+        check(lastBank(GameDifficulty.arguments("roadblaster", 0, Arrays.asList()), 1) == 0xf8, "Road Blaster defaults changed beyond difficulty");
+        check(lastBank(GameDifficulty.arguments("roadblaster", 1, Arrays.asList()), 1) == 0xe8, "Wrong active-low Road Blaster difficulty");
+        String[] dipGames = {"lair", "lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f",
+                "ace", "ace_a", "ace_a2", "sae", "roadblaster", "cliff", "cliffalt", "cliffalt2"};
+        for (String game : dipGames) {
+            String[] choices = GameDifficulty.choices(game);
+            for (int i = 0; i < choices.length; i++) {
+                check(!choices[i].equalsIgnoreCase("Game default"), "Placeholder difficulty in " + game);
+                check(GameDifficulty.importedSelection(game, GameDifficulty.arguments(game, i, inherited)) == i,
+                        "Difficulty did not round-trip for " + game + " level " + i);
+            }
+            check(GameDifficulty.selected(game, -1) == GameDifficulty.importedSelection(game, Arrays.asList()),
+                    "Unset difficulty does not match native defaults for " + game);
+        }
+        check(GameDifficulty.importedSelection("lair", Arrays.asList()) == 0, "DL factory setting is Easy");
+        check(GameDifficulty.importedSelection("lair_a", Arrays.asList()) == 2, "Early DL factory progression is after 5 scenes");
+        check(GameDifficulty.importedSelection("cliff", Arrays.asList()) == 2, "Cliff factory setting is Level 2");
+        check(GameDifficulty.importedSelection("cliffalt", Arrays.asList()) == 0, "Alternate Cliff factory setting is Level 0");
+        for (int a : new int[]{0, 4}) for (int b : new int[]{0x80, 0x90})
+            check(GameDifficulty.importedSelection("lair", Arrays.asList("-bank", "0", Integer.toBinaryString(a ^ 255),
+                    "-bank", "1", Integer.toBinaryString(b ^ 255))) == 0, "DL alternate Easy DIP combination not decoded");
+        LaunchConfig profile = new LaunchConfig("id", "Ace", "ace", "ace.txt", "", "", MoveMode.OFF, false, true, 2, 1);
+        check(profile.withId("other").difficulty == 2 && profile.withId("other").skill == 1, "Copy lost game difficulty or skill");
+    }
+
     public static void main(String[] arguments) throws Exception {
+        savedDl2Difficulty(Paths.get(arguments[0]));
+        difficulties();
         tokenization();
         settingsBounds();
         pathsAndArguments(Paths.get(arguments[0]));
         System.out.println("Launcher model regressions passed");
     }
+
+    private static void savedDl2Difficulty(Path temporary) throws IOException {
+        Path state = temporary.resolve("dl2-settings");
+        check(GameDifficulty.readDl2Level(state.toFile()) == 0, "Fresh EEPROM factory level changed");
+        Path file = state.resolve("ram/lair2_319.gz");
+        Files.createDirectories(file.getParent());
+        byte[] data = new byte[128];
+        data[0] = 0x41; data[1] = 0x12;
+        for (int level = 0; level <= 4; level++) {
+            data[28] = (byte)level;
+            try (java.util.zip.GZIPOutputStream out = new java.util.zip.GZIPOutputStream(Files.newOutputStream(file))) { out.write(data); }
+            check(GameDifficulty.readDl2Level(state.toFile()) == level, "UI read wrong saved EEPROM level");
+        }
+        data[0] = 0;
+        try (java.util.zip.GZIPOutputStream out = new java.util.zip.GZIPOutputStream(Files.newOutputStream(file))) { out.write(data); }
+        check(GameDifficulty.readDl2Level(state.toFile()) == 0, "Invalid EEPROM should use ROM factory level");
+    }
+
 }

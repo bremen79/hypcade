@@ -71,6 +71,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private TextView controllerStatus;
     private boolean setupWasComplete;
     private Button playButton;
+    private Button watchButton;
     private boolean scanning;
     private String scannedRoot = "";
     private int scanGeneration;
@@ -117,6 +118,10 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private String extras = "";
     private Switch fastBoot;
     private Switch showScore;
+    private Button difficultyButton;
+    private Button skillButton;
+    private int difficulty;
+    private int skill;
     private Switch showFps;
     private boolean applyingOptions;
     private Switch linearScale;
@@ -124,7 +129,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private Switch syncVideo;
     private Switch hardwareVideo;
     private LinearLayout videoSection;
-    private Switch moveHints;
+    private Button showMovesButton;
+    private int moveMode;
     private Switch timingCue;
     private TextView assistanceStatus;
     private final ControllerNavigation navigation = new ControllerNavigation();
@@ -324,16 +330,28 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         label(advancedSection, "Game / ROM override (only if detection is incorrect)");
         advancedSection.addView(gameId, spaced(-1, dp(48), 4));
         fastBoot = option(advancedSection, "Fast startup");
+        difficultyButton = input(action("Difficulty", false, view -> chooseDifficulty()));
+        advancedSection.addView(difficultyButton, spaced(-1, dp(60), 4));
+        skillButton = input(action("Skill", false, view -> chooseSkill()));
+        advancedSection.addView(skillButton, spaced(-1, dp(50), 4));
         showScore = option(advancedSection, "Show score and lives");
-        moveHints = option(advancedSection, "Show correct moves");
+        showMovesButton = input(action("Show moves", false, view -> chooseSetting(
+                "Show moves", MoveMode.LABELS, moveMode, value -> moveMode = value)));
+        advancedSection.addView(showMovesButton, spaced(-1, dp(50), 4));
         timingCue = option(advancedSection, "Play move timing cue");
         assistanceStatus = text("", 12, MUTED);
         advancedSection.addView(assistanceStatus, spaced(-1, -2, 8));
         advancedSection.setVisibility(View.GONE);
         game.addView(advancedSection);
 
-        playButton = input(action("Start game", true, view -> startGame()));
-        gameArea.addView(playButton, spaced(-1, dp(56), 18));
+        LinearLayout launchButtons = row();
+        playButton = input(action("Start game", true, view -> startGame(false)));
+        watchButton = input(action("Watch Mode", false, view -> startGame(true)));
+        playButton.setContentDescription("Start the game with manual controls");
+        watchButton.setContentDescription("Watch the game play automatically using bundled moves");
+        addEqual(launchButtons, playButton);
+        addEqual(launchButtons, watchButton);
+        gameArea.addView(launchButtons, spaced(-1, dp(56), 18));
         LinearLayout tools = row();
         debugButton = input(action("Debug", false, view -> showDebugMenu()));
         addEqual(tools, debugButton);
@@ -360,7 +378,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private LaunchConfig readProfile() {
         return new LaunchConfig(currentId, profileName.getText().length() == 0 ? profileTitle() : profileName.getText().toString(), gameId.getText().toString(),
                 framefile.getText().toString(), script.getText().toString(), selectedOptions(),
-                moveHints.isChecked(), timingCue.isChecked(), showScore.isChecked());
+                moveMode, timingCue.isChecked(), showScore.isChecked(), difficulty, skill);
     }
 
     private void applyProfile(LaunchConfig config) {
@@ -371,6 +389,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         framefile.setText(config.framefile);
         script.setText(config.script);
         extras = config.extraArguments;
+        difficulty = config.difficulty;
+        skill = config.skill;
         List<String> options = safeOptions();
         VideoOptions video = new VideoOptions(options);
         fastBoot.setChecked(video.fastBoot);
@@ -380,7 +400,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         scanlines.setChecked(video.scanlines);
         syncVideo.setChecked(video.vsync);
         hardwareVideo.setChecked(video.hardware);
-        moveHints.setChecked(config.showMoves);
+        moveMode = config.moveMode;
         timingCue.setChecked(config.timingCue);
         updateGameOptions();
         advancedSection.setVisibility(View.GONE);
@@ -520,9 +540,11 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         JSONObject json = new JSONObject();
         try {
             json.put("score", config.showScore);
+            json.put("difficulty", config.difficulty);
+            json.put("skill", config.skill);
             json.put("id", config.id).put("name", config.name).put("game", config.game)
                     .put("framefile", config.framefile).put("script", config.script)
-                    .put("extra", config.extraArguments).put("moves", config.showMoves).put("cue", config.timingCue);
+                    .put("extra", config.extraArguments).put("moves", config.moveMode).put("cue", config.timingCue);
         } catch (JSONException impossible) {
             throw new IllegalStateException(impossible);
         }
@@ -532,7 +554,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private static LaunchConfig fromJson(JSONObject json) {
         return new LaunchConfig(json.optString("id", ""), json.optString("name", ""), json.optString("game", "lair"),
                 json.optString("framefile", ""), json.optString("script", ""), json.optString("extra", ""),
-                json.optBoolean("moves", false), json.optBoolean("cue", false), json.optBoolean("score", true));
+                json.optInt("moves", MoveMode.OFF), json.optBoolean("cue", false), json.optBoolean("score", true), json.optInt("difficulty", -1), json.optInt("skill", 0));
     }
 
     private void chooseStorage() {
@@ -651,6 +673,12 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                     work.status = "Display test failed (code " + code + "). Check the Android log for HYPSEUS_ANDROID_SMOKE.";
                     work.failed = true;
                 } else {
+                    if (code == 0 && gameId.getText().toString().equals("lair2")
+                            && GameDifficulty.choices("lair2", safeOptions()).length > 1) {
+                        difficulty = savedDl2Difficulty();
+                        rememberCurrent();
+                        saveDraft();
+                    }
                     work.status = "Returned to launcher (native exit " + code + "). "
                             + "If the game did not start, open Debug → View last log.";
                     work.failed = code != 0;
@@ -664,12 +692,14 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         }
     }
 
-    private void startGame() {
-        if (!setupComplete() || !setup.canPlay() || work.busy || emulatorOpen) return;
+    private void startGame(boolean watchMode) {
+        GuidanceSupport support = GuidanceSupport.forGame(gameId.getText().toString(), safeOptions());
+        if (!setupComplete() || (!watchMode && !setup.canPlay()) ||
+                (watchMode && !support.visual) || work.busy || emulatorOpen) return;
         rememberCurrent();
         saveDraft();
         hideKeyboard();
-        work.validate(readProfile());
+        work.validate(readProfile(), watchMode);
         scroll.smoothScrollTo(0, 0);
     }
 
@@ -707,18 +737,28 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     }
 
     private void launch(String[] arguments, boolean smoke) {
-        launch(arguments, smoke, false, false);
+        launch(arguments, smoke, MoveMode.OFF, false);
     }
 
-    private void launch(String[] arguments, boolean smoke, boolean moves, boolean cue) {
-        if (emulatorOpen || (!smoke && (!setupComplete() || !setup.canPlay()))) return;
+    private void launch(String[] arguments, boolean smoke, int moves, boolean cue) {
+        launch(arguments, smoke, moves, cue, false);
+    }
+
+    private void launch(String[] arguments, boolean smoke, int moves, boolean cue, boolean watchMode) {
+        launch(arguments, smoke, moves, cue, watchMode, 0);
+    }
+
+    private void launch(String[] arguments, boolean smoke, int moves, boolean cue, boolean watchMode, int startSkill) {
+        if (emulatorOpen || (!smoke && (!setupComplete() || (!watchMode && !setup.canPlay())))) return;
         saveDraft();
         hideKeyboard();
         Intent intent = new Intent(this, HypseusActivity.class);
         intent.putExtra(HypseusActivity.EXTRA_ARGUMENTS, arguments);
         intent.putExtra(HypseusActivity.EXTRA_CONTROLS, setup.encodedControls());
+        intent.putExtra(HypseusActivity.EXTRA_WATCH, watchMode);
+        intent.putExtra(HypseusActivity.EXTRA_START_SKILL, startSkill);
         GuidanceSupport support = GuidanceSupport.forArguments(arguments);
-        intent.putExtra("move_hints", moves && support.visual);
+        intent.putExtra("move_mode", support.visual ? MoveMode.selected(moves) : MoveMode.OFF);
         intent.putExtra("timing_cue", cue && support.cue);
         intent.putExtra(HypseusActivity.EXTRA_TOUCH, !BuildConfig.ARCADE && setup.touchControls());
         intent.putExtra(HypseusActivity.EXTRA_SMOKE, smoke);
@@ -764,13 +804,18 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         updateGameOptions();
         if (complete && available) scanGames(false);
         profilePicker.setEnabled(complete && !changed.busy && !scanning && !library.isEmpty() && !emulatorOpen);
-        playButton.setEnabled(complete && setup.canPlay() && !changed.busy && !scanning && !currentId.isEmpty() && !emulatorOpen);
+        boolean canLaunch = complete && !changed.busy && !scanning && !currentId.isEmpty() && !emulatorOpen;
+        playButton.setEnabled(canLaunch && setup.canPlay());
+        GuidanceSupport support = GuidanceSupport.forGame(gameId.getText().toString(), safeOptions());
+        watchButton.setEnabled(canLaunch && support.visual);
+        watchButton.setText(support.visual ? "Watch Mode" : "Watch Mode — unavailable");
         dataPath.setText("Game folder\n" + (changed.home != null ? changed.home.getPath()
                 : setup.directory().isEmpty() ? "No storage selected" : setup.directory()));
         if (resumed && !changed.busy) {
             GameData.LaunchRequest request = changed.takeLaunch();
             if (request != null) launch(request.arguments, false,
-                    request.config.showMoves, request.config.timingCue);
+                    request.config.moveMode, request.config.timingCue, request.watchMode,
+                    GameDifficulty.startSkill(request.config.game, request.config.skill));
         }
     }
 
@@ -1001,10 +1046,10 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         parent.addView(text(value, 13, MUTED), spaced(-1, -2, 14));
     }
 
-    private Button fileField(LinearLayout parent, String name, String hint, boolean scripts) {
+    private Button fileField(LinearLayout parent, String name, String move, boolean scripts) {
         label(parent, name);
         Button field = input(action("", false, null));
-        field.setHint(hint);
+        field.setHint(move);
         field.setHintTextColor(TEXT);
         field.setOnClickListener(view -> browse(field, scripts));
         parent.addView(field, spaced(-1, dp(60), 4));
@@ -1056,7 +1101,9 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                         ? "Game not detected — choose ROM version" : "Override game / ROM version")
                 .setItems(GAME_IDS, (dialog, which) -> {
                     gameId.setText(GAME_IDS[which]);
-                    moveHints.setChecked(false);
+                    difficulty = GameDifficulty.importedSelection(GAME_IDS[which], safeOptions());
+                    skill = 0;
+                    moveMode = MoveMode.OFF;
                     updateGameOptions();
                     profileName.setText(profileTitle());
                     saveManualSelection();
@@ -1070,24 +1117,66 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         scriptSection.setVisibility(game.equals("singe") ? View.VISIBLE : View.GONE);
         GuidanceSupport support = GuidanceSupport.forGame(game, safeOptions());
         boolean available = setupComplete() && !work.busy && !emulatorOpen;
+        String[] levels = GameDifficulty.choices(game, safeOptions());
+        if (game.equals("lair2")) {
+            if (levels.length <= 1) difficulty = -1;
+            else if (difficulty < 0 || difficulty >= levels.length) difficulty = savedDl2Difficulty();
+        } else if (difficulty < 0 || difficulty >= levels.length)
+            difficulty = GameDifficulty.importedSelection(game, safeOptions());
+        difficultyButton.setEnabled(available && levels.length > 1);
+        difficultyButton.setText(levels.length > 1 ? "Difficulty: " + levels[difficulty] : GameDifficulty.unavailable(game));
+        skillButton.setVisibility(GameDifficulty.spaceAce(game) ? View.VISIBLE : View.GONE);
+        skillButton.setEnabled(available && GameDifficulty.spaceAce(game));
+        skillButton.setText("Skill: " + GameDifficulty.SKILLS[skill]);
+        watchButton.setEnabled(available && support.visual);
+        watchButton.setText(support.visual ? "Watch Mode" : "Watch Mode — unavailable");
         showScore.setEnabled(available && LaunchConfig.supportsScore(game, safeOptions()));
         showScore.setText(LaunchConfig.supportsScore(game, safeOptions()) ? "Show score and lives" : game.equals("lair2") ? "Score and lives — requires DL2 US 3.19" : "Score and lives — game-controlled / unavailable");
         fastBoot.setEnabled(available && LaunchConfig.supportsFastBoot(game));
         fastBoot.setText(LaunchConfig.supportsFastBoot(game) ? "Fast startup" : "Fast startup — unavailable");
-        moveHints.setEnabled(available && support.visual);
+        showMovesButton.setEnabled(available && support.visual);
         timingCue.setEnabled(available && support.cue);
-        if (!support.visual) moveHints.setChecked(false);
+        if (!support.visual) moveMode = MoveMode.OFF;
         if (!support.cue) timingCue.setChecked(false);
-        moveHints.setText(support.visual ? "Show correct moves" : support.scriptControlled
-                ? "Correct moves — use game menu" : "Correct moves — unavailable");
+        showMovesButton.setText(support.visual ? "Show moves: " + MoveMode.LABELS[moveMode] : support.scriptControlled
+                ? "Show moves — use game menu" : "Show moves — unavailable");
         timingCue.setText(support.cue ? "Play move timing cue" : support.scriptControlled
                 ? "Timing cue — use game menu" : game.equals("lair2")
                 ? "Timing cue — included in video" : "Timing cue — unavailable");
         assistanceStatus.setText(support.scriptControlled
-                ? "Map Game options / Service in Controller setup, then press that button in the game to open its original menu (where supported). Hints and cues are controlled there."
-                : !support.visual ? "No bundled hints for this game / ROM version."
-                : game.equals("lair2") ? "Dragon's Lair II 3.19: visual hints use the game's original prompts; audio cues are supplied by the video; no extra cue is added."
-                : "Experimental guidance for this ROM: only recognized safe move windows are shown. Unrecognized scenes stay silent.");
+                ? "Map Game options / Service in Controller setup, then press that button in the game to open its original menu (where supported). Moves and cues are controlled there."
+                : !support.visual ? "No bundled moves for this game / ROM version."
+                : game.equals("lair2") ? "Dragon's Lair II 3.19 uses its original ROM moves for both policies. Audio cues are included in the video."
+                : "Choose Max score or Fewest moves. Watch Mode follows that selection, or Max score when Show moves is Off. Only recorded move windows are shown.");
+    }
+
+    private void chooseDifficulty() {
+        chooseSetting("Difficulty", GameDifficulty.choices(gameId.getText().toString(), safeOptions()),
+                difficulty, value -> difficulty = value);
+    }
+
+    private int savedDl2Difficulty() {
+        try { return GameDifficulty.readDl2Level(new File(getFilesDir(), "hypseus")); }
+        catch (IOException invalid) {
+            android.util.Log.w("Hypcade", "Cannot read DL2 EEPROM difficulty; using ROM factory level", invalid);
+            return 0;
+        }
+    }
+
+    private void chooseSkill() {
+        chooseSetting("Skill", GameDifficulty.SKILLS, skill, value -> skill = value);
+    }
+
+    private void chooseSetting(String title, String[] choices, int selected, java.util.function.IntConsumer update) {
+        if (choices.length <= 1) return;
+        dialogBuilder().setTitle(title)
+                .setSingleChoiceItems(choices, selected, (dialog, which) -> {
+                    update.accept(which);
+                    updateGameOptions();
+                    rememberCurrent();
+                    saveDraft();
+                    dialog.dismiss();
+                }).setNegativeButton("Cancel", null).show();
     }
 
     private AlertDialog.Builder dialogBuilder() {

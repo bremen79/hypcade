@@ -507,7 +507,17 @@ void lair::do_irq(unsigned int which_irq)
             m_pScoreboard->pre_get_digit(lives0, IScoreboard::LIVES0);
             m_pScoreboard->pre_get_digit(lives1, IScoreboard::LIVES1);
         }
+        if (arcade_watch_mode_enabled()) {
+            unsigned credit_tens = 0, credit_ones = 0;
+            const bool credits_valid = m_pScoreboard &&
+                m_pScoreboard->pre_get_digit(credit_tens, IScoreboard::CREDITS1_0) &&
+                m_pScoreboard->pre_get_digit(credit_ones, IScoreboard::CREDITS1_1) &&
+                credit_tens <= 9 && credit_ones <= 9;
+            arcade_watch_publish_credits(credits_valid ? int(credit_tens * 10 + credit_ones) : -1);
+        }
         bool alive = (lives0 > 0 && lives0 <= 9) || (lives1 > 0 && lives1 <= 9);
+        if (arcade_watch_mode_enabled())
+            arcade_watch_publish_game_started(alive && g_ldp->get_status() == LDP_PLAYING);
         arcade_guidance_cine(m_cpumem, sizeof(m_cpumem), m_shortgamename,
             alive && g_ldp->get_status() == LDP_PLAYING, g_ldp->get_current_frame());
     }
