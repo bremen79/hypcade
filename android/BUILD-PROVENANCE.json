@@ -202,5 +202,6 @@
       "url": "https://github.com/mamedev/mame/blob/master/src/mame/cinematronics/dlair.cpp",
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
-  ]
+  ],
+  "source_tree_status": "The APKs listed here predate offline-tool cleanup and removal of unused legacy guidance helpers. Bundled move tables are unchanged; no new APKs were built for this cleanup."
 }

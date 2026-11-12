@@ -16,16 +16,6 @@ int main() {
     arcade_configure_guidance(0, false, false);
     assert(!arcade_guidance_enabled() && !arcade_watch_mode_enabled());
 
-    const ArcadeScoreMove score_moves[] = {
-        {0x1234, 100, 10, 3, 1},
-        {0x1234, 100, 10, 3, 4},
-        {0x1234, 150, 10, 7, 1},
-    };
-    assert(arcade_score_move_matches(score_moves, 3, 0x1234, 3, 1, 100));
-    assert(arcade_score_move_matches(score_moves, 3, 0x1234, 3, 4, 100));
-    assert(!arcade_score_move_matches(score_moves, 3, 0x1234, 3, 2, 100));
-    assert(!arcade_score_move_matches(score_moves, 3, 0x1234, 7, 4, 150));
-    assert(!arcade_score_move_matches(score_moves, 3, 0x9999, 3, 1, 100));
     std::vector<uint8_t> memory(0x100000, 0);
     arcade_configure_dl2_moves(memory.data(), memory.size(), true);
     assert(memory[0xf2804] == 0x90 && memory[0xf2805] == 0x90);
@@ -92,5 +82,5 @@ int main() {
     assert(arcade_cine_signature(table,256)==identity);
     assert(!arcade_decode_cine(memory.data(),memory.size(),false,1571).controls);
     assert(!arcade_decode_cine(memory.data(),memory.size(),false,30000).controls);
-    puts("Guidance: control-specific score matches, window boundaries, bounds, retry signatures and unknown-state refusal passed");
+    puts("Guidance: bounds, retry signatures, native DL2 moves and unknown-state refusal passed");
 }

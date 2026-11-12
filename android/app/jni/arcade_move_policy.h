@@ -4,21 +4,10 @@
 #include "arcade_signature.h"
 #include <stdbool.h>
 
-/* One record per observed input window, never one per RAM snapshot or frame.
- * timing packs the earliest accepted remaining timer (8 bits) and ROM slot
- * (entry * 3 + window, 6 bits). The complete record occupies 16 bytes. */
-typedef struct {
-    uint64_t headers;
-    uint32_t frame;
-    uint16_t timing;
-    uint8_t outcome, control;
-} ArcadeScoreMove;
-
 typedef struct {
     uint8_t controls;
     bool ready;
     uint64_t window;
-    bool terminal_proof;
 } ArcadeMoveSelection;
 
 /* Ace A3 can require different inputs with an identical visible move table.
@@ -36,46 +25,6 @@ static inline uint64_t arcade_move_signature(const uint8_t *table, size_t size, 
     return signature;
 }
 
-/* Shared by the APK and the no-video policy replay. Alternatives are ordered
- * by the selected objective when generated; select exactly one action. */
-static inline ArcadeMoveSelection arcade_select_scored_move(const ArcadeScoreMove *moves, size_t count,
-                                                      const uint8_t *table, unsigned frame, uint16_t branch) {
-    ArcadeMoveSelection result = {0, false, 0, false};
-    uint64_t signature = arcade_move_signature(table, 256, branch);
-    size_t low = 0, high = count;
-    while (low < high) {
-        size_t mid = low + (high - low) / 2;
-        if (moves[mid].headers < signature) low = mid + 1;
-        else high = mid;
-    }
-    for (size_t i = low; i < count && moves[i].headers == signature; ++i) {
-        const ArcadeScoreMove *move = moves + i;
-        unsigned slot = (move->timing >> 8) & 63, entry = slot / 3, window = slot % 3;
-        unsigned first_ticks = move->timing & 255;
-        if (entry >= 16 || !first_ticks) continue;
-        const uint8_t *x = table + entry * 16;
-        unsigned control = (x[0] & 15) ? (x[0] & 15) : 16;
-        if (!(x[0] & 128) || window >= (x[1] & 3) ||
-            control != move->control ||
-            x[2 + ((x[1] >> (2 + 2 * window)) & 3)] != move->outcome || !x[13 + window]) continue;
-        unsigned delay = x[12];
-        for (unsigned w = 0; w < window; ++w) delay += x[13 + w];
-        unsigned end_frame = move->frame + (first_ticks * 786U + 999U) / 1000U + 2;
-        if (delay > 12 || frame + 10 < move->frame || frame > end_frame) continue;
-        bool ready = !delay && frame >= move->frame && x[13 + window] <= first_ticks;
-        if (!ready && result.controls) continue;
-        result.controls = move->control;
-        result.ready = ready;
-        result.window = signature ^ ((uint64_t)(slot + 1) << 40);
-        result.terminal_proof = (move->timing & 0x4000) != 0;
-        // A later preview must not hide a window that can accept input now.
-        // Otherwise the current move can disappear and reappear, generating
-        // a second press for the same ROM window.
-        if (ready) return result;
-    }
-    return result;
-}
-
 /* ROM scene/step identity avoids confusing equal prompt shapes in different
  * scenes. Ace's complete branch bytes remain part of the key. */
 typedef struct {
@@ -90,7 +39,7 @@ static inline uint32_t arcade_rom_state(unsigned scene,unsigned step,uint16_t br
 
 static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *moves,size_t count,
         const uint8_t *ram,unsigned frame,bool ace) {
-    ArcadeMoveSelection result={0,false,0,false};
+    ArcadeMoveSelection result={0,false,0};
     uint16_t branch=ace ? (uint16_t)((ram[0x16]<<8)|ram[0x35]) : 0;
     uint32_t state=arcade_rom_state(ram[14],ram[15],branch);
     size_t low=0,high=count;
@@ -110,7 +59,6 @@ static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *mo
         if(!ready && result.controls)continue;
         result.controls=move->control;result.ready=ready;
         result.window=((uint64_t)state<<32)|((uint64_t)(slot+1)<<8)|move->outcome;
-        result.terminal_proof=(move->timing&0x4000)!=0;
         if(ready)return result;
     }
     return result;

@@ -93,8 +93,8 @@ The move-window decoders adapt RAM-layout knowledge and code from Jeff Nyman's
 `1f12c84dfabf3c8e5d028c8804b2f96678c798fa`, under GNU GPL version 3 or later (Copyright (C) 2026 Jeff Nyman).
 See `app/jni/arcade_guidance.cpp` and `../tools/offline-moves/`.
 The compact observed-outcome tables contain hashes and frame context, not ROM
-bytes or media. The optional generator uses a separately obtained pinned
-laser-vault checkout and user-owned ROMs; its CPU/look-ahead engine is not
+bytes or media. The optional generator uses the pinned source subset under
+`tools/offline-moves/vendor/` and user-owned ROMs; its CPU/player code is not
 included in the APK. Complete GPL text is in the project's LICENSE file.
 
 ## Android MPEG-2 NEON acceleration
@@ -115,11 +115,11 @@ retained in `tools/offline-moves/vendor/NOTICE`.
 AY-8910 and ROM/ZIP source subset from the same Jeff Nyman laser-vault revision
 above, under GPL-3.0. Its local changes and file hashes are recorded in
 `vendor/provenance.json`, and its full license is included in `vendor/LICENSE`.
-The explorer adds branch/timing trials and treats inconclusive look-ahead
-as unresolved. Campaign mode follows a death-free route to ROM-driven victory,
-tests every open control against a simultaneous no-input simulation, and
-derives ROM scene/step policies and compiles independently replayed moves into
-two Android tables. Required zero-score actions are retained. It is a
+The tools decode ROM scene/step policies, validate selected input timings
+against a simultaneous no-input simulation, and independently replay complete
+games before packaging their observed moves into two Android tables. The
+structural exporter also retains windows not visited by those games. Required
+zero-score actions are retained. This is a
 laptop build tool, not linked into or packaged in the APK. See
 `tools/offline-moves/README.md` for its source and reproduction instructions.
 

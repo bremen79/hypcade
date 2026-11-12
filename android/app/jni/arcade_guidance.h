@@ -13,9 +13,6 @@ struct ArcadeMove {
     bool ready = false;
     uint64_t window = 0;
 };
-bool arcade_score_move_matches(const ArcadeScoreMove *entries, size_t count,
-                               uint64_t headers, uint8_t outcome, uint8_t control,
-                               unsigned frame);
 ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame);
 ArcadeMove arcade_decode_dl2(const uint8_t *memory, size_t size);
 void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame);

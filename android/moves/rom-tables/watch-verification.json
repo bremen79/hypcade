@@ -1,0 +1,1646 @@
+{
+  "results": [
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-00-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-00-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-00-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-01-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-01-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-01-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-02-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-02-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-02-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-03-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-03-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-03-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-04-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-04-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-04-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-05-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-05-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-05-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-06-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-06-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-06-2.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-07-0.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 333333,
+        "moves": 155,
+        "learned": 0
+      },
+      "log": "dle21-ace-07-1.log"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 314457,
+        "moves": 147,
+        "learned": 0
+      },
+      "log": "dle21-ace-07-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-00-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-00-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-00-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-01-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-01-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-01-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-02-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-02-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-02-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-03-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-03-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-03-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-04-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-04-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-04-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-05-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-05-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-05-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-06-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-06-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-06-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-07-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 257784,
+        "moves": 134,
+        "learned": 0
+      },
+      "log": "ace-cadet-07-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 185686,
+        "moves": 85,
+        "learned": 0
+      },
+      "log": "ace-cadet-07-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-00-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-00-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-00-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-01-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-01-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-01-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-02-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-02-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-02-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-03-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-03-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-03-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-04-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-04-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-04-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 166,
+        "learned": 0
+      },
+      "log": "ace-captain-05-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 166,
+        "learned": 0
+      },
+      "log": "ace-captain-05-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-05-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-06-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-06-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-06-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-07-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 289102,
+        "moves": 167,
+        "learned": 0
+      },
+      "log": "ace-captain-07-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 213098,
+        "moves": 110,
+        "learned": 0
+      },
+      "log": "ace-captain-07-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-00-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-00-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 0,
+      "start_delay": 0,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 143,
+        "learned": 0
+      },
+      "log": "ace-ace-00-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-01-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-01-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 1,
+      "start_delay": 5.3595478128447755,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 142,
+        "learned": 0
+      },
+      "log": "ace-ace-01-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-02-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-02-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 2,
+      "start_delay": 25.02142514227867,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 143,
+        "learned": 0
+      },
+      "log": "ace-ace-02-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-03-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-03-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 3,
+      "start_delay": 10.92234088162144,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 142,
+        "learned": 0
+      },
+      "log": "ace-ace-03-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-04-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-04-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 4,
+      "start_delay": 19.123199636880216,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 143,
+        "learned": 0
+      },
+      "log": "ace-ace-04-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-05-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-05-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 5,
+      "start_delay": 0.28866033060914065,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 142,
+        "learned": 0
+      },
+      "log": "ace-ace-05-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-06-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-06-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 6,
+      "start_delay": 1.9707750935921886,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 143,
+        "learned": 0
+      },
+      "log": "ace-ace-06-2.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 0,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 0,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-07-0.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 1,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 1,
+        "score": 371338,
+        "moves": 213,
+        "learned": 0
+      },
+      "log": "ace-ace-07-1.log"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "start": 7,
+      "start_delay": 3.9751806322560848,
+      "mode": 2,
+      "verified": true,
+      "result": {
+        "type": "watch_replay",
+        "verified": true,
+        "mode": 2,
+        "score": 216092,
+        "moves": 143,
+        "learned": 0
+      },
+      "log": "ace-ace-07-2.log"
+    }
+  ],
+  "all_passed": true,
+  "completed": 96,
+  "planned": 96,
+  "all_scenes_proven": false,
+  "wall_seconds": 234.011,
+  "method": "Packaged ROM-state selector, original CPU/player, IRQ guidance, 8ms polling, 100ms input holds. Mode 0 tests Off selecting Max score for automation.",
+  "training": false,
+  "limitations": "Headless input timing model; not a physical Android device test. No claim of all retry contexts or global optimality.",
+  "move_table_sha256": "94b117d8884fc247d203e7938c093f029bfde60f003d4854f4d3a18584e23974",
+  "native_test_binary_sha256": "42083a8655a3e684244c84d4a8bfa870ac7b2c5e554b180792270eacf2049cca"
+}

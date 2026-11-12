@@ -5,7 +5,6 @@
 // commit 1f12c84dfabf3c8e5d028c8804b2f96678c798fa. See Android notices.
 #include "arcade_guidance.h"
 #include "arcade_signature.h"
-#include <algorithm>
 #include <atomic>
 #include <cstring>
 #ifndef HYPSEUS_GUIDANCE_HOST_TEST
@@ -13,20 +12,6 @@
 #endif
 
 #include "arcade_moves.inc"
-
-bool arcade_score_move_matches(const ArcadeScoreMove *entries, size_t count,
-                               uint64_t headers, uint8_t outcome, uint8_t control,
-                               unsigned frame) {
-    if (!entries || !count) return false;
-    const ArcadeScoreMove *entry = std::lower_bound(entries, entries + count, headers,
-        [](const ArcadeScoreMove &item, uint64_t key) { return item.headers < key; });
-    for (; entry != entries + count && entry->headers == headers; ++entry) {
-        unsigned end = entry->frame + ((entry->timing & 255) * 786U + 999U) / 1000U + 2;
-        if (entry->outcome == outcome && entry->control == control &&
-            frame >= entry->frame && frame <= end) return true;
-    }
-    return false;
-}
 
 static std::atomic<int> selected_move_policy{1};
 void arcade_set_move_policy(int mode) {

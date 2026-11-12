@@ -31,9 +31,12 @@ jobs:
         run: python3 android/tests/test_android_clock.py
       - name: Check launcher arguments and file validation
         run: python3 android/tests/test_launcher_logic.py
-      - name: Check offline move minimization and bundled evidence
+      - name: Check ROM move export, replay helpers and bundled evidence
         run: |
           python3 tools/offline-moves/test_moves.py
+          python3 tools/offline-moves/test_rom_tables.py
+          python3 tools/offline-moves/test_rom_export.py
+          python3 tools/offline-moves/test_score_routes.py
           python3 android/tests/test_bundled_moves.py
           python3 android/tests/test_arcade_guidance.py
       - name: Check video index validation and publication
