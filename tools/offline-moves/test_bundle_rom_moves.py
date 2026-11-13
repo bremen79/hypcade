@@ -8,7 +8,10 @@ from pathlib import Path
 import tempfile
 from unittest.mock import patch
 
-from bundle_rom_moves import bundle, ranked_rows
+from bundle_rom_moves import bundle, ranked_rows, runtime_policy, rule_coverage
+from test_rom_export import graph
+import export_rom_moves
+import rom_tables
 
 
 class BranchCoverageTest(unittest.TestCase):
@@ -30,9 +33,9 @@ class BranchCoverageTest(unittest.TestCase):
         self.assertEqual({r[0] for r in shortest},{2})
         self.assertEqual({r[0] for r in maximum},{1,2})
 
-    def test_no_invented_action_when_preferred_continuation_has_no_evidence(self):
-        with self.assertRaisesRegex(ValueError,'No verified continuation'):
-            ranked_rows([((2,100,20,3,8),(10,200))],self.policy('shortest',[(2,1)]))
+    def test_missing_timing_calibration_does_not_remove_rom_policy(self):
+        self.assertEqual(ranked_rows([((2,100,20,3,8),(10,200))],
+                                    self.policy('shortest',[(2,1)])),{})
 
     def test_outcome_and_live_window_must_match_the_selected_policy(self):
         good=(2,100,20,3,8)
@@ -47,6 +50,8 @@ class BranchCoverageTest(unittest.TestCase):
             output=Path(directory);entries=[]
             for game in ('dle21','ace'):
                 rules=output/'rules'/game;rules.mkdir(parents=True)
+                (rules/'rules.json').write_text('[]')
+                (rules/'inventory.json').write_text(json.dumps(dict(records=[],nodes=[],edges=[])))
                 for objective in ('shortest','highest-score'):
                     (rules/(objective+'-policy.json')).write_text(json.dumps(
                         self.policy(objective,[(2,8)])))
@@ -67,19 +72,45 @@ class BranchCoverageTest(unittest.TestCase):
                 bundle(output,output,output/'arcade_moves.inc')
             for game in ('dle21','ace'):
                 data=json.loads((output/(game+'-moves.json')).read_text())
-                self.assertEqual(set(data),{'moves','policies'})
+                self.assertEqual(set(data),{'moves','policies','rules','native_rules','rule_policies'})
                 self.assertEqual(len(data['moves']),1)
                 self.assertEqual(data['policies'],{'shortest':[0],'highest-score':[0]})
             self.assertEqual({p.name for p in output.glob('*.json')},
-                {'report.json','generation-verification.json','manifest.json','ace-moves.json','dle21-moves.json'})
+                {'report.json','generation-verification.json','manifest.json','ace-moves.json','dle21-moves.json','ace-inventory.json','dle21-inventory.json'})
             self.assertEqual((output/'ace/ace-d0-00/shortest/route.trace').read_text(),
                              'synthetic test trace\n')
+
+    def test_unsampled_scenes_and_lower_ranked_actions_are_packaged(self):
+        inventory=graph()
+        policies={o:rom_tables.policies(inventory,o) for o in export_rom_moves.OBJECTIVES}
+        rules=export_rom_moves.compile_rules(inventory,policies)
+        native,orders=runtime_policy(rules)
+        self.assertIn((27|(10<<7),0,0x81,16),native)
+        for order in orders.values():
+            rows=[native[i] for i in order]
+            self.assertIn((1,0,1,1),rows)
+            self.assertIn((1,0,1,8),rows) # Tie is retained, player selects one.
+            self.assertNotIn((1,0,2,2),rows) # Death is audited, never suggested.
+
+    def test_removed_rule_or_policy_alternative_fails_coverage(self):
+        inventory=graph()
+        rules=export_rom_moves.compile_rules(inventory,{o:rom_tables.policies(inventory,o)
+                                                       for o in export_rom_moves.OBJECTIVES})
+        native,orders=runtime_policy(rules)
+        self.assertEqual(rule_coverage(inventory,rules,native,orders)['retained_rules'],len(rules))
+        with self.assertRaisesRegex(ValueError,'decoded ROM rule'):
+            rule_coverage(inventory,rules[:-1],native,orders)
+        incomplete={o:v[:-1] for o,v in orders.items()}
+        with self.assertRaisesRegex(ValueError,'ranked ROM alternative'):
+            rule_coverage(inventory,rules,native,incomplete)
 
     def test_incomplete_verification_cannot_publish_merged_moves(self):
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)
             for game in ('dle21','ace'):
                 rules=output/'rules'/game;rules.mkdir(parents=True)
+                (rules/'rules.json').write_text('[]')
+                (rules/'inventory.json').write_text(json.dumps(dict(records=[],nodes=[],edges=[])))
                 for objective in ('shortest','highest-score'):
                     (rules/(objective+'-policy.json')).write_text('{}')
             (output/'report.json').write_text('{"all_passed":false}')

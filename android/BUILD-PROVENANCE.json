@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Hypcade 0.1 signed release APKs with ROM-derived move tables covering all supported skills and operator difficulties, and corrected DL2 Watch Mode acceptance timing; not published.",
+  "scope": "Hypcade 0.1 signed releases with complete ROM move policies, strict structural coverage and tested post-death recovery; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
@@ -41,32 +41,32 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 5983609,
-      "sha256": "912e8b2695a0483e8d50f9443ebc47499b9aae373e923eaba2165539043657e6",
-      "uncompressed_native_bytes": 4805052,
+      "size_bytes": 5991521,
+      "sha256": "a33a502f38fc2e8a4afa5cdf43a7c18414fb6f0e7b9762cf1371be0befbd01e6",
+      "uncompressed_native_bytes": 4827388,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6297647,
-      "sha256": "e84d786f9370e495eccf3930eefcf33d40f68c56a0319f5371561e1495811d47",
-      "uncompressed_native_bytes": 6890384,
+      "size_bytes": 6306243,
+      "sha256": "4b8b2e4dbac7b618dbc2bb3e7d1acf98cbf2fe15082719adbdaac87132af4ca7",
+      "uncompressed_native_bytes": 6913344,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6738977,
-      "sha256": "b7da794bb9e8ce00b8ff34e180f602889ab737f1b9e846dea4b9e3405f23dd11",
-      "uncompressed_native_bytes": 7598916,
+      "size_bytes": 6747005,
+      "sha256": "a797cdb43c36637f7df47b954373840a7521ca0e3011c0e5256481beb153c1b1",
+      "uncompressed_native_bytes": 7621380,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6750446,
-      "sha256": "2e8dedfb1412bc1d6927c43023aaf026663ef23eec93006ca630f5daf5654c46",
-      "uncompressed_native_bytes": 7823344,
+      "size_bytes": 6758310,
+      "sha256": "261b4bd7f69722ff0b51a3ca77f90f287eeb90b77a0f3773039588b2fd6b9e68",
+      "uncompressed_native_bytes": 7845760,
       "uncompressed_support_bytes": 4293786
     }
   ],
@@ -100,7 +100,7 @@
     "crt": "zfast-derived game-layer GLES2 shader; video, native ROM/script game text and recorded moves compose before one output-pixel GPU filter. Added score/lives overlays, FPS, subtitles and cabinet bezels are drawn afterward without filtering. Reused RGBA target only while enabled; direct plain-video path and unsupported-renderer fallback retained.",
     "input": "Global required arcade map; mobile requires touch or complete map. SDL gamepad mapping always enabled; optional Start 2 and Service bindings.",
     "commands": "Import matching commands once on discovery; saved GUI settings override supported switches; rescans preserve settings. Native -blend remains available.",
-    "guidance": "DLE21 and Space Ace A3 use separately ranked ROM-state move sets, checked across all three Ace skills and four operator difficulties. Counterfactual execution and complete death-free replays validate sampled runtime contexts. Required zero-score ending actions remain included. DL2 US 3.19 uses its native ROM input records and earliest accepted phase; Singe retains its native menu.",
+    "guidance": "Complete DLE21/Ace A3 ROM policies, including unvisited and retry-only steps. All ranked alternatives and waits are retained; live ROM-loaded windows determine applicable controls and skill-adjusted timing. Sampled successful routes supply calibration only. Required Space Ace zero-score final UP remains. DL2 US 3.19 reads its native ROM prompts; Singe retains its native menu.",
     "scoreboard": "Existing scorebezel for supported drivers; DL2 US 3.19 added using ROM RAM. Live DL2 counters and two-player behavior remain unverified.",
     "configuration": "Current schema only; no old-development-configuration migrations.",
     "watch_mode": "Enabled for games with matching bundled guidance. Repeats coin pulses until the game's credit counter changes, then retries Player 1 Start at spaced intervals until the ROM spends a credit or reports active lives. This handles coin ratios and input-ignoring startup delays. Dragon's Lair II waits for the ROM to consume each coin before sending another, avoiding a boot-time input backlog. Only Pause and Exit remain exposed while playback runs.",
@@ -113,7 +113,7 @@
     "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings.",
     "video_backend": "Android-only src/video/video_android.cpp owns font/CRT/FPS state, mobile drawable sizing and texture retirement; shared video.cpp uses small guarded hooks. Desktop bitmap text, CPU scanlines, startup splash and window icon are excluded from Android compilation. Decoder/render locking and render-thread destruction are preserved."
   },
-  "move_table_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
+  "move_table_sha256": "a419549d8ecc870286f5f242f83ce82850a7dbc737c8424a3b4cf7ff5bc67099",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
   "ai_assistance": {
     "tools": [
@@ -143,40 +143,25 @@
       "reports": [
         "moves/rom-tables/generation-verification.json",
         "moves/rom-tables/verification/moves-all-settings-android-full.json"
-      ]
+      ],
+      "scope": "Archived calibration baseline; not a new simulation of the complete-policy selector."
     },
     "watch": {
-      "per_backend": 234,
+      "host_normal": 104,
+      "android_normal": 39,
+      "host_intentional_death": 39,
+      "android_intentional_death": 26,
+      "all_passed": true,
+      "common_recovery_results_identical": true,
       "backends": [
         "host",
-        "Android 9 x86"
+        "Android 9 x86 video-less emulator"
       ],
-      "modes": [
-        "Off using Max score",
-        "Max score",
-        "Fewest moves"
-      ],
-      "queue_phases_ms": [
-        0,
-        8,
-        16
-      ],
-      "cross_backend_results_identical": true,
-      "uses_only_bundled_rows": true,
-      "branch_detour_games_per_backend": 72,
-      "current_reports": [
-        "moves/rom-tables/verification/shared-host-normal.json",
-        "moves/rom-tables/verification/shared-android-normal.json",
-        "moves/rom-tables/verification/shared-host-detours.json",
-        "moves/rom-tables/verification/shared-android-detours.json"
-      ]
+      "teacher_enabled": false
     },
     "dl2": {
-      "per_backend": 45,
-      "backends": [
-        "host JVM/JNI",
-        "Android JVM/JNI"
-      ],
+      "host": 5,
+      "android": 5,
       "difficulties": [
         0,
         1,
@@ -185,20 +170,13 @@
         4
       ],
       "seek_delays_ms": [
-        0,
-        17,
-        55
+        17
       ],
       "queue_phases_ms": [
-        0,
-        8,
-        16
+        8
       ],
-      "production_java_player": true,
-      "production_i86_and_driver_methods": true,
-      "cross_backend_final_states_identical": true,
-      "negative_controls": "Withholding first or final move causes a detected death on both backends.",
-      "scope": "Previously verified DL2 decoder, CPU and Java player; unchanged by Cine branch-coverage and move-storage changes."
+      "all_passed": true,
+      "negative_controls": "First/final input omission detected death on host and Android."
     },
     "actual_apk": {
       "android": "9 / API 28",
@@ -286,9 +264,10 @@
         "trace_sha256": "99e79a5a18cc80ec3f3a988d5c3601fa5e030f7feab7c11ce89ced48613320d7",
         "trace_scope": "Ending portion; Java log covers the full session. Ending reached with all three starting lives.",
         "retained_starting_lives": true
-      }
+      },
+      "scope": "Archived earlier selector evidence; no new full commercial-game run through the launcher for the complete-policy change."
     },
-    "limitations": "No physical ARM test, proof of global optimality or proof of every retry/random context. Space Ace and DL2 direct APK tests used synthetic MPEG2 timing media; DLE21 used original game media. Video-less Android runs are distinct from actual APK runs.",
+    "limitations": "Structural coverage accounts for every decoded rule, separately from sampled behavioral validation. No new cabinet gameplay or actual-APK full playthrough. No proof of all possible retry timings, random sequences or global optimality. Existing compiler/SDK/Gradle warnings remain.",
     "warnings": [
       "Existing native compiler warnings, including missing-override and logical operator parentheses.",
       "SDK XML v4/v3 tool warning.",
@@ -459,32 +438,49 @@
     }
   },
   "move_generation": {
-    "method": "Revision-pinned ROM scene/step policies, natural execution and independent exact replay; extraction directly emits merged per-game files and the shared APK include, followed by unassisted Watch Mode checks.",
+    "method": "Complete decoded ROM rules and ranked runtime policies, with sampled replay timing calibrations",
     "manifest": "moves/rom-tables/manifest.json",
-    "manifest_sha256": "e49f06816184069d27f6b0abe119230123bd9a887d8dda9979c241a4f0c239dd",
-    "counts": {
+    "manifest_sha256": "9c69b40f54ff5d2706afaed1b726912da2cb334000f851caa75cd214a396a4db",
+    "rom_coverage": {
       "dle21": {
-        "shortest": 469,
-        "highest-score": 466
+        "decoded_rules": 3681,
+        "retained_rules": 3681,
+        "decoded_input_windows": 2448,
+        "missing_decoded_rules": 0,
+        "missing_ranked_choices": 0,
+        "ranked_rules": 1178,
+        "runtime_rules": 1047,
+        "dispositions": {
+          "death": 1851,
+          "equivalent-single-control": 89,
+          "ignored": 57,
+          "no-safe-local-completion": 94,
+          "non-playable-control": 19,
+          "runtime-policy": 1178,
+          "source-dispatch": 393
+        }
       },
       "ace": {
-        "shortest": 4153,
-        "highest-score": 4205
+        "decoded_rules": 10267,
+        "retained_rules": 10267,
+        "decoded_input_windows": 8955,
+        "missing_decoded_rules": 0,
+        "missing_ranked_choices": 0,
+        "ranked_rules": 1132,
+        "runtime_rules": 1132,
+        "dispositions": {
+          "death": 3948,
+          "empty-window": 106,
+          "equivalent-single-control": 364,
+          "ignored": 595,
+          "no-safe-local-completion": 14,
+          "non-playable-control": 3733,
+          "runtime-policy": 1132,
+          "source-dispatch": 375
+        }
       }
     },
-    "packaged_full_route_profiles": 208,
-    "exact_full_replays_per_backend": 208,
-    "unassisted_watch_full_games_per_backend": 234,
-    "configuration": "DLE21 plus Ace A3 Cadet/Captain/Ace at every operator difficulty, eight randomized starts per configuration and objective; Watch holdouts use separate randomized starts and varied input-queue phases.",
-    "randomness": "Seven or eight distinct scene/action sequences observed per configuration and objective across eight starts.",
-    "all_scenes_proven": false,
-    "global_optimum_proven": false,
-    "shared_counts": {
-      "dle21": 484,
-      "ace": 4350
-    },
-    "storage": "One merged JSON per game containing unique rows and both 16-bit policy index lists; native pools and indices need no runtime expansion.",
-    "branch_coverage": {
+    "calibration_coverage": {
       "dle21": {
         "known_states": 198,
         "objectives": {
@@ -559,7 +555,9 @@
         }
       }
     },
-    "branch_detour_games_per_backend": 72
+    "packaged_calibration_route_profiles": 208,
+    "all_scenes_proven": false,
+    "global_optimum_proven": false
   },
   "build_script": "build-apks.sh release [arm|all]",
   "build_resource_limits": "Sequential Gradle invocations; max-workers=1, 1536 MiB heap and native compile pool=2.",
@@ -589,7 +587,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs rebuilt after extracting the Android video backend and removing the hardware-decoder GUI toggle. Native rendering, backend lifecycle/text/target/resize checks, launcher models, actual Android 9 x86 launcher SD/HD/software captures and a short DL2 ROM-text/score-HUD session passed. ARM release lint, desktop source syntax and APK signature/SDK/ABI/flavor checks passed. Settings restored after emulator checks. Prior move/gameplay evidence retains its original fingerprints; no physical cabinet performance or complete commercial-game playthrough was rerun.",
+  "source_tree_status": "All four release APKs rebuilt with complete ROM policies and the current selector. Matching source and independently identified validation reports remain in the checkout; no new source archive.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",

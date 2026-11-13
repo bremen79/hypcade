@@ -137,18 +137,36 @@ decoded window is also not proof that every reachable scene has been decoded.
 
 ## Relationship to the APK
 
-This is a structural rules package, not a replacement for the current
-`ArcadeRomMove` pools and strategy index lists in `android/app/jni/arcade_moves.inc`.
-Those pools contain accepted timings from verified plays. The complete
-`verify_rom_matrix.py` extraction workflow generates that shared representation
-automatically through `bundle_rom_moves.py`, which also publishes checked
-outputs into the APK source tree. Its coverage remains limited to the collected
-runtime contexts. A structural-only export does not modify APK inputs.
+The APK contains the complete ranked policies generated from these tables.
+`bundle_rom_moves.py` retains every decoded rule in the merged game JSON file,
+including unvisited scenes and retry-only steps. Native rule pools and compact
+strategy indices include every ranked alternative, including deliberate waits.
+The player chooses one applicable action at a time.
 
-A future direct rules consumer must resolve the original loader’s conditions
-and input arming, preserve objective selection, and pass full Watch Mode and
-retry tests before replacing the sampled arrays. Exporting more rules alone
-does not establish that the current Android player can execute them correctly.
+Successful simulations supply additional timing calibrations for observed
+contexts. They do not decide whether a rule is included. For an uncalibrated
+context, the selector matches the live ROM-loaded control, window and outcome;
+the ROM remains responsible for conditional record loading and skill-dependent
+timers. Absolute frames and branch bytes from a sampled game are not required
+for guidance to continue after death or an alternate action.
+
+Check complete coverage independently of gameplay:
+
+```bash
+python3 android/tests/test_bundled_moves.py --roms /path/to/roms
+```
+
+This reconstructs every rule and ranking from the saved inventory and, with
+`--roms`, decodes that inventory again from the supplied ZIPs. Removing any rule
+or ranked alternative fails verification. Coverage also accounts for windows
+that lead to death, ignored inputs, empty windows, system dispatch, diagonal
+controls with equivalent single-control outcomes, and paths with no safe local
+completion. These remain auditable rather than being displayed as good moves.
+An unranked rule with a safe structural continuation fails packaging.
+
+Structural completeness and successful execution are separate checks. Run the
+skill/difficulty matrix, varied input timing, branch detours and deliberate
+life-loss recovery on the host and Android emulator before shipping a bundle.
 
 ## Keeping the tool in Git
 

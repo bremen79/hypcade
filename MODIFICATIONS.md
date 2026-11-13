@@ -125,15 +125,15 @@ operator difficulty settings. Watch Mode checks additionally model IRQ
 publication, Java polling, SDL input delivery and button holds, with varied
 queue phases. The tools can run these checks on the laptop and on Android.
 The APK identifies recorded moves by ROM scene, step and branch context.
-The bundler uses the independently replayed ROM routes directly; the Watch Mode
-checker cannot learn or add missing moves.
-Both strategies cover the union of independently verified branches. A player
-can take another recorded branch and continue receiving moves for the selected
-strategy. ROM policy rankings preserve deliberate waiting instead of inserting
-an optional action from the other strategy. Detour replays check this recovery
-with the same packaged selector and input-delivery timing model.
-Move rows shared by the two strategies are stored once per game, with compact
-16-bit index lists preserving each strategy's choice and priority order.
+The bundler retains every decoded ROM rule and ranked alternative, including
+retry-only scenes absent from sampled winning games. Successful independent
+replays supply timing calibrations rather than defining runtime coverage.
+The selector matches live ROM-loaded controls, windows and outcomes, preserving
+conditional inputs and skill-dependent timers. Both strategies remain available
+after alternate actions or a lost life. A player receives one selected action;
+ROM rankings preserve deliberate waiting instead of inserting optional actions.
+Shared rule and calibration pools use compact 16-bit strategy indices.
+
 Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
 set, defaulting to Max score when the move display is Off. Local route selection
 and sampled successful games are not a proof of global optimality or complete
@@ -169,10 +169,12 @@ The offline generator preserves all decoded input alternatives and ranks local
 routes separately for each objective. It runs candidate inputs alongside a
 no-input simulation to check causal acceptance. Necessary zero-score transitions,
 including Space Ace's final UP, are retained rather than discarded as optional.
-Only complete death-free games publish runtime rows. Repeated starts sample
-randomized screen orders. The generated tables are keyed by game state, outcome,
-control and frame; coverage remains limited to the tested ROM revisions and
-sampled routes.
+Complete death-free games and independent replays validate timing. Repeated
+starts sample randomized screen orders; intentional input omissions test retry
+recovery. A separate structural check reconstructs every ROM rule and ranking,
+rejecting missing windows or playable alternatives. Non-playable rules remain
+auditable with explicit exclusions. This coverage applies to the supported ROM
+revisions, not to unknown revisions or a proof of global optimality.
 
 ## Android integration and smaller packages
 

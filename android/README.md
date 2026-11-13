@@ -85,8 +85,8 @@ when choosing an APK. Both variants share the application ID
 ## Video, sound and moves
 
 **Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
-ROM revisions. Max score follows the recorded route with the higher score;
-Fewest moves follows the route with fewer joystick/button actions. Watch Mode
+ROM revisions. Max score selects the higher-scoring ROM route; Fewest moves
+selects the route with fewer joystick/button actions. Watch Mode
 uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
 while keeping the move display hidden. Dragon’s Lair II uses its native ROM
 moves for either policy; Singe games keep their own script menus.
@@ -94,6 +94,9 @@ moves for either policy; Singe games keep their own script menus.
 The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
 tables and checked through complete games without a lost life. Randomized
 starts, all three Space Ace skills and all four operator difficulties are tested.
+All decoded rules and ranked alternatives are retained, including retry-only
+steps; sampled winning games do not limit move coverage. Separate tests withhold
+inputs to check that guidance resumes after a lost life.
 Necessary zero-score actions, including Space Ace's final UP, are preserved.
 These checks do not prove
 that every retry context is covered or that the routes are globally optimal.
@@ -146,8 +149,9 @@ remain available. Controller and touch gameplay inputs are blocked.
 
 Offline generation decodes ROM alternatives and ranks routes for each objective.
 Candidate inputs are checked against a simultaneous no-input simulation, and
-runtime rows are published only after complete death-free games and independent
-replays. Required zero-score transitions are retained. Separate unassisted checks
+complete policies retain every decoded rule and ranked alternative. Successful
+death-free games and independent replays supply timing calibration, not the
+coverage boundary. Required zero-score transitions are retained. Separate unassisted checks
 exercise IRQ publication, Java polling, SDL delivery and button holds. Randomized
 starts sample different paths; they do not establish every retry context or a
 global optimum. See the [validation guide](VALIDATION.md).

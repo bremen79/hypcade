@@ -140,7 +140,7 @@ def export(rom_path, game, output):
                 'ROM loader conditions and skill-dependent timer adjustment remain authoritative at runtime.',
                 'Local scene-exit rankings do not prove global optimality; cycles and system dispatch remain unresolved.',
                 'A target award is not proof that a press caused points. Candidates require causal replay validation.',
-                'This package is not the sampled ArcadeRomMove APK include. Do not replace that include with these rules.'])
+                'bundle_rom_moves.py includes these complete policies in the APK; sampled plays supply timing calibration, not the coverage boundary.'])
         move_tools.atomic_json(staging / 'manifest.json', manifest)
         verify(staging, rom_path)
         if sources != source_identity():

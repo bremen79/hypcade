@@ -9,13 +9,18 @@ from pathlib import Path
 import re
 import struct
 import zipfile
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"tools/offline-moves"))
+import export_rom_moves
+import rom_tables
+from bundle_rom_moves import runtime_policy, rule_coverage
 
 ROOT=Path(__file__).resolve().parents[2]
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--apk',type=Path,action='append',default=[])
-    parser.add_argument('--bundle-dir',type=Path,help='Check a directly generated extraction output instead of the bundled APK inputs')
+    parser.add_argument('--roms',type=Path,help='Also re-decode the supplied ROM ZIPs to verify inventory authenticity');parser.add_argument('--bundle-dir',type=Path,help='Check a directly generated extraction output instead of the bundled APK inputs')
     args=parser.parse_args()
     folder=args.bundle_dir or ROOT/'android/moves/rom-tables';manifest=json.loads((folder/'manifest.json').read_text())
     include=folder/'arcade_moves.inc' if args.bundle_dir else ROOT/'android/app/jni/arcade_moves.inc';source=include.read_text()
@@ -25,9 +30,12 @@ def main():
     settings={(p['game'],p['skill'],p['difficulty']) for p in manifest['profiles']}
     assert settings=={('dle21','ace',0)} | {('ace',s,d) for s in ('cadet','captain','ace') for d in range(4)}
     for name,digest in manifest['files'].items():assert hashlib.sha256((folder/name).read_bytes()).hexdigest()==digest,name
-    assert manifest['schema']==3
+    assert manifest['schema']==4
     pools={name:[tuple(map(int,row)) for row in re.findall(r'\{(\d+)U, (\d+)U, (\d+), (\d+), (\d+)\}',body)]
             for name,body in re.findall(r'ArcadeRomMove (\w+)\[\] = \{(.*?)\};',source,re.S)}
+    rule_pools={name:[tuple(map(int,row)) for row in re.findall(r'\{(\d+), (\d+), (\d+), (\d+)\}',body)]
+                for name,body in re.findall(r'ArcadeRomRule (\w+)\[\] = \{(.*?)\};',source,re.S)}
+    assert set(rule_pools)=={'dle21_rules','ace_rules'}
     assert set(pools)=={'dle21_moves','ace_moves'}
     orders={name:list(map(int,re.findall(r'\d+',body)))
             for name,body in re.findall(r'uint16_t (\w+)\[\] = \{(.*?)\};',source,re.S)}
@@ -37,7 +45,28 @@ def main():
         assert pool==sorted(set(pool)) and len(pool)<=65536
         assert len(pool)==manifest['shared_counts'][game]
         table=json.loads((folder/(game+'-moves.json')).read_text())
-        assert set(table)=={'moves','policies'}
+        assert set(table)=={'moves','policies','rules','native_rules','rule_policies'}
+        # Reconstruct the entire expected export, independently of sampled plays.
+        # Omitting a rule (even after rehashing files) must fail this equality.
+        inventory=json.loads((folder/(game+'-inventory.json')).read_text())
+        if args.roms:
+            assert rom_tables.inventory(rom_tables.load(args.roms/(game+'.zip'),game),game)==inventory
+        policies={goal:rom_tables.policies(inventory,goal) for goal in export_rom_moves.OBJECTIVES}
+        expected=export_rom_moves.compile_rules(inventory,policies)
+        assert table['rules']==expected, 'Decoded ROM windows were omitted or changed'
+        native,rule_orders=runtime_policy(expected)
+        assert native==rule_pools[game+'_rules']
+        assert table['native_rules']==[dict(state=r[0],window=r[1],outcome=r[2],control=r[3]) for r in native]
+        assert table['rule_policies']==rule_orders
+        for goal,suffix in (('shortest','fewest'),('highest-score','max')):
+            assert orders[game+'_rules_'+suffix]==rule_orders[goal], 'Missing ranked ROM alternative'
+        declared=manifest['rom_coverage'][game]
+        assert all(declared[k]==v for k,v in rule_coverage(inventory,expected,native,rule_orders).items())
+        assert declared['decoded_rules']==declared['retained_rules']==len(expected)
+        assert declared['ranked_rules']==sum(bool(r['objectives']) for r in expected)
+        assert declared['runtime_rules']==len(native)
+        print('%s: %d/%d decoded rules retained; %d/%d ranked choices represented in runtime policies'%
+              (game,len(expected),len(expected),declared['ranked_rules'],declared['ranked_rules']))
         assert set(table['policies'])=={'shortest','highest-score'}
         assert pool==[tuple(r[k] for k in ('state','frame','timing','outcome','control')) for r in table['moves']]
         used=set()
@@ -58,7 +87,7 @@ def main():
         sets={o:{r[0] for r in arrays[game+'_moves_'+suffix]}
               for o,suffix in (('shortest','fewest'),('highest-score','max'))}
         known=sets['shortest']|sets['highest-score']
-        coverage=manifest['branch_coverage'][game]
+        coverage=manifest['calibration_coverage'][game]
         assert len(known)==coverage['known_states']
         for objective,states in sets.items():
             declared=coverage['objectives'][objective]
@@ -81,6 +110,8 @@ def main():
                 blob=archive.read(lib)
                 for name,rows in pools.items():
                     for row in rows:assert struct.pack('<IIHBB',*row) in blob,(apk,lib,name,row)
+                for rows in rule_pools.values():
+                    for row in rows:assert struct.pack('<HBBB',*row) in blob,(apk,lib,row)
                 for name,order in orders.items():
                     assert struct.pack('<'+'H'*len(order),*order) in blob,(apk,lib,name)
     print('Bundled moves: both objectives, %d complete replays, shared pools, policy indices and Space Ace final UP passed'%len(manifest['profiles']))

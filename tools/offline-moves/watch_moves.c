@@ -10,7 +10,7 @@
 #endif
 #include HYPCADE_MOVES_INCLUDE
 int main(int argc,char **argv) {
-    if(argc!=9 && argc!=10)return 2;
+    if(argc<9 || argc>11)return 2;
     (void)play_tables;
     (void)read_choices;
     char *base[]={argv[0],argv[1],argv[2],argv[3],argv[4],argv[5],"--difficulty",argv[7]};
@@ -18,7 +18,9 @@ int main(int argc,char **argv) {
     uint64_t mode_value;if(!parse_unsigned(argv[6],2,&mode_value))return 2;
     unsigned mode=(unsigned)mode_value;
     uint64_t detour_target=0;
-    if(argc==10 && !parse_unsigned(argv[9],1000,&detour_target))return 2;
+    if(argc>=10 && !parse_unsigned(argv[9],1000,&detour_target))return 2;
+    uint64_t miss_target=0;
+    if(argc==11 && !parse_unsigned(argv[10],1000,&miss_target))return 2;
     uint64_t phase_value;if(!parse_unsigned(argv[8],16,&phase_value))return 2;
     uint64_t phase_cycles=phase_value*4000;
     g.nodes=calloc(1,sizeof *g.nodes);
@@ -26,6 +28,11 @@ int main(int argc,char **argv) {
     if(!graph_boot(&g))return 3;
     Machine m=g.base;connect_machine(&m);bool ace=m.board.game==CINE_SPACE_ACE;
     const ArcadeRomMove *entries=ace ? ace_moves : dle21_moves;
+    const ArcadeRomRule *rules=ace ? ace_rules : dle21_rules;
+    const uint16_t *rule_order=ace ? (mode==2 ? ace_rules_fewest : ace_rules_max)
+                                        : (mode==2 ? dle21_rules_fewest : dle21_rules_max);
+    size_t rule_count=ace ? (mode==2 ? sizeof ace_rules_fewest/sizeof *ace_rules_fewest : sizeof ace_rules_max/sizeof *ace_rules_max)
+                          : (mode==2 ? sizeof dle21_rules_fewest/sizeof *dle21_rules_fewest : sizeof dle21_rules_max/sizeof *dle21_rules_max);
     const uint16_t *order=ace ? (mode==2 ? ace_moves_fewest : ace_moves_max) : (mode==2 ? dle21_moves_fewest : dle21_moves_max);
     size_t count=ace ? (mode==2 ? sizeof ace_moves_fewest/sizeof *ace_moves_fewest : sizeof ace_moves_max/sizeof *ace_moves_max)
                      : (mode==2 ? sizeof dle21_moves_fewest/sizeof *dle21_moves_fewest : sizeof dle21_moves_max/sizeof *dle21_moves_max);
@@ -38,21 +45,29 @@ int main(int argc,char **argv) {
     uint64_t poll=((m.board.cycles+31999)/32000)*32000,guide=m.board.next_irq,release=0,previous=0;
     uint64_t input_at=((m.board.cycles+phase_cycles+67999)/68000)*68000-phase_cycles;
     struct {unsigned control;bool down;} queue[16];unsigned queued=0;
-    unsigned held=0,pending=0,moves_count=0;bool was_ready=false;
+    unsigned held=0,pending=0,moves_count=0,losses=0;bool was_ready=false,missed=false,suppress=false;
     ArcadeMoveSelection selected={0,false,0};
     RouteMonitor live;monitor_start(&live,&m);uint32_t last_unknown=UINT32_MAX;
-    while(m.board.cycles<g.deadline && !live.death) {
+    while(m.board.cycles<g.deadline) {
+        if(live.death) {
+            ++losses;
+            fprintf(stderr,"life lost=%u scene=%u step=%u frame=%d lives=%d\n",losses,m.board.ram[14]&127,m.board.ram[15]&127,m.ldp.frame,player_one_lives(&m.board));
+            if(!missed || losses>1 || player_one_lives(&m.board)<=0)break;
+            if(held)set_input(&m.board.inputs,held==16?0:(int)held,false);
+            held=pending=queued=0;was_ready=false;previous=0;suppress=false;
+            monitor_start(&live,&m);
+        }
         if(offline_won(&m.board,&m.ldp)) {
             RoutePhase phase=settle_victory(&m,&g,&live);int score=0;player_one_score(&m.board,&score);
-            bool ok=phase==ROUTE_VICTORY;
-            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"score\":%d,\"moves\":%u,\"detour_applied\":%s,\"differences\":%u}\n",ok?"true":"false",mode,score,moves_count,detour_applied?"true":"false",detour_seen);route_monitor=NULL;return ok?0:3;
+            bool ok=phase==ROUTE_VICTORY && (!miss_target || (missed && losses==1));
+            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"score\":%d,\"moves\":%u,\"detour_applied\":%s,\"differences\":%u,\"intentional_death\":%s,\"losses\":%u}\n",ok?"true":"false",mode,score,moves_count,detour_applied?"true":"false",detour_seen,missed?"true":"false",losses);route_monitor=NULL;return ok?0:3;
         }
         if(m.board.cycles>=guide) {
             selected=(ArcadeMoveSelection){0,false,0};
-            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_rom_move(entries,order,count,m.board.ram,m.ldp.frame,ace);
+            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_rom_move(entries,order,count,rules,rule_order,rule_count,m.board.ram,m.ldp.frame,ace);
             uint32_t state=arcade_rom_state(m.board.ram[14],m.board.ram[15],ace?move_branch(&m):0);
             if(detour_target && m.ldp.state==LDP_PLAYING) {
-                ArcadeMoveSelection other=arcade_select_rom_move(entries,alternate,alternate_count,m.board.ram,m.ldp.frame,ace);
+                ArcadeMoveSelection other=arcade_select_rom_move(entries,alternate,alternate_count,rules,ace ? (mode==2 ? ace_rules_max : ace_rules_fewest) : (mode==2 ? dle21_rules_max : dle21_rules_fewest),ace ? (mode==2 ? sizeof ace_rules_max/sizeof *ace_rules_max : sizeof ace_rules_fewest/sizeof *ace_rules_fewest) : (mode==2 ? sizeof dle21_rules_max/sizeof *dle21_rules_max : sizeof dle21_rules_fewest/sizeof *dle21_rules_fewest),m.board.ram,m.ldp.frame,ace);
                 if(!detour_applied && state!=last_difference &&
                    (selected.ready || other.ready) && selected.controls!=other.controls) {
                     last_difference=state;++detour_seen;
@@ -71,6 +86,11 @@ int main(int argc,char **argv) {
         }
         if(m.board.cycles>=poll) {
             if(held && m.board.cycles>=release){if(queued==16){route_monitor=NULL;return 5;}queue[queued].control=held;queue[queued++].down=false;held=0;}
+            if(!held && pending && miss_target && !missed && moves_count+1==miss_target) {
+                missed=suppress=true;
+                fprintf(stderr,"intentional miss at move=%u scene=%u step=%u frame=%d\n",moves_count+1,m.board.ram[14]&127,m.board.ram[15]&127,m.ldp.frame);
+            }
+            if(suppress)pending=0;
             if(!held && pending) {
                 held=pending;pending=0;if(queued==16){route_monitor=NULL;return 5;}queue[queued].control=held;queue[queued++].down=true;release=m.board.cycles+400000;++moves_count;
                 fprintf(stderr,"watch move=%u scene=%u step=%u frame=%d control=%u\n",moves_count,m.board.ram[14]&127,m.board.ram[15]&127,m.ldp.frame,held);

@@ -1,6 +1,7 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 #include "arcade_guidance.h"
 #include "arcade_signature.h"
+#include "arcade_move_policy.h"
 #include <vector>
 #include <algorithm>
 #include <cassert>
@@ -92,5 +93,29 @@ int main() {
     assert(arcade_cine_signature(table,256)==identity);
     assert(!arcade_decode_cine(memory.data(),memory.size(),false,1571).controls);
     assert(!arcade_decode_cine(memory.data(),memory.size(),false,30000).controls);
+    // Complete-rule lookup works without any sampled timing rows, including
+    // a retry-only state and a conditionally compacted runtime input list.
+    const ArcadeRomRule rules[]={{264,0,3,1},{264,0,4,8},{281,0,3,4}};
+    const uint16_t order[]={0,1,2};
+    std::fill(memory.begin(),memory.end(),0);
+    uint8_t *ram=memory.data()+0xa000;
+    ram[14]=8;ram[15]=2;
+    ram[0xe0]=0x81;ram[0xe1]=1;ram[0xe2]=3;ram[0xed]=20;
+    for(unsigned branch : {0U,8U,65535U}) {
+        ram[0x16]=branch>>8;ram[0x35]=branch&255;
+        auto move=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,5000,true);
+        assert(move.controls==1 && move.ready);
+    }
+    ram[0xec]=12;
+    auto future=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false);
+    assert(future.controls==1 && !future.ready);
+    ram[0xec]=0;ram[0xe0]=0x88;ram[0xe2]=4;
+    auto alternate=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false);
+    assert(alternate.controls==8 && alternate.ready);
+    ram[0xe2]=99;
+    assert(!arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false).controls);
+    const ArcadeRomRule wait[]={{264,0,3,0},{264,0,4,8}};
+    const uint16_t wait_order[]={0,1};ram[0xe2]=4;
+    assert(!arcade_select_rom_move(nullptr,nullptr,0,wait,wait_order,2,ram,0,false).controls);
     puts("Guidance: bounds, retry signatures, native DL2 moves and unknown-state refusal passed");
 }

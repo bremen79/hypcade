@@ -8,7 +8,8 @@ are not included. The APK does not contain ROM payloads.
 For a complete export of the decoded tables, independent of sampled games, use
 [the ROM rule exporter](ROM-EXPORT.md). It preserves unvisited branches, timing
 windows and all alternatives, with separate rankings for both objectives.
-Its structural rules are distinct from the APK’s sampled runtime move arrays.
+The APK uses its complete ranked policies. Sampled successful plays add timing
+calibrations; they never limit which scenes or retry moves are available.
 
 ## Generate both move sets
 
@@ -29,16 +30,26 @@ selector.
 
 The report includes each setting, start delay, score, move count and pass/fail
 result. Both `shortest` and `highest-score` routes retain their separate evidence.
-After every case, independent replay and shared-branch coverage check passes,
+After every case, independent replay and complete ROM coverage check passes,
 the same command writes one merged JSON file per game, `manifest.json` and
 `arcade_moves.inc` directly into the output directory. A failed matrix does not
 publish a move bundle. Route evidence is reused in place rather than copied
 into a second output tree.
-For a smaller diagnostic run, use `--starts 1`. A small sample can leave a
-branch without a verified continuation; the bundler then reports the missing
-scene/step/context and refuses to publish moves. Increase the starts to collect
-the missing evidence. Never describe a partially finished report as a successful
-matrix.
+For a smaller diagnostic run, use `--starts 1`. Fewer starts reduce timing
+validation, not structural coverage: all decoded rules and ranked alternatives
+are packaged regardless of which scenes appear. Never describe a partially
+finished report as a successful matrix.
+
+Check the packaged policies against every decoded ROM rule:
+
+```bash
+python3 android/tests/test_bundled_moves.py --roms /path/to/roms
+```
+
+The command fails if any decoded window or ranked alternative is omitted. Its
+coverage report is independent of sampled winning runs. Non-playable inputs
+remain in the audit with explicit exclusions; a safe unranked continuation is
+an error, not an acceptable coverage gap.
 
 `rom_moves.py` remains useful for a focused single-game test at the default
 operator difficulty, but its report is not the full-matrix input to the bundler.
@@ -85,8 +96,9 @@ python3 tools/offline-moves/bundle_rom_moves.py --results local-tools/rom-moves
 The extraction command and this publishing command use the same bundler; no
 separate merging or format-conversion step is needed.
 
-The generator and bundler supply every runtime row directly from independently
-replayed ROM-policy games. The Watch Mode checker only uses those rows; it cannot
+The generator and bundler supply complete ROM rules and ranked policies, plus
+timing calibration from independently replayed games. The Watch Mode checker
+uses only that packaged data; it cannot
 fill missing moves from a teacher or learned fallback. A missing state or failed
 play must be fixed in generation and then checked again. Keep failures visible;
 do not publish an unfinished pass.
@@ -99,9 +111,9 @@ recorded 234-case result.
 Each merged game file contains a unique move pool and both 16-bit strategy
 index lists. Publishing writes that representation to
 `android/app/jni/arcade_moves.inc` and saves the matching JSON and route evidence
-in `android/moves/rom-tables/`. Scene, step and
-Space Ace branch bytes identify a move; timing checks select the live window.
-Unknown cases remain silent. The Watch Mode check exercises the same selector
+in `android/moves/rom-tables/`. Scene and step locate the complete ROM policy;
+live loaded controls, outcomes and window timers determine the applicable move.
+Optional timing calibration also distinguishes Space Ace branch bytes. The Watch Mode check exercises the same selector
 with IRQ guidance, 8 ms input polling, SDL’s 17 ms input-queue cadence and
 100 ms button holds. It varies the queue phase independently of randomized
 starts. Mode Off uses the

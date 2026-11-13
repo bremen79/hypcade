@@ -1,6 +1,6 @@
 {
-  "schema": 3,
-  "method": "One shared move file per game with 16-bit policy indices; both objectives cover the union of verified branches, filtered by their ROM action/wait policy",
+  "schema": 4,
+  "method": "Complete decoded ROM rules and ranked runtime policies, with sampled replay timing calibrations",
   "profiles": [
     {
       "game": "ace",
@@ -2513,7 +2513,46 @@
     "dle21": 484,
     "ace": 4350
   },
-  "branch_coverage": {
+  "rom_coverage": {
+    "dle21": {
+      "decoded_rules": 3681,
+      "retained_rules": 3681,
+      "decoded_input_windows": 2448,
+      "missing_decoded_rules": 0,
+      "missing_ranked_choices": 0,
+      "ranked_rules": 1178,
+      "runtime_rules": 1047,
+      "dispositions": {
+        "death": 1851,
+        "equivalent-single-control": 89,
+        "ignored": 57,
+        "no-safe-local-completion": 94,
+        "non-playable-control": 19,
+        "runtime-policy": 1178,
+        "source-dispatch": 393
+      }
+    },
+    "ace": {
+      "decoded_rules": 10267,
+      "retained_rules": 10267,
+      "decoded_input_windows": 8955,
+      "missing_decoded_rules": 0,
+      "missing_ranked_choices": 0,
+      "ranked_rules": 1132,
+      "runtime_rules": 1132,
+      "dispositions": {
+        "death": 3948,
+        "empty-window": 106,
+        "equivalent-single-control": 364,
+        "ignored": 595,
+        "no-safe-local-completion": 14,
+        "non-playable-control": 3733,
+        "runtime-policy": 1132,
+        "source-dispatch": 375
+      }
+    }
+  },
+  "calibration_coverage": {
     "dle21": {
       "known_states": 198,
       "objectives": {
@@ -2588,7 +2627,7 @@
       }
     }
   },
-  "bundler_sha256": "0dbf0fbc59a49b8488d0831e1e9c791e3636f0aa1481330e05b6f1186878e4ad",
+  "bundler_sha256": "0e8142540c67d1a2e1e4bac0d9e9f9e8793e7ffd4aa87018999987187c8a8ab0",
   "files": {
     "generation-verification.json": "80ad16803dce51f32fd078ac619a5c64d3e59ac0b27973d14dfb1d8a5be15cf4",
     "ace/ace-d0-00/highest-score/route.json": "fb89b39ddd33ad40c90646e8eb3494bb6d2e881f9d4decbadb91456f46ecc8ff",
@@ -3007,11 +3046,24 @@
     "dle21/ace-d0-07/highest-score/route.trace": "8b7e52e54c3c611cf11c5b29438dc5ab5b7eefc2e70eac49a697b618df27eafd",
     "dle21/ace-d0-07/shortest/route.json": "db97b98d5bc5e2e2f4ec049d4e2cb537056f8682e6f32b80f0e9e72b50e544aa",
     "dle21/ace-d0-07/shortest/route.trace": "e08f5fed9379fe4c42a451b1d73ba8e204ad07b420f5cb36e6ee72ab26325dbe",
-    "dle21-moves.json": "67f2d2cfe6cc996d458cb66b0415219533daf07f3b7d1eb5a228a1c1b62d7c1c",
-    "ace-moves.json": "59fe3778990c7eee85c0adb1c1153b8a84920b5a4a650c855a4799cf068d7b73"
+    "dle21-inventory.json": "62394729947e9ffb880fade144156c223e2489607af2f253eeb93e711b044daa",
+    "dle21-moves.json": "5c3ff790c50786ea5b363b0ac315ca2f1d5037b122ddf5c38f4d4b2a370603b6",
+    "ace-inventory.json": "53c2958776eeb33492b49c715eef299daff866b7e7c35b4676cd52f1d41d01a2",
+    "ace-moves.json": "a7db0f40cc19aee5a1d9a028843db38285435946cae8c7e82354cf8b3f69b82a",
+    "verification/complete-host-final.json": "7ac812565c8553108bca264234c36f4add66c3a5b5ca4006802b52cffe27ba59",
+    "verification/complete-host-death-final.json": "738b8931d815b930c5480ed42f08d3189d3947c0bfe84f1a8d3ea8d16e60f1e2",
+    "verification/complete-android-normal-final.json": "8778bb7dc31b2243c70a1d91ace389bf3977bef50e311b6aa1f72fbe254ba860",
+    "verification/complete-android-death-final.json": "b03edf1862c8a79224535c3a86295fe913e78d23493c10671aa31f39c352a2cf",
+    "verification/complete-dl2-host.json": "a7b7ee2bc8c61394cff10971ceec89d6c9ec43b293fefffa6f5025c9c1a31e5b",
+    "verification/complete-dl2-android.json": "ff66ba280dde2ec19ea8833d732de2a3c831023f67d6c9bd5b6d7b5fdec6df55",
+    "verification/complete-dl2-negative-host.json": "d7b0f65a7d12fc921474c1e185c4b3ccd9775a58e2e327359d58c5cb23606ad3",
+    "verification/complete-dl2-negative-final-host.json": "a5ae27729dfa8a22f50db0dfed3a61a2b2b23a5a0a2c7d02c91faa33451f8d85",
+    "verification/complete-dl2-negative-first-android.json": "035af3585d46f4077bf1d96180035ef083658192c1c8a626c26cfbd6f1b6209b",
+    "verification/complete-dl2-negative-final-android.json": "0fd7982fe19f09c94eed09baf3b89e8de7a7f3d1a48905d752cc039be47f1de9"
   },
-  "apk_include_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
+  "apk_include_sha256": "a419549d8ecc870286f5f242f83ce82850a7dbc737c8424a3b4cf7ff5bc67099",
   "all_scenes_proven": false,
   "global_optimum_proven": false,
-  "limits": "Verified natural full games cover sampled starts, all skills and all operator difficulties. Merged lookup and Watch Mode require separate verification; retry and all-context coverage are not claimed."
+  "limits": "Every decoded rule is retained. Runtime tables include all ranked alternatives; unranked and non-playable rules have explicit classifications in the audit. Replay timing validation remains separate from structural coverage.",
+  "verification": "verification/"
 }

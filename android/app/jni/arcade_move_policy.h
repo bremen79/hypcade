@@ -38,7 +38,7 @@ static inline uint32_t arcade_rom_state(unsigned scene,unsigned step,uint16_t br
     return (scene&127U) | ((step&127U)<<7) | ((uint32_t)branch<<14);
 }
 
-static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *moves,const uint16_t *order,size_t count,
+static inline ArcadeMoveSelection arcade_select_calibrated_move(const ArcadeRomMove *moves,const uint16_t *order,size_t count,
         const uint8_t *ram,unsigned frame,bool ace) {
     ArcadeMoveSelection result={0,false,0};
     uint16_t branch=ace ? (uint16_t)((ram[0x16]<<8)|ram[0x35]) : 0;
@@ -64,4 +64,45 @@ static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *mo
     }
     return result;
 }
+
+/* Complete ROM policies: no sampled branch bytes or absolute video frames.
+ * The ROM itself loads/filters entries and scales timers for current skill.
+ * Match their control, local window and outcome, never their ROM ordinal. */
+typedef struct {
+    uint16_t state;
+    uint8_t window,outcome,control;
+} ArcadeRomRule;
+
+static inline ArcadeMoveSelection arcade_select_rom_move(
+        const ArcadeRomMove *moves,const uint16_t *order,size_t count,
+        const ArcadeRomRule *rules,const uint16_t *rule_order,size_t rule_count,
+        const uint8_t *ram,unsigned frame,bool ace) {
+    ArcadeMoveSelection result={0,false,0};
+    unsigned state=arcade_rom_state(ram[14],ram[15],0);
+    size_t low=0,high=rule_count;
+    while(low<high){size_t mid=low+(high-low)/2;if(rules[rule_order[mid]].state<state)low=mid+1;else high=mid;}
+    for(size_t i=low;i<rule_count && rules[rule_order[i]].state==state;i++) {
+        const ArcadeRomRule *rule=rules+rule_order[i];
+        if(!rule->control)return result; /* This objective deliberately waits. */
+        for(unsigned e=0;e<16;e++) {
+            const uint8_t *x=ram+0xe0+16*e;
+            if(!(x[0]&128))break;
+            unsigned control=(x[0]&15) ? (x[0]&15) : 16;
+            unsigned w=rule->window;
+            if(control!=rule->control || w>=(x[1]&3) || !x[13+w] ||
+               x[2+((x[1]>>(2+2*w))&3)]!=rule->outcome)continue;
+            unsigned delay=x[12];for(unsigned p=0;p<w;p++)delay+=x[13+p];
+            /* A loaded preferred alternative remains preferred before it opens;
+             * do not select a lower-ranked action just because it opens first. */
+            if(delay>12)return result;
+            result.controls=control;result.ready=delay==0;
+            result.window=((uint64_t)state<<32)|((uint64_t)(e*3+w+1)<<8)|rule->outcome;
+            ArcadeMoveSelection calibrated=arcade_select_calibrated_move(moves,order,count,ram,frame,ace);
+            if(calibrated.controls==control && (calibrated.window&255)==rule->outcome)return calibrated;
+            return result;
+        }
+    }
+    return result;
+}
+
 #endif

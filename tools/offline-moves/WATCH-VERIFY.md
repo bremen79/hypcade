@@ -19,13 +19,15 @@ tested by default. Use repeated `--input-phase` arguments for focused checks.
 The checker uses only the packaged ROM-derived rows. It does not learn moves,
 consult a teacher, or silently repair a missing state. Fix a failure in the ROM
 extraction/generation or timing model, regenerate the bundle, and rerun the
-checks. Independently replayed full games remain the source of every row.
+checks. Complete ROM tables supply the policy; independently replayed full
+games supply timing calibration and execution evidence.
 
-Both strategies draw from the same set of verified branches. The bundler ranks
+Both strategies retain the complete set of ranked ROM alternatives, including
+branches and retry steps absent from sampled winning games. The bundler ranks
 the continuation at each scene/step using the selected ROM policy, regardless
 of which strategy originally reached it. It preserves a policy's deliberate
 choice to wait, rather than inserting an optional action from the other policy.
-This lets guidance resume after a player takes a different verified branch.
+This lets guidance resume after an alternate action or a lost life.
 Each merged JSON contains its move pool and both strategy lists. The APK
 stores one pool of unique rows per game and a 16-bit index list for
 each strategy. Each list keeps that strategy's original priority order; the
@@ -50,6 +52,22 @@ The source arrays carry scene/step and branch context; operator DIP settings
 are applied to the machine rather than guessed from the currently visible
 prompt. A successful finite matrix does not prove every possible retry context
 or a global optimum.
+
+## Recovery after a lost life
+
+Normal-start victories do not test retry scenes. Deliberately withhold a move
+until one life is lost, then require a full finish without another loss:
+
+```bash
+python3 tools/offline-moves/verify_watch_moves.py \
+  --roms /path/to/roms --output local-tools/watch-retry \
+  --starts 1 --miss-at 20 --jobs 2
+```
+
+Add `--android emulator-5556` for the Android backend. The checker uses only the
+bundled policies and calibrations, with no teacher or learned repair. Repeat
+with different `--miss-at` values to sample other retry routes. Each positive
+result must report exactly one intended death and a completed recovery.
 
 ## Dragon's Lair II US 3.19
 

@@ -104,9 +104,10 @@ development configurations unless the maintainer explicitly requests it.
 - Move controls are enabled only for supported ROM revisions. DL2 uses its own
   ROM prompts; Singe uses its native script menu through Service. Do not duplicate
   Lua menu behavior. DLE21 and Ace A3 use ROM-derived, separately ranked Max score
-  and Fewest moves policies. Validate causal acceptance against simultaneous
-  no-input execution and publish runtime rows only after complete death-free plays
-  and independent replays. Preserve necessary zero-score transitions, including
+  and Fewest moves policies. Package every decoded ROM rule and every ranked alternative; sampled winning
+  routes must never define runtime coverage. Validate causal acceptance against
+  simultaneous no-input execution. Complete death-free plays and independent
+  replays provide timing calibration and behavioral validation. Preserve necessary zero-score transitions, including
   Space Ace's final UP. Do not restore old acceptance-only tables.
 - Cover Space Ace's three skills and four operator difficulties independently.
   Watch checks must include IRQ publication, Java polling and SDL queue delivery;
@@ -114,6 +115,11 @@ development configurations unless the maintainer explicitly requests it.
   lookup using only its bundled rows before publishing. Do not add learned or
   teacher-assisted fallbacks to the checker. Repeated randomized starts
   sample route changes; they do not prove every branch or global optimality.
+  Reconstruct bundled rules from the complete ROM inventory and reject omitted
+  windows or ranked alternatives, including unseen retry states. Account explicitly
+  for death/ignored windows, equivalent diagonal controls and paths with no safe
+  local completion. Withhold inputs to verify guidance resumes after a life loss
+  across both strategies and all supported skills/operator difficulties.
 - DL2 US 3.19 accepts moves from RAM segment `1000` offset `A160`; `A15C` is a
   later cue threshold and `A15A` closes the window exclusively. Input record types
   0, 1, 4 and 5 are valid. Preserve these ROM semantics rather than adding timing
@@ -126,7 +132,8 @@ development configurations unless the maintainer explicitly requests it.
 
 Use JDK 17, Python 3.9+, Git, SDK 36, build-tools 35.0.0, NDK 28.2.13676358,
 CMake 3.22.1 and the Gradle 8.13 wrapper (AGP 8.13.2). From `android/`,
-`./build-apks.sh release` prepares/verifies dependencies and builds both ARM
+`./build-apks.sh release` checks complete bundled ROM-rule coverage,
+prepares/verifies dependencies and builds both ARM
 release APKs. Use `./build-apks.sh release all` for all four device/emulator
 flavors or `./build-apks.sh debug` for ARM debug APKs. Release signing requires
 the private `HYPCADE_SIGNING_PROPERTIES` file. For direct Gradle development

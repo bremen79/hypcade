@@ -31,6 +31,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 cd "$script_dir"
+python3 tests/test_bundled_moves.py
 python3 bootstrap-deps.py
 ./gradlew --no-daemon -P"abis=$abis" ":app:$gradle_task"
 

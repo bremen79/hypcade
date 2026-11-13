@@ -55,57 +55,50 @@ These checks do not measure Yoga Flame performance or replace commercial-game te
 
 ## Move policies and Watch Mode
 
-The following batches passed on both the laptop and an Android 9 / API 28 x86
-emulator. Counts are **per backend**.
+Bundled coverage is checked independently of successful games. Reconstructing
+the full inventory from the supplied ROM ZIPs accounts for all 3,681 DLE21 and
+10,267 Space Ace A3 rules. Every ranked alternative is represented in both
+runtime policies where applicable: 1,178 DLE21 and 1,132 Space Ace choices before
+pool deduplication. Death, ignored, empty and dispatch windows remain auditable.
+Equivalent diagonals have supported single-control outcomes; an unranked rule
+with a safe structural continuation fails packaging. Tests deliberately remove
+a rule or policy alternative and require rejection.
 
-| Check | Cases | What passed |
-| --- | ---: | --- |
-| ROM policies and independent replays | 208 | Both objectives, eight starts for DLE21 and every combination of Space Ace's three skills and four operator difficulties; complete games without life loss |
-| Packaged Watch Mode lookup | 234 | Off using Max score, Max score and Fewest moves; two independent starts and input-queue phases of 0, 8 and 16 ms; packaged rows only, with no learning or fallback |
-| Space Ace branch detours | 72 | Both strategies, three separately introduced detours, all three skills and all four operator difficulties; selected-strategy guidance resumes and the game finishes without life loss |
-| DL2 production-player harness | 45 | All five difficulties, seek delays of 0, 17 and 55 ms, and queue phases of 0, 8 and 16 ms; complete games without life loss |
+The complete-policy selector passed these new video-less checks:
 
-Host and Android produced identical policy traces, Watch Mode results and DL2
-final states. Repeated starts produced seven or eight distinct scene/action
-sequences for each policy configuration, confirming that the tests sampled
-different natural routes.
+| Check | Host | Android 9 x86 | What passed |
+| --- | ---: | ---: | --- |
+| Normal packaged Watch Mode | 104 | 39 | All supported configurations; host uses both strategies, two starts and queue phases 0/16 ms; Android uses Off/Max score/Fewest moves at 8 ms |
+| Deliberate life loss and recovery | 39 | 26 | Withhold move 20 until death, resume with bundled data only, and complete without another loss; host includes Off, Android checks both visible strategies |
+| DL2 production-player harness | 5 | 5 | All five difficulties, 17 ms seek delay and 8 ms queue phase; complete games without life loss |
+| DL2 omitted-input controls | 2 | 2 | Withholding the first or final move causes a detected death |
 
-The DL2 harness runs the production Java Watch Mode controller and JNI guidance
-with Hypseus's i86 CPU, Sony protocol and extracted driver methods. Withholding
-the first or final move caused a detected death on both backends. Those negative
-controls check that the harness can distinguish a failed play from a win.
+The 26 common retry results match exactly between host and Android, including
+score, move count and the single intended life loss. Focused DL1 diagnostics
+also recovered after omissions at moves 1, 5, 10, 15, 20, 25, 30, 35 and 40.
+Before the fix, several of those tests lost a second life because retry-only
+steps had no packaged rows. The failure occurs without video; it is not caused
+by HD media resolution.
 
-Runtime rows are generated directly from the independent ROM-policy replays.
-The complete extraction command emits one merged JSON file per game, containing
-its shared rows and both strategy index lists, plus the generated APK include.
-A fresh 208-case host extraction and independent-replay run reproduced the
-APK's move include byte for byte. Bundle checks also verify direct generation
-in place and rejection of incomplete verification reports.
-The direct tables are checked across the same skill, difficulty and timing
-matrix before packaging.
-The current shared lookup passed all 234 host and Android cases with unchanged
-scores. Both strategies cover the union of verified branch contexts, while
-their ROM policies retain the choice to wait instead of taking an optional
-action. Each detour test follows the other strategy at one decision, then
-returns to the selected strategy. All 72 detours were actually exercised on
-each backend. Host and Android results matched for all 306 cases per backend.
+Successful sampled routes remain as timing calibration evidence, separate from
+the complete ROM policy. The archived 208-case policy/replay matrices and older
+Watch/actual-APK reports describe the earlier sampled selector; they are not
+new tests of this implementation. New reports under `verification/complete-*`
+record the current selector source fingerprints. Space Ace's necessary
+zero-score final UP remains covered, and DL2 continues to read its live ROM
+prompts rather than a sampled move export.
 
-Unique move rows are stored once per game, with separate 16-bit strategy index
-lists. Expanding those lists reproduces all 9,293 logical rows in the same
-priority order. A host differential check matched the previous selector in
-1,003,644 timing-boundary cases. Checks cover index bounds, sorted lookup order, complete pool use and the presence of pools
-and index lists in all four signed release APKs.
-
-Space Ace's necessary final UP remains in both policies even though it awards
-no points. Bundled-data checks verify that action, the complete replay evidence,
-the separate policy arrays and their presence in all four release APKs.
+All four signed releases are cross-built and checked for the native rule pools
+and strategy indices, signature, ABI and SDK declarations. These headless
+checks do not establish every possible input timing, random sequence, global
+optimality, or commercial-game performance on the cabinet.
 
 For reproduction, follow the [offline tool guide](../tools/offline-moves/README.md)
 and [Watch Mode verification guide](../tools/offline-moves/WATCH-VERIFY.md).
 These simulations omit video and real-time waits. Running them on Android
 checks the native/JVM backend; it does not exercise an APK's full media pipeline.
-The actual APK gameplay runs listed below predate the shared-table build; no
-new full gameplay run through the launcher was performed for this change.
+The actual APK gameplay runs listed below predate the complete-policy build;
+no new full gameplay run through the launcher was performed for this change.
 
 ## Direct APK gameplay
 
