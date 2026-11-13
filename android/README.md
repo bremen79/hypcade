@@ -308,8 +308,7 @@ signed with another key cannot update them. Uninstalling clears private
 settings and saves; game files outside app storage remain untouched. Arcade and mobile release APKs share the
 same key and application ID and replace one another. See Android's
 [app signing guide](https://developer.android.com/studio/publish/app-signing).
-The certificate fingerprint is recorded in build provenance; the APK signature
-contains the public certificate. Private signing material is never published.
+The APK signature contains the public certificate. Private signing material is never published.
 
 A complete source archive contains the pinned dependency sources. For that
 archive, the bootstrap script verifies their recorded hashes. In a Git
@@ -318,8 +317,8 @@ required submodules. It refuses to reset or overwrite modified existing
 checkouts. SDK/Gradle artifacts are still downloaded on the first build.
 The source archive omits Git history and generated build outputs; it retains
 the upstream source, Android changes, license files, and build scripts.
-[BUILD-PROVENANCE.json](BUILD-PROVENANCE.json) records the selected toolchain,
-upstream revision, and build-input checksums. Signing a rebuild with your own
+The build configuration and [dependency lock](dependencies.lock.json) pin the
+toolchain and dependency sources. Signing a rebuild with your own
 key produces a different APK; byte-for-byte reproducibility is not claimed.
 
 Select an ABI/flavor to build (default: both ARM variants):

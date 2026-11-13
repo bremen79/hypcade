@@ -27,7 +27,7 @@ development configurations unless the maintainer explicitly requests it.
 - `android/MODIFICATIONS.md`: current Android features and differences from upstream, organized by area, not release history.
 - `android/VALIDATION.md`: verified scenarios, evidence and remaining test limits.
 - `android/THIRD_PARTY_NOTICES.md`, `NOTICE` and component licenses: attribution and packaging.
-- `android/dependencies.lock.json` and `android/BUILD-PROVENANCE.json`: source pins and release identity.
+- `android/dependencies.lock.json`: pinned dependency sources.
 - `doc/CmdLine.md`: native command-line behavior.
 
 ## Source map
@@ -212,7 +212,7 @@ under `local-tools/`, never under a dot-directory. Prefer the shared
 copies. Keep local signing keys out of Git.
 
 Inspect new release APK signatures, SDK/ABI declarations and flavor policies;
-update release hashes and build provenance. Preserve warnings and test limitations
+update release checksums. Preserve warnings and test limitations
 in reports. Do not call translated ARM execution a physical-device test.
 
 Generate original test media with `android/tests/make-media-test.py` and FFmpeg.

@@ -3,8 +3,8 @@
 This document summarizes the checked implementation and its limits. Detailed
 results and source fingerprints live in
 [the verification reports](moves/rom-tables/verification/).
-[BUILD-PROVENANCE.json](BUILD-PROVENANCE.json) records the signed release APK
-hashes, toolchain and build checks.
+Signed APK checksums accompany the release files; toolchain versions and build
+commands are documented in the [Android guide](README.md).
 
 ## Android video backend
 
@@ -19,7 +19,7 @@ label is absent from the APK. Decoding remains automatic with software fallback.
 The Android launcher check confirms the toggle is absent. Compared with the
 pre-refactor signed binaries, the combined desktop-code exclusion, backend
 extraction and toggle removal save about 57 KiB per ARM APK and 260 KiB per
-uncompressed native library. Exact sizes are recorded in build provenance.
+uncompressed native library.
 
 ## CRT video and text
 

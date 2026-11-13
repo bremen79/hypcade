@@ -204,7 +204,6 @@
     "CHANGELOG.md",
     "NOTICE",
     "android/.gitignore",
-    "android/BUILD-PROVENANCE.json",
     "android/DEVICE-CAPABILITIES.md",
     "android/MODIFICATIONS.md",
     "android/README.md",

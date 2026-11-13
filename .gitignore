@@ -44,6 +44,9 @@ build/
 signing.properties
 release-signing.properties
 
+# Generated release metadata, not a source input
+/android/BUILD-PROVENANCE.json
+
 # Manifest of a generated source bundle, not a source input
 /SOURCE-ARCHIVE.json
 
