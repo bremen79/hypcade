@@ -339,7 +339,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         game.addView(advancedSection, sectionLayout());
 
         LinearLayout launchButtons = row();
-        playButton = input(action("Start game", true, view -> startGame(false)));
+        playButton = input(action("Start game", false, view -> startGame(false)));
         watchButton = input(action("Watch Mode", false, view -> startGame(true)));
         playButton.setContentDescription("Start the game with manual controls");
         watchButton.setContentDescription("Watch the game play automatically using bundled moves");

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Hypcade 0.1: ARMv7 arcade release rebuilt with original Space Ace dedicated skill bezel; other flavors retain the preceding cue-alignment builds; not published.",
+  "scope": "Hypcade 0.1: ARMv7 arcade release with matching secondary Start game button style and Space Ace dedicated skill bezel; other flavors retain their preceding build identities; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
@@ -41,8 +41,8 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 5991573,
-      "sha256": "fb94a806bd4268807a2638d7643b4e8142384cfb1b2c9e62ce904fafcd6513c3",
+      "size_bytes": 5991501,
+      "sha256": "952c6d8e529f4f1abf78a16d7c2764f055495838966be1e343c813e85a9118ec",
       "uncompressed_native_bytes": 4827420,
       "uncompressed_support_bytes": 4293786
     },
@@ -466,6 +466,12 @@
       "gameplay_checked": false,
       "usb_install_success": true,
       "installed_apk_sha256_verified": true
+    },
+    "start_button_style": {
+      "arcade_release_assembly": true,
+      "release_lint": true,
+      "runtime_tested": false,
+      "usb_install_success": true
     }
   },
   "move_generation": {
@@ -618,7 +624,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "ARMv7 arcade rebuilt from current sources for the Space Ace bezel change; the other three flavors retain their preceding build identities. No source archive generated.",
+  "source_tree_status": "ARMv7 arcade rebuilt from current launcher sources and installed via USB. Other flavors retain preceding build identities. No new runtime tests or source archive.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",
