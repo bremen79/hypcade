@@ -218,7 +218,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         TextView eyebrow = text("LASERDISC ARCADE", 11, ACCENT);
         eyebrow.setLetterSpacing(.16f);
         content.addView(eyebrow);
-        TextView title = text("Hypcade", 32, TEXT);
+        TextView title = text("Hypcade " + BuildConfig.VERSION_NAME, 32, TEXT);
         title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         content.addView(title, spaced(-1, -2, 4));
         content.addView(text(BuildConfig.ARCADE ? "Version for Android arcades" : "Secondary mobile version", 13, MUTED), spaced(-1, -2, 2));

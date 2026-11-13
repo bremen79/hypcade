@@ -17,7 +17,7 @@ Release packaging checks verify that the unused embedded desktop icon and splash
 artwork are absent from the native libraries, and that the removed decoder-toggle
 label is absent from the APK. Decoding remains automatic with software fallback.
 The Android launcher check confirms the toggle is absent. Compared with the
-pre-refactor signed 0.1 binaries, the combined desktop-code exclusion, backend
+pre-refactor signed binaries, the combined desktop-code exclusion, backend
 extraction and toggle removal save about 57 KiB per ARM APK and 260 KiB per
 uncompressed native library. Exact sizes are recorded in build provenance.
 
@@ -154,7 +154,7 @@ or game-driver changes were needed for this correction.
 All four signed release flavors assembled successfully: ARMv7 arcade, ARM64
 mobile, x86 arcade emulator and x86_64 mobile emulator. Checks verified:
 
-- The existing Hypcade release certificate, version 0.1, minimum SDK 25 and
+- The existing Hypcade release certificate, version v0.2, minimum SDK 25 and
   target SDK 36.
 - One ABI per flavor and the expected bundled move data.
 - Fixed arcade landscape and absence of touch-control code; mobile controls

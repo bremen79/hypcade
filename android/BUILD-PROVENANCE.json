@@ -1,12 +1,12 @@
 {
   "schema": 1,
-  "scope": "Hypcade 0.1: ARMv7 arcade release with matching secondary Start game button style and Space Ace dedicated skill bezel; other flavors retain their preceding build identities; not published.",
+  "scope": "Hypcade v0.2 signed releases for all four flavors, with the version shown beside Hypcade on the main screen; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
   "upstream_commit": "a16e2521ee3233ef20c44e562008c47f4b4293df",
   "upstream_version": "3.0.2",
-  "port_version": "0.1",
+  "port_version": "v0.2",
   "build_date": "2026-11-13",
   "min_sdk": 25,
   "target_sdk": 36,
@@ -41,15 +41,15 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 5991501,
-      "sha256": "952c6d8e529f4f1abf78a16d7c2764f055495838966be1e343c813e85a9118ec",
+      "size_bytes": 5991509,
+      "sha256": "963f9087095b4b17cd2f06212285e15d19ea7cbd8f157ff134d68bbdfa657a67",
       "uncompressed_native_bytes": 4827420,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6306315,
-      "sha256": "3eb64380bdce4c4f4e5f9631c6b145385c8ea03225de3aeb653eeaeaf2f45e17",
+      "size_bytes": 6306411,
+      "sha256": "566d879c8275c50483ffb41fe1dfb351ca25f9e366aa890ac1a2a002cb9650a5",
       "uncompressed_native_bytes": 6913360,
       "uncompressed_support_bytes": 4293786
     }
@@ -57,28 +57,28 @@
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6747017,
-      "sha256": "295cf79a498b89124e7c6884fe768156894f0265d99c1c61f41253dd129f63e1",
+      "size_bytes": 6747149,
+      "sha256": "715f96d1356d50f1c15367088ac5d0010b8a2571b6a8aab49d24b9fe4baa5d79",
       "uncompressed_native_bytes": 7621492,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6758414,
-      "sha256": "d6d1b7add87f5946b83a2d3714397f6209cf08b8253b44a21035b89d26f1965a",
+      "size_bytes": 6758510,
+      "sha256": "6a5cf0edc91bf08cf01d19c83f2dc66c68e36e0385e53e8e6a591184f832de10",
       "uncompressed_native_bytes": 7845824,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 444586,
-    "sha256": "7bb4fe1d4427efc10b2afa15608fc2ca0775078735934b46a8375f300f117140",
+    "size_bytes": 444587,
+    "sha256": "5fc95251107efb86d0a031a89418666fcc7198202b1318fd3730bbf5229eb6dc",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
   "application_id": "org.hypseus.android",
-  "version_code": 40,
+  "version_code": 41,
   "validation_document": "moves/rom-tables/verification/",
   "modification_notice": "../MODIFICATIONS.md",
   "upstream_file_changes": "upstream-changes.json",
@@ -133,7 +133,7 @@
   "validation": {
     "build": "All four signed release flavors assembled; ARM arcade/mobile release lint passed with shared JDK 17 and pinned NDK/CMake.",
     "host": "ROM tables/export, counterfactual score and death detection, guidance acceptance boundaries, required zero-score ending, launcher, Watch lifecycle and packaged evidence checks passed.",
-    "packaging": "All four APKs contain the verified move rows; signatures, SDK 25/36, version 0.1 and one ABI per flavor verified. Arcade/mobile touch-code and orientation policies passed.",
+    "packaging": "All four signed APKs declare v0.2, versionCode 41, SDK 25/36 and their expected ABI; official signatures and release packaging inspected. Functional tests were not rerun for this version/title update.",
     "rom_policy": {
       "per_backend": 208,
       "backends": [
@@ -472,6 +472,14 @@
       "release_lint": true,
       "runtime_tested": false,
       "usb_install_success": true
+    },
+    "version_update": {
+      "all_four_flavors_assembled": true,
+      "version_name": "v0.2",
+      "version_code": 41,
+      "main_title_uses_BuildConfig": true,
+      "functional_tests_rerun": false,
+      "arcade_usb_install_success": true
     }
   },
   "move_generation": {
@@ -624,7 +632,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "ARMv7 arcade rebuilt from current launcher sources and installed via USB. Other flavors retain preceding build identities. No new runtime tests or source archive.",
+  "source_tree_status": "All four signed v0.2 release APKs rebuilt from current sources. Historical gameplay evidence retained without relabelling its tested binaries. No new functional tests or source archive generated.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",
@@ -650,7 +658,7 @@
     "android/tests/test_crt_shader.py": "6e5f6a752ee9ffafcdf1056846015b9055cb66d37f4e3b634e94a714912b08ab"
   },
   "size_comparison": {
-    "scope": "Compared with the pre-refactor signed 0.1 APKs; net changes include backend extraction, exclusion of desktop-only code/artwork and decoder-toggle removal. Not an isolated compiler-flag benchmark.",
+    "scope": "Compared with the pre-refactor signed APKs; net changes include backend extraction, exclusion of desktop-only code/artwork and decoder-toggle removal. Not an isolated compiler-flag benchmark.",
     "excluded_desktop_icon_bytes": 3027,
     "excluded_desktop_splash_image_bytes": 201660,
     "apks": [

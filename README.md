@@ -2,7 +2,7 @@
   <img src="android/artwork/hypcade-icon.png" alt="Hypcade arcade cabinet and laserdisc logo" width="240">
 </p>
 
-# Hypcade 0.1 by Francesco Orabona
+# Hypcade v0.2 by Francesco Orabona
 
 **An Android arcade adaptation of [Hypseus Singe](https://github.com/DirtBagXon/hypseus-singe), the laserdisc game emulator**
 
