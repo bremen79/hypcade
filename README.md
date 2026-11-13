@@ -16,9 +16,9 @@ release. Hypseus Singe and its predecessors remain the foundation of the emulati
 
 ## Arcade cabinets first
 
-The primary build (``arcade'') is for Arcade1Up Android arcades: physical controls, fixed landscape,
+The primary build ("arcade") is for Arcade1Up Android arcades: physical controls, fixed landscape,
 native-panel output (1280×960 on the Yoga Flame) with aspect-ratio preservation, and no on-screen control overlay.
-The ``mobile'' build is a secondary convenience for phones and testing, with touch controls and mobile orientation behavior retained.
+The "mobile" build is a secondary convenience for phones and testing, with touch controls and mobile orientation behavior retained.
 
 Features of Hypcade:
 - Automatic scan of game folder.
@@ -27,7 +27,7 @@ Features of Hypcade:
 - Use arcade hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
   rendering, with optional scanlines.
 - Shows moves for Dragon’s Lair I/II and Space Ace.
-- ``Wath Mode'' to play the showed moves.
+- "Wath Mode" to play the showed moves.
 
 No commercial game ROMs or laserdisc media are included. Supply your own game
 files. The repository includes emulator support assets, synthetic test fixtures
