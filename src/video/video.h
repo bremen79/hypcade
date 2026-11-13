@@ -198,7 +198,12 @@ void vid_blank();
 
 bool load_bmps();
 bool draw_led(int, int, int, unsigned char);
-void draw_overlay_leds(unsigned int led_values[], int num_values, int x, int y);
+void draw_overlay_leds(unsigned int led_values[], int num_values, int x, int y,
+                       SDL_Surface *target = nullptr);
+#ifdef __ANDROID__
+SDL_Surface *get_scoreboard_surface();
+void repaint_scoreboard_surface();
+#endif
 void draw_string(const char *, int, int, SDL_Surface *, SDL_Color, bool);
 #ifdef __ANDROID__
 void queue_ldp1450_line(unsigned slot, const char *text, int x, int y);

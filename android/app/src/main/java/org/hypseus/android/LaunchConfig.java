@@ -50,12 +50,14 @@ public final class LaunchConfig {
     public final String extraArguments;
     public final int moveMode;
     public final boolean timingCue;
-    public final boolean showScore;
+    static final int SCORE_OFF = 0, SCORE_LEFT = 1, SCORE_RIGHT = 2, SCORE_TOP = 3;
+    static final String[] SCORE_LAYOUTS = {"Off", "Left", "Right", "Top"};
+    public final int scoreLayout;
     public final int difficulty;
     public final int skill;
 
     private static final Set<String> MANAGED_OPTIONS = new HashSet<>(Arrays.asList(
-            "-homedir", "-datadir", "-romdir", "-ramdir", "-framefile", "-script", "-zlua", "-scorebezel", "-useoverlaysb"));
+            "-homedir", "-datadir", "-romdir", "-ramdir", "-framefile", "-script", "-zlua", "-scorebezel", "-scorebezel_layout", "-useoverlaysb"));
     private static final Set<String> UNSUPPORTED_OPTIONS = new HashSet<>(Arrays.asList(
             "-manymouse", "-scoreboard", "-scoreport", "-usbscoreboard", "-scorepanel"));
 
@@ -67,23 +69,23 @@ public final class LaunchConfig {
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments,
                         int moveMode, boolean timingCue) {
-        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, true);
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, SCORE_LEFT);
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
-                        String extraArguments, int moveMode, boolean timingCue, boolean showScore) {
-        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, showScore,
+                        String extraArguments, int moveMode, boolean timingCue, int scoreLayout) {
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, scoreLayout,
                 GameDifficulty.importedSelection(clean(game).toLowerCase(Locale.ROOT), splitArguments(clean(extraArguments))));
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
-                        String extraArguments, int moveMode, boolean timingCue, boolean showScore, int difficulty) {
-        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, showScore, difficulty, 0);
+                        String extraArguments, int moveMode, boolean timingCue, int scoreLayout, int difficulty) {
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, scoreLayout, difficulty, 0);
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
-                        String extraArguments, int moveMode, boolean timingCue, boolean showScore, int difficulty, int skill) {
-        this.showScore = showScore;
+                        String extraArguments, int moveMode, boolean timingCue, int scoreLayout, int difficulty, int skill) {
+        this.scoreLayout = scoreLayout >= SCORE_OFF && scoreLayout <= SCORE_TOP ? scoreLayout : SCORE_LEFT;
         this.id = clean(id);
         this.name = clean(name);
         this.game = clean(game).toLowerCase(Locale.ROOT);
@@ -102,7 +104,12 @@ public final class LaunchConfig {
 
     public LaunchConfig withId(String newId) {
         return new LaunchConfig(newId, name, game, framefile, script,
-                extraArguments, moveMode, timingCue, showScore, difficulty, skill);
+                extraArguments, moveMode, timingCue, scoreLayout, difficulty, skill);
+    }
+
+    static boolean supportsScorePlacement(String game) {
+        return game.equals("lair2") || game.equals("dle11") || game.equals("dle21") ||
+                game.equals("lair") || game.matches("lair_[a-f]");
     }
 
     static boolean supportsScore(String game) {
@@ -183,8 +190,15 @@ public final class LaunchConfig {
             args.add(lua.getPath());
         }
         List<String> inherited = new ArrayList<>(splitArguments(extraArguments));
-        if (showScore && supportsScore(game, inherited)) {
+        // Lair/Ace otherwise fall back to their original overlay scoreboard.
+        if (scoreLayout == SCORE_OFF && supportsScore(game) && !game.equals("lair2") && !game.equals("tq"))
+            args.add("-noscoreboard");
+        if (scoreLayout != SCORE_OFF && supportsScore(game, inherited)) {
             args.add("-scorebezel");
+            if (supportsScorePlacement(game)) {
+                args.add("-scorebezel_layout");
+                args.add(SCORE_LAYOUTS[scoreLayout].toLowerCase(Locale.ROOT));
+            }
             // Original Space Ace dedicated bezel and live skill lamps. Respect
             // an explicitly supplied alternative native annunciator layout.
             if (Arrays.asList("ace", "ace_a", "ace_a2", "sae").contains(game) &&

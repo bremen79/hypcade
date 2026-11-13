@@ -15,6 +15,14 @@ void retire_texture(SDL_Texture *texture);
 void release_retired_textures();
 void release_renderer(SDL_Renderer *renderer);
 
+// Layout is fixed for a session, set before video initialization.
+bool set_scoreboard_layout(const char *layout);
+bool horizontal_scoreboard();
+SDL_Point scoreboard_size();
+// Called once per completed repaint on the emulation/render thread.
+// Caller owns both resources, including texture destruction on resize/exit.
+bool upload_scoreboard(SDL_Renderer *renderer, SDL_Surface *surface, SDL_Texture *&texture);
+void place_scoreboard(SDL_Rect &rect, int output_width);
 bool mobile_display();
 void drawable_size(SDL_Window *window, SDL_Rect &size);
 bool resized(SDL_Window *window, bool fullscreen, SDL_Rect &size);

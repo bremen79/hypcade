@@ -437,6 +437,9 @@ static void format_fullscreen_render()
         g_scoreboard_bezel_rect = {scoreboard_window_pos_x, scoreboard_window_pos_y,
                            static_cast<int>(g_bezel_scalewidth / scale),
                            static_cast<int>((g_bezel_scalewidth / scale) * bezel_ratio)};
+#ifdef __ANDROID__
+        android_video::place_scoreboard(g_scoreboard_bezel_rect, w);
+#endif
         VIDEO_SET(BEZEL_TOGGLE);
     }
 
@@ -738,9 +741,13 @@ bool init_display()
 
             if (g_game->m_software_scoreboard)
             {
-                if (!g_scoreboard_blit_surface)
-                    g_scoreboard_blit_surface = SDL_CreateSurface( g_scoreboard_w,
-                                                   g_scoreboard_h, SDL_PIXELFORMAT_RGBA32);
+                if (!g_scoreboard_blit_surface) {
+                    SDL_Point size = {g_scoreboard_w, g_scoreboard_h};
+#ifdef __ANDROID__
+                    size = android_video::scoreboard_size();
+#endif
+                    g_scoreboard_blit_surface = SDL_CreateSurface(size.x, size.y, SDL_PIXELFORMAT_RGBA32);
+                }
 
                 if (!g_scoreboard_blit_surface)
                 {
@@ -1157,6 +1164,13 @@ bool load_bmps()
     g_other_bmps[B_DL_CREDITS]  = load_one_bmp("credits.bmp", false);
     g_other_bmps[B_TQ_TIME]     = load_one_bmp("time.bmp", false);
 
+#ifdef __ANDROID__
+    // Layout-specific appearance belongs to video setup, not argument parsing.
+    if (android_video::horizontal_scoreboard()) {
+        sboverlay_characterset = 1;
+        VIDEO_SET(OVERLAY_WHITE);
+    }
+#endif
     g_other_bmps[B_OVERLAY_LEDS] =
     load_led_strip(sboverlay_characterset == 1 ? "overlayleds1.bmp" : "overlayleds2.bmp");
    
@@ -1196,7 +1210,9 @@ bool load_bmps()
 bool draw_led(int value, int x, int y, unsigned char end)
 {
     g_scoreboard_surface = g_led_bmps[value];
+#ifndef __ANDROID__
     static unsigned char led = 0;
+#endif
 
     SDL_Rect dest;
     dest.x = (int16_t)x;
@@ -1211,6 +1227,7 @@ bool draw_led(int value, int x, int y, unsigned char end)
         return false;
     }
 
+#ifndef __ANDROID__
     if (led == end)
     {
 
@@ -1229,6 +1246,10 @@ bool draw_led(int value, int x, int y, unsigned char end)
         led = -1;
     }
     led++;
+#else
+    // Android uploads once after the whole scoreboard has repainted.
+    (void)end;
+#endif
     return true;
 }
 
@@ -1301,8 +1322,9 @@ bool draw_annunciator(int which)
 
 // Update scoreboard surface
 void draw_overlay_leds(unsigned int values[], int num_digits,
-                       int start_x, int y)
+                       int start_x, int y, SDL_Surface *target)
 {
+    if (!target) target = g_overlay_surface;
     SDL_Rect src, dest;
 
     dest.x = start_x;
@@ -1315,7 +1337,9 @@ void draw_overlay_leds(unsigned int values[], int num_digits,
     src.h = OVERLAY_LED_HEIGHT;
 
     SDL_Rect base = {0, dest.y + 1, dest.w, dest.h};
-    static const Uint32 colorkey = SDL_MapSurfaceRGB(g_other_bmps[B_OVERLAY_LEDS], 0xA, 0xA, 0xA);
+    const Uint32 colorkey = target == g_overlay_surface
+        ? SDL_MapSurfaceRGB(g_other_bmps[B_OVERLAY_LEDS], 0xA, 0xA, 0xA)
+        : SDL_MapSurfaceRGBA(target, 0, 0, 0, 0);
 
     // Draw the digit(s) to the overlay surface
     for (int i = 0; i < num_digits; i++)
@@ -1324,9 +1348,9 @@ void draw_overlay_leds(unsigned int values[], int num_digits,
         base.x = dest.x - 1;
 
         if (!VIDEO_HAS(LEGACY_OVERLAY))
-            SDL_FillSurfaceRect(g_overlay_surface, &base, colorkey);
+            SDL_FillSurfaceRect(target, &base, colorkey);
 
-        if (!SDL_BlitSurface(g_other_bmps[B_OVERLAY_LEDS], &src, g_overlay_surface, &dest))
+        if (!SDL_BlitSurface(g_other_bmps[B_OVERLAY_LEDS], &src, target, &dest))
         {
             LOGE << fmt("Could not Blit Overlay LED's: %s", SDL_GetError());
             set_quitflag();
@@ -1335,7 +1359,7 @@ void draw_overlay_leds(unsigned int values[], int num_digits,
         dest.x += OVERLAY_LED_WIDTH;
     }
 
-    VIDEO_SET(BLOCK_DRIVER_OVERLAY);
+    if (target == g_overlay_surface) VIDEO_SET(BLOCK_DRIVER_OVERLAY);
 }
 
 #ifdef __ANDROID__
@@ -1465,6 +1489,18 @@ SDL_Renderer *get_renderer() { return g_renderer; }
 SDL_Window *get_window() { return g_window; }
 SDL_Texture *get_overlay_texture() { return g_overlay_texture; }
 SDL_Surface *get_screen_leds() { return g_overlay_surface; }
+#ifdef __ANDROID__
+SDL_Surface *get_scoreboard_surface() { return g_scoreboard_blit_surface; }
+
+void repaint_scoreboard_surface()
+{
+    // No canvas exists for native game overlays or non-graphical scoreboards.
+    if (g_scoreboard_blit_surface &&
+        !android_video::upload_scoreboard(g_renderer, g_scoreboard_blit_surface, g_scoreboard_texture))
+        set_quitflag();
+}
+#endif
+
 SDL_Rect get_scoreboard_rect() { return g_scoreboard_bezel_rect; }
 SDL_Rect get_aux_rect() { return g_aux_rect; }
 

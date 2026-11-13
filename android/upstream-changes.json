@@ -150,6 +150,22 @@
       "upstream_sha256": "d0dc55ca3c8dd25d9f389df2d63a957069daa3df51d0d77efec1f30174219364"
     },
     {
+      "path": "src/scoreboard/overlay_scoreboard.cpp",
+      "upstream_sha256": "bf86bc69662938b8c887780d7fe47b4f3b7f94b77360ef4442dd5bfd22bf6eef"
+    },
+    {
+      "path": "src/scoreboard/overlay_scoreboard.h",
+      "upstream_sha256": "ad0163c12113abd08d4ea1ab120ae2e6b18a0b572831e93a6063c1846ffc2548"
+    },
+    {
+      "path": "src/scoreboard/scoreboard_collection.cpp",
+      "upstream_sha256": "ab649fc8c19e99eb13468d3c3169835fe66f2d212b5410f96ebece1ebda8e83c"
+    },
+    {
+      "path": "src/scoreboard/scoreboard_factory.cpp",
+      "upstream_sha256": "27ac47157ff431b0fb48d1f6157cfa1b38b68d1c2a29520345ade0413dc7cdd0"
+    },
+    {
       "path": "src/sound/CMakeLists.txt",
       "upstream_sha256": "2d50b490c13a35e0e00b1ab59dece3f5c677c5bf6cf04f61b49f39dc31dcb98e"
     },

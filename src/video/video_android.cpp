@@ -13,6 +13,8 @@
 
 namespace video {
 namespace {
+enum class ScoreLayout { Native, Left, Right, Top };
+ScoreLayout score_layout = ScoreLayout::Native;
 bool mobile = false;
 SDL_Texture *g_ldp1450_font = nullptr;
 bool calculated_moves_enabled = false;
@@ -39,6 +41,45 @@ void set_show_fps(bool enabled)
 }
 
 namespace android_video {
+
+bool set_scoreboard_layout(const char *layout)
+{
+    if (!strcmp(layout, "left")) score_layout = ScoreLayout::Left;
+    else if (!strcmp(layout, "right")) score_layout = ScoreLayout::Right;
+    else if (!strcmp(layout, "top")) score_layout = ScoreLayout::Top;
+    else return false;
+    return true;
+}
+
+bool horizontal_scoreboard() { return score_layout == ScoreLayout::Top; }
+
+SDL_Point scoreboard_size()
+{
+    return horizontal_scoreboard() ? SDL_Point{320, 32} : SDL_Point{340, 480};
+}
+
+bool upload_scoreboard(SDL_Renderer *renderer, SDL_Surface *surface, SDL_Texture *&texture)
+{
+    // Both upstream painters use the same canvas and retain one texture.
+    const bool updated = texture
+        ? SDL_UpdateTexture(texture, nullptr, surface->pixels, surface->pitch)
+        : (texture = SDL_CreateTextureFromSurface(renderer, surface)) != nullptr;
+    if (!updated) {
+        LOGE << "Could not update scoreboard: " << SDL_GetError();
+    }
+    return updated;
+}
+
+void place_scoreboard(SDL_Rect &rect, int output_width)
+{
+    if (score_layout == ScoreLayout::Native) return;
+    rect.x = rect.y = 0;
+    if (score_layout == ScoreLayout::Right) rect.x = output_width - rect.w;
+    else if (horizontal_scoreboard()) {
+        const SDL_Point size = scoreboard_size();
+        rect = {0, 0, output_width, output_width * size.y / size.x};
+    }
+}
 
 void draw_hud(SDL_Renderer *renderer, int height, double maximum)
 {

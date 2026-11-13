@@ -40,10 +40,20 @@ def main():
         scratch=root/'local-tools';scratch.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='crt-frame-',dir=scratch) as folder:
             binary=Path(folder)/'frame-test'
+            # Enable Android's collection completion hook without making the
+            # Linux SDL/GLES library pretend it is an Android installation.
+            (Path(folder)/'config.h').write_text('')
+            collection=Path(folder)/'android-scoreboard.cpp'
+            collection.write_text('#include <SDL3/SDL.h>\n#define __ANDROID__\n'
+                '#pragma GCC diagnostic ignored "-Wunused-parameter"\n'
+                '#include "'+str(root/'src/scoreboard/scoreboard_collection.cpp')+'"\n')
             subprocess.run([os.environ.get('CXX','c++'),'-std=c++11','-O2','-Wall','-Wextra','-Werror',
+                '-I'+folder,
+                '-I'+str(root/'android/third_party/SDL_ttf/include'),
                 '-I'+str(root/'android/third_party/SDL/include'),'-I'+str(root/'src/3rdparty/plog/include'),
                 '-I'+str(root/'android/app/jni'),'-I'+str(root/'src/video'),str(root/'android/tests/crt_frame_test.cpp'),
-                str(root/'src/video/video_android.cpp'),
+                str(root/'src/video/video_android.cpp'),str(collection),
+                str(root/'src/scoreboard/scoreboard_interface.cpp'),
                 str(root/'android/app/jni/android_crt.cpp'),'-l:'+library,'-lGLESv2','-o',str(binary)],check=True)
             subprocess.run([str(binary)],env={**os.environ,'EGL_PLATFORM':'surfaceless'},cwd=root,check=True)
     if args.make_fixture:

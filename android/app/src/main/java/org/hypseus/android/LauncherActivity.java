@@ -119,6 +119,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private String extras = "";
     private Switch fastBoot;
     private Switch showScore;
+    private Button scoreLayoutButton;
+    private int scoreLayout = LaunchConfig.SCORE_LEFT;
     private Button difficultyButton;
     private Button skillButton;
     private int difficulty;
@@ -331,6 +333,15 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         difficultyButton = choiceOption(advancedSection, "Difficulty", view -> chooseDifficulty());
         skillButton = choiceOption(advancedSection, "Skill", view -> chooseSkill());
         showScore = option(advancedSection, "Show score and lives");
+        showScore.setOnCheckedChangeListener((button, checked) -> {
+            if (!applyingOptions) {
+                scoreLayout = checked ? LaunchConfig.SCORE_LEFT : LaunchConfig.SCORE_OFF;
+                rememberCurrent();
+                saveDraft();
+            }
+        });
+        scoreLayoutButton = choiceOption(advancedSection, "Show score and lives", view -> chooseSetting(
+                "Show score and lives", LaunchConfig.SCORE_LAYOUTS, scoreLayout, value -> scoreLayout = value));
         showMovesButton = choiceOption(advancedSection, "Show moves", view -> chooseSetting(
                 "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value));
         timingCue = option(advancedSection, "Play move audio cue");
@@ -372,7 +383,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private LaunchConfig readProfile() {
         return new LaunchConfig(currentId, profileName.getText().length() == 0 ? profileTitle() : profileName.getText().toString(), gameId.getText().toString(),
                 framefile.getText().toString(), script.getText().toString(), selectedOptions(),
-                moveMode, timingCue.isChecked(), showScore.isChecked(), difficulty, skill);
+                moveMode, timingCue.isChecked(), scoreLayout, difficulty, skill);
     }
 
     private void applyProfile(LaunchConfig config) {
@@ -389,7 +400,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         VideoOptions video = new VideoOptions(options);
         fastBoot.setChecked(video.fastBoot);
         showFps.setChecked(video.showFps);
-        showScore.setChecked(config.showScore);
+        scoreLayout = config.scoreLayout;
+        showScore.setChecked(scoreLayout != LaunchConfig.SCORE_OFF);
         linearScale.setChecked(video.smooth);
         scanlines.setChecked(video.scanlines);
         syncVideo.setChecked(video.vsync);
@@ -532,7 +544,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private static JSONObject toJson(LaunchConfig config) {
         JSONObject json = new JSONObject();
         try {
-            json.put("score", config.showScore);
+            json.put("scoreLayout", config.scoreLayout);
             json.put("difficulty", config.difficulty);
             json.put("skill", config.skill);
             json.put("id", config.id).put("name", config.name).put("game", config.game)
@@ -547,7 +559,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private static LaunchConfig fromJson(JSONObject json) {
         return new LaunchConfig(json.optString("id", ""), json.optString("name", ""), json.optString("game", "lair"),
                 json.optString("framefile", ""), json.optString("script", ""), json.optString("extra", ""),
-                json.optInt("moves", MoveMode.OFF), json.optBoolean("cue", false), json.optBoolean("score", true), json.optInt("difficulty", -1), json.optInt("skill", 0));
+                json.optInt("moves", MoveMode.OFF), json.optBoolean("cue", false), json.optInt("scoreLayout", LaunchConfig.SCORE_LEFT), json.optInt("difficulty", -1), json.optInt("skill", 0));
     }
 
     private void chooseStorage() {
@@ -1151,7 +1163,15 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         setGameOption(skillButton, GameDifficulty.spaceAce(game), available);
         skillButton.setText(GameDifficulty.SKILLS[skill]);
         setGameOption(watchButton, support.visual, available);
-        setGameOption(showScore, LaunchConfig.supportsScore(game, safeOptions()), available);
+        boolean scoreSupported = LaunchConfig.supportsScore(game, safeOptions());
+        boolean scorePlacement = LaunchConfig.supportsScorePlacement(game);
+        setGameOption(showScore, scoreSupported && !scorePlacement, available);
+        setGameOption(scoreLayoutButton, scoreSupported && scorePlacement, available);
+        scoreLayoutButton.setText(LaunchConfig.SCORE_LAYOUTS[scoreLayout]);
+        boolean wasApplying = applyingOptions;
+        applyingOptions = true;
+        showScore.setChecked(scoreLayout != LaunchConfig.SCORE_OFF);
+        applyingOptions = wasApplying;
         setGameOption(fastBoot, LaunchConfig.supportsFastBoot(game), available);
         setGameOption(showMovesButton, support.visual, available);
         setGameOption(timingCue, support.cue, available);

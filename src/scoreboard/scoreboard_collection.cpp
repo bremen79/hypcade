@@ -1,6 +1,9 @@
 #include "config.h"
 
 #include "scoreboard_collection.h"
+#ifdef __ANDROID__
+#include "../video/video.h"
+#endif
 
 IScoreboard *ScoreboardCollection::GetInstance(SDL_Surface *(*pFuncGetActiveOverlay)(), bool bThayersQuest,
 		bool bUsingAnnunciactor,
@@ -76,8 +79,12 @@ bool ScoreboardCollection::RepaintIfNeeded()
 
 	LIST_LOOP
 	{
-		bRes = bRes || (*li)->RepaintIfNeeded();
+        // Do not short-circuit: every output must finish drawing before upload.
+        bRes = (*li)->RepaintIfNeeded() || bRes;
 	}
+#ifdef __ANDROID__
+    if (bRes) video::repaint_scoreboard_surface();
+#endif
 	return bRes;
 }
 

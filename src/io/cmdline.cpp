@@ -1,5 +1,6 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 #ifdef __ANDROID__
+#include "../video/video_android.h"
 #include "../../android/app/jni/android_video_codec.h"
 #endif
 /* Hypcade modification notice (2026-11-08): modified for Android arcade
@@ -966,6 +967,15 @@ bool parse_cmd_line(int argc, char **argv)
                     printline("NOTE: Scoreboard bezel is not available");
                 }
             }
+#ifdef __ANDROID__
+            else if (strcasecmp(s, "-scorebezel_layout") == 0) {
+                get_next_word(s, sizeof(s));
+                if (!video::android_video::set_scoreboard_layout(s)) {
+                    printerror("Scoreboard layout must be left, right or top");
+                    result = false;
+                }
+            }
+#endif
             else if (strcasecmp(s, "-scorebezel_scale") == 0 ||
                          strcasecmp(s, "-scorepanel_scale") == 0 ||
                              strcasecmp(s, "-auxbezel_scale") == 0) {

@@ -227,7 +227,7 @@ smoothing, V-sync and FPS. Hardware decoding is automatic. With a command file,
 missing boolean flags use the native defaults (fast startup is off); without
 one Hypcade enables fast startup for supported games. Score remains enabled
 by default; `-scorebezel` and `-useoverlaysb N` are represented by the GUI's
-score/lives switch rather than retained as independent switches.
+score/lives control rather than retained as independent switches.
 
 GUI changes take priority and are saved. All discovered games are saved,
 including games you have not selected. Rescanning does not reread their command
@@ -395,7 +395,15 @@ access; Android-paired controllers use the normal input path.
 
 ### Dragon's Lair II scoreboard
 
-**Show score and lives** now uses the same graphical scoreboard as Dragon's
+Dragon's Lair I and supported Dragon's Lair II revisions offer a dropdown with
+**Off**, **Left**, **Right** and **Top**. Left is the original vertical bezel;
+Right places that same bezel at the right edge. Top uses Hypseus's horizontal
+scoreboard with white, lit-segments-only digits and a transparent background
+across the top of the screen. The default is Left. These displays
+remain sharp when CRT scanlines are enabled. Other supported games keep the
+on/off control for their existing scoreboard.
+
+**Show score and lives** uses the same graphical scoreboard as Dragon's
 Lair I for the US 3.19 ROM (`lair2`, default revision or `-version 6`). It shows
 both players' scores and lives plus the credit count, directly from the ROM's
 state. Turning it off leaves the game's original video and text unchanged.

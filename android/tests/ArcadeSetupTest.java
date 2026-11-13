@@ -38,7 +38,7 @@ public final class ArcadeSetupTest {
         GameScanner.Result found=GameScanner.scan(root.toFile(),Collections.emptyList(),()->false);
         check(found.games.size()==3,"Discover three valid games, ignore bad framefiles and escaped/cyclic links");
         for (LaunchConfig detected : found.games) {
-            check(detected.showScore, "Default score preference enabled");
+            check(detected.scoreLayout == LaunchConfig.SCORE_LEFT, "Default score preference enabled");
             check(new VideoOptions(LaunchConfig.splitArguments(detected.extraArguments)).smooth,
                     "New game profiles default to smooth video scaling");
             check(LaunchConfig.splitArguments(detected.extraArguments).contains("-fastboot") ==
@@ -62,11 +62,11 @@ public final class ArcadeSetupTest {
                 && !importedArgs.contains("-nojoystick") && !importedArgs.contains("2"), "Android owns paths, display, controls and score");
         importedVideo.scanlines=false; importedVideo.vsync=true;
         LaunchConfig edited = new LaunchConfig(imported.id, imported.name, imported.game, imported.framefile,
-                imported.script, importedVideo.arguments(importedArgs), MoveMode.OFF, false, false);
+                imported.script, importedVideo.arguments(importedArgs), MoveMode.OFF, false, LaunchConfig.SCORE_OFF);
         Files.writeString(commands, "-scanlines -novsync -fastboot -bank 0 1111");
         LaunchConfig rescanned = GameScanner.scan(root.toFile(), Collections.singletonList(edited), ()->false)
                 .games.stream().filter(c->c.id.equals(edited.id)).findFirst().orElseThrow();
-        check(rescanned == edited && !rescanned.showScore && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).scanlines
+        check(rescanned == edited && rescanned.scoreLayout == LaunchConfig.SCORE_OFF && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).scanlines
                 && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).smooth,
                 "Rescan preserves GUI choices and imported native options despite changed file");
         check(!java.util.Arrays.asList(edited.arguments(root.toFile())).contains("-scorebezel"), "GUI score off wins");

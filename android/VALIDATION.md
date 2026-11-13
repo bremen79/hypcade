@@ -53,6 +53,35 @@ recorded moves. Added score/lives overlays, FPS, subtitles and bezels are drawn
 afterward without filtering. CRT-off rendering retains the direct path.
 These checks do not measure Yoga Flame performance or replace commercial-game testing.
 
+## Scoreboard layouts
+
+Launcher model checks cover Off, Left, Right and Top arguments for Dragon's
+Lair I and II, including suppression of DL1's default overlay when Off is
+selected. Host renderer checks cover edge placement at output widths of 960,
+1280 and 1920 pixels, while preserving native positioning for other games.
+
+Host GLES2 and software-renderer checks also exercise the production scoreboard
+collection with two independent test painters. Both must complete before one
+texture upload; a second call without a repaint must not upload. All three
+layouts retain the same texture across changed and blanked digits, while pixel
+checks verify transparent clearing and unchanged background video. These are
+component rendering checks, not a new cabinet gameplay test; no ADB device was
+connected for this refactor.
+
+The signed ARMv7 arcade build was exercised through the launcher on the physical
+Yoga Flame cabinet (Android 10, 1280x960), using DLE21 and DL2 US 3.19 with HD
+media. Both games launched in all four layouts. Captures confirm matching
+vertical bezels at opposite edges and video visible behind the transparent Top
+scoreboard. Top uses the upstream white digit set with only lit segments,
+checked on the cabinet; scoreboards remain outside the CRT-filtered game layer.
+
+In a short DL2 one-player cabinet check, four added coins did not change Player
+2's displayed lives: the captured digit pixels stayed identical at 3. The ROM's
+lives display routine indexes words at `0x1000:56ac` and `0x1000:56ae`; its credit
+counter is separate at `0x1000:a156`. A video-less ROM probe also confirms that
+starting one player initializes both lives slots. The display deliberately keeps
+these raw ROM values. This does not establish every two-player or coinage case.
+
 ## Move policies and Watch Mode
 
 Bundled coverage is checked independently of successful games. Reconstructing
@@ -166,8 +195,7 @@ mobile, x86 arcade emulator and x86_64 mobile emulator. Checks verified:
 - One ABI per flavor and the expected bundled move data.
 - Fixed arcade landscape and absence of touch-control code; mobile controls
   and orientation policy remain present.
-- Previous ARM release lint: zero errors, with 43 arcade warnings and 38 mobile
-  warnings; not rerun for the renderer-only duplicate-text fix.
+- ARM release lint: zero errors, with 42 arcade warnings and 37 mobile warnings.
 
 Focused checks also passed for ROM-table export, causal score/progression and
 death detection, guidance boundaries, Watch Mode lifecycle and stale events,

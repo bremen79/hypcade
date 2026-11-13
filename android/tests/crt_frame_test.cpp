@@ -3,6 +3,7 @@
 #include "android_crt.h"
 #include "android_ldp1450_text.h"
 #include "video_android.h"
+#include "../../src/scoreboard/scoreboard_collection.h"
 #include <GLES2/gl2.h>
 #include <algorithm>
 #include <cassert>
@@ -141,7 +142,7 @@ static void checkBackend(SDL_Renderer *r) {
     assert(target && game_target(r,output,true,false)==target);
     assert(SDL_SetRenderTarget(r,target));
     assert(SDL_SetRenderDrawColor(r,126,126,126,255) && SDL_RenderClear(r));
-    { std::lock_guard<std::recursive_mutex> lock(mutex());queue_text(2,"SWORD",20,22); }
+    { std::lock_guard<std::recursive_mutex> lock(video::android_video::mutex());queue_text(2,"SWORD",20,22); }
     assert(has_rom_text());
     draw_game_text(r,{0,0,W,H},{0,0,W,H});Pixels plain=capture(r);
     // DL2 uses its native SWORD prompt even while Watch publishes BUTTON.
@@ -151,7 +152,7 @@ static void checkBackend(SDL_Renderer *r) {
     present_game(r,target);Pixels filtered=capture(r);check(plain,filtered);
     assert(game_target(r,output,false,false)==nullptr);
     // Clearing a retained ROM line removes it on the next frame.
-    { std::lock_guard<std::recursive_mutex> lock(mutex());queue_text(2,"",20,22); }
+    { std::lock_guard<std::recursive_mutex> lock(video::android_video::mutex());queue_text(2,"",20,22); }
     assert(SDL_RenderClear(r));draw_game_text(r,{0,0,W,H},{0,0,W,H});
     Pixels blank=capture(r);assert(blank!=plain);
     testControls=16;
@@ -170,7 +171,7 @@ static void checkBackend(SDL_Renderer *r) {
     video::set_show_fps(true);draw_hud(r,H,18.2);video::set_show_fps(false);
     SDL_Texture *retired=SDL_CreateTexture(r,SDL_PIXELFORMAT_RGBA32,SDL_TEXTUREACCESS_STATIC,4,4);
     assert(retired);
-    { std::lock_guard<std::recursive_mutex> lock(mutex());retire_texture(retired);release_retired_textures(); }
+    { std::lock_guard<std::recursive_mutex> lock(video::android_video::mutex());retire_texture(retired);release_retired_textures(); }
     video::set_android_mobile_display(false);assert(!mobile_display());
     video::set_android_mobile_display(true);assert(mobile_display());
     SDL_Rect size={0,0,1,1};assert(resized(SDL_GetRenderWindow(r),true,size));
@@ -181,7 +182,113 @@ static void checkBackend(SDL_Renderer *r) {
     std::printf("Android video backend passed: retained ROM text/moves, CRT target reuse/off, sharp HUD, retirement, mobile resize and renderer cleanup.\n");
 }
 
+// Two independent painters exercise the production collection's completion
+// boundary. Their simple marks make missing paints and stale alpha unambiguous.
+static SDL_Renderer *scoreRenderer;
+static SDL_Surface *scoreSurface;
+static SDL_Texture *scoreTexture;
+static unsigned scoreUploads, scorePaints[2];
+namespace video {
+void repaint_scoreboard_surface() {
+    assert(android_video::upload_scoreboard(scoreRenderer, scoreSurface, scoreTexture));
+    ++scoreUploads;
+}
+}
+class ScorePainter : public IScoreboard {
+    const int slot;
+public:
+    explicit ScorePainter(int index) : slot(index) {
+        std::fill_n(m_DigitValues, DIGIT_COUNT, 0u);
+        assert(Init());
+    }
+    void DeleteInstance() override { delete this; }
+    void Invalidate() override { m_bNeedsRepaint = true; }
+    bool ChangeVisibility(bool) override { return false; }
+    bool is_repaint_needed() override { return m_bNeedsRepaint; }
+    bool set_digit(unsigned value, WhichDigit digit) override { return set_digit_w_sae(value, digit); }
+    bool get_digit(unsigned &value, WhichDigit digit) override { value=m_DigitValues[digit];return true; }
+    bool RepaintIfNeeded() override {
+        if (!m_bNeedsRepaint) return false;
+        SDL_Rect rect={slot*scoreSurface->w/2,0,scoreSurface->w/4,scoreSurface->h/2};
+        const Uint32 colour = m_DigitValues[PLAYER1_0]==15 ? 0 :
+                SDL_MapSurfaceRGBA(scoreSurface,255,slot ? 0 : 255,slot ? 0 : 255,255);
+        assert(SDL_FillSurfaceRect(scoreSurface,&rect,colour));
+        ++scorePaints[slot];m_bNeedsRepaint=false;return true;
+    }
+};
+IScoreboard *ScoreboardFactory::GetInstance(ScoreboardType type, SDL_Surface *(*)(), bool, bool, unsigned) {
+    return new ScorePainter(type==IMAGE ? 0 : 1);
+}
+static void checkScoreboard(SDL_Renderer *renderer) {
+    using namespace video::android_video;
+    scoreRenderer=renderer;
+    for (const char *layout : {"left","right","top"}) {
+        assert(set_scoreboard_layout(layout));
+        const SDL_Point size=scoreboard_size();
+        assert(size.x==(horizontal_scoreboard() ? 320 : 340));
+        assert(size.y==(horizontal_scoreboard() ? 32 : 480));
+        scoreSurface=SDL_CreateSurface(size.x,size.y,SDL_PIXELFORMAT_RGBA32);
+        assert(scoreSurface && SDL_FillSurfaceRect(scoreSurface,nullptr,0));
+        scoreTexture=nullptr;scoreUploads=scorePaints[0]=scorePaints[1]=0;
+        IScoreboard *collection=ScoreboardCollection::GetInstance();
+        assert(ScoreboardCollection::AddType(collection,ScoreboardFactory::IMAGE));
+        assert(ScoreboardCollection::AddType(collection,ScoreboardFactory::OVERLAY));
+        SDL_Texture *retained=nullptr;
+        for (unsigned digit : {7u,15u,8u}) {
+            assert(collection->update_player_score(0,digit,0));
+            assert(collection->RepaintIfNeeded());
+            assert(scorePaints[0]==scoreUploads && scorePaints[1]==scoreUploads);
+            if (retained) assert(retained==scoreTexture);
+            retained=scoreTexture;
+            const unsigned uploads=scoreUploads;
+            assert(!collection->RepaintIfNeeded() && scoreUploads==uploads);
+            assert(SDL_SetRenderTarget(renderer,nullptr));
+            assert(SDL_SetRenderDrawColor(renderer,0,0,255,255) && SDL_RenderClear(renderer));
+            assert(SDL_RenderTexture(renderer,scoreTexture,nullptr,nullptr));
+            Pixels pixels=capture(renderer);
+            auto pixel=[&](int x,int y,int c){return pixels[(y*W+x)*4+c];};
+            // Transparent background, and clearing digits must remove old marks.
+            assert(pixel(W-4,H-4,0)==0 && pixel(W-4,H-4,2)==255);
+            if (digit==15) {
+                assert(pixel(8,8,0)==0 && pixel(8,8,2)==255);
+                assert(pixel(W/2+8,8,0)==0 && pixel(W/2+8,8,2)==255);
+            } else {
+                assert(pixel(8,8,0)==255 && pixel(8,8,1)==255);
+                assert(pixel(W/2+8,8,0)==255 && pixel(W/2+8,8,1)==0);
+            }
+        }
+        collection->PreDeleteInstance();
+        SDL_DestroyTexture(scoreTexture);SDL_DestroySurface(scoreSurface);
+    }
+    scoreTexture=nullptr;scoreSurface=nullptr;scoreRenderer=nullptr;
+    assert(set_scoreboard_layout("left"));
+    std::printf("Shared scoreboard pipeline passed on %s: all painters finish, one upload per repaint, texture reuse, no unchanged uploads and transparent clearing in every layout.\n",SDL_GetRendererName(renderer));
+}
+
+static void scoreboard_placement() {
+    using namespace video::android_video;
+    SDL_Rect native = {31, 47, 200, 280};
+    place_scoreboard(native, 1280);
+    assert(native.x == 31 && native.y == 47 && native.w == 200 && native.h == 280);
+    for (int width : {960, 1280, 1920}) {
+        SDL_Rect rect = {31, 47, width / 6, width / 4};
+        assert(set_scoreboard_layout("left"));
+        place_scoreboard(rect, width);
+        assert(rect.x == 0 && rect.y == 0 && !horizontal_scoreboard());
+        assert(set_scoreboard_layout("right"));
+        place_scoreboard(rect, width);
+        assert(rect.x + rect.w == width && rect.y == 0 && !horizontal_scoreboard());
+        assert(set_scoreboard_layout("top"));
+        place_scoreboard(rect, width);
+        assert(rect.x == 0 && rect.y == 0 && rect.w == width && rect.h == width / 10);
+        assert(horizontal_scoreboard());
+        assert(!set_scoreboard_layout("invalid") && horizontal_scoreboard());
+    }
+    assert(set_scoreboard_layout("left"));
+}
+
 int main() {
+    scoreboard_placement();
     SDL_SetHint(SDL_HINT_VIDEO_DRIVER,"offscreen");
     assert(SDL_Init(SDL_INIT_VIDEO));
     SDL_Window *window=SDL_CreateWindow("CRT final frame test",W,H,SDL_WINDOW_OPENGL|SDL_WINDOW_HIDDEN);
@@ -252,6 +359,7 @@ int main() {
     checkText(r);
     checkBackend(r);
     checkMoveSources(r);
+    checkScoreboard(r);
     SDL_Texture *small=SDL_CreateTexture(r,SDL_PIXELFORMAT_RGBA32,SDL_TEXTUREACCESS_TARGET,16,16);
     assert(small && !android_crt_present(r,small));SDL_DestroyTexture(small);
     SDL_Surface *surface=SDL_CreateSurface(W,H,SDL_PIXELFORMAT_RGBA32);
@@ -259,6 +367,7 @@ int main() {
     assert(software && !android_crt_available(software));
     checkText(software);
     checkMoveSources(software);
+    checkScoreboard(software);
     SDL_DestroyRenderer(software);SDL_DestroySurface(surface);
     android_crt_reset(r);
     SDL_DestroyTexture(target);SDL_DestroyTexture(white);SDL_DestroyTexture(rgba);

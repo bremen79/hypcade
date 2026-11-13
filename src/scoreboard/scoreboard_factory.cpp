@@ -1,6 +1,9 @@
 #include "config.h"
 
 #include "scoreboard_factory.h"
+#ifdef __ANDROID__
+#include "../video/video_android.h"
+#endif
 #include "hw_scoreboard.h"
 #include "usb_scoreboard.h"
 #include "null_scoreboard.h"
@@ -20,8 +23,16 @@ IScoreboard *ScoreboardFactory::GetInstance(ScoreboardType type,
 		pRes = NullScoreboard::GetInstance();
 		break;
 	case IMAGE:
-		pRes = ImgScoreboard::GetInstance(bThayers);
-		break;
+#ifdef __ANDROID__
+        if (video::android_video::horizontal_scoreboard()) {
+            pRes = OverlayScoreboard::GetInstance(pFuncGetActiveOverlay, bThayers, true);
+        } else {
+            pRes = ImgScoreboard::GetInstance(bThayers);
+        }
+#else
+        pRes = ImgScoreboard::GetInstance(bThayers);
+#endif
+        break;
 	case OVERLAY:
 		pRes = OverlayScoreboard::GetInstance(pFuncGetActiveOverlay, bThayers);
 		break;

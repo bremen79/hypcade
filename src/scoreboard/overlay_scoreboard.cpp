@@ -26,6 +26,13 @@ bool OverlayScoreboard::RepaintIfNeeded()
 	{
 		SDL_Color rgb = {0xF0, 0xF0, 0xF0, 0xFF};
 		SDL_Surface *pSurface = video::get_screen_leds();
+#ifdef __ANDROID__
+        if (m_bSeparateSurface) {
+            pSurface = video::get_scoreboard_surface();
+            if (!pSurface) return false;
+            SDL_FillSurfaceRect(pSurface, nullptr, SDL_MapSurfaceRGBA(pSurface, 0, 0, 0, 0));
+        }
+#endif
 		bool legacy = video::use_legacy_font();
 
 		void (*decor)(const char*, int, int, SDL_Surface*, SDL_Color, bool);
@@ -97,7 +104,7 @@ void OverlayScoreboard::update_player_score (SDL_Surface *pSurface, int player, 
 	else
 	    x += (player == 0 ? 8 : 266);
 
-	video::draw_overlay_leds(values, num_digits, x, 0);
+	video::draw_overlay_leds(values, num_digits, x, 0, pSurface);
 }
 
 void OverlayScoreboard::update_player_lives (SDL_Surface *pSurface, int player, unsigned int lives)
@@ -106,11 +113,11 @@ void OverlayScoreboard::update_player_lives (SDL_Surface *pSurface, int player, 
 	if (video::use_legacy_font())
 	    video::draw_overlay_leds(&lives, 1,
 		player == 0 ? 48 : 309,
-		OVERLAY_LED_HEIGHT);
+		OVERLAY_LED_HEIGHT, pSurface);
 	else
 	    video::draw_overlay_leds(&lives, 1,
 		player == 0 ? 8 : 306,
-		OVERLAY_LED_HEIGHT);
+		OVERLAY_LED_HEIGHT, pSurface);
 }
 
 void OverlayScoreboard::update_credits(SDL_Surface *pSurface)
@@ -128,7 +135,7 @@ void OverlayScoreboard::update_credits(SDL_Surface *pSurface)
 	}
 
 	video::draw_overlay_leds(m_DigitValues + this->CREDITS1_0,
-		2, x, OVERLAY_LED_HEIGHT);
+		2, x, OVERLAY_LED_HEIGHT, pSurface);
 }
 
 bool OverlayScoreboard::ChangeVisibility(bool bVisible)
@@ -168,14 +175,16 @@ bool OverlayScoreboard::get_digit(unsigned int &uValue, WhichDigit which)
 OverlayScoreboard::OverlayScoreboard() :
 m_pFuncGetActiveOverlay(NULL),
 m_bThayers(false),
+m_bSeparateSurface(false),
 m_bVisible(true)
 {
 }
 
-IScoreboard *OverlayScoreboard::GetInstance(SDL_Surface *(*pFuncGetActiveOverlay)(), bool bThayers)
+IScoreboard *OverlayScoreboard::GetInstance(SDL_Surface *(*pFuncGetActiveOverlay)(), bool bThayers, bool separateSurface)
 {
 	OverlayScoreboard *pInstance = new OverlayScoreboard();
 	pInstance->m_bThayers = bThayers;
+	pInstance->m_bSeparateSurface = separateSurface;
 	pInstance->m_pFuncGetActiveOverlay = pFuncGetActiveOverlay;
 	if (!pInstance->Init())
 	{

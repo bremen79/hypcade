@@ -121,13 +121,28 @@ public final class LauncherLogicTest {
                     "Space Ace uses its dedicated skill bezel: " + ace);
             List<String> custom = Arrays.asList(config(ace,"vldp/demo/frames.txt","", "-annunbezel").arguments(root));
             check(custom.contains("-annunbezel") && !custom.contains("-dedannunbezel"), "Preserve custom annunciator");
-            LaunchConfig hidden = new LaunchConfig("id", "test", ace, "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
+            LaunchConfig hidden = new LaunchConfig("id", "test", ace, "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, LaunchConfig.SCORE_OFF);
             check(!Arrays.asList(hidden.arguments(root)).contains("-dedannunbezel"), "Score switch hides Space Ace bezel");
         }
         check(!argv.contains("-dedannunbezel"), "Do not add Space Ace artwork to other games");
-        LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
-        check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel"), "Score/lives can be disabled");
-        check(!noScore.withId("new").showScore, "Preserve disabled score preference");
+        LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, LaunchConfig.SCORE_OFF);
+        check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel") &&
+                Arrays.asList(noScore.arguments(root)).contains("-noscoreboard"), "Off also suppresses the native overlay scoreboard");
+        check(noScore.withId("new").scoreLayout == LaunchConfig.SCORE_OFF, "Preserve disabled score preference");
+        for (String game : new String[]{"lair", "dle21", "lair2"}) {
+            for (int layout = LaunchConfig.SCORE_OFF; layout <= LaunchConfig.SCORE_TOP; layout++) {
+                LaunchConfig placed = new LaunchConfig("id", "test", game, "vldp/demo/frames.txt", "", "",
+                        MoveMode.OFF, false, layout);
+                List<String> launch = Arrays.asList(placed.arguments(root));
+                check(placed.withId("copy").scoreLayout == layout, "Keep scoreboard placement");
+                check(launch.contains("-scorebezel") == (layout != LaunchConfig.SCORE_OFF), "Off hides scoreboard");
+                if (layout != LaunchConfig.SCORE_OFF)
+                    check(launch.get(launch.indexOf("-scorebezel_layout") + 1).equals(
+                            LaunchConfig.SCORE_LAYOUTS[layout].toLowerCase(java.util.Locale.ROOT)), "Selected native layout");
+            }
+        }
+        check(!Arrays.asList(config("ace", "vldp/demo/frames.txt", "", "").arguments(root)).contains("-scorebezel_layout"),
+                "Space Ace keeps its existing bezel");
         for (String unsupported : new String[]{ "ace91", "singe", "laireuro", "aceeuro", "cliff"})
             check(!LaunchConfig.supportsScore(unsupported), "No optional scoreboard for " + unsupported);
         check(Arrays.asList(config("lair2", "vldp/demo/frames.txt", "", "").arguments(root)).contains("-scorebezel"),
@@ -274,7 +289,7 @@ public final class LauncherLogicTest {
         for (int a : new int[]{0, 4}) for (int b : new int[]{0x80, 0x90})
             check(GameDifficulty.importedSelection("lair", Arrays.asList("-bank", "0", Integer.toBinaryString(a ^ 255),
                     "-bank", "1", Integer.toBinaryString(b ^ 255))) == 0, "DL alternate Easy DIP combination not decoded");
-        LaunchConfig profile = new LaunchConfig("id", "Ace", "ace", "ace.txt", "", "", MoveMode.OFF, false, true, 2, 1);
+        LaunchConfig profile = new LaunchConfig("id", "Ace", "ace", "ace.txt", "", "", MoveMode.OFF, false, LaunchConfig.SCORE_LEFT, 2, 1);
         check(profile.withId("other").difficulty == 2 && profile.withId("other").skill == 1, "Copy lost game difficulty or skill");
     }
 

@@ -25,7 +25,7 @@ public:
 private:
 	OverlayScoreboard();
 
-	static IScoreboard *GetInstance(SDL_Surface *(*pFuncGetActiveOverlay)(), bool bThayers);
+	static IScoreboard *GetInstance(SDL_Surface *(*pFuncGetActiveOverlay)(), bool bThayers, bool separateSurface = false);
 
 	void update_player_score (SDL_Surface *pSurface, int player, int start_digit, unsigned int values[], int num_digits);
 	void update_player_lives (SDL_Surface *pSurface, int player, unsigned int lives);
@@ -36,6 +36,7 @@ private:
 
 	// is the current game Thayer's Quest? if so, we need to draw the scoreboard differently
 	bool m_bThayers;
+	bool m_bSeparateSurface;
 
 	// whether this overlay is visible
 	bool m_bVisible;
