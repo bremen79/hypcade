@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Hypcade 0.1 signed releases with complete ROM policies, text/audio on a shared ready event, and DL2 native prompts enabled at all difficulties; not published.",
+  "scope": "Hypcade 0.1: ARMv7 arcade release rebuilt with original Space Ace dedicated skill bezel; other flavors retain the preceding cue-alignment builds; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
@@ -41,8 +41,8 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 5991377,
-      "sha256": "1e2e94fedab900f62f66c0dfd311a6cef1f1158cf0849de5a74e69691592f7ba",
+      "size_bytes": 5991573,
+      "sha256": "fb94a806bd4268807a2638d7643b4e8142384cfb1b2c9e62ce904fafcd6513c3",
       "uncompressed_native_bytes": 4827420,
       "uncompressed_support_bytes": 4293786
     },
@@ -112,7 +112,8 @@
     "launcher_choices": "Multiple-choice fields show a left caption and a right menu button with a dropdown arrow. Game, ROM override, difficulty, skill and move strategy use the same layout; unsupported fields hide the complete row.",
     "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings.",
     "video_backend": "Android-only src/video/video_android.cpp owns font/CRT/FPS state, mobile drawable sizing and texture retirement; shared video.cpp uses small guarded hooks. Desktop bitmap text, CPU scanlines, startup splash and window icon are excluded from Android compilation. Decoder/render locking and render-thread destruction are preserved.",
-    "move_cues": "Calculated DL1/Ace text and optional audio start on the same native ready event, without early visual previews. Audio uses existing 16ms Java polling; physical audio/display latency is not calibrated. UI label: Play move audio cue. DL2 US 3.19 enables native text through both ROM assistance gates at all five difficulties; native input thresholds are retained."
+    "move_cues": "Calculated DL1/Ace text and optional audio start on the same native ready event, without early visual previews. Audio uses existing 16ms Java polling; physical audio/display latency is not calibrated. UI label: Play move audio cue. DL2 US 3.19 enables native text through both ROM assistance gates at all five difficulties; native input thresholds are retained.",
+    "space_ace_bezel": "Space Ace ace/ace_a/ace_a2/sae automatically use the upstream dedicated skill-panel bezel alongside the scoreboard when Show score and lives is enabled. Explicit native annunciator layouts retain priority. Existing bundled artwork and renderer are reused."
   },
   "move_table_sha256": "a419549d8ecc870286f5f242f83ce82850a7dbc737c8424a3b4cf7ff5bc67099",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
@@ -456,6 +457,15 @@
       "negative_controls": "First/final input omissions detect death on both backends.",
       "physical_audio_or_display_latency_measured": false,
       "actual_apk_gameplay_performed": false
+    },
+    "space_ace_bezel": {
+      "launcher_model_checks": true,
+      "arcade_release_assembly_and_lint": true,
+      "signature_sdk_abi_checked": true,
+      "usb_install_target": "P71, Android 10, ARMv7",
+      "gameplay_checked": false,
+      "usb_install_success": true,
+      "installed_apk_sha256_verified": true
     }
   },
   "move_generation": {
@@ -608,7 +618,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs rebuilt with current cue presentation and DL2 prompt configuration; release lint and artifact checks passed. Matching source and current video-less prompt evidence retained; no source archive generated.",
+  "source_tree_status": "ARMv7 arcade rebuilt from current sources for the Space Ace bezel change; the other three flavors retain their preceding build identities. No source archive generated.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",

@@ -182,8 +182,16 @@ public final class LaunchConfig {
             args.add(script.toLowerCase(Locale.ROOT).endsWith(".zip") ? "-zlua" : "-script");
             args.add(lua.getPath());
         }
-        if (showScore && supportsScore(game, splitArguments(extraArguments))) args.add("-scorebezel");
         List<String> inherited = new ArrayList<>(splitArguments(extraArguments));
+        if (showScore && supportsScore(game, inherited)) {
+            args.add("-scorebezel");
+            // Original Space Ace dedicated bezel and live skill lamps. Respect
+            // an explicitly supplied alternative native annunciator layout.
+            if (Arrays.asList("ace", "ace_a", "ace_a2", "sae").contains(game) &&
+                    inherited.stream().noneMatch(option -> option.equalsIgnoreCase("-annunbezel") ||
+                            option.equalsIgnoreCase("-dedannunbezel") || option.equalsIgnoreCase("-annunlamps")))
+                args.add("-dedannunbezel");
+        }
         inherited.removeIf(option -> option.equalsIgnoreCase("-nosplash"));
         args.addAll(GameDifficulty.arguments(game, difficulty, inherited));
         for (String argument : args) checkArgument(argument);

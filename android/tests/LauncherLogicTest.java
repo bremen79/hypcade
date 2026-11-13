@@ -116,6 +116,15 @@ public final class LauncherLogicTest {
             check(!startup.contains("-fastboot"), "Splash suppression must not enable fast boot for " + game);
         }
         check(argv.contains("-scorebezel"), "Score/lives default on for supported games");
+        for (String ace : new String[]{"ace", "ace_a", "ace_a2", "sae"}) {
+            check(Arrays.asList(config(ace,"vldp/demo/frames.txt","", "").arguments(root)).contains("-dedannunbezel"),
+                    "Space Ace uses its dedicated skill bezel: " + ace);
+            List<String> custom = Arrays.asList(config(ace,"vldp/demo/frames.txt","", "-annunbezel").arguments(root));
+            check(custom.contains("-annunbezel") && !custom.contains("-dedannunbezel"), "Preserve custom annunciator");
+            LaunchConfig hidden = new LaunchConfig("id", "test", ace, "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
+            check(!Arrays.asList(hidden.arguments(root)).contains("-dedannunbezel"), "Score switch hides Space Ace bezel");
+        }
+        check(!argv.contains("-dedannunbezel"), "Do not add Space Ace artwork to other games");
         LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
         check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel"), "Score/lives can be disabled");
         check(!noScore.withId("new").showScore, "Preserve disabled score preference");
