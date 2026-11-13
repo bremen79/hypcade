@@ -16,43 +16,22 @@ release. Hypseus Singe and its predecessors remain the foundation of the emulati
 
 ## Arcade cabinets first
 
-The primary build is for Arcade1Up Android arcades: physical controls, fixed landscape,
+The primary build (``arcade'') is for Arcade1Up Android arcades: physical controls, fixed landscape,
 native-panel output (1280×960 on the Yoga Flame) with aspect-ratio preservation, and no on-screen control overlay.
-The ARMv7 arcade APK targets the cabinet configuration used during development.
-The ARM64 mobile build is a secondary convenience for phones and testing, with
-touch controls and mobile orientation behavior retained.
+The ``mobile'' build is a secondary convenience for phones and testing, with touch controls and mobile orientation behavior retained.
 
-- Scan a selected game folder and choose a game to run.
-- Configure arcade directions and buttons by pressing each input.
-- Read ROMs, videos and scripts in place; keep small saves, settings and logs
-  in private storage. Store video indexes beside writable media, with an internal fallback.
-- Use hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
-  rendering, with optional scanlines and other video settings.
-- Enable replay-verified move guidance for some Dragon’s Lair I and Space Ace ROMs,
-  plus Dragon’s Lair II’s own ROM prompts.
+Features of Hypcade:
+- Automatic scan of game folder.
+- Configuration of arcade joystick and buttons.
+- Small use of internal memory.
+- Use arcade hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
+  rendering, with optional scanlines.
+- Shows moves for Dragon’s Lair I/II and Space Ace.
+- ``Wath Mode'' to play the showed moves.
 
 No commercial game ROMs or laserdisc media are included. Supply your own game
 files. The repository includes emulator support assets, synthetic test fixtures
 and ROM-derived move metadata, with their existing notices.
-
-
-**Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
-ROM revisions. Max score follows the recorded route with the higher score;
-Fewest moves follows the route with fewer joystick/button actions. Watch Mode
-uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
-while keeping the move display hidden. Dragon’s Lair II uses its native ROM
-moves for either policy; Singe games keep their own script menus.
-
-The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
-tables and checked through complete games without a lost life. Randomized
-starts, all three Space Ace skills and all four operator difficulties are tested.
-Necessary zero-score actions, including Space Ace's final UP, are retained.
-These checks do not prove
-that every retry context is covered or that the routes are globally optimal.
-
-Press **Watch Mode** beside **Start game** to play automatically. It waits for
-the game to accept credits and Player 1 Start, then follows the selected moves.
-Only Pause and Exit remain active during automatic play.
 
 ## Install and run
 
@@ -149,14 +128,18 @@ invalid indexes are generated beside writable videos, or internally if that fail
 The first preparation can take time; valid indexes are reused. Hypcade does not
 import or duplicate the videos.
 
-## Game settings
+
+## Detailed Instructions
+
+
 
 Settings save automatically and take effect the next time you start a game.
 Unavailable options are grayed out.
 
+The following game options are available:
+
 | Setting | What it does |
 | --- | --- |
-| Hardware MPEG-2 decoding | Uses the device's decoder when available; falls back to software when needed. |
 | CRT scanlines | Adds a lightweight zfast-crt GPU effect. |
 | Smooth video scaling | Softens enlarged pixels. |
 | V-sync | Matches presentation to display refresh. Turning it off may reduce waiting but make motion less smooth. |
@@ -164,11 +147,24 @@ Unavailable options are grayed out.
 | Fast startup | Shortens startup in supported games. |
 | Show score and lives | Enables the optional scoreboard in supported games. |
 
-Move guidance is available for Dragon's Lair Enhanced 2.1 and Space Ace A3,
-using ROM-derived routes checked by complete death-free replays; Dragon's Lair II
-3.19 uses its native prompts. Dragon's Lair I and Space Ace show white action text near
-the bottom of the video and offer an optional timing cue. Dragon's Lair II uses
-its own ROM prompts and the cues already in its video.
+
+**Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
+ROM revisions. Max score follows the recorded route with the higher score;
+Fewest moves follows the route with fewer joystick/button actions. Watch Mode
+uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
+while keeping the move display hidden. Dragon’s Lair II uses its native ROM
+moves for either policy; Singe games keep their own script menus.
+
+The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
+tables and checked through complete games without a lost life. Randomized
+starts, all three Space Ace skills and all four operator difficulties are tested.
+Necessary zero-score actions, including Space Ace's final UP, are retained.
+These checks do not prove
+that every retry context is covered or that the routes are globally optimal.
+
+Press **Watch Mode** beside **Start game** to play automatically. It waits for
+the game to accept credits and Player 1 Start, then follows the selected moves.
+Only Pause and Exit remain active during automatic play.
 
 Singe games keep their own options menus. Assign **Game options / Service**
 in controller setup to open a game's menu where supported. On mobile, use the
@@ -200,11 +196,6 @@ Unsupported renderers show plain video.
 ## Status and testing
 
 This was tested on an **Arcade1Up Yoga Flame** cabinet.
-
-The current move validation passed on both the laptop and an Android 9 x86
-emulator: 208 policy runs with independent replays, 234 unassisted Watch Mode
-runs and 45 DL2 timing/difficulty cases per backend. Direct APK runs also reached
-the endings of DLE21, Space Ace and DL2 with their starting lives retained.
 
 [VALIDATION.md](android/VALIDATION.md) explains the test setup, evidence, media
 used and remaining gaps. These emulator results are separate from the earlier

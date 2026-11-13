@@ -5,5 +5,5 @@
   "sha256": "bd4dc4b1d31470e5035133745e6893056ad4ac176fdec02c831f83b46a6175c5",
   "license": "GPL-2.0-or-later",
   "author": "Greg Hogan (SoltanGris42)",
-  "adaptation": "app/jni/android_crt_shader.h: YUV sampling, fixed mild parameters, GLES2-only interface; scanline/mask pattern in scaled-output pixels rather than source rows"
+  "adaptation": "app/jni/android_crt_shader.h: GLES2 zfast math with mild fixed parameters and output-pixel scanline/mask placement; one GPU pass filters video, native game text and recorded moves. Added score/lives overlays, FPS, subtitles and cabinet bezels are composed afterward without filtering."
 }

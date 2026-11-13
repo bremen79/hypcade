@@ -53,14 +53,14 @@ public final class ArcadeSetupTest {
                 .games.stream().filter(c->c.game.equals("ace")).findFirst().orElseThrow();
         java.util.List<String> importedArgs = LaunchConfig.splitArguments(imported.extraArguments);
         VideoOptions importedVideo = new VideoOptions(importedArgs);
-        check(importedVideo.scanlines && !importedVideo.vsync && !importedVideo.hardware && importedVideo.showFps
+        check(importedVideo.scanlines && !importedVideo.vsync && importedVideo.showFps
                 && !importedVideo.fastBoot && !importedVideo.smooth,
                 "Command-file settings override new-profile defaults");
         check(importedArgs.contains("name # one.png") && java.util.Collections.frequency(importedArgs,"-bank")==2,
                 "Preserve quoted values, comments, repeated ROM banks");
         check(!importedArgs.contains("-framefile") && !importedArgs.contains("-x") && !importedArgs.contains("-config")
                 && !importedArgs.contains("-nojoystick") && !importedArgs.contains("2"), "Android owns paths, display, controls and score");
-        importedVideo.scanlines=false; importedVideo.vsync=true; importedVideo.hardware=true;
+        importedVideo.scanlines=false; importedVideo.vsync=true;
         LaunchConfig edited = new LaunchConfig(imported.id, imported.name, imported.game, imported.framefile,
                 imported.script, importedVideo.arguments(importedArgs), MoveMode.OFF, false, false);
         Files.writeString(commands, "-scanlines -novsync -fastboot -bank 0 1111");
@@ -127,7 +127,7 @@ public final class ArcadeSetupTest {
         check(java.util.Arrays.equals(ArcadeDisplay.arguments(new String[]{"--android-smoke-test"},1280,960),new String[]{"--android-smoke-test"}),"Keep smoke-test entry point");
         java.util.List<String> rotated=java.util.Arrays.asList(ArcadeDisplay.arguments(old,600,800));
         check(rotated.get(rotated.indexOf("-x")+1).equals("800") && rotated.get(rotated.indexOf("-y")+1).equals("600"),"Native landscape size on other cabinets");
-        check(!new VideoOptions(java.util.Arrays.asList("-software_video")).hardware,"Software override");
+        check(!new VideoOptions(java.util.Collections.emptyList()).arguments(java.util.Collections.emptyList()).contains("-software_video"),"Automatic hardware decoding needs no launcher flag");
         ControlMap map=new ControlMap();
         check(map.add(new ControlMap.Binding(0,"USB|日本語",19,2,-1,0)),"First binding");
         check(!map.add(new ControlMap.Binding(1,"USB|日本語",19,2,-1,0)),"Reject duplicate physical button");

@@ -200,7 +200,11 @@ bool load_bmps();
 bool draw_led(int, int, int, unsigned char);
 void draw_overlay_leds(unsigned int led_values[], int num_values, int x, int y);
 void draw_string(const char *, int, int, SDL_Surface *, SDL_Color, bool);
+#ifdef __ANDROID__
+void queue_ldp1450_line(unsigned slot, const char *text, int x, int y);
+#else
 void draw_singleline_LDP1450(char *LDP1450_String, int start_x, int y);
+#endif
 bool draw_othergfx(int which, int x, int y);
 void free_bmps();
 SDL_Window *get_window();

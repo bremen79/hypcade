@@ -12,16 +12,15 @@ import java.util.Set;
 /** Launcher-owned options; preserve unrelated inherited arguments and their quoting. */
 final class VideoOptions {
     private static final Set<String> OWNED = new HashSet<>(Arrays.asList(
-            "-showfps", "-fastboot", "-nosplash", "-linear_scale", "-scanlines", "-novsync", "-software_video"));
+            "-showfps", "-fastboot", "-nosplash", "-linear_scale", "-scanlines", "-novsync"));
     boolean fastBoot, smooth, scanlines, showFps;
-    boolean vsync = true, hardware = true;
+    boolean vsync = true;
     VideoOptions(List<String> options) {
         for (String option : options) switch (option.toLowerCase(Locale.ROOT)) {
             case "-showfps": showFps=true; break;
             case "-fastboot": fastBoot=true; break;
             case "-linear_scale": smooth=true; break;
             case "-scanlines": scanlines=true; break;
-            case "-software_video": hardware=false; break;
             case "-novsync": vsync=false; break;
             default: break;
         }
@@ -33,7 +32,6 @@ final class VideoOptions {
         if(fastBoot) options.add("-fastboot");
         if(smooth) options.add("-linear_scale");
         if(scanlines) options.add("-scanlines");
-        if(!hardware) options.add("-software_video");
         if(!vsync) options.add("-novsync");
         StringBuilder result=new StringBuilder();
         for(String value:options) {

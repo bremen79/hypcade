@@ -137,9 +137,11 @@ laptop build tool, not linked into or packaged in the APK. See
 Copyright (C) 2017 Greg Hogan (SoltanGris42), GPL-2.0-or-later.
 Source: https://github.com/libretro/glsl-shaders, commit
 `8aab13063da6ad3ae928e886c41e13fa363f4d89`, `crt/shaders/zfast_crt.glsl`.
-The original file and SHA-256 are in `shaders/`; the GLES2 planar-YUV adaptation
-is `app/jni/android_crt_shader.h`. Hypcade changes combine colour conversion and
-CRT filtering, use mild fixed parameters and place the mask in output pixels.
+The original file and SHA-256 are in `shaders/`; the GLES2 adaptation is
+`app/jni/android_crt_shader.h`. Hypcade uses mild fixed parameters and places
+the mask in output pixels. One GPU pass filters the composed video, ROM game
+text and recorded moves. Added score/lives overlays, FPS, subtitles and cabinet
+bezels are drawn afterward without the effect.
 The GPLv2 text is included in `licenses/libmpeg2-COPYING.txt`.
 
 ## Coin insertion recording

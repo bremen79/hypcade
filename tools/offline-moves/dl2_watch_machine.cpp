@@ -95,7 +95,7 @@ namespace cpu {
  Uint32 get_hz(int) {return 10000000;}
  void set_event(int,unsigned delay,void(*f)(void*),void *a) {event_at=machine_cycles+delay;event=f;arg=a;}
 }
-namespace video {const int OVERLAY_LDP1450_LINE_SPACING=10;template<class... T> void draw_singleline_LDP1450(T...) {} }
+namespace video {const int OVERLAY_LDP1450_LINE_SPACING=10;template<class... T> void draw_singleline_LDP1450(T...) {} template<class... T> void queue_ldp1450_line(T...) {} }
 namespace vp932 {void write(uint8_t) {} bool data_available() {return false;} uint8_t read() {return 0;} }
 #include "../../src/cpu/x86/i86.cpp"
 uint8_t *OP_ROM=ram,*OP_RAM=ram;

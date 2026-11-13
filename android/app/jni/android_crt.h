@@ -3,8 +3,9 @@
 #pragma once
 #include <SDL3/SDL.h>
 
-// Rendering thread only. False means the caller must draw the unfiltered video.
-bool android_crt_draw(SDL_Renderer *renderer, SDL_Texture *yuv,
-                      const SDL_FRect *source, const SDL_FRect &destination);
+// Rendering thread only. Unsupported renderers never need a CRT framebuffer.
+bool android_crt_available(SDL_Renderer *renderer);
+// Present an output-sized, composed RGBA32 game layer (video, native text, moves). False means plain copy.
+bool android_crt_present(SDL_Renderer *renderer, SDL_Texture *frame);
 // Call before destroying the renderer and its GL context.
 void android_crt_reset(SDL_Renderer *renderer);

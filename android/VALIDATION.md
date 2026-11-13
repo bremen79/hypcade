@@ -6,6 +6,53 @@ results and source fingerprints live in
 [BUILD-PROVENANCE.json](BUILD-PROVENANCE.json) records the signed release APK
 hashes, toolchain and build checks.
 
+## Android video backend
+
+`video_android.cpp` is compiled only for Android. Host checks exercise its retained
+ROM text and recorded moves, CRT target reuse and disabling, texture retirement,
+renderer cleanup and mobile resizing. The shared source also passes a desktop
+syntax check; a complete desktop build was not performed.
+
+Release packaging checks verify that the unused embedded desktop icon and splash
+artwork are absent from the native libraries, and that the removed decoder-toggle
+label is absent from the APK. Decoding remains automatic with software fallback.
+The Android launcher check confirms the toggle is absent. Compared with the
+pre-refactor signed 0.1 binaries, the combined desktop-code exclusion, backend
+extraction and toggle removal save about 57 KiB per ARM APK and 260 KiB per
+uncompressed native library. Exact sizes are recorded in build provenance.
+
+## CRT video and text
+
+The production game-layer GLES2 shader passes host GPU checks against an
+independent pixel reference. The fixture includes YUV video, transparent glyphs,
+native game text, RGBA/BGRA overlays, alpha modulation, clipping and rotation.
+Added FPS and score/lives glyphs are then checked for unchanged white pixels.
+The shared LDP1450 GPU function is also compared with the original bitmap
+blitter using the actual font, including directions, button text, digits,
+the special glyph, spaces, clipping, replacement and cached redraws. The same
+font checks run with the software renderer. A focused host DL2 Watch replay
+(Easy, 17 ms seek delay, 8 ms input phase) completed with all 302 moves and no
+life loss after replacing the text-submission path.
+Repeated frames check SDL state restoration; unsupported renderers and invalid
+frame sizes exercise the fallback. Run
+`python3 android/tests/test_crt_shader.py --native` with an existing shared
+SDL3/GLES2 installation and Mesa EGL to reproduce these checks.
+
+The signed Android 9 x86 release APK also passed checks through the normal
+launcher, using original synthetic Singe overlays and flat gray MPEG-2 video.
+Native 1280x960 captures check filtered game-overlay text and unfiltered FPS text,
+identical scanline spacing for 640x480 and 1440x1080 sources, and plain software
+fallback. Video row contrast was 25.5 levels and mask contrast was 8.5 levels.
+A short DL2 US 3.19 session through the launcher also displayed native ROM text
+using the shared cached-font renderer, with scanlines visible on its glyphs and
+the added scoreboard/FPS drawn afterward. This checks rendering, not a complete
+commercial-game playthrough. The emulator's settings were restored after testing.
+
+CRT-on rendering reuses an output-sized GPU buffer for video, ROM game text and
+recorded moves. Added score/lives overlays, FPS, subtitles and bezels are drawn
+afterward without filtering. CRT-off rendering retains the direct path.
+These checks do not measure Yoga Flame performance or replace commercial-game testing.
+
 ## Move policies and Watch Mode
 
 The following batches passed on both the laptop and an Android 9 / API 28 x86

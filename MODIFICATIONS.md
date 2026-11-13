@@ -90,14 +90,26 @@ crops retain an intermediate rendering path. Decoder and renderer threads
 coordinate access to video data, and textures are destroyed on the rendering
 thread.
 
-The CRT option uses an adaptation of Greg Hogan's **zfast-crt** shader. Video
-sampling, colour conversion, scanlines and the subtle mask share one GPU draw.
-The pattern follows the displayed image size, with one dark row every two output
-pixels, so SD and HD videos use the same spacing. Text and game overlays are
-drawn afterward. Unsupported renderers show plain video.
+The CRT option uses an adaptation of Greg Hogan's **zfast-crt** shader. Video,
+ROM-generated game text and recorded moves use the same cached-font
+`draw_singleline_LDP1450()` renderer and receive one GPU CRT pass. Android keeps
+three ROM text lines, caches their glyph geometry, and draws each as one SDL
+batch. It avoids CPU glyph blits and repeated uploads of the text surface. Hypcade's added score/lives display, FPS counter,
+subtitles and cabinet bezels are drawn afterward, without scanlines. The pattern
+uses output pixels, so SD and HD videos have the same spacing and scaling does
+not blur the scanlines. The output-sized GPU buffer is reused; there is no CPU
+readback or separate filtering pass for each text source. CRT-off rendering
+keeps the direct path, and unsupported renderers show plain video.
 
-The launcher exposes hardware decoding, CRT, smoothing, V-sync and an optional
-FPS counter. Deinterlacing remains available through the native `-blend` switch
+Android video state, cached text, CRT composition, resizing and texture retirement
+live in `src/video/video_android.*`. Shared `video.cpp` retains small guarded
+hooks. Desktop-only bitmap text, CPU scanlines, the startup splash and the
+embedded desktop window icon are excluded from Android compilation; the app
+uses its Android icon and always launches without the desktop splash.
+
+The launcher exposes CRT, smoothing, V-sync and an optional
+FPS counter. Hardware MPEG-2 decoding is automatic, with software fallback and
+no launcher toggle. Deinterlacing remains available through the native `-blend` switch
 in command files. The FPS counter measures presentation rate; for Dragon's Lair
 II it also shows the driver's nominal 18.2 fps limit.
 

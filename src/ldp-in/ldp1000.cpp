@@ -92,7 +92,12 @@ void reset_ldp1450_globals()
     memset(&g_LDP1450_TextControl, 0, sizeof(ldp_text_control));
 
     // clear the ldp strings
-    for (int i = 0; i < 3; i++) g_LDP1450_Strings[i].String[0] = 0;
+    for (int i = 0; i < 3; i++) {
+        g_LDP1450_Strings[i].String[0] = 0;
+#ifdef __ANDROID__
+        video::queue_ldp1450_line(i, "", 0, 0);
+#endif
+    }
 }
 
 // should get called by the cpu emulation before emulation begins to get our
@@ -279,10 +284,12 @@ void write(unsigned char value)
                         // Show moves controls only its known third-line prompt.
                         bool hidden_move = arcade_hide_dl2_move_text(g_game->get_shortgamename(),
                             g_LDP1450_TextControl.TextXPos, g_LDP1450_TextControl.TextYPos, i);
-                        if (!hidden_move)
-#endif
+                        video::queue_ldp1450_line(i, hidden_move ? "" : g_LDP1450_Strings[i].String,
+                                                 overlay_ldp1450_x, overlay_ldp1450_y);
+#else
                         video::draw_singleline_LDP1450(g_LDP1450_Strings[i].String,
                                             overlay_ldp1450_x, overlay_ldp1450_y);
+#endif
                         overlay_ldp1450_y += video::OVERLAY_LDP1450_LINE_SPACING; // line spacing
                     }
 

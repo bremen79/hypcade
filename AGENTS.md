@@ -39,7 +39,7 @@ development configurations unless the maintainer explicitly requests it.
 | Cross-build and JNI | `android/app/jni/CMakeLists.txt`, `android_bridge.cpp` |
 | Suspend-aware timing | `android/app/jni/android_clock.*`, `src/timer/timer.h` |
 | Filesystem and APK assets | `src/io/sdl_path.h`, `src/io/android_storage.h`, Android storage helpers |
-| Video and decoding | `src/video/`, `src/vldp/`, `src/ldp-out/`, JNI MPEG-2 and MediaCodec helpers |
+| Video and decoding | Shared `src/video/video.cpp`, Android backend `src/video/video_android.*`, `src/vldp/`, `src/ldp-out/`, JNI MPEG-2 and MediaCodec helpers |
 | GPU CRT effect | `android/app/jni/android_crt*`, original source and provenance in `android/shaders/` |
 | ROM guidance | JNI `arcade_guidance.*`, `arcade_signature.h`, `arcade_moves.inc`; generator in `tools/offline-moves/` |
 | Game drivers and Singe | `src/game/` |
@@ -63,9 +63,13 @@ development configurations unless the maintainer explicitly requests it.
 - Preserve frame-accurate seeks, emulated CPU timing and software recovery.
   MediaCodec is optional; NEON/portable libmpeg2 remains the fallback. A faster
   synthetic decode probe is not evidence of full-speed gameplay.
-- The single zfast-crt option combines YUV conversion and filtering in one GPU
-  draw. Its pattern follows output pixels; moves and overlays are drawn afterward.
-  Unsupported renderers retain plain video. Keep desktop behavior behind guards.
+- Keep Android video state and platform behavior in `src/video/video_android.*`,
+  with small explicit hooks in shared `video.cpp`. Compile the backend only for
+  Android; guard desktop-only code with conditional compilation.
+- The single zfast-crt option filters video, native game text and recorded moves
+  together on the output-pixel grid. Added score/lives, FPS, subtitles and bezels
+  are drawn afterward without filtering. Unsupported renderers retain plain video.
+  Native LDP1450 text and calculated moves use the same cached-font draw function.
 - Arcade builds use fixed landscape, native-panel dimensions and no touch code.
   Mobile builds follow window size changes. Arcade play requires a complete
   global controller map; mobile play requires that map or enabled touch controls.

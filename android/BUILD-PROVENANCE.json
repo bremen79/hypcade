@@ -41,39 +41,39 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6041781,
-      "sha256": "f3af517072f2a54ff7bcf99af5a38339c8091dffaf7c934d066aaeaede0304d5",
-      "uncompressed_native_bytes": 5072412,
+      "size_bytes": 5983609,
+      "sha256": "912e8b2695a0483e8d50f9443ebc47499b9aae373e923eaba2165539043657e6",
+      "uncompressed_native_bytes": 4805052,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6356315,
-      "sha256": "460ca6884b79ca90f26503fa3e084075e04a1578e63b9cf535669b10e2f583c7",
-      "uncompressed_native_bytes": 7156960,
+      "size_bytes": 6297647,
+      "sha256": "e84d786f9370e495eccf3930eefcf33d40f68c56a0319f5371561e1495811d47",
+      "uncompressed_native_bytes": 6890384,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6797149,
-      "sha256": "b31c36dfb7020d337993ab058eeea35a1a354d443db186f12ceb94ac3cdb5dd4",
-      "uncompressed_native_bytes": 7866756,
+      "size_bytes": 6738977,
+      "sha256": "b7da794bb9e8ce00b8ff34e180f602889ab737f1b9e846dea4b9e3405f23dd11",
+      "uncompressed_native_bytes": 7598916,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6807514,
-      "sha256": "4b3451ad16b07e5f2e7de11f4ff8e222659adee6188cfe1f759f4711090e16df",
-      "uncompressed_native_bytes": 8090208,
+      "size_bytes": 6750446,
+      "sha256": "2e8dedfb1412bc1d6927c43023aaf026663ef23eec93006ca630f5daf5654c46",
+      "uncompressed_native_bytes": 7823344,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 443099,
-    "sha256": "178baf2cce5d2abc653d255ba4819950a5f94b35973a44b2a6f1f360b1f53761",
+    "size_bytes": 444104,
+    "sha256": "9ebe2716f7e60706fdcdf9c82a534fd9260a7eac1dd589c1f3aada0a170206c9",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -96,8 +96,8 @@
   },
   "runtime": {
     "storage": "Games read in place; private settings, saves and logs. Validate all clip indexes before play; publish beside writable media with private fallback.",
-    "video": "Optional MediaCodec MPEG-2 reconstruction with ARM NEON/portable libmpeg2 recovery. Existing VLDP timing retained.",
-    "crt": "Single-pass zfast-derived YUV/GLES shader; scanlines and mask follow output pixels. Plain-video fallback.",
+    "video": "Automatic MediaCodec MPEG-2 reconstruction with ARM NEON/portable libmpeg2 recovery; no hardware-decoding launcher toggle. Native diagnostic command-line overrides remain available. Existing VLDP and CPU timing retained.",
+    "crt": "zfast-derived game-layer GLES2 shader; video, native ROM/script game text and recorded moves compose before one output-pixel GPU filter. Added score/lives overlays, FPS, subtitles and cabinet bezels are drawn afterward without filtering. Reused RGBA target only while enabled; direct plain-video path and unsupported-renderer fallback retained.",
     "input": "Global required arcade map; mobile requires touch or complete map. SDL gamepad mapping always enabled; optional Start 2 and Service bindings.",
     "commands": "Import matching commands once on discovery; saved GUI settings override supported switches; rescans preserve settings. Native -blend remains available.",
     "guidance": "DLE21 and Space Ace A3 use separately ranked ROM-state move sets, checked across all three Ace skills and four operator difficulties. Counterfactual execution and complete death-free replays validate sampled runtime contexts. Required zero-score ending actions remain included. DL2 US 3.19 uses its native ROM input records and earliest accepted phase; Singe retains its native menu.",
@@ -110,7 +110,8 @@
     "startup": "Every game launch receives -nosplash, independently of Fast startup. The GUI fastboot switch controls only the upstream -fastboot ROM shortcut; native fastboot implementation is unchanged.",
     "launcher_options": "Options unsupported by the selected game/ROM are hidden, including Watch Mode, difficulty, skill, score/lives, fastboot, moves and cues. Assistance help is hidden when irrelevant. Reset controller is hidden without a saved mapping. Supported controls may be temporarily disabled while busy.",
     "launcher_choices": "Multiple-choice fields show a left caption and a right menu button with a dropdown arrow. Game, ROM override, difficulty, skill and move strategy use the same layout; unsupported fields hide the complete row.",
-    "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings."
+    "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings.",
+    "video_backend": "Android-only src/video/video_android.cpp owns font/CRT/FPS state, mobile drawable sizing and texture retirement; shared video.cpp uses small guarded hooks. Desktop bitmap text, CPU scanlines, startup splash and window icon are excluded from Android compilation. Decoder/render locking and render-thread destruction are preserved."
   },
   "move_table_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
@@ -421,6 +422,40 @@
       "ace_choice_labels_visible": true,
       "gameplay_test": false,
       "apk_sha256": "b31c36dfb7020d337993ab058eeea35a1a354d443db186f12ceb94ac3cdb5dd4"
+    },
+    "crt": {
+      "host": "Production GLES2 final-frame pass checked pixel-by-pixel against independent scalar reference; YUV, transparent glyphs, native text font, shared LDP1450 font matches legacy bitmap rendering on GLES2 and software, sharp added FPS/score glyphs, RGBA/BGRA, alpha, clipping, rotation, repeated-frame SDL state recovery, invalid-size rejection and software fallback passed.",
+      "android": "Android 9 API 28 x86 signed release APK through LauncherActivity; original synthetic gray MPEG-2 and Singe overlay, -showfps, SD 640x480 and HD 1440x1080, native 1280x960 captures.",
+      "row_contrast": 25.5,
+      "mask_contrast": 8.5,
+      "brightness_ratio": 0.908203125,
+      "native_overlay_text_filtered": true,
+      "fps_text_filtered": false,
+      "score_hud_unfiltered_host_check": true,
+      "sd_hd_spacing_matches": true,
+      "software_plain_fallback_passed": true,
+      "apk_sha256": "b7da794bb9e8ce00b8ff34e180f602889ab737f1b9e846dea4b9e3405f23dd11",
+      "emulator_settings_restored": true,
+      "physical_device_performance_test": false
+    },
+    "ldp1450_text": {
+      "shared_draw_function": "video::draw_singleline_LDP1450(SDL_Renderer*, SDL_Texture*, Ldp1450Text&, ...)",
+      "native_rom_and_recorded_moves": true,
+      "cached_geometry": true,
+      "legacy_bitmap_equivalence": "GLES2 and software; actual font, directions, button, digits, special glyph, spaces, clipping and cached redraw",
+      "focused_host_watch": "DL2 Easy / seek 17ms / queue phase 8ms: 302 moves, no life loss, completion frame 44154",
+      "physical_performance_measured": false,
+      "android_apk": "Short DL2 US 3.19 Watch session through launcher with synthetic video: native ROM glyphs displayed with output-pixel scanlines; added score/lives/FPS drawn afterward. Rendering check only, not a complete playthrough."
+    },
+    "video_backend": {
+      "host": "Production backend retained-text/move rendering, CRT target reuse/disable, FPS, retired-texture destruction, mobile resize and renderer cleanup passed; shared font matches the original CPU bitmap on GLES2 and software.",
+      "desktop": "Shared video.cpp passed a non-Android syntax check with pinned SDL headers; complete desktop build not performed.",
+      "android": "Signed Android 9 x86 release APK through LauncherActivity: decoder-toggle row absent, SD/HD CRT output and software fallback passed, short DL2 native-ROM text plus added score/lives/FPS layering checked.",
+      "apk_sha256": "b7da794bb9e8ce00b8ff34e180f602889ab737f1b9e846dea4b9e3405f23dd11",
+      "settings_restored": true,
+      "desktop_icon_and_splash_absent_from_native_payloads": true,
+      "no_new_render_threads_or_gpu_passes": true,
+      "physical_device_performance_test": false
     }
   },
   "move_generation": {
@@ -554,7 +589,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs rebuilt with caption-and-selector rows and smooth scaling enabled by default for new profiles without command-file overrides. Launcher model tests and release lint passed. The Android 9 x86 arcade release APK was launched to verify menu selection/save, label/value placement, hidden unsupported rows and checked smooth-scaling default. Original emulator settings were restored afterward. Signatures and SDK/ABI policies verified; native emulation and move data are unchanged. No physical-device or gameplay test was performed for this layout change.",
+  "source_tree_status": "All four signed release APKs rebuilt after extracting the Android video backend and removing the hardware-decoder GUI toggle. Native rendering, backend lifecycle/text/target/resize checks, launcher models, actual Android 9 x86 launcher SD/HD/software captures and a short DL2 ROM-text/score-HUD session passed. ARM release lint, desktop source syntax and APK signature/SDK/ABI/flavor checks passed. Settings restored after emulator checks. Prior move/gameplay evidence retains its original fingerprints; no physical cabinet performance or complete commercial-game playthrough was rerun.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",
@@ -564,5 +599,74 @@
     "tools/offline-moves/verify_rom_matrix.py": "f99be7dcb4b29c1b57d909c81d35e0c90626c2e8e13fb2f56fa934c51a48b54c"
   },
   "maintainer": "Francesco Orabona",
-  "copyright": "Hypcade: Copyright (C) 2026 Francesco Orabona."
+  "copyright": "Hypcade: Copyright (C) 2026 Francesco Orabona.",
+  "crt_source_sha256": {
+    "src/video/video.cpp": "825d4c9ea26118dbafd376717a57188bc2da2237a85377ac7e85591c9afe75fc",
+    "src/video/video.h": "abcb66e9ab6d2454bd6b6a5642f2f4e208f040824fd4b96d84974bc6373557a9",
+    "src/video/video_android.cpp": "339862ad2896578ab8c133dcfe1287b58d9338148662a43749a15c3b1bd83e26",
+    "src/video/video_android.h": "ac0bb4297733c86622c99f7b5ceb9958d9fe25343640866dc123df6cf345aaeb",
+    "src/video/CMakeLists.txt": "368893ba4922a44f9d67ad42529e8ddadee9e158a6a830fd1723c6c66951e6ea",
+    "src/ldp-in/ldp1000.cpp": "f79ee6d9bacb6203ce09a4f4f0a4e4ba5a7a54980fcd6d4b52fa86ae6898aff6",
+    "android/app/jni/android_ldp1450_text.h": "80cc996c7531a5487b019441293092060f4111fa85e42deb122987d95c6d33c6",
+    "android/app/jni/android_crt.cpp": "729a65f452c5ace1d6ee8aef79dfe000b5d03333d9e62d62bb068c1f8b3c9da9",
+    "android/app/jni/android_crt.h": "78d41c24c428dbfb18bdc771bcca4fdcdbf54bc978fc7c2f0492685c41929342",
+    "android/app/jni/android_crt_shader.h": "75870a4f8423035ec7e807b1a6e93d24f11668cf7ab2b593be24eceda017d061",
+    "android/tests/crt_frame_test.cpp": "fa23ddb0799321b6817e7a9ee027f7a792cd9318b398a0dce679702bd007035c",
+    "android/tests/test_crt_shader.py": "6e5f6a752ee9ffafcdf1056846015b9055cb66d37f4e3b634e94a714912b08ab"
+  },
+  "size_comparison": {
+    "scope": "Compared with the pre-refactor signed 0.1 APKs; net changes include backend extraction, exclusion of desktop-only code/artwork and decoder-toggle removal. Not an isolated compiler-flag benchmark.",
+    "excluded_desktop_icon_bytes": 3027,
+    "excluded_desktop_splash_image_bytes": 201660,
+    "apks": [
+      {
+        "name": "hypcade-arcade-armeabi-v7a-release.apk",
+        "before_apk": 6042101,
+        "after_apk": 5983609,
+        "apk_saved": 58492,
+        "before_native": 2901840,
+        "after_native": 2634912,
+        "native_saved": 266928
+      },
+      {
+        "name": "hypcade-mobile-arm64-v8a-release.apk",
+        "before_apk": 6355971,
+        "after_apk": 6297647,
+        "apk_saved": 58324,
+        "before_native": 4037656,
+        "after_native": 3771704,
+        "native_saved": 265952
+      },
+      {
+        "name": "hypcade-arcade-x86-release.apk",
+        "before_apk": 6797625,
+        "after_apk": 6738977,
+        "apk_saved": 58648,
+        "before_native": 4513240,
+        "after_native": 4245768,
+        "native_saved": 267472
+      },
+      {
+        "name": "hypcade-mobile-x86_64-release.apk",
+        "before_apk": 6808154,
+        "after_apk": 6750446,
+        "apk_saved": 57708,
+        "before_native": 4635360,
+        "after_native": 4368672,
+        "native_saved": 266688
+      }
+    ]
+  },
+  "video_refactor_source_sha256": {
+    "src/video/video.cpp": "825d4c9ea26118dbafd376717a57188bc2da2237a85377ac7e85591c9afe75fc",
+    "src/video/video_android.cpp": "339862ad2896578ab8c133dcfe1287b58d9338148662a43749a15c3b1bd83e26",
+    "src/video/video_android.h": "ac0bb4297733c86622c99f7b5ceb9958d9fe25343640866dc123df6cf345aaeb",
+    "src/video/CMakeLists.txt": "368893ba4922a44f9d67ad42529e8ddadee9e158a6a830fd1723c6c66951e6ea",
+    "android/app/src/main/java/org/hypseus/android/VideoOptions.java": "14dc3cdf6fd2706a8c98e3bebf5d7d40836ed8b544be4b74d424ea7dc3a81f6c",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "09c13544990028ea007492c385351c67b1b37792b4cfb3c5d3ff9efbbce27399",
+    "android/tests/crt_frame_test.cpp": "fa23ddb0799321b6817e7a9ee027f7a792cd9318b398a0dce679702bd007035c",
+    "android/tests/test_crt_shader.py": "6e5f6a752ee9ffafcdf1056846015b9055cb66d37f4e3b634e94a714912b08ab",
+    "android/tests/test_apk_flavors.py": "456fa3c87cc3a0f0a723cf33dea65251b8b1e617dfbba8390418ce40621d3137",
+    "android/tests/ArcadeSetupTest.java": "56a45278b23139ae291ba05b2fe19300a60398ddd7393964d97ed86f61ac7a80"
+  }
 }

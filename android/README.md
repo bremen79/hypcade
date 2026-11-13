@@ -99,7 +99,7 @@ These checks do not prove
 that every retry context is covered or that the routes are globally optimal.
 
 
-**Video & performance** has hardware decoding, CRT scanlines, smoothing,
+**Video & performance** has CRT scanlines, smoothing,
 V-sync and Show FPS. **Game Options** has Fast startup and Show
 score and lives for supported games. See the [settings table](../README.md#game-settings).
 Changes take effect at the next launch. Unavailable controls are grayed out.
@@ -117,7 +117,7 @@ Deinterlacing has no GUI switch. A game's `.commands` file can still pass
 `-blend` to the native emulator. No configuration migration or cleanup is
 performed.
 
-Hardware MPEG-2 decoding is enabled by default. Unsupported formats, devices,
+Hardware MPEG-2 decoding is automatic and has no launcher toggle. Unsupported formats, devices,
 field-coded streams and clips shorter than 12 frames use the software decoder.
 A decoder failure also falls back to software; recovery can briefly pause the
 video. ARM software decoding uses NEON where available. Neither path changes
@@ -213,7 +213,7 @@ For example:
 ```
 
 Supported GUI flags initialize their switches: fast startup, CRT scanlines,
-smoothing, V-sync, hardware decoding and FPS. With a command file,
+smoothing, V-sync and FPS. Hardware decoding is automatic. With a command file,
 missing boolean flags use the native defaults (fast startup is off); without
 one Hypcade enables fast startup for supported games. Score remains enabled
 by default; `-scorebezel` and `-useoverlaysb N` are represented by the GUI's

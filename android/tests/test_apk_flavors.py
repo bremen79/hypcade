@@ -8,6 +8,14 @@ import re
 import subprocess
 import zipfile
 
+root=Path(__file__).resolve().parents[2]
+def embedded_image(header, symbol):
+    source=(root/header).read_text().split(symbol+'[]',1)[1]
+    payload=source.split('{',1)[1].split('}',1)[0]
+    return bytes(int(value,16) for value in re.findall(r'0x([0-9a-fA-F]{2})\b',payload))
+desktop_images=[embedded_image('src/video/icon.h','ghci'),
+                embedded_image('src/video/splash.h','ghc')]
+
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--arcade', type=Path, required=True)
 p.add_argument('--mobile', type=Path, required=True)
@@ -18,6 +26,9 @@ a=p.parse_args()
 for apk,arcade,abi in [(a.arcade,True,'armeabi-v7a'),(a.mobile,False,'arm64-v8a')]:
     with zipfile.ZipFile(apk) as z:
         dex=b''.join(z.read(n) for n in z.namelist() if re.fullmatch(r'classes\d*\.dex',n))
+        assert b'Hardware MPEG-2 decoding (automatic fallback)' not in dex, 'Decoder selection is automatic'
+        native=b''.join(z.read(n) for n in z.namelist() if n.startswith('lib/') and n.endswith('.so'))
+        assert all(image not in native for image in desktop_images), 'Desktop icon/splash must be excluded from Android'
         for text in [b'Hide touch',b'Show touch',b'On-screen controls']:
             assert (text in dex) != arcade, (apk,text)
         mapping = a.arcade_mapping if arcade else a.mobile_mapping

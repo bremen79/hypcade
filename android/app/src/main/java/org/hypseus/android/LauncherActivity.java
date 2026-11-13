@@ -128,7 +128,6 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private Switch linearScale;
     private Switch scanlines;
     private Switch syncVideo;
-    private Switch hardwareVideo;
     private LinearLayout videoSection;
     private Button showMovesButton;
     private int moveMode;
@@ -312,7 +311,6 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         videoSection.setOrientation(LinearLayout.VERTICAL);
         styleSection(videoMenu, videoSection, "Video & performance", false);
         showFps = option(videoSection, "Show FPS");
-        hardwareVideo = option(videoSection, "Hardware MPEG-2 decoding (automatic fallback)");
         scanlines = option(videoSection, "CRT scanlines (GPU)");
         linearScale = option(videoSection, "Smooth video scaling");
         syncVideo = option(videoSection, "V-sync");
@@ -395,7 +393,6 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         linearScale.setChecked(video.smooth);
         scanlines.setChecked(video.scanlines);
         syncVideo.setChecked(video.vsync);
-        hardwareVideo.setChecked(video.hardware);
         moveMode = config.moveMode;
         timingCue.setChecked(config.timingCue);
         updateGameOptions();
@@ -1119,7 +1116,6 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         video.smooth = linearScale.isChecked();
         video.scanlines = scanlines.isChecked();
         video.vsync = syncVideo.isChecked();
-        video.hardware = hardwareVideo.isChecked();
         return video.arguments(inherited);
     }
 
