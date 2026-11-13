@@ -21,11 +21,12 @@ ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsi
     ArcadeMove result;
     if(size<0xa1e0)return result;
     bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
-    const ArcadeRomMove *entries=ace ? (fewest ? ace_moves_fewest : ace_moves_max)
+    const ArcadeRomMove *entries=ace ? ace_moves : dle21_moves;
+    const uint16_t *order=ace ? (fewest ? ace_moves_fewest : ace_moves_max)
                                      : (fewest ? dle21_moves_fewest : dle21_moves_max);
     size_t count=ace ? (fewest ? sizeof(ace_moves_fewest)/sizeof(*ace_moves_fewest) : sizeof(ace_moves_max)/sizeof(*ace_moves_max))
                      : (fewest ? sizeof(dle21_moves_fewest)/sizeof(*dle21_moves_fewest) : sizeof(dle21_moves_max)/sizeof(*dle21_moves_max));
-    auto selected=arcade_select_rom_move(entries,count,memory+0xa000,frame,ace);
+    auto selected=arcade_select_rom_move(entries,order,count,memory+0xa000,frame,ace);
     result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
     return result;
 }

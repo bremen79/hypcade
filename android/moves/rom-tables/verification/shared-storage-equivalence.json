@@ -1,0 +1,18 @@
+{
+  "all_policy_rows_identical": true,
+  "previous_include_sha256": "f2f9e1899610c4bf1551d1e7e36cd35ddf7876ad50566eac804a942d50f85b1b",
+  "shared_include_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
+  "logical_rows": 9293,
+  "previous_table_bytes": 111516,
+  "shared_table_bytes": 76594,
+  "saved_bytes": 34922,
+  "selector_boundary_comparisons": 1003644,
+  "selector_boundary_comparisons_passed": true,
+  "cross_backend_results_identical": true,
+  "normal_play_scores_unchanged": true,
+  "actual_apk_runtime_test": false,
+  "merged_json": {
+    "game_files": 2,
+    "all_move_rows_and_strategy_indices_preserved": true
+  }
+}

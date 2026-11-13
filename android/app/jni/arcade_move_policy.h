@@ -37,15 +37,15 @@ static inline uint32_t arcade_rom_state(unsigned scene,unsigned step,uint16_t br
     return (scene&127U) | ((step&127U)<<7) | ((uint32_t)branch<<14);
 }
 
-static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *moves,size_t count,
+static inline ArcadeMoveSelection arcade_select_rom_move(const ArcadeRomMove *moves,const uint16_t *order,size_t count,
         const uint8_t *ram,unsigned frame,bool ace) {
     ArcadeMoveSelection result={0,false,0};
     uint16_t branch=ace ? (uint16_t)((ram[0x16]<<8)|ram[0x35]) : 0;
     uint32_t state=arcade_rom_state(ram[14],ram[15],branch);
     size_t low=0,high=count;
-    while(low<high){size_t mid=low+(high-low)/2;if(moves[mid].state<state)low=mid+1;else high=mid;}
-    for(size_t i=low;i<count && moves[i].state==state;i++) {
-        const ArcadeRomMove *move=moves+i;
+    while(low<high){size_t mid=low+(high-low)/2;if(moves[order[mid]].state<state)low=mid+1;else high=mid;}
+    for(size_t i=low;i<count && moves[order[i]].state==state;i++) {
+        const ArcadeRomMove *move=moves+order[i];
         unsigned slot=(move->timing>>8)&63,entry=slot/3,window=slot%3,ticks=move->timing&255;
         if(entry>=16 || !ticks)continue;
         const uint8_t *x=ram+0xe0+entry*16;

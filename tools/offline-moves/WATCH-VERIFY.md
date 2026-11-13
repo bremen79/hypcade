@@ -8,7 +8,10 @@ input queue will deliver that sequence at those same times.
 ## DLE21 and Space Ace
 
 `verify_rom_matrix.py` tests both extracted policies at every supported skill
-and operator difficulty, including independent replays. `verify_watch_moves.py`
+and operator difficulty, including independent replays, then directly writes
+one merged JSON file per game and `arcade_moves.inc` into its output
+directory. Pass that include to `verify_watch_moves.py` with `--include` to
+check the generated bundle before publishing it. The Watch Mode checker
 then tests the APK's merged lookup with IRQ publication, 8 ms Java polling,
 100 ms holds and SDL's 17 ms queue cadence. Queue phases 0, 8 and 16 ms are
 tested by default. Use repeated `--input-phase` arguments for focused checks.
@@ -17,6 +20,29 @@ The checker uses only the packaged ROM-derived rows. It does not learn moves,
 consult a teacher, or silently repair a missing state. Fix a failure in the ROM
 extraction/generation or timing model, regenerate the bundle, and rerun the
 checks. Independently replayed full games remain the source of every row.
+
+Both strategies draw from the same set of verified branches. The bundler ranks
+the continuation at each scene/step using the selected ROM policy, regardless
+of which strategy originally reached it. It preserves a policy's deliberate
+choice to wait, rather than inserting an optional action from the other policy.
+This lets guidance resume after a player takes a different verified branch.
+Each merged JSON contains its move pool and both strategy lists. The APK
+stores one pool of unique rows per game and a 16-bit index list for
+each strategy. Each list keeps that strategy's original priority order; the
+runtime binary search follows the indices without copying or expanding rows.
+The bundle checks verify index bounds, ordering and complete use of the pools.
+
+To exercise that recovery, add `--game ace --mode 1 --mode 2 --detour 1` to
+the checker. At the first decision where the two strategies offer different
+inputs, it follows the other strategy for that state, then resumes the selected
+one. `--detour 2` and higher target later differences; repeated arguments check
+several detours independently. `--detour 0` checks ordinary play. The report
+separates requested detours from those actually exercised: a target beyond the
+available differences is a normal replay, not evidence of branch recovery.
+These detours use only the bundled rows and the production selector. They do
+not use the simulator's ROM-policy player to supply missing actions.
+Use `--jobs 2` to run two independent replays concurrently. Each replay has its
+own emulated machine; concurrency does not change its virtual timing.
 
 Use `--include /path/to/candidate.inc` to test a candidate without replacing the
 APK input. `--android emulator-5556` compiles and runs the same check on Android.

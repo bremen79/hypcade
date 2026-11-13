@@ -41,39 +41,39 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6035457,
-      "sha256": "4b1842ba6e55d5b4b1c01dd12fcd44077787749c02fd49a7cccb6bfffb1a5613",
-      "uncompressed_native_bytes": 5070364,
+      "size_bytes": 6041621,
+      "sha256": "c2571196ca43351f9da72d726c85239959755db939ca6acebd73c50526bb50f8",
+      "uncompressed_native_bytes": 5072412,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6348927,
-      "sha256": "94e372d613faba838a102ae80fde5700b7b6e4d34b9b0ed7bf0a4fa2829b053e",
-      "uncompressed_native_bytes": 7154944,
+      "size_bytes": 6356147,
+      "sha256": "88cfd1333a1eb2bc47813a398570bef3e87bc029480e0cac84d9a2b1fc0fb747",
+      "uncompressed_native_bytes": 7156960,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6790013,
-      "sha256": "0152c0f14e0955a3fdbed0a6565bbfed1ada1941f9596f85f44fed055d56377e",
-      "uncompressed_native_bytes": 7864724,
+      "size_bytes": 6797093,
+      "sha256": "06c9756c5611fe8581431c3c45f0791b39c701af0d259a1135155c3385499ba5",
+      "uncompressed_native_bytes": 7866756,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6799798,
-      "sha256": "8e73bc140ce6ceb69abfcf727bf580082432043bdaa755fdc8ecbc732b9cd5b1",
-      "uncompressed_native_bytes": 8088080,
+      "size_bytes": 6807398,
+      "sha256": "4cda39d609cddcab205eac646452e8f666f0e4afa7200cb039b4e887159a8486",
+      "uncompressed_native_bytes": 8090208,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 441963,
-    "sha256": "b9de635b2b0c1d0ccca21f04a8a1cd73baef52c47db1e5b64576218854106b42",
+    "size_bytes": 442500,
+    "sha256": "5a4d91a1798e160ec7b930fc0850d1b1d15098ad7815cf21eac9548abe2dffa5",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -84,7 +84,7 @@
   "upstream_file_changes": "upstream-changes.json",
   "source_distribution": {
     "repository_dependencies": "Fetched by bootstrap-deps.py at dependencies.lock.json revisions; third_party checkouts are not committed.",
-    "complete_bundle": "Pinned dependency sources remain included separately in complete source bundles. No new source archive was generated for this Watch Mode change.",
+    "complete_bundle": "Pinned dependency sources remain included separately in complete source bundles. No new source archive was generated for these move-table changes.",
     "excluded": "Private keys, local settings, toolchain installations, caches, build outputs and game data."
   },
   "packaging": {
@@ -108,7 +108,7 @@
     "mobile_service_menu": "Raw Options / Service switch in the top touch-button row for Singe, Dragon's Lair II and Space Ace 91; hidden in Watch Mode. No automatic button combinations. Mobile touch controls use the same logical Android input dispatch as mapped arcade controls.",
     "space_ace_difficulty": "Original US Space Ace: four explicit native DIP combinations (after 3/5 consecutive episodes; slow/fast progression), initialized from effective -bank values and saved per game. Separate saved Cadet/Captain/Ace skill uses existing native skill inputs on Start. Neither control has a default placeholder. DIP-controlled games share one catalog and reader/writer; no additional native Space Ace code."
   },
-  "move_table_sha256": "1805a3c6cff8bd79fd9f744d769e3c11cbbb1bb9f4fd161227b7728510693378",
+  "move_table_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
   "ai_assistance": {
     "tools": [
@@ -134,7 +134,11 @@
         "Android 9 x86"
       ],
       "independent_exact_replay_for_each": true,
-      "cross_backend_traces_identical": true
+      "cross_backend_traces_identical": true,
+      "reports": [
+        "moves/rom-tables/generation-verification.json",
+        "moves/rom-tables/verification/moves-all-settings-android-full.json"
+      ]
     },
     "watch": {
       "per_backend": 234,
@@ -154,7 +158,13 @@
       ],
       "cross_backend_results_identical": true,
       "uses_only_bundled_rows": true,
-      "android_clean_checker_cases": 39
+      "branch_detour_games_per_backend": 72,
+      "current_reports": [
+        "moves/rom-tables/verification/shared-host-normal.json",
+        "moves/rom-tables/verification/shared-android-normal.json",
+        "moves/rom-tables/verification/shared-host-detours.json",
+        "moves/rom-tables/verification/shared-android-detours.json"
+      ]
     },
     "dl2": {
       "per_backend": 45,
@@ -183,7 +193,7 @@
       "production_i86_and_driver_methods": true,
       "cross_backend_final_states_identical": true,
       "negative_controls": "Withholding first or final move causes a detected death on both backends.",
-      "scope": "Previously verified unchanged DL2 decoder, CPU and Java player; this change removes unrelated Cine move rows only."
+      "scope": "Previously verified DL2 decoder, CPU and Java player; unchanged by Cine branch-coverage and move-storage changes."
     },
     "actual_apk": {
       "android": "9 / API 28",
@@ -284,20 +294,37 @@
       "arcade": 43,
       "mobile": 38,
       "errors": 0
+    },
+    "shared_storage": {
+      "report": "moves/rom-tables/verification/shared-storage-equivalence.json",
+      "logical_rows_preserved": 9293,
+      "selector_boundary_comparisons": 1003644,
+      "previous_table_bytes": 111516,
+      "shared_table_bytes": 76594,
+      "saved_bytes_per_library": 34922,
+      "actual_apk_runtime_test": false
+    },
+    "extractor": {
+      "host_cases": 208,
+      "independent_exact_replay_for_each": true,
+      "direct_shared_output": true,
+      "generated_include_matches_release": true,
+      "merged_game_files": 2,
+      "incomplete_output_rejected": true
     }
   },
   "move_generation": {
-    "method": "Revision-pinned ROM scene/step policies, natural execution and independent exact replay; direct bundling of those routes and unassisted Watch Mode checks. No separate training stage.",
+    "method": "Revision-pinned ROM scene/step policies, natural execution and independent exact replay; extraction directly emits merged per-game files and the shared APK include, followed by unassisted Watch Mode checks.",
     "manifest": "moves/rom-tables/manifest.json",
-    "manifest_sha256": "b1c881a47949af8d33b9ecc57f7ff16d98eb4f33988c97d67e64f4d6a55c9ffd",
+    "manifest_sha256": "e49f06816184069d27f6b0abe119230123bd9a887d8dda9979c241a4f0c239dd",
     "counts": {
       "dle21": {
-        "shortest": 384,
-        "highest-score": 404
+        "shortest": 469,
+        "highest-score": 466
       },
       "ace": {
-        "shortest": 2094,
-        "highest-score": 3335
+        "shortest": 4153,
+        "highest-score": 4205
       }
     },
     "packaged_full_route_profiles": 208,
@@ -306,7 +333,88 @@
     "configuration": "DLE21 plus Ace A3 Cadet/Captain/Ace at every operator difficulty, eight randomized starts per configuration and objective; Watch holdouts use separate randomized starts and varied input-queue phases.",
     "randomness": "Seven or eight distinct scene/action sequences observed per configuration and objective across eight starts.",
     "all_scenes_proven": false,
-    "global_optimum_proven": false
+    "global_optimum_proven": false,
+    "shared_counts": {
+      "dle21": 484,
+      "ace": 4350
+    },
+    "storage": "One merged JSON per game containing unique rows and both 16-bit policy index lists; native pools and indices need no runtime expansion.",
+    "branch_coverage": {
+      "dle21": {
+        "known_states": 198,
+        "objectives": {
+          "shortest": {
+            "action_states": 198,
+            "waiting_states": []
+          },
+          "highest-score": {
+            "action_states": 198,
+            "waiting_states": []
+          }
+        }
+      },
+      "ace": {
+        "known_states": 1832,
+        "objectives": {
+          "shortest": {
+            "action_states": 1797,
+            "waiting_states": [
+              658,
+              659,
+              660,
+              661,
+              772,
+              773,
+              897,
+              8389380,
+              8389381,
+              8389505,
+              8520452,
+              8520453,
+              12583684,
+              12583685,
+              12583809,
+              12714756,
+              12714757,
+              16777988,
+              16777989,
+              16778113,
+              17040018,
+              17040019,
+              17040020,
+              17040021,
+              25166596,
+              25166597,
+              25166721,
+              25428626,
+              25428627,
+              25428628,
+              25428629,
+              38011538,
+              38011539,
+              38011540,
+              38011541
+            ]
+          },
+          "highest-score": {
+            "action_states": 1822,
+            "waiting_states": [
+              285,
+              286,
+              518,
+              519,
+              792,
+              262662,
+              262663,
+              17040152,
+              25428760,
+              38011672
+            ]
+          }
+        }
+      }
+    },
+    "branch_detour_games_per_backend": 72
   },
   "build_script": "build-apks.sh release [arm|all]",
   "build_resource_limits": "Sequential Gradle invocations; max-workers=1, 1536 MiB heap and native compile pool=2.",
@@ -334,5 +442,13 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "ARM arcade and mobile release APKs rebuilt with DL2 Off/On move controls, clearer launcher submenu grouping and GPT-6 family AI disclosure. The x86 test APKs remain from the previous build. No device runtime tests were performed for these launcher changes."
+  "source_tree_status": "All four signed release APKs contain the shared move pools and cross-strategy branch coverage, checked by 234 normal games and 72 deliberate branch-detour games per backend on host and Android 9 x86. The offline extraction workflow now directly writes one merged game file per ROM and the shared include; a fresh 208-case host run with independent replays reproduced the APK include byte for byte. Obsolete reports and separate strategy files were removed. APK binaries are unchanged by this offline-tool cleanup. No new gameplay run through the launcher or physical-device test was performed.",
+  "move_lookup_source_sha256": {
+    "android/app/jni/arcade_guidance.cpp": "e57ac16121767e9f77fac78cfa882de13439315482701aa8773647fd5add256f",
+    "android/app/jni/arcade_move_policy.h": "87ae3dc8b180878dcb61f65e15ef7537b93d9f842beb72ef9cee8847fa40dcc5",
+    "tools/offline-moves/bundle_rom_moves.py": "0dbf0fbc59a49b8488d0831e1e9c791e3636f0aa1481330e05b6f1186878e4ad",
+    "tools/offline-moves/watch_moves.c": "d7f355df57938be0dd3ebedd7421cb9e7e75ecc5390c281744876fa0fca5bf2f",
+    "tools/offline-moves/verify_watch_moves.py": "9ca77025b3af6d616357d098ad21a69a7513a26e5a18d58f423df11846f199be",
+    "tools/offline-moves/verify_rom_matrix.py": "4d945872ee838eade4e1877a31646e4d0a47dd8c860a7d480a289a72b21f83f3"
+  }
 }

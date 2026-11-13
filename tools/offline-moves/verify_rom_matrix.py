@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Validate ROM-extracted policies across every supported skill/difficulty."""
+"""Extract, verify and write shared ROM moves for every supported skill/difficulty."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import hashlib
 import json
 from pathlib import Path
 import random
@@ -15,6 +16,14 @@ import android_runner
 import moves as move_tools
 import rom_moves
 import score_routes
+import bundle_rom_moves
+
+
+def source_identity():
+    sources=rom_moves.identity()
+    for path in (Path(__file__),Path(bundle_rom_moves.__file__)):
+        sources[str(path.resolve().relative_to(rom_moves.REPO))]=hashlib.sha256(path.read_bytes()).hexdigest()
+    return sources
 
 
 def check_case(binary, verifier, args, case):
@@ -88,7 +97,7 @@ def main():
         runner=android_runner.AndroidRunner(args.android,args.output,[binary,verifier])
         args.run_command=runner.run
         backend=dict(kind='android',abi=runner.abi,sdk=runner.sdk)
-    sources = rom_moves.identity()
+    sources = source_identity()
     rng = random.Random(args.seed)
     delays = [0] + [rng.uniform(0, 30) for _ in range(args.starts - 1)]
     cases = [(game, skill, difficulty, start, delay, objective)
@@ -122,12 +131,19 @@ def main():
                 report['completed'], len(cases), row['game'], row['skill'], row['difficulty'], row['start'],
                 row['objective'], 'PASS' if row['verified'] else 'FAIL', row['play'].get('score'),
                 row['play'].get('moves'), row['wall_seconds']), flush=True)
-    if sources != rom_moves.identity():
+    if sources != source_identity():
         report['all_passed']=False;report['source_changed']=True
         move_tools.atomic_json(args.output/'report.json',report)
         raise ValueError('Sources changed during verification')
     if not report['all_passed']:
         raise SystemExit(1)
+    try:
+        bundle_rom_moves.bundle(args.output,args.output,args.output/'arcade_moves.inc')
+    except (ValueError,OSError) as error:
+        report['all_passed']=False;report['bundle_error']=str(error)
+        move_tools.atomic_json(args.output/'report.json',report)
+        raise
+    print('Shared move pools, strategy indices and arcade_moves.inc written to',args.output,flush=True)
 
 
 if __name__ == '__main__':

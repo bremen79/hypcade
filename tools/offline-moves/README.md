@@ -29,8 +29,16 @@ selector.
 
 The report includes each setting, start delay, score, move count and pass/fail
 result. Both `shortest` and `highest-score` routes retain their separate evidence.
-For a smaller diagnostic run, use `--starts 1`. Never describe a partially
-finished report as a successful matrix.
+After every case, independent replay and shared-branch coverage check passes,
+the same command writes one merged JSON file per game, `manifest.json` and
+`arcade_moves.inc` directly into the output directory. A failed matrix does not
+publish a move bundle. Route evidence is reused in place rather than copied
+into a second output tree.
+For a smaller diagnostic run, use `--starts 1`. A small sample can leave a
+branch without a verified continuation; the bundler then reports the missing
+scene/step/context and refuses to publish moves. Increase the starts to collect
+the missing evidence. Never describe a partially finished report as a successful
+matrix.
 
 `rom_moves.py` remains useful for a focused single-game test at the default
 operator difficulty, but its report is not the full-matrix input to the bundler.
@@ -58,17 +66,24 @@ these results from being a proof of the globally shortest or highest-scoring
 possible game. An inventory entry is not necessarily a distinct playable room:
 there are aliases, system records, death clips and prototype-only entries.
 
-## Bundle and check Watch Mode
+## Check and publish the generated moves
 
-Only bundle complete, independently replayed routes:
+Check the directly generated include before replacing the APK's inputs:
 
 ```bash
-python3 tools/offline-moves/bundle_rom_moves.py \
-  --results local-tools/rom-moves
-
 python3 tools/offline-moves/verify_watch_moves.py \
-  --roms /path/to/roms --output local-tools/watch-moves --starts 2
+  --roms /path/to/roms --output local-tools/watch-moves --starts 2 \
+  --include local-tools/rom-moves/arcade_moves.inc
 ```
+
+After those checks pass, publish the verified bundle into the APK source tree:
+
+```bash
+python3 tools/offline-moves/bundle_rom_moves.py --results local-tools/rom-moves
+```
+
+The extraction command and this publishing command use the same bundler; no
+separate merging or format-conversion step is needed.
 
 The generator and bundler supply every runtime row directly from independently
 replayed ROM-policy games. The Watch Mode checker only uses those rows; it cannot
@@ -81,8 +96,10 @@ batch recorded in the validation reports. Use `--starts 8` for an extended
 936-case batch; those extra starts are additional checks, not part of the
 recorded 234-case result.
 
-The bundler writes both compact arrays to `android/app/jni/arcade_moves.inc` and
-saves the matching route evidence in `android/moves/rom-tables/`. Scene, step and
+Each merged game file contains a unique move pool and both 16-bit strategy
+index lists. Publishing writes that representation to
+`android/app/jni/arcade_moves.inc` and saves the matching JSON and route evidence
+in `android/moves/rom-tables/`. Scene, step and
 Space Ace branch bytes identify a move; timing checks select the live window.
 Unknown cases remain silent. The Watch Mode check exercises the same selector
 with IRQ guidance, 8 ms input polling, SDL’s 17 ms input-queue cadence and
@@ -106,7 +123,8 @@ python3 tools/offline-moves/verify_rom_matrix.py \
 
 python3 tools/offline-moves/verify_watch_moves.py \
   --roms /path/to/roms --output local-tools/watch-moves-android \
-  --starts 2 --android emulator-5556
+  --starts 2 --android emulator-5556 \
+  --include local-tools/rom-moves-android/arcade_moves.inc
 ```
 
 These use the shared SDK's NDK; they do not install another toolchain. They run

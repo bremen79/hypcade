@@ -107,13 +107,20 @@ queue phases. The tools can run these checks on the laptop and on Android.
 The APK identifies recorded moves by ROM scene, step and branch context.
 The bundler uses the independently replayed ROM routes directly; the Watch Mode
 checker cannot learn or add missing moves.
+Both strategies cover the union of independently verified branches. A player
+can take another recorded branch and continue receiving moves for the selected
+strategy. ROM policy rankings preserve deliberate waiting instead of inserting
+an optional action from the other strategy. Detour replays check this recovery
+with the same packaged selector and input-delivery timing model.
+Move rows shared by the two strategies are stored once per game, with compact
+16-bit index lists preserving each strategy's choice and priority order.
 Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
 set, defaulting to Max score when the move display is Off. Local route selection
 and sampled successful games are not a proof of global optimality or complete
 context coverage.
 
 Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
-setting. It has no extra timing-cue option because the video already supplies
+Off/On setting. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
 a duplicate move system from Hypcade.
 The DL2 decoder uses the ROM's earliest accepted phase and exclusive closing

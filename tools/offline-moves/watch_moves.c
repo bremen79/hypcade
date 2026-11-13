@@ -9,22 +9,31 @@
 #endif
 #include HYPCADE_MOVES_INCLUDE
 int main(int argc,char **argv) {
-    if(argc!=9)return 2;
+    if(argc!=9 && argc!=10)return 2;
     (void)play_tables;
     (void)read_choices;
     char *base[]={argv[0],argv[1],argv[2],argv[3],argv[4],argv[5],"--difficulty",argv[7]};
     RouteGraph g={0};if(!parse_options(&g.options,8,base))return 2;
     uint64_t mode_value;if(!parse_unsigned(argv[6],2,&mode_value))return 2;
     unsigned mode=(unsigned)mode_value;
+    uint64_t detour_target=0;
+    if(argc==10 && !parse_unsigned(argv[9],1000,&detour_target))return 2;
     uint64_t phase_value;if(!parse_unsigned(argv[8],16,&phase_value))return 2;
     uint64_t phase_cycles=phase_value*4000;
     g.nodes=calloc(1,sizeof *g.nodes);
     if(!g.nodes)return 1;
     if(!graph_boot(&g))return 3;
     Machine m=g.base;connect_machine(&m);bool ace=m.board.game==CINE_SPACE_ACE;
-    const ArcadeRomMove *entries=ace ? (mode==2 ? ace_moves_fewest : ace_moves_max) : (mode==2 ? dle21_moves_fewest : dle21_moves_max);
+    const ArcadeRomMove *entries=ace ? ace_moves : dle21_moves;
+    const uint16_t *order=ace ? (mode==2 ? ace_moves_fewest : ace_moves_max) : (mode==2 ? dle21_moves_fewest : dle21_moves_max);
     size_t count=ace ? (mode==2 ? sizeof ace_moves_fewest/sizeof *ace_moves_fewest : sizeof ace_moves_max/sizeof *ace_moves_max)
                      : (mode==2 ? sizeof dle21_moves_fewest/sizeof *dle21_moves_fewest : sizeof dle21_moves_max/sizeof *dle21_moves_max);
+    const uint16_t *alternate=ace ? (mode==2 ? ace_moves_max : ace_moves_fewest)
+                                      : (mode==2 ? dle21_moves_max : dle21_moves_fewest);
+    size_t alternate_count=ace ? (mode==2 ? sizeof ace_moves_max/sizeof *ace_moves_max : sizeof ace_moves_fewest/sizeof *ace_moves_fewest)
+                              : (mode==2 ? sizeof dle21_moves_max/sizeof *dle21_moves_max : sizeof dle21_moves_fewest/sizeof *dle21_moves_fewest);
+    unsigned detour_seen=0;uint32_t detour_state=UINT32_MAX,last_difference=UINT32_MAX;
+    bool detour_applied=false;
     uint64_t poll=((m.board.cycles+31999)/32000)*32000,guide=m.board.next_irq,release=0,previous=0;
     uint64_t input_at=((m.board.cycles+phase_cycles+67999)/68000)*68000-phase_cycles;
     struct {unsigned control;bool down;} queue[16];unsigned queued=0;
@@ -35,15 +44,28 @@ int main(int argc,char **argv) {
         if(offline_won(&m.board,&m.ldp)) {
             RoutePhase phase=settle_victory(&m,&g,&live);int score=0;player_one_score(&m.board,&score);
             bool ok=phase==ROUTE_VICTORY;
-            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"score\":%d,\"moves\":%u}\n",ok?"true":"false",mode,score,moves_count);route_monitor=NULL;return ok?0:3;
+            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"score\":%d,\"moves\":%u,\"detour_applied\":%s,\"differences\":%u}\n",ok?"true":"false",mode,score,moves_count,detour_applied?"true":"false",detour_seen);route_monitor=NULL;return ok?0:3;
         }
         if(m.board.cycles>=guide) {
             selected=(ArcadeMoveSelection){0,false,0};
-            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_rom_move(entries,count,m.board.ram,m.ldp.frame,ace);
+            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_rom_move(entries,order,count,m.board.ram,m.ldp.frame,ace);
+            uint32_t state=arcade_rom_state(m.board.ram[14],m.board.ram[15],ace?move_branch(&m):0);
+            if(detour_target && m.ldp.state==LDP_PLAYING) {
+                ArcadeMoveSelection other=arcade_select_rom_move(entries,alternate,alternate_count,m.board.ram,m.ldp.frame,ace);
+                if(!detour_applied && state!=last_difference &&
+                   (selected.ready || other.ready) && selected.controls!=other.controls) {
+                    last_difference=state;++detour_seen;
+                    if(detour_seen==detour_target) {
+                        detour_state=state;detour_applied=true;
+                        printf("{\"type\":\"detour\",\"state\":%u,\"frame\":%d,\"original\":%u,\"replacement\":%u}\n",state,m.ldp.frame,selected.controls,other.controls);
+                    }
+                }
+                if(detour_state==state)selected=other;
+                else if(detour_applied)detour_state=UINT32_MAX;
+            }
             if(selected.ready && (!was_ready || previous!=selected.window))pending=selected.controls;
             if(!selected.ready)pending=0;
             was_ready=selected.ready;previous=selected.window;guide+=131072;
-            uint32_t state=arcade_rom_state(m.board.ram[14],m.board.ram[15],ace?move_branch(&m):0);
             if(!selected.controls && state!=last_unknown){fprintf(stderr,"unrecognized state=%u scene=%u step=%u frame=%d\n",state,m.board.ram[14]&127,m.board.ram[15]&127,m.ldp.frame);last_unknown=state;}
         }
         if(m.board.cycles>=poll) {

@@ -123,8 +123,9 @@ separately; normal-start victories do not establish retry coverage.
 
 That focused command uses the default operator difficulty. Before packaging,
 use `verify_rom_matrix.py` to regenerate the exports and test both objectives at
-every supported skill and operator difficulty. Its complete matrix report is
-the input to `bundle_rom_moves.py`. Follow the commands in the
+every supported skill and operator difficulty. On success it directly writes
+one merged JSON file per game and the APK include into its output
+directory. Follow the commands in the
 [tool guide](README.md#generate-both-move-sets), then run unassisted Watch Mode
 checks. [Watch Mode verification](WATCH-VERIFY.md) explains the additional input
 delivery timing checks and the corresponding Android runs.
@@ -137,10 +138,12 @@ decoded window is also not proof that every reachable scene has been decoded.
 ## Relationship to the APK
 
 This is a structural rules package, not a replacement for the current
-`ArcadeRomMove` arrays in `android/app/jni/arcade_moves.inc`. Those arrays contain
-accepted timings from verified plays. `bundle_rom_moves.py` remains their
-packager, and its coverage remains limited to the collected runtime contexts.
-The new exporter neither edits those arrays nor changes the APK.
+`ArcadeRomMove` pools and strategy index lists in `android/app/jni/arcade_moves.inc`.
+Those pools contain accepted timings from verified plays. The complete
+`verify_rom_matrix.py` extraction workflow generates that shared representation
+automatically through `bundle_rom_moves.py`, which also publishes checked
+outputs into the APK source tree. Its coverage remains limited to the collected
+runtime contexts. A structural-only export does not modify APK inputs.
 
 A future direct rules consumer must resolve the original loader’s conditions
 and input arming, preserve objective selection, and pass full Watch Mode and

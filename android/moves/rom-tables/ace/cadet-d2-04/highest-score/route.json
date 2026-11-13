@@ -48,7 +48,7 @@
     "tools/offline-moves/moves.py": "e82e52edb793f70824b5d7224124ea7fd6d628800d0ca54302efff3a96fcef8e",
     "tools/offline-moves/vendor/provenance.json": "bbeccd7589810ef13e1e36e63a6126adbc139de57bcabc5d2681a527b24da19b",
     "android/app/jni/arcade_signature.h": "45c29e2f83021fc96f4632873da3b8bf77a8d1180f680971106061ae0e5853fe",
-    "android/app/jni/arcade_move_policy.h": "0d824dd456f7fb56ff74c40cb4596c6a329421b1707b6eab0e597b254e5e1062",
+    "android/app/jni/arcade_move_policy.h": "87ae3dc8b180878dcb61f65e15ef7537b93d9f842beb72ef9cee8847fa40dcc5",
     "tools/offline-moves/rom_tables.py": "05b7747f1b5588e8b2baa36e545c0b561f90d0f5ac94f9f153ddf6b6db18fdf7",
     "tools/offline-moves/rom_routes.c": "f6252a61f329d3e5fc3b267b5da1e7998a2813f2c111ab95e6d45f0fd2c6dcb5",
     "tools/offline-moves/rom_moves.py": "ed9e2b55266bc352f504cee659ee077f18f9947b9d10cd43e65c93976579beaf",

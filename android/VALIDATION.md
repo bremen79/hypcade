@@ -15,6 +15,7 @@ emulator. Counts are **per backend**.
 | --- | ---: | --- |
 | ROM policies and independent replays | 208 | Both objectives, eight starts for DLE21 and every combination of Space Ace's three skills and four operator difficulties; complete games without life loss |
 | Packaged Watch Mode lookup | 234 | Off using Max score, Max score and Fewest moves; two independent starts and input-queue phases of 0, 8 and 16 ms; packaged rows only, with no learning or fallback |
+| Space Ace branch detours | 72 | Both strategies, three separately introduced detours, all three skills and all four operator difficulties; selected-strategy guidance resumes and the game finishes without life loss |
 | DL2 production-player harness | 45 | All five difficulties, seek delays of 0, 17 and 55 ms, and queue phases of 0, 8 and 16 ms; complete games without life loss |
 
 Host and Android produced identical policy traces, Watch Mode results and DL2
@@ -28,13 +29,25 @@ the first or final move caused a detected death on both backends. Those negative
 controls check that the harness can distinguish a failed play from a win.
 
 Runtime rows are generated directly from the independent ROM-policy replays.
-There is no separate Watch Mode training stage or generated training directory.
+The complete extraction command emits one merged JSON file per game, containing
+its shared rows and both strategy index lists, plus the generated APK include.
+A fresh 208-case host extraction and independent-replay run reproduced the
+APK's move include byte for byte. Bundle checks also verify direct generation
+in place and rejection of incomplete verification reports.
 The direct tables are checked across the same skill, difficulty and timing
 matrix before packaging.
-The reduced lookup passed all 234 host and Android cases with unchanged scores.
-The cleaned checker itself was checked across 234 host cases and 39 Android
-cases covering every skill/difficulty/mode combination. The broader Android
-lookup comparison used the earlier checker with learning disabled.
+The current shared lookup passed all 234 host and Android cases with unchanged
+scores. Both strategies cover the union of verified branch contexts, while
+their ROM policies retain the choice to wait instead of taking an optional
+action. Each detour test follows the other strategy at one decision, then
+returns to the selected strategy. All 72 detours were actually exercised on
+each backend. Host and Android results matched for all 306 cases per backend.
+
+Unique move rows are stored once per game, with separate 16-bit strategy index
+lists. Expanding those lists reproduces all 9,293 logical rows in the same
+priority order. A host differential check matched the previous selector in
+1,003,644 timing-boundary cases. Checks cover index bounds, sorted lookup order, complete pool use and the presence of pools
+and index lists in all four signed release APKs.
 
 Space Ace's necessary final UP remains in both policies even though it awards
 no points. Bundled-data checks verify that action, the complete replay evidence,
@@ -44,6 +57,8 @@ For reproduction, follow the [offline tool guide](../tools/offline-moves/README.
 and [Watch Mode verification guide](../tools/offline-moves/WATCH-VERIFY.md).
 These simulations omit video and real-time waits. Running them on Android
 checks the native/JVM backend; it does not exercise an APK's full media pipeline.
+The actual APK gameplay runs listed below predate the shared-table build; no
+new full gameplay run through the launcher was performed for this change.
 
 ## Direct APK gameplay
 
@@ -101,7 +116,3 @@ These single-player checks do not establish two-player behavior, every live
 scoreboard counter, all storage/lifecycle scenarios, or performance on every
 Android device. A synthetic playback fixture's `ANDROID_MEDIA_TEST PASS` marker
 only confirms frame advancement; it is not a commercial-game accuracy test.
-
-The DLE21 and DL2 full-game evidence predates removal of the redundant Space Ace
-rows. Their move data or decoder behavior was unchanged by that cleanup. The
-Space Ace direct run above uses the reduced tables.
