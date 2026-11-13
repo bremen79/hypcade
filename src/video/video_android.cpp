@@ -81,6 +81,13 @@ void place_scoreboard(SDL_Rect &rect, int output_width)
     }
 }
 
+void place_annunciator(SDL_Rect &rect, int output_width)
+{
+    // Keep the dedicated Space Ace skill panel opposite the score bezel.
+    if (score_layout == ScoreLayout::Right)
+        rect.x = output_width - rect.x - rect.w;
+}
+
 void draw_hud(SDL_Renderer *renderer, int height, double maximum)
 {
     if (!g_show_fps) return;

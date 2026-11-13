@@ -52,6 +52,7 @@ public final class LaunchConfig {
     public final boolean timingCue;
     static final int SCORE_OFF = 0, SCORE_LEFT = 1, SCORE_RIGHT = 2, SCORE_TOP = 3;
     static final String[] SCORE_LAYOUTS = {"Off", "Left", "Right", "Top"};
+    private static final String[] ACE_SCORE_LAYOUTS = {"Off", "Left", "Right"};
     public final int scoreLayout;
     public final int difficulty;
     public final int skill;
@@ -85,10 +86,11 @@ public final class LaunchConfig {
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments, int moveMode, boolean timingCue, int scoreLayout, int difficulty, int skill) {
-        this.scoreLayout = scoreLayout >= SCORE_OFF && scoreLayout <= SCORE_TOP ? scoreLayout : SCORE_LEFT;
         this.id = clean(id);
         this.name = clean(name);
         this.game = clean(game).toLowerCase(Locale.ROOT);
+        this.scoreLayout = scoreLayout >= SCORE_OFF && scoreLayout < scoreLayouts(this.game).length
+                ? scoreLayout : SCORE_LEFT;
         this.moveMode = MoveMode.selected(this.game, moveMode);
         this.difficulty = GameDifficulty.selected(this.game, difficulty);
         this.skill = GameDifficulty.selectedSkill(skill);
@@ -108,8 +110,12 @@ public final class LaunchConfig {
     }
 
     static boolean supportsScorePlacement(String game) {
-        return game.equals("lair2") || game.equals("dle11") || game.equals("dle21") ||
+        return GameDifficulty.spaceAce(game) || game.equals("lair2") || game.equals("dle11") || game.equals("dle21") ||
                 game.equals("lair") || game.matches("lair_[a-f]");
+    }
+
+    static String[] scoreLayouts(String game) {
+        return GameDifficulty.spaceAce(game) ? ACE_SCORE_LAYOUTS : SCORE_LAYOUTS;
     }
 
     static boolean supportsScore(String game) {

@@ -55,6 +55,10 @@ These checks do not measure Yoga Flame performance or replace commercial-game te
 
 ## Scoreboard layouts
 
+Space Ace now offers Off, Left and Right; its dedicated skill panel moves to
+the opposite edge. This extension was built without running tests or a device
+check, as requested. The checks below describe the earlier DL1/DL2 work.
+
 Launcher model checks cover Off, Left, Right and Top arguments for Dragon's
 Lair I and II, including suppression of DL1's default overlay when Off is
 selected. Host renderer checks cover edge placement at output widths of 960,

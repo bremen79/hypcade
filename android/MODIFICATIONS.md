@@ -186,8 +186,9 @@ player's score remains until the match ends, with their lives blank. All player
 numbers are cleared at match end; fixed artwork labels remain. No final-score
 cache or additional blinking is added.
 This addition does not change scoring rules or game memory. Space Ace uses
-the upstream dedicated skill-panel bezel alongside the scoreboard when Show
-score and lives is enabled. Explicit native annunciator layouts take priority;
+the upstream dedicated skill-panel bezel alongside the scoreboard, with Off,
+Left and Right choices. The dedicated skill panel sits opposite the score bezel.
+Explicit native annunciator layouts and positions take priority;
 the artwork and rendering implementation are reused from upstream.
 
 A short coin-slot sound confirms a coin-button press;

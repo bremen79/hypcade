@@ -23,6 +23,7 @@ SDL_Point scoreboard_size();
 // Caller owns both resources, including texture destruction on resize/exit.
 bool upload_scoreboard(SDL_Renderer *renderer, SDL_Surface *surface, SDL_Texture *&texture);
 void place_scoreboard(SDL_Rect &rect, int output_width);
+void place_annunciator(SDL_Rect &rect, int output_width);
 bool mobile_display();
 void drawable_size(SDL_Window *window, SDL_Rect &size);
 bool resized(SDL_Window *window, bool fullscreen, SDL_Rect &size);

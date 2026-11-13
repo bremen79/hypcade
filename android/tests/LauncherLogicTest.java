@@ -141,8 +141,20 @@ public final class LauncherLogicTest {
                             LaunchConfig.SCORE_LAYOUTS[layout].toLowerCase(java.util.Locale.ROOT)), "Selected native layout");
             }
         }
-        check(!Arrays.asList(config("ace", "vldp/demo/frames.txt", "", "").arguments(root)).contains("-scorebezel_layout"),
-                "Space Ace keeps its existing bezel");
+        for (String game : new String[]{"ace", "ace_a", "ace_a2", "sae"}) {
+            check(Arrays.equals(LaunchConfig.scoreLayouts(game), new String[]{"Off", "Left", "Right"}),
+                    "Space Ace offers only vertical scoreboard layouts");
+            for (int layout = LaunchConfig.SCORE_OFF; layout <= LaunchConfig.SCORE_RIGHT; layout++) {
+                LaunchConfig placed = new LaunchConfig("id", "test", game, "vldp/demo/frames.txt", "", "",
+                        MoveMode.OFF, false, layout);
+                List<String> launch = Arrays.asList(placed.arguments(root));
+                check(launch.contains("-scorebezel") == (layout != LaunchConfig.SCORE_OFF), "Space Ace Off hides scoreboard");
+                check(launch.contains("-dedannunbezel") == (layout != LaunchConfig.SCORE_OFF), "Space Ace retains skill artwork");
+                if (layout != LaunchConfig.SCORE_OFF)
+                    check(launch.get(launch.indexOf("-scorebezel_layout") + 1).equals(
+                            LaunchConfig.SCORE_LAYOUTS[layout].toLowerCase(java.util.Locale.ROOT)), "Space Ace native layout");
+            }
+        }
         for (String unsupported : new String[]{ "ace91", "singe", "laireuro", "aceeuro", "cliff"})
             check(!LaunchConfig.supportsScore(unsupported), "No optional scoreboard for " + unsupported);
         check(Arrays.asList(config("lair2", "vldp/demo/frames.txt", "", "").arguments(root)).contains("-scorebezel"),

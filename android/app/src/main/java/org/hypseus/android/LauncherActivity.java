@@ -341,7 +341,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
             }
         });
         scoreLayoutButton = choiceOption(advancedSection, "Show score and lives", view -> chooseSetting(
-                "Show score and lives", LaunchConfig.SCORE_LAYOUTS, scoreLayout, value -> scoreLayout = value));
+                "Show score and lives", LaunchConfig.scoreLayouts(gameId.getText().toString()),
+                scoreLayout, value -> scoreLayout = value));
         showMovesButton = choiceOption(advancedSection, "Show moves", view -> chooseSetting(
                 "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value));
         timingCue = option(advancedSection, "Play move audio cue");
@@ -1165,6 +1166,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         setGameOption(watchButton, support.visual, available);
         boolean scoreSupported = LaunchConfig.supportsScore(game, safeOptions());
         boolean scorePlacement = LaunchConfig.supportsScorePlacement(game);
+        if (scoreLayout >= LaunchConfig.scoreLayouts(game).length)
+            scoreLayout = LaunchConfig.SCORE_LEFT;
         setGameOption(showScore, scoreSupported && !scorePlacement, available);
         setGameOption(scoreLayoutButton, scoreSupported && scorePlacement, available);
         scoreLayoutButton.setText(LaunchConfig.SCORE_LAYOUTS[scoreLayout]);

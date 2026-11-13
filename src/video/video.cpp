@@ -834,8 +834,12 @@ bool init_display()
 
                 calcAuxRect();
 
-                if (VIDEO_HAS(DED_ANNUN_BEZEL))
+                if (VIDEO_HAS(DED_ANNUN_BEZEL)) {
                     LogicalPosition(&g_logical_rect, &g_aux_rect, 99, 10);
+#ifdef __ANDROID__
+                    android_video::place_annunciator(g_aux_rect, g_logical_rect.w);
+#endif
+                }
                 else
                     LogicalPosition(&g_logical_rect, &g_aux_rect, 100, 90);
 
