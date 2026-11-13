@@ -33,6 +33,12 @@ Exit goes back. Keyboard encoders, gamepad buttons and joystick axes are
 supported. SDL gamepad mapping is always enabled. Android Back and volume
 controls remain available.
 
+For alternating two-player games, assign **Start 2 players** in controller
+setup. This binding is optional and applies to all games. On mobile, press
+**Start 2** beside **Start**. Both send the emulator's existing Player 2 Start
+input; insert enough credits before starting. Players share the movement and
+action controls and take turns where the game supports this mode.
+
 On mobile, choose a directory and use the on-screen controls, which are enabled
 by default. A physical controller is optional. If you disable touch controls,
 you must configure a controller before starting a game.
@@ -93,6 +99,19 @@ that every retry context is covered or that the routes are globally optimal.
 V-sync and Show FPS. **Game Options** has Fast startup and Show
 score and lives for supported games. See the [settings table](../README.md#game-settings).
 Changes take effect at the next launch. Unavailable controls are grayed out.
+
+Fast startup applies the supported ROM shortcut and skips the emulator splash.
+It does not skip video-index preparation. Dragon's Lair II has no ROM fast-boot
+implementation.
+
+DL2's driver presents at a nominal 18.2 fps, independently of the disc video's
+frame rate. Its counter therefore shows `FPS: … (max 18.2)`; this is a driver
+presentation limit, not a hardware performance rating. Other drivers without a
+declared limit show measured FPS only.
+
+Deinterlacing has no GUI switch. A game's `.commands` file can still pass
+`-blend` to the native emulator. No configuration migration or cleanup is
+performed.
 
 Hardware MPEG-2 decoding is enabled by default. Unsupported formats, devices,
 field-coded streams and clips shorter than 12 frames use the software decoder.
@@ -221,10 +240,9 @@ JDK and Android SDK (`ANDROID_HOME`, `ANDROID_SDK_ROOT`, or `local.properties`).
 Set `HYPCADE_SIGNING_PROPERTIES` to sign release APKs with your private release
 key during the build. Otherwise, build unsigned APKs and run `./sign-apks.sh`
 afterward. The signer handles the ARM arcade and mobile APKs by default; use
-`./sign-apks.sh all` to include the x86 emulator APKs. It looks for
-`local-tools/release-signing/signing.properties` (or the sibling
-`local-tools/release-signing/signing.properties`); set
-`HYPCADE_SIGNING_PROPERTIES` to use another location.
+`./sign-apks.sh all` to include the x86 emulator APKs. Configure
+`HYPCADE_SIGNING_PROPERTIES` for your own private signing setup. Machine-specific
+locations and maintainer settings are deliberately excluded from this guide.
 
 Tested toolchain configuration:
 
@@ -249,8 +267,7 @@ usual `android/local.properties` with `sdk.dir=...`). Then, from this directory:
 python3 bootstrap-deps.py
 sdkmanager 'platforms;android-36' 'build-tools;35.0.0' \
   'ndk;28.2.13676358' 'cmake;3.22.1'
-# Optional: have Gradle sign during the build instead of running sign-apks.sh.
-export HYPCADE_SIGNING_PROPERTIES=/absolute/private/path/signing.properties
+# Optional: configure HYPCADE_SIGNING_PROPERTIES in your private environment.
 ./gradlew :app:assembleRelease :app:lintArcadeRelease :app:lintMobileRelease
 ```
 
@@ -262,15 +279,10 @@ dependencies. Release builds disable Java/native debugging and retain optimized
 native code, R8 and resource shrinking. No private signing key is included in
 source distributions.
 
-`HYPCADE_SIGNING_PROPERTIES` names a private Java properties file. `storeFile`
-may be an absolute path or a path relative to that properties file:
-
-```properties
-storeFile=hypcade-release.p12
-storePassword=YOUR_PRIVATE_PASSWORD
-keyAlias=hypcade
-keyPassword=YOUR_PRIVATE_PASSWORD
-```
+`HYPCADE_SIGNING_PROPERTIES` names a private Java properties file containing
+`storeFile`, `storePassword`, `keyAlias` and `keyPassword`. Supply your own
+values; never commit this configuration or document private key locations in
+the public repository.
 
 Keep this file and the keystore private and backed up. Use the same release key
 for future updates. Without this environment variable, Gradle produces unsigned
@@ -300,7 +312,7 @@ Select an ABI/flavor to build (default: both ARM variants):
 
 ```bash
 ./gradlew -Pabis=arm64-v8a :app:assembleDebug
-./gradlew -Pabis=x86 :app:assembleDebug      # supplied Android 9 emulator
+./gradlew -Pabis=x86 :app:assembleDebug      # x86 Android emulator
 ./gradlew -Pabis=x86_64 :app:assembleDebug   # 64-bit Android emulator
 ```
 
@@ -368,32 +380,6 @@ scoreboard hardware, raw Linux multi-mouse/lightgun access and extra scoreboard
 windows are unsupported. The app requests neither Internet nor raw Bluetooth
 access; Android-paired controllers use the normal input path.
 
-### Source and licensing
-
-The upstream base is Hypseus Singe 3.0.2, commit
-`a16e2521ee3233ef20c44e562008c47f4b4293df`. Android additions are GPL-3.0-or-later;
-dependencies retain their own licenses. See [third-party notices](THIRD_PARTY_NOTICES.md),
-[LICENSE](../LICENSE) and the [modification record](../MODIFICATIONS.md).
-The main README explains credits, GPT-6-Astra/Codex assistance and distribution
-of matching source. Complete source bundles accompany tagged APK releases, not every edit. Keep
-generated artifacts, local settings and private signing material out of Git.
-
-Fast startup applies the supported ROM shortcut and skips the emulator splash.
-It does not skip video-index preparation. Dragon's Lair II has no ROM fast-boot
-implementation. Its US 3.19 ROM supports the optional shared scoreboard. Its driver presents at a nominal
-18.2 fps, independently of the disc video's frame rate. Its counter therefore
-shows `FPS: … (max 18.2)`; this is a driver presentation limit, not a hardware
-performance rating. Other drivers without a declared limit show measured FPS only.
-
-Deinterlacing has no GUI switch. A game's `.commands` file can still pass
-`-blend` to the native emulator. No configuration migration or cleanup is performed.
-
-For alternating two-player games, assign **Start 2 players** in controller
-setup. This binding is optional and applies to all games. On mobile, press
-**Start 2** beside **Start**. Both send the emulator's existing Player 2 Start
-input; insert enough credits before starting. Players share the movement and
-action controls and take turns where the game supports this mode.
-
 ### Dragon's Lair II scoreboard
 
 **Show score and lives** now uses the same graphical scoreboard as Dragon's
@@ -410,4 +396,15 @@ at `0x56b0` and `0x56b2`, and credits at `0xa156`. The ROM's life-display routin
 at `0x13b2`, score display at `0x166a` and credit display at `0x220a` establish
 these fields. Scores are divided by ten, matching the ROM's own display and
 high-score comparison. The adapter only reads RAM and updates the existing
-image scoreboard at the driver's regular display tick. No ROM data is packaged.
+image scoreboard at the driver's regular display tick. Commercial ROM images
+and laserdisc media are not packaged; ROM-derived move metadata is included.
+
+### Source and licensing
+
+The upstream base is Hypseus Singe 3.0.2, commit
+`a16e2521ee3233ef20c44e562008c47f4b4293df`. Android additions are GPL-3.0-or-later;
+dependencies retain their own licenses. See [third-party notices](THIRD_PARTY_NOTICES.md),
+[LICENSE](../LICENSE) and the [modification record](../MODIFICATIONS.md).
+The main README explains credits, GPT-6 family and Codex assistance and distribution
+of matching source. Complete source bundles accompany tagged APK releases, not every edit. Keep
+generated artifacts, local settings and private signing material out of Git.

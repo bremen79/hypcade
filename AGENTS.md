@@ -128,9 +128,9 @@ flavors or `./build-apks.sh debug` for ARM debug APKs. Release signing requires
 the private `HYPCADE_SIGNING_PROPERTIES` file. For direct Gradle development
 builds, pass its path through that environment variable. To sign an unsigned
 release build afterward, run `./sign-apks.sh` for ARM APKs or
-`./sign-apks.sh all` for all four flavors. Set `HYPCADE_SIGNING_PROPERTIES` to
-override the signing properties path; otherwise the script searches
-`local-tools/release-signing/` and then the repository-level `release-signing/`.
+`./sign-apks.sh all` for all four flavors. Set `HYPCADE_SIGNING_PROPERTIES`
+using your own private signing configuration. Keep signing locations and other
+machine-specific details out of tracked documentation.
 For direct Gradle development builds:
 
 ```bash
@@ -182,6 +182,10 @@ repository/provider metadata (such as `.git` and `.github`), environment-managed
 integration directories, and tool-generated build caches are not project
 work-data locations; leave them where their tools expect them.
 
+Machine-specific setup notes belong in `local-tools/LOCAL-SETUP.md`, which is
+explicitly excluded from Git. Consult it when present before local builds;
+never copy its toolchain paths or signing locations into tracked guides.
+
 Before installing a tool locally, check whether a system-wide or shared
 installation already provides it. If it does not, ask the maintainer whether
 they want a system-wide/shared installation before installing a project-local
@@ -224,4 +228,4 @@ private settings and keys. Dependency bundles without Git metadata need verified
 Generate companion notices with `android/package-notices.py` after fetching
 sources. Notices remain outside the APK. Preserve original component licenses:
 for example, plog is MPL-2.0, not MIT. Android additions are GPL-3.0-or-later.
-Retain the GPT-6-Astra/Codex development disclosure and artwork provenance.
+Retain the GPT-6 family and Codex development disclosure and artwork provenance.

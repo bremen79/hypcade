@@ -177,9 +177,9 @@ GPL-3.0-or-later subset of **Jeff Nyman's laser-vault**, pinned to revision
 kept in [tools/offline-moves/vendor](tools/offline-moves/vendor/).
 
 Hypcade has its own cabinet-and-laserdisc logo, Android icons and TV banner.
-its prompt and provenance are in [android/artwork](android/artwork/).
+Its prompt and provenance are in [android/artwork](android/artwork/).
 
-Development used **GPT and Codex** extensively for implementation,
+Development used **GPT-6 family and Codex** extensively for implementation,
 refactoring, debugging, builds, tests and documentation. I provided requirements,
 feedback and cabinet testing. See the
 [AI-assistance disclosure](README.md#ai-assisted-development).

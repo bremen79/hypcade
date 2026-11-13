@@ -112,7 +112,7 @@
   "move_generation_manifest": "moves/rom-tables/manifest.json",
   "ai_assistance": {
     "tools": [
-      "OpenAI GPT-6-Astra",
+      "OpenAI GPT-6 family",
       "Codex"
     ],
     "disclosure": "../README.md#ai-assisted-development"
@@ -334,5 +334,5 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "Release APKs rebuilt with ROM-derived move rows only. Training code and generated training files removed; independent replay and unassisted Watch checks retained."
+  "source_tree_status": "The listed release APKs predate the current documentation and About AI-disclosure wording update. Runtime behavior and move data are unchanged; release APKs were not rebuilt for this text update."
 }

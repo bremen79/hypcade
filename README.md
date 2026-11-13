@@ -28,12 +28,12 @@ touch controls and mobile orientation behavior retained.
   in private storage. Store video indexes beside writable media, with an internal fallback.
 - Use hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
   rendering, with optional scanlines and other video settings.
-- Enable score-verified move guidance for some Dragon’s Lair I and Space Ace ROMs,
+- Enable replay-verified move guidance for some Dragon’s Lair I and Space Ace ROMs,
   plus Dragon’s Lair II’s own ROM prompts.
 
 No commercial game ROMs or laserdisc media are included. Supply your own game
-files. The repository only includes emulator support assets and synthetic test data
-with their existing notices.
+files. The repository includes emulator support assets, synthetic test fixtures
+and ROM-derived move metadata, with their existing notices.
 
 
 **Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
@@ -223,9 +223,11 @@ The base is **Hypseus Singe 3.0.2**, pinned to commit
   the move-guidance and offline move-generation work.
 
 These credits summarize the lineage; original per-file copyrights and license
-notices remain authoritative. See [NOTICE](NOTICE), the preserved
-[upstream README](doc/UPSTREAM-README.md), and
+notices remain authoritative. See [NOTICE](NOTICE), the
+[upstream README at the pinned revision](https://github.com/DirtBagXon/hypseus-singe/blob/a16e2521ee3233ef20c44e562008c47f4b4293df/README.md), and
 [third-party notices](android/THIRD_PARTY_NOTICES.md) for dependencies and assets.
+The [verbatim README snapshot](doc/UPSTREAM-README.md) preserves the original
+text; its relative links refer to the upstream repository layout.
 
 Hypcade contributors have modified the upstream sources for Android arcade use. Changes include storage/path handling, lifecycle and timing, video rendering and ARM decoding, input, ROM move guidance,
 Android packaging, and the launcher. [MODIFICATIONS.md](MODIFICATIONS.md) summarizes
@@ -238,7 +240,7 @@ no Hypdroid code was imported for this work.
 
 ## AI-assisted development
 
-Hypcade-specific development used **OpenAI GPT-6-Astra and Codex** extensively
+Hypcade-specific development used **OpenAI GPT-6 family and Codex** extensively
 for implementation, refactoring, debugging, test creation and execution, build
 work, and documentation. Project requirements and feedback, including the
 cabinet testing, came from me.

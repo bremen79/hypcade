@@ -9,7 +9,7 @@ use the [project README](../README.md) and [Android build guide](../android/READ
 
 Download an upstream Windows build from [Hypseus Singe releases](https://github.com/DirtBagXon/hypseus-singe/releases).
 
-Latest SDL3 build is:
+Example version output from the pinned upstream build:
 
     hypseus.exe -version
     [version] Hypseus Singe: v3.0.2

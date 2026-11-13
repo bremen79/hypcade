@@ -6,7 +6,7 @@ upstream commit `a16e2521ee3233ef20c44e562008c47f4b4293df`.
 The original project, copyright notices, and license are preserved.
 The [modification record](../MODIFICATIONS.md) describes Hypcade’s engine changes.
 See [NOTICE](../NOTICE) for upstream credits and the [README](../README.md#ai-assisted-development)
-for the GPT-6-Astra/Codex development disclosure. Hypdroid was a documentation reference; no code or
+for the GPT-6 family and Codex development disclosure. Hypdroid was a documentation reference; no code or
 additional dependencies were imported from it. The
 Android integration and launcher additions are provided under GPL-3.0-or-later.
 
@@ -92,10 +92,16 @@ The move-window decoders adapt RAM-layout knowledge and code from Jeff Nyman's
 [laser-vault](https://github.com/jeffnyman/laser-vault), commit
 `1f12c84dfabf3c8e5d028c8804b2f96678c798fa`, under GNU GPL version 3 or later (Copyright (C) 2026 Jeff Nyman).
 See `app/jni/arcade_guidance.cpp` and `../tools/offline-moves/`.
-The compact observed-outcome tables contain hashes and frame context, not ROM
-bytes or media. The optional generator uses the pinned source subset under
-`tools/offline-moves/vendor/` and user-owned ROMs; its CPU/player code is not
-included in the APK. Complete GPL text is in the project's LICENSE file.
+Move-assistance tables are derived from analysis and execution of user-supplied
+ROMs. They contain gameplay input, timing and state metadata. Commercial ROM
+images and laserdisc media are not included. Rights in the original games remain
+with their respective holders. Hypcade's software licence does not grant rights
+to third-party game content. Use only game files you are legally authorised to
+use.
+
+The offline generator uses the pinned source subset under
+`tools/offline-moves/vendor/`; that subset's CPU/player code is not included in
+the APK. Complete GPL text is in the project's LICENSE file.
 
 ## Android MPEG-2 NEON acceleration
 

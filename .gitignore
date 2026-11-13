@@ -1,5 +1,7 @@
 # Local workspace state and private tooling (visible directory by policy)
 /local-tools/
+# Explicitly private machine setup, including toolchain and signing locations.
+/local-tools/LOCAL-SETUP.md
 /.agents/
 /.codex/
 /.aws/

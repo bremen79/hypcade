@@ -27,6 +27,21 @@ or a global optimum.
 
 ## Dragon's Lair II US 3.19
 
+Host checks require Python 3.9+, JDK 17, a C++17 compiler and zlib development
+headers. They also need the pinned SDL source headers. In a fresh Git checkout,
+prepare those sources from the repository root:
+
+```bash
+python3 android/bootstrap-deps.py
+```
+
+No Android SDK is needed for the host harness once those headers are available.
+Android checks additionally require the SDK, NDK and build tools listed in the
+[Android build guide](../../android/README.md#build-the-app), plus a running x86
+emulator reachable through `adb`.
+The commands below use `emulator-5556` as an example serial; substitute the
+serial reported by `adb devices` for your emulator.
+
 `verify_dl2_watch.py` uses the production Java `WatchModeController` and JNI
 guidance with the original Hypseus i86 CPU and Sony protocol. It extracts the
 driver's port, IRQ, EEPROM and input methods from `src/game/lair2.cpp` for each

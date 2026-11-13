@@ -712,7 +712,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                         + "Hypseus © 2016 Jeffrey Clark\n"
                         + "Daphne © 1999–2013 Matt Ownby\n"
                         + "Singe originally by Scott Duensing; additional contributors and component notices are included.\n\n"
-                        + "Hypcade modifications: 2026-11-08. AI-assisted development used GPT-6-Astra and Codex.\n\n"
+                        + "Hypcade modifications: 2026-11-08. AI-assisted development used GPT-6 family and Codex.\n\n"
                         + "GNU GPL version 3 or later. You may redistribute and modify this software under the GPL. "
                         + "NO WARRANTY, including merchantability or fitness for a particular purpose.\n\n"
                         + "License texts and third-party notices are in the source repository.")

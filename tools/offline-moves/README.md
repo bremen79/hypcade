@@ -67,7 +67,7 @@ python3 tools/offline-moves/bundle_rom_moves.py \
   --results local-tools/rom-moves
 
 python3 tools/offline-moves/verify_watch_moves.py \
-  --roms /path/to/roms --output local-tools/watch-moves --starts 8
+  --roms /path/to/roms --output local-tools/watch-moves --starts 2
 ```
 
 The generator and bundler supply every runtime row directly from independently
@@ -75,6 +75,11 @@ replayed ROM-policy games. The Watch Mode checker only uses those rows; it canno
 fill missing moves from a teacher or learned fallback. A missing state or failed
 play must be fixed in generation and then checked again. Keep failures visible;
 do not publish an unfinished pass.
+
+With the default three queue phases, `--starts 2` runs the 234-case Watch Mode
+batch recorded in the validation reports. Use `--starts 8` for an extended
+936-case batch; those extra starts are additional checks, not part of the
+recorded 234-case result.
 
 The bundler writes both compact arrays to `android/app/jni/arcade_moves.inc` and
 saves the matching route evidence in `android/moves/rom-tables/`. Scene, step and
@@ -91,6 +96,9 @@ test, and normal-start games do not prove every post-death context.
 With the existing x86 Android emulator running, repeat the matrix using its
 native Android build and then check the packaged selector:
 
+The examples use `emulator-5556`; replace it with your emulator's serial from
+`adb devices`.
+
 ```bash
 python3 tools/offline-moves/verify_rom_matrix.py \
   --roms /path/to/roms --output local-tools/rom-moves-android \
@@ -98,7 +106,7 @@ python3 tools/offline-moves/verify_rom_matrix.py \
 
 python3 tools/offline-moves/verify_watch_moves.py \
   --roms /path/to/roms --output local-tools/watch-moves-android \
-  --starts 8 --android emulator-5556
+  --starts 2 --android emulator-5556
 ```
 
 These use the shared SDK's NDK; they do not install another toolchain. They run
