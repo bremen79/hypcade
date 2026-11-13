@@ -3,7 +3,7 @@
 A short history of Hypcade. The [modification record](android/MODIFICATIONS.md)
 describes the current differences from upstream Hypseus Singe.
 
-## v0.2
+## v0.2.1
 
 - Improved user interface.
 - More reliable ROM-derived moves, Max score and Fewest moves policies, and Watch Mode.

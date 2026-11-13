@@ -15,6 +15,7 @@ namespace video {
 namespace {
 bool mobile = false;
 SDL_Texture *g_ldp1450_font = nullptr;
+bool calculated_moves_enabled = false;
 Ldp1450Text g_ldp1450_lines[3];
 bool rom_text_active = false;
 std::recursive_mutex yuv_mutex;
@@ -74,7 +75,7 @@ void draw_hud(SDL_Renderer *renderer, int height, double maximum)
 
 static void draw_recorded_move(SDL_Renderer *renderer, const SDL_FRect &picture)
 {
-    if (!g_ldp1450_font) return;
+    if (!calculated_moves_enabled || !g_ldp1450_font) return;
     const unsigned controls = arcade_visual_controls();
     if (!controls) return;
     static unsigned previous = 0;
@@ -102,6 +103,7 @@ void release_retired_textures() {
 }
 void release_renderer(SDL_Renderer *renderer) {
     SDL_DestroyTexture(g_ldp1450_font); g_ldp1450_font = nullptr;
+    calculated_moves_enabled = false;
     for (auto &line : g_ldp1450_lines) line.dirty = true;
     SDL_DestroyTexture(crt_texture); crt_texture = nullptr;
     crt_width = crt_height = failed_width = failed_height = 0;
@@ -168,8 +170,11 @@ void present_game(SDL_Renderer *renderer, SDL_Texture *target) {
 
 bool init_text(SDL_Renderer *renderer, SDL_Surface *font, bool linear,
                const char *game, bool native_prompts) {
-    if (!native_prompts && !(arcade_visual_moves_enabled() &&
-            (std::strcmp(game, "dle21") == 0 || std::strcmp(game, "ace") == 0))) return true;
+    // DL2 guidance also drives Watch Mode, but its ROM already draws the
+    // prompt. Only games with calculated text get an additional move label.
+    calculated_moves_enabled = !native_prompts && game &&
+            (std::strcmp(game, "dle21") == 0 || std::strcmp(game, "ace") == 0);
+    if (!native_prompts && !(arcade_visual_moves_enabled() && calculated_moves_enabled)) return true;
     g_ldp1450_font = SDL_CreateTextureFromSurface(renderer, font);
     if (!g_ldp1450_font) {
         LOGE << "Cannot create LDP1450 font: " << SDL_GetError();

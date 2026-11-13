@@ -1,6 +1,6 @@
 # Android features and changes from upstream
 
-Hypcade **v0.2** is an Android arcade adaptation of
+Hypcade **v0.2.1** is an Android arcade adaptation of
 [Hypseus Singe 3.0.2](https://github.com/DirtBagXon/hypseus-singe), based on commit
 `a16e2521ee3233ef20c44e562008c47f4b4293df`. It includes changes to the emulator
 engine as well as a new Android launcher. It is an independent project, not an
@@ -147,7 +147,8 @@ and sampled successful games are not a proof of global optimality or complete
 context coverage.
 
 Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
-Off/On setting. It has no extra timing-cue option because the video already supplies
+Off/On setting. Its Watch Mode guidance does not draw a second calculated
+label over the native prompt. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
 a duplicate move system from Hypcade.
 Calculated DL1 and Space Ace text appears on the same native ready event as

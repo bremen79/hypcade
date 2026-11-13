@@ -112,6 +112,25 @@ static void checkText(SDL_Renderer *r) {
     std::printf("Shared LDP1450 GPU text matches legacy bitmap rendering: directions, button, digits, special glyph, spaces, clipping, replacement and cached redraw.\n");
 }
 
+static void checkMoveSources(SDL_Renderer *r) {
+    using namespace video::android_video;
+    SDL_Surface *bitmap=SDL_LoadBMP("pics/ldp1450font.bmp");
+    assert(bitmap && SDL_SetSurfaceColorKey(bitmap,true,SDL_MapSurfaceRGB(bitmap,0,0,0)));
+    for(const char *game : {"lair2","ace91","dle21","ace"}) {
+        bool native=std::strcmp(game,"lair2")==0 || std::strcmp(game,"ace91")==0;
+        release_renderer(r);assert(init_text(r,bitmap,false,game,native));
+        queue_text(2,native ? "SWORD" : "",20,22);
+        testControls=0;
+        assert(SDL_SetRenderDrawColor(r,126,126,126,255) && SDL_RenderClear(r));
+        draw_game_text(r,{0,0,320,240},{0,0,W,H});Pixels reference=capture(r);
+        testControls=16;
+        assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
+        assert((capture(r)==reference)==native);
+    }
+    testControls=0;queue_text(2,"",20,22);release_renderer(r);SDL_DestroySurface(bitmap);
+    std::printf("Move-source rendering passed on %s: native-only DL2/Ace91, calculated DLE21/Ace.\n",SDL_GetRendererName(r));
+}
+
 static void checkBackend(SDL_Renderer *r) {
     using namespace video::android_video;
     SDL_Surface *bitmap=SDL_LoadBMP("pics/ldp1450font.bmp");
@@ -122,19 +141,32 @@ static void checkBackend(SDL_Renderer *r) {
     assert(target && game_target(r,output,true,false)==target);
     assert(SDL_SetRenderTarget(r,target));
     assert(SDL_SetRenderDrawColor(r,126,126,126,255) && SDL_RenderClear(r));
-    { std::lock_guard<std::recursive_mutex> lock(mutex());queue_text(2,"RIGHT",20,22); }
+    { std::lock_guard<std::recursive_mutex> lock(mutex());queue_text(2,"SWORD",20,22); }
     assert(has_rom_text());
     draw_game_text(r,{0,0,W,H},{0,0,W,H});Pixels plain=capture(r);
+    // DL2 uses its native SWORD prompt even while Watch publishes BUTTON.
+    testControls=16;
+    assert(SDL_RenderClear(r));draw_game_text(r,{0,0,W,H},{0,0,W,H});
+    assert(capture(r)==plain);testControls=0;
     present_game(r,target);Pixels filtered=capture(r);check(plain,filtered);
     assert(game_target(r,output,false,false)==nullptr);
     // Clearing a retained ROM line removes it on the next frame.
     { std::lock_guard<std::recursive_mutex> lock(mutex());queue_text(2,"",20,22); }
     assert(SDL_RenderClear(r));draw_game_text(r,{0,0,W,H},{0,0,W,H});
     Pixels blank=capture(r);assert(blank!=plain);
-    // Calculated moves use the same production font path.
-    testControls=1;
+    testControls=16;
     assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
-    assert(capture(r)!=blank);testControls=0;
+    assert(capture(r)==blank); // Native prompt cleared: no generic replacement.
+    // Calculated moves are drawn for DLE21 and Ace, using that same font path.
+    for(const char *game : {"dle21","ace"}) {
+        release_renderer(r);assert(init_text(r,bitmap,false,game,false));
+        assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
+        assert(capture(r)!=blank);
+    }
+    // Native-prompt games must stay native after switching renderer state.
+    release_renderer(r);assert(init_text(r,bitmap,false,"ace91",true));
+    assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
+    assert(capture(r)==blank);testControls=0;
     video::set_show_fps(true);draw_hud(r,H,18.2);video::set_show_fps(false);
     SDL_Texture *retired=SDL_CreateTexture(r,SDL_PIXELFORMAT_RGBA32,SDL_TEXTUREACCESS_STATIC,4,4);
     assert(retired);
@@ -219,12 +251,14 @@ int main() {
     }
     checkText(r);
     checkBackend(r);
+    checkMoveSources(r);
     SDL_Texture *small=SDL_CreateTexture(r,SDL_PIXELFORMAT_RGBA32,SDL_TEXTUREACCESS_TARGET,16,16);
     assert(small && !android_crt_present(r,small));SDL_DestroyTexture(small);
     SDL_Surface *surface=SDL_CreateSurface(W,H,SDL_PIXELFORMAT_RGBA32);
     SDL_Renderer *software=SDL_CreateSoftwareRenderer(surface);
     assert(software && !android_crt_available(software));
     checkText(software);
+    checkMoveSources(software);
     SDL_DestroyRenderer(software);SDL_DestroySurface(surface);
     android_crt_reset(r);
     SDL_DestroyTexture(target);SDL_DestroyTexture(white);SDL_DestroyTexture(rgba);

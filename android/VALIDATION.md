@@ -102,6 +102,13 @@ no new full gameplay run through the launcher was performed for this change.
 
 ## Move text and audio cues
 
+The production-renderer regression compares DL2's native SWORD text with and
+without a simultaneously published BUTTON action: the images must be identical.
+Clearing the native prompt must leave no calculated replacement. The same test
+checks calculated text for DLE21 and Space Ace, and native-only text for Space
+Ace '91, including renderer teardown and reinitialization. It fails before the
+duplicate-text fix and passes afterward on GLES2 and software rendering.
+
 DL1 and Space Ace calculated text is visible only while the shared native move
 state is ready. Audio observes the same event sequence. Host tests verify that
 previews produce neither text nor a beep, readiness exposes the action, repeated
@@ -154,12 +161,13 @@ or game-driver changes were needed for this correction.
 All four signed release flavors assembled successfully: ARMv7 arcade, ARM64
 mobile, x86 arcade emulator and x86_64 mobile emulator. Checks verified:
 
-- The existing Hypcade release certificate, version v0.2, minimum SDK 25 and
+- The existing Hypcade release certificate, version v0.2.1, minimum SDK 25 and
   target SDK 36.
 - One ABI per flavor and the expected bundled move data.
 - Fixed arcade landscape and absence of touch-control code; mobile controls
   and orientation policy remain present.
-- ARM release lint: zero errors, with 43 arcade warnings and 38 mobile warnings.
+- Previous ARM release lint: zero errors, with 43 arcade warnings and 38 mobile
+  warnings; not rerun for the renderer-only duplicate-text fix.
 
 Focused checks also passed for ROM-table export, causal score/progression and
 death detection, guidance boundaries, Watch Mode lifecycle and stale events,

@@ -5,15 +5,15 @@ Ask the user permission to change it when the architecture, build process or val
 
 ## Project scope
 
-Hypcade v0.2 is an independent Android arcade adaptation of Hypseus Singe 3.0.2,
+Hypcade v0.2.1 is an independent Android arcade adaptation of Hypseus Singe 3.0.2,
 based on commit `a16e2521ee3233ef20c44e562008c47f4b4293df`. It changes the engine
 and adds an Android launcher. Preserve upstream authorship and per-file notices.
 The primary target is an Android arcade with physical controls; the phone build
 is secondary. Keep SDL and the small launcher scope.
 
 Minimum Android is 7.1 / API 25, including 7.1.2. Compile and target SDK are 36.
-The application ID is `org.hypseus.android`. Public version `v0.2` and internal
-versionCode `41` are defined in `android/app/build.gradle`; main-screen and About
+The application ID is `org.hypseus.android`. Public version `v0.2.1` and internal
+versionCode `42` are defined in `android/app/build.gradle`; main-screen and About
 labels use `BuildConfig.VERSION_NAME`. Keep the upstream engine version separate.
 
 There are no saved-configuration migrations. Do not add compatibility with old
