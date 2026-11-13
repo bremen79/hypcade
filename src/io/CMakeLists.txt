@@ -1,6 +1,6 @@
 # Hypcade: Copyright (C) 2026 Francesco Orabona.
 # Hypcade modification notice (2026-11-08): Android arcade adaptation.
-# See MODIFICATIONS.md; original notices are retained.
+# See android/MODIFICATIONS.md; original notices are retained.
 set( LIB_SOURCES
     cmdline.cpp conout.cpp error.cpp fileparse.cpp homedir.cpp input.cpp
     toolbox.cpp mpo_fileio.cpp parallel.cpp keycodes.cpp serialib.cpp

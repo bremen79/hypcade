@@ -23,7 +23,8 @@ development configurations unless the maintainer explicitly requests it.
 
 - `README.md`: installation, game directory layout, options, credits and AI disclosure.
 - `android/README.md`: detailed setup, build, signing and development instructions.
-- `MODIFICATIONS.md`: a thematic and synthetic summary of changes from upstream, not a changelog.
+- `CHANGELOG.md`: short version summaries.
+- `android/MODIFICATIONS.md`: current Android features and differences from upstream, organized by area, not release history.
 - `android/VALIDATION.md`: verified scenarios, evidence and remaining test limits.
 - `android/THIRD_PARTY_NOTICES.md`, `NOTICE` and component licenses: attribution and packaging.
 - `android/dependencies.lock.json` and `android/BUILD-PROVENANCE.json`: source pins and release identity.

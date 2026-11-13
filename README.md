@@ -216,8 +216,9 @@ The [verbatim README snapshot](doc/UPSTREAM-README.md) preserves the original
 text; its relative links refer to the upstream repository layout.
 
 Hypcade contributors have modified the upstream sources for Android arcade use. Changes include storage/path handling, lifecycle and timing, video rendering and ARM decoding, input, ROM move guidance,
-Android packaging, and the launcher. [MODIFICATIONS.md](MODIFICATIONS.md) summarizes
-the changes for the first public release. Original authors’
+Android packaging, and the launcher. The [Android modification record](android/MODIFICATIONS.md) describes the current
+differences from upstream, and the [changelog](CHANGELOG.md) summarizes each
+version. Original authors’
 notices have not been replaced with Hypcade attribution.
 
 [Hypdroid](https://github.com/rhakka303/Hypdroid) is another independent Android

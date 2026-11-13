@@ -201,11 +201,12 @@
   "added": [
     ".github/workflows/android.yml",
     "AGENTS.md",
-    "MODIFICATIONS.md",
+    "CHANGELOG.md",
     "NOTICE",
     "android/.gitignore",
     "android/BUILD-PROVENANCE.json",
     "android/DEVICE-CAPABILITIES.md",
+    "android/MODIFICATIONS.md",
     "android/README.md",
     "android/THIRD_PARTY_NOTICES.md",
     "android/VALIDATION.md",

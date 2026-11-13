@@ -1,6 +1,6 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade modification notice (2026-11-08): modified for Android arcade
- * integration. See MODIFICATIONS.md. Original notices are retained below. */
+ * integration. See android/MODIFICATIONS.md. Original notices are retained below. */
 #ifdef __ANDROID__
 #include "../../android/app/jni/arcade_guidance.h"
 #endif

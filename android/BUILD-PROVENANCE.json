@@ -72,15 +72,15 @@
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 444587,
-    "sha256": "5fc95251107efb86d0a031a89418666fcc7198202b1318fd3730bbf5229eb6dc",
+    "size_bytes": 445820,
+    "sha256": "1dc76545758b0230c77366d789c0a727726c7c02ff39c5ce3ca22f0089862f3b",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
   "application_id": "org.hypseus.android",
   "version_code": 41,
   "validation_document": "moves/rom-tables/verification/",
-  "modification_notice": "../MODIFICATIONS.md",
+  "modification_notice": "MODIFICATIONS.md",
   "upstream_file_changes": "upstream-changes.json",
   "source_distribution": {
     "repository_dependencies": "Fetched by bootstrap-deps.py at dependencies.lock.json revisions; third_party checkouts are not committed.",
@@ -632,7 +632,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed v0.2 release APKs rebuilt from current sources. Historical gameplay evidence retained without relabelling its tested binaries. No new functional tests or source archive generated.",
+  "source_tree_status": "All four signed v0.2 APKs retain their recorded build identities. The current modification record and changelog are source documentation; source-notice pointers are updated without executable changes. No APK rebuild, functional tests or source archive for this documentation split.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",
@@ -711,5 +711,6 @@
     "android/tests/test_crt_shader.py": "6e5f6a752ee9ffafcdf1056846015b9055cb66d37f4e3b634e94a714912b08ab",
     "android/tests/test_apk_flavors.py": "456fa3c87cc3a0f0a723cf33dea65251b8b1e617dfbba8390418ce40621d3137",
     "android/tests/ArcadeSetupTest.java": "56a45278b23139ae291ba05b2fe19300a60398ddd7393964d97ed86f61ac7a80"
-  }
+  },
+  "changelog": "../CHANGELOG.md"
 }

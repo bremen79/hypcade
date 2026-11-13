@@ -1,6 +1,6 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade adaptation/modification notice (2026-11-08).
- * Original authors and component licenses are retained; see MODIFICATIONS.md. */
+ * Original authors and component licenses are retained; see android/MODIFICATIONS.md. */
 /*
  * idct.c
  * Copyright (C) 2000-2003 Michel Lespinasse <walken@zoy.org>

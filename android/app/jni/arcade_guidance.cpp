@@ -1,6 +1,6 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade adaptation/modification notice (2026-11-08).
- * Original authors and component licenses are retained; see MODIFICATIONS.md. */
+ * Original authors and component licenses are retained; see android/MODIFICATIONS.md. */
 // SPDX-License-Identifier: GPL-3.0-or-later
 // RAM layout knowledge adapted from Jeff Nyman's laser-vault (GPL-3.0),
 // commit 1f12c84dfabf3c8e5d028c8804b2f96678c798fa. See Android notices.

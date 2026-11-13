@@ -1,6 +1,6 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade modification notice (2026-11-09): Android coin feedback through
- * the existing sample mixer. See MODIFICATIONS.md. */
+ * the existing sample mixer. See android/MODIFICATIONS.md. */
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *

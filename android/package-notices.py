@@ -5,7 +5,7 @@
 from pathlib import Path
 import os
 root=Path(__file__).resolve().parent.parent
-files=[root/n for n in ('LICENSE','NOTICE','MODIFICATIONS.md','android/THIRD_PARTY_NOTICES.md')]
+files=[root/n for n in ('LICENSE','NOTICE','CHANGELOG.md','android/MODIFICATIONS.md','android/THIRD_PARTY_NOTICES.md')]
 files+=sorted(p for p in (root/'android/licenses').rglob('*') if p.is_file())
 for directory,dirs,names in os.walk(root/'android/third_party'):
  dirs[:]=sorted(d for d in dirs if d!='.git')

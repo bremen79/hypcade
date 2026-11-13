@@ -17,7 +17,7 @@ and android/THIRD_PARTY_NOTICES.md. This summary does not replace them.
 
 Hypcade contributors modified the engine and added Android arcade integration,
 a launcher, storage/lifecycle/input changes, rendering/decoding improvements
-and move guidance. See MODIFICATIONS.md for the summary of changes.
+and move guidance. See android/MODIFICATIONS.md for the summary of changes.
 Hypcade-specific development used OpenAI GPT-6 family and Codex for AI assistance
 with implementation, debugging, tests, builds and documentation. This is a
 process disclosure, not a replacement for upstream authorship or attribution.

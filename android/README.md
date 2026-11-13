@@ -418,7 +418,7 @@ and laserdisc media are not packaged; ROM-derived move metadata is included.
 The upstream base is Hypseus Singe 3.0.2, commit
 `a16e2521ee3233ef20c44e562008c47f4b4293df`. Android additions are GPL-3.0-or-later;
 dependencies retain their own licenses. See [third-party notices](THIRD_PARTY_NOTICES.md),
-[LICENSE](../LICENSE) and the [modification record](../MODIFICATIONS.md).
+[LICENSE](../LICENSE) and the [modification record](MODIFICATIONS.md).
 The main README explains credits, GPT-6 family and Codex assistance and distribution
 of matching source. Complete source bundles accompany tagged APK releases, not every edit. Keep
 generated artifacts, local settings and private signing material out of Git.

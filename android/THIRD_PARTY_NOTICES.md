@@ -4,7 +4,7 @@ Hypcade is an independent Android arcade-focused fork and adaptation of
 Hypseus Singe 3.0.2, based on
 upstream commit `a16e2521ee3233ef20c44e562008c47f4b4293df`.
 The original project, copyright notices, and license are preserved.
-The [modification record](../MODIFICATIONS.md) describes Hypcade’s engine changes.
+The [modification record](MODIFICATIONS.md) describes Hypcade’s engine changes.
 See [NOTICE](../NOTICE) for upstream credits and the [README](../README.md#ai-assisted-development)
 for the GPT-6 family and Codex development disclosure. Hypdroid was a documentation reference; no code or
 additional dependencies were imported from it. The

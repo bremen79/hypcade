@@ -1,6 +1,6 @@
 # Hypcade: Copyright (C) 2026 Francesco Orabona.
 # Hypcade modification notice (2026-11-08): Android arcade adaptation.
-# See MODIFICATIONS.md; original notices are retained.
+# See android/MODIFICATIONS.md; original notices are retained.
 # Based on the Qt 5 processor detection code, so should be very accurate
 # https://qt.gitorious.org/qt/qtbase/blobs/master/src/corelib/global/qprocessordetection.h
 # Currently handles arm (v5, v6, v7), x86 (32/64), ia64, mips, and ppc (32/64)

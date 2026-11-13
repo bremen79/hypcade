@@ -1,4 +1,4 @@
-# What Hypcade changes
+# Android features and changes from upstream
 
 Hypcade **v0.2** is an Android arcade adaptation of
 [Hypseus Singe 3.0.2](https://github.com/DirtBagXon/hypseus-singe), based on commit
@@ -10,9 +10,10 @@ Hypcade: **Copyright (C) 2026 Francesco Orabona**.
 Francesco Orabona maintains the Android adaptation. Upstream authors retain
 their original credits and copyrights.
 
-Hypcade contributors modified the upstream
-sources for Android arcade use. This document summarizes the changes for the
-first public release. Original copyright and license notices remain in place.
+This document describes the current Android features and engine differences
+from the pinned upstream revision. It is organized by area, without release
+history. See the [changelog](../CHANGELOG.md) for version summaries. Original
+copyright and license notices remain in place.
 
 ## An interface for arcade cabinets
 
@@ -28,7 +29,9 @@ and imported command-file settings retain their selected behavior.
 Directory selection and controller setup are shared by all games. The arcade
 build requires a configured controller before allowing play. The setup wizard
 asks the player to press each direction and button, with optional assignments
-for a second-player start, pause and the game's service menu.
+for a second-player start, pause and the game's service menu. The main screen
+and About show the app version; Exit closes the launcher, and diagnostic
+controls and logs are grouped under Debug.
 
 The ARMv7 arcade build uses the panel's landscape resolution and has no touch
 controls or rotation setting. A secondary ARM64 mobile build provides on-screen
@@ -59,7 +62,8 @@ keep this control disabled.
 
 ROMs, videos, audio and scripts are read directly from the selected folder.
 Hypcade does not import or duplicate the game library. Small settings, saves
-and logs live in private internal storage.
+and logs live in private internal storage. Native NVRAM, EEPROM and supported
+high-score data persist there across app updates.
 
 Video indexes are checked before gameplay. Missing or invalid indexes are
 created beside writable videos, with internal storage as a fallback. Valid
@@ -67,8 +71,8 @@ indexes are reused so later scene changes do not have to stop for parsing.
 Index files are written through temporary files to avoid replacing a valid
 file with an incomplete one.
 
-Bundled graphics, fonts and sounds load directly from the APK, avoiding roughly
-4.21 MB of duplicate files in internal storage. WAV effects are compressed
+Bundled graphics, fonts and sounds load directly from the APK, avoiding
+a second extracted copy in internal storage. WAV effects are compressed
 without changing their audio data and are reused after loading.
 
 On first discovery, a game's optional `.commands` file supplies its initial
@@ -90,9 +94,9 @@ crops retain an intermediate rendering path. Decoder and renderer threads
 coordinate access to video data, and textures are destroyed on the rendering
 thread.
 
-The CRT option uses an adaptation of Greg Hogan's **zfast-crt** shader. Video,
-ROM-generated game text and recorded moves use the same cached-font
-`draw_singleline_LDP1450()` renderer and receive one GPU CRT pass. Android keeps
+The CRT option uses an adaptation of Greg Hogan's **zfast-crt** shader. Video
+and game text receive one GPU CRT pass. ROM-generated text and calculated
+moves share the cached-font `draw_singleline_LDP1450()` renderer. Android keeps
 three ROM text lines, caches their glyph geometry, and draws each as one SDL
 batch. It avoids CPU glyph blits and repeated uploads of the text surface. Hypcade's added score/lives display, FPS counter,
 subtitles and cabinet bezels are drawn afterward, without scanlines. The pattern
@@ -115,8 +119,8 @@ II it also shows the driver's nominal 18.2 fps limit.
 
 ## Game assistance and scoreboards
 
-Dragon's Lair Enhanced 2.1 and Space Ace A3 have optional recorded moves and
-timing cues. The offline tool decodes revision-pinned ROM scene/step tables,
+Dragon's Lair Enhanced 2.1 and Space Ace A3 have optional calculated moves and
+audio cues. The offline tool decodes revision-pinned ROM scene/step tables,
 input windows, transitions, score awards and death/scene-exit flags. It derives
 separate candidate routes for Max score and Fewest moves, executes the ROM at
 maximum speed without media, and independently replays successful full games.
@@ -130,7 +134,10 @@ retry-only scenes absent from sampled winning games. Successful independent
 replays supply timing calibrations rather than defining runtime coverage.
 The selector matches live ROM-loaded controls, windows and outcomes, preserving
 conditional inputs and skill-dependent timers. Both strategies remain available
-after alternate actions or a lost life. A player receives one selected action;
+after alternate actions or a lost life. Structural checks reconstruct the
+complete ROM inventory and reject missing decoded windows or ranked playable
+alternatives. Death, ignored and otherwise non-playable rules remain auditable
+with explicit exclusions. A player receives one selected action;
 ROM rankings preserve deliberate waiting instead of inserting optional actions.
 Shared rule and calibration pools use compact 16-bit strategy indices.
 
@@ -163,22 +170,20 @@ The optional score-and-lives display reuses Hypseus's graphical scoreboard.
 For Dragon's Lair II US 3.19, Hypcade adds a read-only connection to both players'
 ROM score and life values and the credit count. Other DL2 revisions remain
 unsupported. The stored score is divided by ten for display, matching the ROM.
-This addition does not change scoring rules or game memory.
+This addition does not change scoring rules or game memory. Space Ace uses
+the upstream dedicated skill-panel bezel alongside the scoreboard when Show
+score and lives is enabled. Explicit native annunciator layouts take priority;
+the artwork and rendering implementation are reused from upstream.
 
 A short coin-slot sound confirms a coin-button press;
 credit acceptance remains the game's responsibility. Player 2 Start uses the
 emulator's existing input and supports alternating play where the game allows it.
 
-The offline generator preserves all decoded input alternatives and ranks local
-routes separately for each objective. It runs candidate inputs alongside a
-no-input simulation to check causal acceptance. Necessary zero-score transitions,
-including Space Ace's final UP, are retained rather than discarded as optional.
-Complete death-free games and independent replays validate timing. Repeated
-starts sample randomized screen orders; intentional input omissions test retry
-recovery. A separate structural check reconstructs every ROM rule and ranking,
-rejecting missing windows or playable alternatives. Non-playable rules remain
-auditable with explicit exclusions. This coverage applies to the supported ROM
-revisions, not to unknown revisions or a proof of global optimality.
+The generator checks candidate inputs against simultaneous no-input execution.
+Necessary zero-score transitions, including Space Ace's final UP, are retained.
+Repeated starts sample randomized screen orders; deliberate input omissions
+check recovery after a lost life. These checks apply to the supported ROM
+revisions and do not establish global optimality or every possible input timing.
 
 ## Android integration and smaller packages
 
@@ -206,28 +211,28 @@ are additions to the upstream project. The offline move generator runs game
 logic faster than real time without decoding videos. It includes an attributed
 GPL-3.0-or-later subset of **Jeff Nyman's laser-vault**, pinned to revision
 `1f12c84dfabf3c8e5d028c8804b2f96678c798fa`; its notices and source provenance are
-kept in [tools/offline-moves/vendor](tools/offline-moves/vendor/).
+kept in [tools/offline-moves/vendor](../tools/offline-moves/vendor/).
 
 Hypcade has its own cabinet-and-laserdisc logo, Android icons and TV banner.
-Its prompt and provenance are in [android/artwork](android/artwork/).
+Its prompt and provenance are in [android/artwork](artwork/).
 
 Development used **GPT-6 family and Codex** extensively for implementation,
-refactoring, debugging, builds, tests and documentation. I provided requirements,
-feedback and cabinet testing. See the
-[AI-assistance disclosure](README.md#ai-assisted-development).
+refactoring, debugging, builds, tests and documentation. Francesco Orabona
+provides requirements, review, feedback and physical cabinet testing. See the
+[AI-assistance disclosure](../README.md#ai-assisted-development).
 
 Hypseus Singe, Hypseus, Daphne and Singe remain the foundation of the emulator.
 The NEON decoder work preserves libmpeg2's notices; the CRT shader retains its
 attribution to Greg Hogan. The CC0 coin sound is credited to bassmosphere.
 Dependencies keep their own licenses.
 
-See [NOTICE](NOTICE), [LICENSE](LICENSE) and
-[third-party notices](android/THIRD_PARTY_NOTICES.md) for credits and licensing.
+See [NOTICE](../NOTICE), [LICENSE](../LICENSE) and
+[third-party notices](THIRD_PARTY_NOTICES.md) for credits and licensing.
 Full license texts remain in the repository and the external release notices,
 rather than inside the APK. APK redistribution must include access to the
 matching complete corresponding source, not merely unchanged upstream code.
 
-For setup and building, read the [Android guide](android/README.md). The
-[validation record](android/VALIDATION.md) distinguishes executed checks,
+For setup and building, read the [Android guide](README.md). The
+[validation record](VALIDATION.md) distinguishes executed checks,
 user-reported results and remaining gaps; the feature summary above is not a
 claim of complete game or hardware validation.
