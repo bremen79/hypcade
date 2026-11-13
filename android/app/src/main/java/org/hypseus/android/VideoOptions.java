@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-/** Owned boolean options; preserve unrelated inherited arguments and their quoting. */
+/** Launcher-owned options; preserve unrelated inherited arguments and their quoting. */
 final class VideoOptions {
     private static final Set<String> OWNED = new HashSet<>(Arrays.asList(
             "-showfps", "-fastboot", "-nosplash", "-linear_scale", "-scanlines", "-novsync", "-software_video"));
@@ -30,7 +30,7 @@ final class VideoOptions {
         List<String> options=new ArrayList<>();
         for(String value:inherited) if(!OWNED.contains(value.toLowerCase(Locale.ROOT))) options.add(value);
         if(showFps) options.add("-showfps");
-        if(fastBoot) { options.add("-fastboot"); options.add("-nosplash"); }
+        if(fastBoot) options.add("-fastboot");
         if(smooth) options.add("-linear_scale");
         if(scanlines) options.add("-scanlines");
         if(!hardware) options.add("-software_video");

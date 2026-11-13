@@ -100,14 +100,14 @@ public final class ArcadeSetupTest {
         check(video.scanlines && video.smooth && !video.vsync && video.fastBoot,"Read legacy options case-insensitively");
         video.scanlines=false;video.smooth=false;video.vsync=true;
         java.util.List<String> output=LaunchConfig.splitArguments(video.arguments(inherited));
-        check(output.equals(java.util.Arrays.asList("-BLEND","-bank","0","0010","-bezel","name with spaces.png","-fastboot","-nosplash")),"Disable flags without losing unrelated options");
+        check(output.equals(java.util.Arrays.asList("-BLEND","-bank","0","0010","-bezel","name with spaces.png","-fastboot")),"Disable flags without losing unrelated options");
         video.scanlines=true;video.vsync=false;
         output=LaunchConfig.splitArguments(video.arguments(inherited));
         check(java.util.Collections.frequency(output,"-scanlines")==1 && output.contains("-BLEND") && output.contains("-novsync"),"No duplicate flags");
         check(output.contains("-BLEND"), "Command-file blend is preserved without a GUI control");
         video.fastBoot = false;
         java.util.List<String> slow = LaunchConfig.splitArguments(video.arguments(output));
-        check(!slow.contains("-fastboot") && !slow.contains("-nosplash"), "Fast startup off removes both startup shortcuts");
+        check(!slow.contains("-fastboot"), "Fast startup off removes the native fastboot flag");
         check(new VideoOptions(java.util.Collections.emptyList()).vsync,"Keep default V-sync enabled");
         VideoOptions fps=new VideoOptions(java.util.Collections.emptyList());
         check(!fps.showFps,"FPS defaults off");fps.showFps=true;

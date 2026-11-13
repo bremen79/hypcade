@@ -795,7 +795,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         gameArea.setVisibility(complete ? View.VISIBLE : View.GONE);
         debugButton.setVisibility(complete ? View.VISIBLE : View.GONE);
         controllerButton.setEnabled(changed.ready && changed.home != null && available);
-        resetController.setEnabled(!setup.encodedControls().isEmpty() && available);
+        setGameOption(resetController, !setup.encodedControls().isEmpty(), available);
         controllerStatus.setText(setup.controls().isComplete() ? "Configured for all games"
                 : BuildConfig.ARCADE ? "Configure and save your controller to continue."
                 : "Controller optional. Use on-screen controls to play without one.");
@@ -810,8 +810,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         boolean canLaunch = complete && !changed.busy && !scanning && !currentId.isEmpty() && !emulatorOpen;
         playButton.setEnabled(canLaunch && setup.canPlay());
         GuidanceSupport support = GuidanceSupport.forGame(gameId.getText().toString(), safeOptions());
-        watchButton.setEnabled(canLaunch && support.visual);
-        watchButton.setText(support.visual ? "Watch Mode" : "Watch Mode — unavailable");
+        setGameOption(watchButton, support.visual, canLaunch);
         dataPath.setText("Game folder\n" + (changed.home != null ? changed.home.getPath()
                 : setup.directory().isEmpty() ? "No storage selected" : setup.directory()));
         if (resumed && !changed.busy) {
@@ -1158,32 +1157,30 @@ public final class LauncherActivity extends Activity implements GameData.Listene
             else if (difficulty < 0 || difficulty >= levels.length) difficulty = savedDl2Difficulty();
         } else if (difficulty < 0 || difficulty >= levels.length)
             difficulty = GameDifficulty.importedSelection(game, safeOptions());
-        difficultyButton.setEnabled(available && levels.length > 1);
-        difficultyButton.setText(levels.length > 1 ? "Difficulty: " + levels[difficulty] : GameDifficulty.unavailable(game));
-        skillButton.setVisibility(GameDifficulty.spaceAce(game) ? View.VISIBLE : View.GONE);
-        skillButton.setEnabled(available && GameDifficulty.spaceAce(game));
+        setGameOption(difficultyButton, levels.length > 1, available);
+        if (levels.length > 1) difficultyButton.setText("Difficulty: " + levels[difficulty]);
+        setGameOption(skillButton, GameDifficulty.spaceAce(game), available);
         skillButton.setText("Skill: " + GameDifficulty.SKILLS[skill]);
-        watchButton.setEnabled(available && support.visual);
-        watchButton.setText(support.visual ? "Watch Mode" : "Watch Mode — unavailable");
-        showScore.setEnabled(available && LaunchConfig.supportsScore(game, safeOptions()));
-        showScore.setText(LaunchConfig.supportsScore(game, safeOptions()) ? "Show score and lives" : game.equals("lair2") ? "Score and lives — requires DL2 US 3.19" : "Score and lives — game-controlled / unavailable");
-        fastBoot.setEnabled(available && LaunchConfig.supportsFastBoot(game));
-        fastBoot.setText(LaunchConfig.supportsFastBoot(game) ? "Fast startup" : "Fast startup — unavailable");
-        showMovesButton.setEnabled(available && support.visual);
-        timingCue.setEnabled(available && support.cue);
+        setGameOption(watchButton, support.visual, available);
+        setGameOption(showScore, LaunchConfig.supportsScore(game, safeOptions()), available);
+        setGameOption(fastBoot, LaunchConfig.supportsFastBoot(game), available);
+        setGameOption(showMovesButton, support.visual, available);
+        setGameOption(timingCue, support.cue, available);
         if (!support.visual) moveMode = MoveMode.OFF;
         moveMode = MoveMode.selected(game, moveMode);
         if (!support.cue) timingCue.setChecked(false);
-        showMovesButton.setText(support.visual ? "Show moves: " + MoveMode.labels(game)[moveMode] : support.scriptControlled
-                ? "Show moves — use game menu" : "Show moves — unavailable");
-        timingCue.setText(support.cue ? "Play move timing cue" : support.scriptControlled
-                ? "Timing cue — use game menu" : game.equals("lair2")
-                ? "Timing cue — included in video" : "Timing cue — unavailable");
+        if (support.visual) showMovesButton.setText("Show moves: " + MoveMode.labels(game)[moveMode]);
+        assistanceStatus.setVisibility(support.scriptControlled || support.visual ? View.VISIBLE : View.GONE);
         assistanceStatus.setText(support.scriptControlled
-                ? "Map Game options / Service in Controller setup, then press that button in the game to open its original menu (where supported). Moves and cues are controlled there."
-                : !support.visual ? "No bundled moves for this game / ROM version."
-                : game.equals("lair2") ? "Dragon's Lair II 3.19 uses its original ROM moves. Watch Mode follows those moves even when Show moves is Off. Audio cues are included in the video."
-                : "Choose Max score or Fewest moves. Watch Mode follows that selection, or Max score when Show moves is Off. Only recorded move windows are shown.");
+                ? "Use the Game options / Service button to open the game's own options menu."
+                : !support.visual ? ""
+                : game.equals("lair2") ? "Moves come from the original ROM. Watch Mode follows them even when Show moves is Off."
+                : "Watch Mode uses the selected move strategy, or Max score when Show moves is Off.");
+    }
+
+    private void setGameOption(View option, boolean supported, boolean available) {
+        option.setVisibility(supported ? View.VISIBLE : View.GONE);
+        option.setEnabled(supported && available);
     }
 
     private void chooseDifficulty() {

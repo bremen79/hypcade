@@ -76,13 +76,6 @@ final class GameDifficulty {
     static int selected(String game, int value) {
         return value >= 0 && value < choices(game).length ? value : importedSelection(game, java.util.Collections.emptyList());
     }
-    static String unavailable(String game) {
-        if (game.equals("dle21")) return "Difficulty — DLE 2.1 has no difficulty settings";
-        if (game.equals("lair2")) return "Difficulty — requires DL2 US 3.19";
-        if (game.equals("ace91") || game.equals("singe")) return "Difficulty — use Game options / Service in the game";
-        return "Difficulty — unavailable for this ROM";
-    }
-
     static int importedSelection(String game, List<String> options) {
         if (game.equals("lair2")) {
             int result = -1;

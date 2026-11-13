@@ -19,7 +19,8 @@ first public release. Original copyright and license notices remain in place.
 The launcher lets players choose a game and change its options using a joystick
 and buttons. It discovers games from their framefiles and scripts, saves settings
 automatically, and highlights the selected control. Opening a settings section
-scrolls its contents into view. Unavailable options are disabled.
+scrolls its contents into view. Options unsupported by the selected game or ROM
+are hidden, and the help text describes the available controls.
 
 Directory selection and controller setup are shared by all games. The arcade
 build requires a configured controller before allowing play. The setup wizard
@@ -145,8 +146,7 @@ ROM score and life values and the credit count. Other DL2 revisions remain
 unsupported. The stored score is divided by ten for display, matching the ROM.
 This addition does not change scoring rules or game memory.
 
-Fast startup uses the existing shortcut in supported game drivers and skips
-the emulator splash. A short coin-slot sound confirms a coin-button press;
+A short coin-slot sound confirms a coin-button press;
 credit acceptance remains the game's responsibility. Player 2 Start uses the
 emulator's existing input and supports alternating play where the game allows it.
 

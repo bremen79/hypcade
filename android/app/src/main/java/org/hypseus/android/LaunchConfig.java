@@ -172,6 +172,7 @@ public final class LaunchConfig {
         args.add("-datadir");
         args.add(root.getPath());
         args.add("-fullscreen");
+        args.add("-nosplash");
         args.add("-nomanymouse");
         args.add("-gamepad");
         args.add("-framefile");
@@ -182,7 +183,9 @@ public final class LaunchConfig {
             args.add(lua.getPath());
         }
         if (showScore && supportsScore(game, splitArguments(extraArguments))) args.add("-scorebezel");
-        args.addAll(GameDifficulty.arguments(game, difficulty, splitArguments(extraArguments)));
+        List<String> inherited = new ArrayList<>(splitArguments(extraArguments));
+        inherited.removeIf(option -> option.equalsIgnoreCase("-nosplash"));
+        args.addAll(GameDifficulty.arguments(game, difficulty, inherited));
         for (String argument : args) checkArgument(argument);
         return args.toArray(new String[0]);
     }

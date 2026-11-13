@@ -41,15 +41,15 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6041713,
-      "sha256": "e1bca87faeb053ec85ae20826848ddbc610f378248bb5dbe6ca52a166473b99f",
+      "size_bytes": 6041397,
+      "sha256": "ad19aa904adc4ccbeec3c18b97feb11907036d1b07b1be38b2d6b385a542606a",
       "uncompressed_native_bytes": 5072412,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6356219,
-      "sha256": "3a8d1c556cd350a03e3d173616deb5ccca8d72a0f417573a86836e29cce8f798",
+      "size_bytes": 6355955,
+      "sha256": "cce518fad781d0bbf59baa5fe7c60055ae205b3fa37f520ce1b3ca94ad859b22",
       "uncompressed_native_bytes": 7156960,
       "uncompressed_support_bytes": 4293786
     }
@@ -57,23 +57,23 @@
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6797081,
-      "sha256": "9ed3b30c5daf8e614291cf3b8dba2bce9d71e00a4fd969d2b5c1aacbf36c2b76",
+      "size_bytes": 6796769,
+      "sha256": "b4ff153aa8c547581552ea157d31169a408342d17389b35763b5ff9421b91d1e",
       "uncompressed_native_bytes": 7866756,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6807422,
-      "sha256": "abd6a7be2fe9acd87d43878be2beebfb96b3e3d59fd9e951d545c9b04922a784",
+      "size_bytes": 6807158,
+      "sha256": "f8c1e7a49766b5f7b196d19cf57b2fa880cd4cd05574bff812db83e4752e64f3",
       "uncompressed_native_bytes": 8090208,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 443031,
-    "sha256": "fbfdb41c8a14b0520df751a7739b5a13c672c043772b318a76a7ce9d59ac3402",
+    "size_bytes": 442972,
+    "sha256": "52b4956d2efb2c5a6465e91617e1a0fc1afa40a14e1e7320357ea2fad9e8e00f",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -106,7 +106,9 @@
     "watch_mode": "Enabled for games with matching bundled guidance. Repeats coin pulses until the game's credit counter changes, then retries Player 1 Start at spaced intervals until the ROM spends a credit or reports active lives. This handles coin ratios and input-ignoring startup delays. Dragon's Lair II waits for the ROM to consume each coin before sending another, avoiding a boot-time input backlog. Only Pause and Exit remain exposed while playback runs.",
     "difficulty": "DIP-controlled games share one catalog and reader/writer, with explicit choices initialized from effective bank settings and revision-specific native defaults. All Game default placeholders are removed. DL2 US 3.19 uses the existing -preset 0\u20134 hook and reads saved EEPROM difficulty; Space Ace has separate saved operator difficulty and skill.",
     "mobile_service_menu": "Raw Options / Service switch in the top touch-button row for Singe, Dragon's Lair II and Space Ace 91; hidden in Watch Mode. No automatic button combinations. Mobile touch controls use the same logical Android input dispatch as mapped arcade controls.",
-    "space_ace_difficulty": "Original US Space Ace: four explicit native DIP combinations (after 3/5 consecutive episodes; slow/fast progression), initialized from effective -bank values and saved per game. Separate saved Cadet/Captain/Ace skill uses existing native skill inputs on Start. Neither control has a default placeholder. DIP-controlled games share one catalog and reader/writer; no additional native Space Ace code."
+    "space_ace_difficulty": "Original US Space Ace: four explicit native DIP combinations (after 3/5 consecutive episodes; slow/fast progression), initialized from effective -bank values and saved per game. Separate saved Cadet/Captain/Ace skill uses existing native skill inputs on Start. Neither control has a default placeholder. DIP-controlled games share one catalog and reader/writer; no additional native Space Ace code.",
+    "startup": "Every game launch receives -nosplash, independently of Fast startup. The GUI fastboot switch controls only the upstream -fastboot ROM shortcut; native fastboot implementation is unchanged.",
+    "launcher_options": "Options unsupported by the selected game/ROM are hidden, including Watch Mode, difficulty, skill, score/lives, fastboot, moves and cues. Assistance help is hidden when irrelevant. Reset controller is hidden without a saved mapping. Supported controls may be temporarily disabled while busy."
   },
   "move_table_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
@@ -291,8 +293,8 @@
       "Gradle deprecation warnings."
     ],
     "lint_warnings": {
-      "arcade": 44,
-      "mobile": 39,
+      "arcade": 48,
+      "mobile": 43,
       "errors": 0
     },
     "shared_storage": {
@@ -318,6 +320,95 @@
       "gameplay_matrix_rerun": false,
       "limits": "Gameplay reports retain the source fingerprints from their actual runs, before the attribution-only edits.",
       "release_lint": "Arcade and mobile release lint passed; existing warnings retained."
+    },
+    "startup": {
+      "all_games_use_nosplash": true,
+      "duplicate_flags_removed": true,
+      "gui_fastboot_independent": true,
+      "launcher_model_tests_passed": true,
+      "native_fastboot_comparison": {
+        "upstream_commit": "a16e2521ee3233ef20c44e562008c47f4b4293df",
+        "checks": [
+          {
+            "path": "src/game/lair.cpp",
+            "check": "lair ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "8b986740a40e15b24a7e9ace4e597a6dc63b9da1afdda569780cff07d2dfee31"
+          },
+          {
+            "path": "src/game/lair.cpp",
+            "check": "dle11 ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "72851510e5aa408e581301220782a85ed333953514e8f4608c890a7c60c698de"
+          },
+          {
+            "path": "src/game/lair.cpp",
+            "check": "dle2 ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "216be398564505df5e191c79ddeb3c75292d30c394aa2cb89148586e938e506f"
+          },
+          {
+            "path": "src/game/lair.cpp",
+            "check": "ace ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "6c47356f27df48bf08e4b335a88a08c3d75bb20491899e12bbdff90b2b10d9ca"
+          },
+          {
+            "path": "src/game/lair.cpp",
+            "check": "sae ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "4c30542f89297e1677735d6e5a3765f9ed6d5ca82a482e3023d75f3a9a77a85b"
+          },
+          {
+            "path": "src/game/cliff.cpp",
+            "check": "cliff ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "c296e1960fc113bdaf63baa5ece00e774f24df55e45f3920927cdf81bbd50030"
+          },
+          {
+            "path": "src/game/cliff.cpp",
+            "check": "gtg ROM patches",
+            "identical_to_upstream": true,
+            "body_sha256": "6ae59095a0cd9d614dfb7c5234a91209cfc81109fa7565b43d516226de29d814"
+          },
+          {
+            "path": "src/game/game.cpp",
+            "check": "set_fastboot",
+            "identical_to_upstream": true,
+            "body_sha256": "417df0f6e8ea094f126ffc9ac1761892e41efdd1a11071861e8cd02597a8204d"
+          },
+          {
+            "path": "src/game/game.cpp",
+            "check": "get_fastboot",
+            "identical_to_upstream": true,
+            "body_sha256": "4229d2382ad90716d4b17e96989add6f2dab37ef064a24a4ab495e29780f9bc1"
+          },
+          {
+            "path": "src/game/lair.cpp",
+            "check": "Enhanced DLE21/SAE fastboot attract transitions",
+            "identical_to_upstream": true
+          },
+          {
+            "path": "src/io/cmdline.cpp",
+            "check": "Command-line fastboot dispatch",
+            "identical_to_upstream": true,
+            "body_sha256": "ab716f1bd34d6de9f56dced01e961fd36eb64f7a852423327d91319e0cfd28c7"
+          }
+        ],
+        "all_identical": true,
+        "native_emulator_changes": false,
+        "scope": "Static source comparison of ROM patches, boot/attract transitions, frame constants, flag accessors and command parser; no runtime speed benchmark."
+      },
+      "device_gameplay_test": false
+    },
+    "launcher_options": {
+      "unsupported_options_hidden": true,
+      "help_only_describes_available_features": true,
+      "temporarily_disabled_controls_remain_visible": true,
+      "launcher_model_checks_passed": true,
+      "arm_release_lint_passed": true,
+      "compiled_labels_checked_in_all_four_apks": true,
+      "device_ui_test": false
     }
   },
   "move_generation": {
@@ -428,13 +519,14 @@
   "dl2_difficulty_source_sha256": {
     "src/game/lair2.cpp": "85308ec00e901d291fe77eb0e5081b08fe42ef08cfba9ce51661aa9962e02144",
     "src/game/lair2.h": "02b4727a15a03b28b0065e794b1be3f72e033ba897d4d82e95f5a52b7aeb129e",
-    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "a7c4ebb3e5cc2b2d42ecd699e2a75fe6608d6c4748b0a7dd65c729a1452612ea"
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4a5d99e0dfb0b811b8335d0b9fcdd8c74b6de048e61296aec380c238a12a2c74"
   },
   "settings_source_sha256": {
-    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "a7c4ebb3e5cc2b2d42ecd699e2a75fe6608d6c4748b0a7dd65c729a1452612ea",
-    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "ccc8841b8051758d2be970e8a78da6d8ecad0d724346cdfe950077c24d1d889f",
-    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "60e05335f6f3859f001a049d78290633677468a7ba1ee224fda2278289817bac",
-    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "e1bba0c1e56a0eb91068a0cab24183e91bcde558c7f8961e9ae458f8d4e1792f"
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4a5d99e0dfb0b811b8335d0b9fcdd8c74b6de048e61296aec380c238a12a2c74",
+    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "68197dd63046600b6ea11c82f9c40fd9bd7fdb49a7291e4f8b03a760933412f6",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "bd3c9946c6397a1d45bb2dc9603bae01397226768d9032513200418a15af0073",
+    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "e1bba0c1e56a0eb91068a0cab24183e91bcde558c7f8961e9ae458f8d4e1792f",
+    "android/app/src/main/java/org/hypseus/android/VideoOptions.java": "3e9ad67c2cc2dab04be8ac3ff247e20fc03cf87a575c303b98d5973bd196749e"
   },
   "settings_references": [
     {
@@ -449,7 +541,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs rebuilt with Hypcade Copyright 2026 Francesco Orabona at the beginning of About. Project documentation and source headers credit Francesco Orabona while preserving upstream notices. Attribution changes do not alter gameplay or move tables; previous gameplay reports retain their measured source fingerprints. Signatures, SDK/ABI policy and compiled About text checked; no new device gameplay run was performed.",
+  "source_tree_status": "All four signed release APKs rebuilt with unsupported launcher options hidden and help text describing only available features. Every game continues to use -nosplash independently of native -fastboot. Launcher model checks and ARM release lint passed; signatures, SDK/ABI policies and removal of unavailable-option labels verified in all four compiled APKs. Native emulation and move tables are unchanged. No device UI or gameplay run was performed for this visibility change.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",

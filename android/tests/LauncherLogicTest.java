@@ -106,6 +106,15 @@ public final class LauncherLogicTest {
         File root = home.toFile();
         LaunchConfig arcade = config("LAIR", "vldp/demo/frames.txt", "", "-fastboot -linear_scale");
         List<String> argv = Arrays.asList(arcade.arguments(root));
+        check(argv.contains("-fastboot") && java.util.Collections.frequency(argv,"-nosplash")==1,
+                "Fast boot and splash suppression are independent launch options");
+        for (String game : LaunchConfig.GAME_IDS) {
+            if (game.equals("singe")) continue;
+            List<String> startup = Arrays.asList(config(game,"vldp/demo/frames.txt","","-nosplash -NOSPLASH").arguments(root));
+            check(java.util.Collections.frequency(startup,"-nosplash")==1 && !startup.contains("-NOSPLASH"),
+                    "Suppress splash exactly once for " + game);
+            check(!startup.contains("-fastboot"), "Splash suppression must not enable fast boot for " + game);
+        }
         check(argv.contains("-scorebezel"), "Score/lives default on for supported games");
         LaunchConfig noScore = new LaunchConfig("id", "test", "lair", "vldp/demo/frames.txt", "", "", MoveMode.OFF, false, false);
         check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel"), "Score/lives can be disabled");
@@ -137,6 +146,8 @@ public final class LauncherLogicTest {
         text(home.resolve("singe/game with spaces/start.singe"), "fixture");
         List<String> singe = Arrays.asList(config("singe", "vldp/demo/frames.txt",
                 "singe/game with spaces/start.singe", "").arguments(root));
+        check(java.util.Collections.frequency(singe,"-nosplash")==1 && !singe.contains("-fastboot"),
+                "Singe suppresses the splash without a fastboot shortcut");
         check(valueAfter(singe, "-script").endsWith("game with spaces/start.singe"), "Script path was split");
         check(!singe.contains("-zlua"), "Plain script passed as ZIP");
         text(home.resolve("roms/package.ZIP"), "fixture");
