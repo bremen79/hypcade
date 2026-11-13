@@ -23,7 +23,7 @@ Features of Hypcade:
 - Use arcade hardware MPEG-2 decoding with an ARM NEON software fallback and OpenGL ES
   rendering, with optional scanlines.
 - Shows moves for Dragon’s Lair I/II and Space Ace.
-- "Wath Mode" to play the showed moves.
+- "Watch Mode", where the computer plays with the selected correct moves.
 
 No commercial game ROMs or laserdisc media are included. Supply your own game
 files. The repository includes emulator support assets, synthetic test fixtures
