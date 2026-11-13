@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 import org.hypseus.android.Mpeg2HardwareDecoder;
 import java.io.*;import java.nio.*;import java.util.*;

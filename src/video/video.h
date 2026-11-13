@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade modification notice (2026-11-09): Android GPU CRT integration.
  * See MODIFICATIONS.md; original notices are retained below. */
 /*

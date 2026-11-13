@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 """Exercise production coin-edge handling with a stub mixer; check licensed PCM asset."""
 from pathlib import Path
 import argparse,hashlib,json,subprocess,tempfile,wave,zipfile

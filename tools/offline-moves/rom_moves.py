@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Extract ROM step graphs, execute both policies, and independently replay wins."""
 import argparse

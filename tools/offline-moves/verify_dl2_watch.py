@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Run the production Java Watch Mode controller and DL2 ROM without video.
 

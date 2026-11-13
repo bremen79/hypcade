@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Hypcade Android MPEG-2 hardware decoding, 2026-11-09. */
 package org.hypseus.android;

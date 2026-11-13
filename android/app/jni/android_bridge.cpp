@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 // Android integration for the unofficial Android port. GPL-3.0-or-later.
 #include <SDL3/SDL.h>
 #include <jni.h>

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Check the two ROM-state move sets and their complete replay evidence."""
 import argparse

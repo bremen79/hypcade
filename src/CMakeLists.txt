@@ -1,3 +1,4 @@
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # Hypcade modification notice (2026-11-08): Android arcade adaptation.
 # See MODIFICATIONS.md; original notices are retained.
 cmake_minimum_required(VERSION 3.16)

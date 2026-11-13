@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Check shipped policy, not just Gradle declarations: touch code and orientation."""
 import argparse

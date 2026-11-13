@@ -6,7 +6,11 @@ Hypcade **0.1** is an Android arcade adaptation of
 engine as well as a new Android launcher. It is an independent project, not an
 official Hypseus Singe release.
 
-**Modification notice — 2026-11-11:** Hypcade contributors modified the upstream
+Hypcade: **Copyright (C) 2026 Francesco Orabona**.
+Francesco Orabona maintains the Android adaptation. Upstream authors retain
+their original credits and copyrights.
+
+Hypcade contributors modified the upstream
 sources for Android arcade use. This document summarizes the changes for the
 first public release. Original copyright and license notices remain in place.
 

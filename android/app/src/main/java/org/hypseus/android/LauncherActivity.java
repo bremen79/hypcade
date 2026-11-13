@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 package org.hypseus.android;
 
@@ -707,7 +708,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
 
     private void showAbout() {
         dialogBuilder().setTitle("About Hypcade " + BuildConfig.VERSION_NAME)
-                .setMessage("Hypcade " + BuildConfig.VERSION_NAME + "\n\n"
+                .setMessage("Hypcade " + BuildConfig.VERSION_NAME + "\nCopyright © 2026 Francesco Orabona\n\n"
                         + "An independent Android arcade-focused fork and adaptation of Hypseus Singe 3.0.2. "
                         + "Includes modified engine code and an Android launcher.\n\n"
                         + "Hypseus Singe © 2021–2026 DirtBagXon\n"

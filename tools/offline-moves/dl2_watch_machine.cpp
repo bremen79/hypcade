@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Headless adapter around the original Hypseus i86, DL2 ports and Sony protocol.
 // Driver methods are generated unchanged from lair2.cpp; no ROM moves are supplied.

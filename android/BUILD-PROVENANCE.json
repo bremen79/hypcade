@@ -41,15 +41,15 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6041621,
-      "sha256": "c2571196ca43351f9da72d726c85239959755db939ca6acebd73c50526bb50f8",
+      "size_bytes": 6041713,
+      "sha256": "e1bca87faeb053ec85ae20826848ddbc610f378248bb5dbe6ca52a166473b99f",
       "uncompressed_native_bytes": 5072412,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6356147,
-      "sha256": "88cfd1333a1eb2bc47813a398570bef3e87bc029480e0cac84d9a2b1fc0fb747",
+      "size_bytes": 6356219,
+      "sha256": "3a8d1c556cd350a03e3d173616deb5ccca8d72a0f417573a86836e29cce8f798",
       "uncompressed_native_bytes": 7156960,
       "uncompressed_support_bytes": 4293786
     }
@@ -57,23 +57,23 @@
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6797093,
-      "sha256": "06c9756c5611fe8581431c3c45f0791b39c701af0d259a1135155c3385499ba5",
+      "size_bytes": 6797081,
+      "sha256": "9ed3b30c5daf8e614291cf3b8dba2bce9d71e00a4fd969d2b5c1aacbf36c2b76",
       "uncompressed_native_bytes": 7866756,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6807398,
-      "sha256": "4cda39d609cddcab205eac646452e8f666f0e4afa7200cb039b4e887159a8486",
+      "size_bytes": 6807422,
+      "sha256": "abd6a7be2fe9acd87d43878be2beebfb96b3e3d59fd9e951d545c9b04922a784",
       "uncompressed_native_bytes": 8090208,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 442500,
-    "sha256": "5a4d91a1798e160ec7b930fc0850d1b1d15098ad7815cf21eac9548abe2dffa5",
+    "size_bytes": 443031,
+    "sha256": "fbfdb41c8a14b0520df751a7739b5a13c672c043772b318a76a7ce9d59ac3402",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -291,8 +291,8 @@
       "Gradle deprecation warnings."
     ],
     "lint_warnings": {
-      "arcade": 43,
-      "mobile": 38,
+      "arcade": 44,
+      "mobile": 39,
       "errors": 0
     },
     "shared_storage": {
@@ -311,6 +311,13 @@
       "generated_include_matches_release": true,
       "merged_game_files": 2,
       "incomplete_output_rejected": true
+    },
+    "attribution": {
+      "changes": "Copyright comments and About attribution only; existing upstream credits and licences retained.",
+      "compiled_about_checked_in_all_four_apks": true,
+      "gameplay_matrix_rerun": false,
+      "limits": "Gameplay reports retain the source fingerprints from their actual runs, before the attribution-only edits.",
+      "release_lint": "Arcade and mobile release lint passed; existing warnings retained."
     }
   },
   "move_generation": {
@@ -419,15 +426,15 @@
   "build_script": "build-apks.sh release [arm|all]",
   "build_resource_limits": "Sequential Gradle invocations; max-workers=1, 1536 MiB heap and native compile pool=2.",
   "dl2_difficulty_source_sha256": {
-    "src/game/lair2.cpp": "f4904c4bdabe1f4072ab39b410ff474541023eed9dd17d5d39063e759b237059",
+    "src/game/lair2.cpp": "85308ec00e901d291fe77eb0e5081b08fe42ef08cfba9ce51661aa9962e02144",
     "src/game/lair2.h": "02b4727a15a03b28b0065e794b1be3f72e033ba897d4d82e95f5a52b7aeb129e",
-    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4bbbfdc643b4d11cc9fe7d66a5cad899cda0ddb481617314f90a66f0b73807a5"
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "a7c4ebb3e5cc2b2d42ecd699e2a75fe6608d6c4748b0a7dd65c729a1452612ea"
   },
   "settings_source_sha256": {
-    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4bbbfdc643b4d11cc9fe7d66a5cad899cda0ddb481617314f90a66f0b73807a5",
-    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "8cceac4ba4cf4b1647d95af768c6aac6036694ea22dcce98589543f9ea9487ab",
-    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "6b91a19252aae1da59ddd4f668138878c2e6cae58c016dd0f95fe8563d0ee48e",
-    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "7f87fedddd503ef07699156cec55687063ef3efeabda3c91d78d81463569aaa7"
+    "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "a7c4ebb3e5cc2b2d42ecd699e2a75fe6608d6c4748b0a7dd65c729a1452612ea",
+    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "ccc8841b8051758d2be970e8a78da6d8ecad0d724346cdfe950077c24d1d889f",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "60e05335f6f3859f001a049d78290633677468a7ba1ee224fda2278289817bac",
+    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "e1bba0c1e56a0eb91068a0cab24183e91bcde558c7f8961e9ae458f8d4e1792f"
   },
   "settings_references": [
     {
@@ -442,13 +449,15 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs contain the shared move pools and cross-strategy branch coverage, checked by 234 normal games and 72 deliberate branch-detour games per backend on host and Android 9 x86. The offline extraction workflow now directly writes one merged game file per ROM and the shared include; a fresh 208-case host run with independent replays reproduced the APK include byte for byte. Obsolete reports and separate strategy files were removed. APK binaries are unchanged by this offline-tool cleanup. No new gameplay run through the launcher or physical-device test was performed.",
+  "source_tree_status": "All four signed release APKs rebuilt with Hypcade Copyright 2026 Francesco Orabona at the beginning of About. Project documentation and source headers credit Francesco Orabona while preserving upstream notices. Attribution changes do not alter gameplay or move tables; previous gameplay reports retain their measured source fingerprints. Signatures, SDK/ABI policy and compiled About text checked; no new device gameplay run was performed.",
   "move_lookup_source_sha256": {
-    "android/app/jni/arcade_guidance.cpp": "e57ac16121767e9f77fac78cfa882de13439315482701aa8773647fd5add256f",
-    "android/app/jni/arcade_move_policy.h": "87ae3dc8b180878dcb61f65e15ef7537b93d9f842beb72ef9cee8847fa40dcc5",
-    "tools/offline-moves/bundle_rom_moves.py": "0dbf0fbc59a49b8488d0831e1e9c791e3636f0aa1481330e05b6f1186878e4ad",
-    "tools/offline-moves/watch_moves.c": "d7f355df57938be0dd3ebedd7421cb9e7e75ecc5390c281744876fa0fca5bf2f",
-    "tools/offline-moves/verify_watch_moves.py": "9ca77025b3af6d616357d098ad21a69a7513a26e5a18d58f423df11846f199be",
-    "tools/offline-moves/verify_rom_matrix.py": "4d945872ee838eade4e1877a31646e4d0a47dd8c860a7d480a289a72b21f83f3"
-  }
+    "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
+    "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",
+    "tools/offline-moves/bundle_rom_moves.py": "b37464268fcfacd4b422e062304f3578c461a250480fbe043dfbbf1baaaddf10",
+    "tools/offline-moves/watch_moves.c": "3f37ddcb6377d0dc2f17c5c7d9fa2b3aba5a0afb3f8339c8a73cc27dc2bc1d02",
+    "tools/offline-moves/verify_watch_moves.py": "927bb970cc2480f6a87faceb7c3c2995d03d9e7ea276e58e23b0754747ab06ee",
+    "tools/offline-moves/verify_rom_matrix.py": "f99be7dcb4b29c1b57d909c81d35e0c90626c2e8e13fb2f56fa934c51a48b54c"
+  },
+  "maintainer": "Francesco Orabona",
+  "copyright": "Hypcade: Copyright (C) 2026 Francesco Orabona."
 }

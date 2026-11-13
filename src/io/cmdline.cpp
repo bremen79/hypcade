@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 #ifdef __ANDROID__
 #include "../../android/app/jni/android_video_codec.h"
 #endif

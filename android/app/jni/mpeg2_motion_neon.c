@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Bit-exact MPEG-2 half-pixel prediction, using ARMv7/AArch64 NEON.
  * Four-pixel interpolation must round only once, after the full sum.

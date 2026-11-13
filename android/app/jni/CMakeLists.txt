@@ -1,3 +1,4 @@
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 cmake_minimum_required(VERSION 3.22.1)
 project(hypseus_android LANGUAGES C CXX)
 

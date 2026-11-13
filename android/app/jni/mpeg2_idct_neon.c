@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade adaptation/modification notice (2026-11-08).
  * Original authors and component licenses are retained; see MODIFICATIONS.md. */
 /*

@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Native-ROM input trials and exact replay for the ROM-table player. This program has
  * no SDL, video decoder, audio output, sleeps, or dependency on an Android SDK.

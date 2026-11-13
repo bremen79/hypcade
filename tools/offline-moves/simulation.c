@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Shared headless CPU/player setup. No video, SDL, sleeping or wall clock.
  * The ROM player and exact replay verifier use these machine helpers.

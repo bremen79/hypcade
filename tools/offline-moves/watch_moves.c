@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Exercise the packaged move sets with Android's IRQ guidance cadence,
  * 8 ms controller polling, SDL's 17 ms input queue and 100 ms presses. Original CPU/player, no media. */

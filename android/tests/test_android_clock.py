@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 """Exercise the production suspend clock with deterministic SDL boundaries.
 
 No Android SDK or downloaded dependencies are required. The test compiles the

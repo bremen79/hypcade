@@ -4,6 +4,10 @@ Hypcade adapts Hypseus Singe 3.0.2 for Android arcade cabinets. It runs on Andro
 7.1 (including 7.1.2) or newer and supports both Daphne ROM games and Singe
 scripts. Phones are a secondary target.
 
+The Android adaptation is maintained by **Francesco Orabona**.
+Hypcade: Copyright (C) 2026 Francesco Orabona, GPL-3.0-or-later;
+upstream components retain their original authorship and licences.
+
 Start with the [project README](../README.md) for installation, the game-folder
 layout, credits and licensing. This guide covers setup details and development.
 

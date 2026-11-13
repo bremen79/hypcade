@@ -9,6 +9,9 @@ See [NOTICE](../NOTICE) for upstream credits and the [README](../README.md#ai-as
 for the GPT-6 family and Codex development disclosure. Hypdroid was a documentation reference; no code or
 additional dependencies were imported from it. The
 Android integration and launcher additions are provided under GPL-3.0-or-later.
+Hypcade: Copyright (C) 2026 Francesco Orabona.
+This attribution does not change the ownership or licences of third-party code
+or assets listed below.
 
 Paths under `src`, `fonts`, `pics`, `sound`, and `midi` below are relative to
 the repository root. Paths under `third_party`, `licenses`, and `gradle` are

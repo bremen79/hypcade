@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Build a separate, test-only APK from the real release APK's support assets."""
 import argparse,os,subprocess,zipfile

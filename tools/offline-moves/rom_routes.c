@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Execute ROM-derived scene policies with the real CPU, player and inputs.
  * No injected scenes, score changes, videos, audio, or real-time waits.

@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 // SPDX-License-Identifier: GPL-3.0-or-later
 #ifndef HYPSEUS_ANDROID_CLOCK_H
 #define HYPSEUS_ANDROID_CLOCK_H

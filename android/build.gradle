@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 plugins {
     id 'com.android.application' version '8.13.2' apply false
 }

@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Score evidence collected during the actual continuation. The shared no-input
  * copy starts from this expansion's exact state, not a move or scene recipe.

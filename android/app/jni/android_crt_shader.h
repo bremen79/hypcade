@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-2.0-or-later
  * CRT math adapted from zfast_crt_standard, Copyright (C) 2017
  * Greg Hogan (SoltanGris42). Original source and revision: android/shaders/.

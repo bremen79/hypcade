@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 // SPDX-License-Identifier: GPL-3.0-or-later
 #ifndef HYPCADE_ARCADE_MOVE_POLICY_H
 #define HYPCADE_ARCADE_MOVE_POLICY_H

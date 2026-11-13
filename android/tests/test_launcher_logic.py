@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 """Run the production Java launcher's model checks using JDK 17, without Android."""
 
 import argparse

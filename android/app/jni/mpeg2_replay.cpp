@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "mpeg2_replay.h"
 static_assert(sizeof(off_t)>=8,"MPEG-2 file offsets must remain 64-bit");

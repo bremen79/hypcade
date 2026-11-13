@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 """Fetch exact native sources; never reset an existing or modified checkout."""
 import argparse
 import hashlib

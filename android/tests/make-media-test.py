@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 """Generate a small original MPEG-2/Vorbis/Singe integration fixture using FFmpeg."""
 import argparse
 from pathlib import Path

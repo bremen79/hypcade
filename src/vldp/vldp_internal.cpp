@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* Hypcade modification notice (2026-11-09): modified for Android arcade
  * integration. See MODIFICATIONS.md. Original notices are retained below. */
 /*

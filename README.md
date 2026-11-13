@@ -2,7 +2,7 @@
   <img src="android/artwork/hypcade-icon.png" alt="Hypcade arcade cabinet and laserdisc logo" width="240">
 </p>
 
-# Hypcade 0.1
+# Hypcade 0.1 by Francesco Orabona
 
 **An Android arcade adaptation of [Hypseus Singe](https://github.com/DirtBagXon/hypseus-singe), the laserdisc game emulator**
 
@@ -212,6 +212,10 @@ cabinet test; the current changes have not been retested on physical ARM hardwar
 
 ## Upstream and attribution
 
+Hypcade is developed and maintained by **Francesco Orabona**.
+**Hypcade — Copyright (C) 2026 Francesco Orabona.**
+Licensed under GPL-3.0-or-later. Upstream components retain their own notices.
+
 The base is **Hypseus Singe 3.0.2**, pinned to commit
 [`a16e2521ee3233ef20c44e562008c47f4b4293df`](https://github.com/DirtBagXon/hypseus-singe/tree/a16e2521ee3233ef20c44e562008c47f4b4293df).
 
@@ -243,7 +247,7 @@ no Hypdroid code was imported for this work.
 Hypcade-specific development used **OpenAI GPT-6 family and Codex** extensively
 for implementation, refactoring, debugging, test creation and execution, build
 work, and documentation. Project requirements and feedback, including the
-cabinet testing, came from me.
+cabinet testing, came from Francesco Orabona.
 
 ## License and corresponding source
 

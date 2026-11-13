@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 #include "arcade_guidance.h"
 #include "arcade_signature.h"
 #include <vector>

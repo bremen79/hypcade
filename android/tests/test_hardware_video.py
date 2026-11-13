@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Run the production MediaCodec reader on a connected device, compare seek images
 with libmpeg2. Only generated media and a temporary /data/local/tmp directory are

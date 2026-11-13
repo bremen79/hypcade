@@ -1,3 +1,4 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona. */
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Hypcade hardware video bridge, 2026-11-09. All decoder calls stay on VLDP's thread. */
 #include "android_video_codec.h"

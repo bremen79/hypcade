@@ -1,6 +1,11 @@
 Hypcade — Android arcade-focused fork and adaptation of Hypseus
 Modification notice: 2026-11-09
 
+Hypcade: Copyright (C) 2026 Francesco Orabona.
+Hypcade maintainer: Francesco Orabona.
+This notice covers Hypcade; it does not replace the original
+authors' copyrights in the upstream engine, components or assets.
+
 Based on Hypseus Singe 3.0.2, commit
  a16e2521ee3233ef20c44e562008c47f4b4293df
  https://github.com/DirtBagXon/hypseus-singe

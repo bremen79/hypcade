@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 set -euo pipefail
 
