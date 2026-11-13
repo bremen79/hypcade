@@ -35,14 +35,20 @@ ArcadeMove arcade_decode_dl2(const uint8_t *memory, size_t size) {
     if (size < 0x20000) return result;
     auto word = [memory](unsigned offset) { return unsigned(memory[0x10000 + offset]) |
         (unsigned(memory[0x10000 + offset + 1]) << 8); };
-    unsigned frame = word(0xa158), opens = word(0xa15c), closes = word(0xa15a);
-    if (!opens || closes < opens || frame > closes || frame + 12 < opens) return result;
+    // US 3.19 ROM 2780/2790 enters two accepting phases: A160 starts the
+    // first; A15C starts the later cue phase. ROM 287c closes at A15A
+    // (exclusive). Waiting for A15C can leave only one video frame.
+    unsigned frame = word(0xa158), opens = word(0xa160), closes = word(0xa15a);
+    if (!opens || closes <= opens || frame >= closes || frame + 12 < opens) return result;
     unsigned scene = word(0x56aa) & 63;
     unsigned record = word(0x5694 + 2 * scene);
     unsigned address = 0x5a24 + 14 * record;
     if (address + 14 > 0x10000) return result;
     const uint8_t *rec = memory + 0x10000 + address;
-    if (rec[0] > 1 || frame < unsigned(rec[2] | (rec[3] << 8))) return result;
+    // US 3.19 dispatches input records 0/1 and 4/5 through the same move
+    // handler (ROM 1c20). Bit 2 marks a special/exit move, not a death clip.
+    if ((rec[0] != 0 && rec[0] != 1 && rec[0] != 4 && rec[0] != 5) ||
+        frame < unsigned(rec[2] | (rec[3] << 8))) return result;
     switch (rec[1]) {
         case 1: result.controls = 1; break;
         case 3: result.controls = 8; break;
@@ -126,6 +132,33 @@ bool arcade_hide_dl2_move_text(const char *game, unsigned x, unsigned y, unsigne
     return game && std::strcmp(game,"lair2")==0 && x==32 && y==47 && line==2 &&
         arcade_watch_mode_enabled() && !arcade_visual_moves_enabled();
 }
+uint64_t arcade_guidance_snapshot() {
+    return published.load(std::memory_order_acquire);
+}
+void arcade_set_watch_automation(bool active) {
+    if (!active) {
+        watch_automation_active.store(false, std::memory_order_release);
+        pending_watch_event.store(0, std::memory_order_release);
+        return;
+    }
+    pending_watch_event.store(0, std::memory_order_relaxed);
+    watch_automation_active.store(true, std::memory_order_release);
+}
+void arcade_request_current_watch_move() {
+    uint64_t state = published.load(std::memory_order_acquire);
+    if ((state & UINT64_C(256)) && (state & UINT64_C(31))) {
+        uint64_t expected = 0;
+        pending_watch_event.compare_exchange_strong(expected,
+            (state & UINT64_C(0xffffffff00000000)) | (state & 31),
+            std::memory_order_release, std::memory_order_relaxed);
+    }
+}
+uint64_t arcade_take_watch_move() {
+    uint64_t event = pending_watch_event.exchange(0, std::memory_order_acq_rel);
+    uint64_t current = published.load(std::memory_order_acquire);
+    if (!(current & 256) || (current >> 32) != (event >> 32) || (current & 31) != (event & 31)) return 0;
+    return event;
+}
 #ifndef HYPSEUS_GUIDANCE_HOST_TEST
 extern "C" JNIEXPORT void JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeEnableGuidance(JNIEnv *, jclass, jint mode,
@@ -146,34 +179,19 @@ Java_org_hypseus_android_HypseusActivity_nativeWatchGameStarted(JNIEnv *, jclass
 }
 extern "C" JNIEXPORT jlong JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeGuidance(JNIEnv *, jclass) {
-    return static_cast<jlong>(published.load(std::memory_order_relaxed));
+    return static_cast<jlong>(arcade_guidance_snapshot());
 }
 extern "C" JNIEXPORT void JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeSetWatchAutomation(JNIEnv *, jclass, jboolean active) {
-    if (!active) {
-        watch_automation_active.store(false, std::memory_order_release);
-        pending_watch_event.store(0, std::memory_order_release);
-        return;
-    }
-    pending_watch_event.store(0, std::memory_order_relaxed);
-    watch_automation_active.store(true, std::memory_order_release);
+    arcade_set_watch_automation(active);
 }
 extern "C" JNIEXPORT void JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeRequestCurrentWatchMove(JNIEnv *, jclass) {
-    uint64_t state = published.load(std::memory_order_acquire);
-    if ((state & UINT64_C(256)) && (state & UINT64_C(31))) {
-        uint64_t expected = 0;
-        pending_watch_event.compare_exchange_strong(expected,
-            (state & UINT64_C(0xffffffff00000000)) | (state & 31),
-            std::memory_order_release, std::memory_order_relaxed);
-    }
+    arcade_request_current_watch_move();
 }
 extern "C" JNIEXPORT jlong JNICALL
 Java_org_hypseus_android_HypseusActivity_nativeTakeWatchMove(JNIEnv *, jclass) {
-    uint64_t event = pending_watch_event.exchange(0, std::memory_order_acq_rel);
-    uint64_t current = published.load(std::memory_order_acquire);
-    if (!(current & 256) || (current >> 32) != (event >> 32) || (current & 31) != (event & 31)) return 0;
-    return static_cast<jlong>(event);
+    return static_cast<jlong>(arcade_take_watch_move());
 }
 #endif
 

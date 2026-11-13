@@ -1,0 +1,32 @@
+{
+  "upstream": "https://github.com/jeffnyman/laser-vault",
+  "revision": "1f12c84dfabf3c8e5d028c8804b2f96678c798fa",
+  "license": "GPL-3.0-or-later",
+  "modifications": [
+    "autoplay.c: timeout and inconclusive continuation are UNRESOLVED, never success; removed local ASSIST tracing.",
+    "Extended continuation look-ahead/planning to 30 seconds to resolve long scene transitions.",
+    "Optional offline terminal predicate recognizes ROM-driven victory playback; timeout still unresolved."
+  ],
+  "sha256": {
+    "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "src/games/cinematronics/board.c": "dd6657647dc81129004b67e63e8965473919d0c327a605ada2067495584f6a2f",
+    "src/games/cinematronics/board.h": "fa3dec433912a375aabb1d2893222b5755b2ac32a3a32480c36bfa66b924b2a3",
+    "src/games/cinematronics/autoplay.c": "0675d9c7592695b1739e791130e8a41ab8a1cb3b210e042765835307f42e083b",
+    "src/games/cinematronics/autoplay.h": "0a5ca3afe2659386e6a7e41697012a27f5d91f97efa4ac0f1b3fe7571a4b1d00",
+    "src/cpu/z80.c": "a31fd4b9d98851b7497c0a1c9c3bfe96f33bae4927ce324d4268418ed62d8626",
+    "src/cpu/z80.h": "2bff6310e7c36b012eb9fcb0c03089f30dab7841bcc2a372d03a43a4e11e0ed5",
+    "src/audio/ay8910.c": "1c25b92b1646ad63473e9c221c0e7a07743696798d1aa04f092434f6935c6747",
+    "src/audio/ay8910.h": "b950e5c7dcf82b73da09f7ef338f75a69240e2e5791c1d4d2871fcbfa833cfa3",
+    "src/ldp/ldp.c": "2e03b4383e346ea893a8ac51b508ef8f21d26903175bac0706b352123905d56d",
+    "src/ldp/ldp.h": "7ae3c63fd466bd82592e972321b91de4b4fe5d72110193b15a8c26d6286907ad",
+    "src/ldp/ldv1000.c": "13facd673f749000a0900abf973e9ceb3dc4d84156d0fc404234eee6459b0555",
+    "src/ldp/ldv1000.h": "477f67762d5f326e1080c774e1f6e256a5985e5c7a31215dfb32cb4dc11f5b3e",
+    "src/util/roms.c": "f66d44fcb5368e898e786b967e214a9767df05dd097e40161e24dd5ce705352f",
+    "src/util/roms.h": "a71cb9d8e8307f73fb29bc5b633376f453e600fcb45976b2abfd50a7e013c623",
+    "src/util/zip.c": "83279d41d3328962f8ca1e4fcc77dbd2e76a0db6bfebf67919e52db6ec36f140",
+    "src/util/zip.h": "4ce593efa06db5ca97220fc4e46bc6bb7b4decc20d16ed950e82c8984f0e8f14",
+    "NOTICE": "023e758bcb737825cffaf5261eb9786bbbf792779622c8ba59785d66bc63aed9"
+  },
+  "modification_notice_date": "2026-11-08",
+  "notice": "NOTICE reproduces the pinned upstream README license grant and copyright."
+}

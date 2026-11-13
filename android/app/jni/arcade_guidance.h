@@ -22,6 +22,10 @@ bool arcade_guidance_enabled();
 
 bool arcade_visual_moves_enabled();
 bool arcade_watch_mode_enabled();
+uint64_t arcade_guidance_snapshot();
+uint64_t arcade_take_watch_move();
+void arcade_set_watch_automation(bool active);
+void arcade_request_current_watch_move();
 void arcade_watch_publish_credits(int credits);
 void arcade_watch_publish_coin_pending(bool pending);
 void arcade_watch_publish_game_started(bool started);

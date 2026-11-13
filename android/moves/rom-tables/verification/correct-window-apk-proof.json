@@ -1,0 +1,29 @@
+{
+  "backend": "actual Android 9 x86 APK",
+  "application_id": "org.hypseus.android.movetest",
+  "difficulty": 4,
+  "method": "Read-only process memory and Java input log; no memory writes or injected ROM moves",
+  "media": "Synthetic black MPEG2 with original disc timing; not a commercial video/audio synchronization test",
+  "final": {
+    "us": "171130538",
+    "bank": "255",
+    "published": "1297080123392",
+    "pending": "0",
+    "frame": "44155",
+    "actual": "44156",
+    "record": "1198",
+    "type": "5",
+    "control": "3",
+    "opens": "43315",
+    "closes": "43316",
+    "input": "0",
+    "expected": "0",
+    "lives": "3",
+    "pc": "70124",
+    "credits": "0"
+  },
+  "complete": true,
+  "trace_sha256": "99e79a5a18cc80ec3f3a988d5c3601fa5e030f7feab7c11ce89ced48613320d7",
+  "trace_scope": "Ending portion; Java log covers the full session. Ending reached with all three starting lives.",
+  "retained_starting_lives": true
+}

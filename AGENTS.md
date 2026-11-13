@@ -1,6 +1,6 @@
 # Contributor guide: Hypcade
 
-This guide applies to the whole repository. 
+This guide applies to the whole repository.
 Ask the user permission to change it when the architecture, build process or validation scope changes. Ask the user if to record user-facing behavior in the README. Never add a chronological handoff log here.
 
 ## Project scope
@@ -24,6 +24,7 @@ development configurations unless the maintainer explicitly requests it.
 - `README.md`: installation, game directory layout, options, credits and AI disclosure.
 - `android/README.md`: detailed setup, build, signing and development instructions.
 - `MODIFICATIONS.md`: a thematic and synthetic summary of changes from upstream, not a changelog.
+- `android/VALIDATION.md`: verified scenarios, evidence and remaining test limits.
 - `android/THIRD_PARTY_NOTICES.md`, `NOTICE` and component licenses: attribution and packaging.
 - `android/dependencies.lock.json` and `android/BUILD-PROVENANCE.json`: source pins and release identity.
 - `doc/CmdLine.md`: native command-line behavior.
@@ -98,10 +99,21 @@ development configurations unless the maintainer explicitly requests it.
   as `-blend`, banks and ROM versions, subject to launch validation.
 - Move controls are enabled only for supported ROM revisions. DL2 uses its own
   ROM prompts; Singe uses its native script menu through Service. Do not duplicate
-  Lua menu behavior. DLE21 and Ace A3 tables retain only controls with a ROM score
-  increase against a simultaneous no-input run. Each table key includes the exact
-  control. Repeated randomized starts sample route changes; they do not prove every
-  possible branch. Do not merge old acceptance-only tables into these tables.
+  Lua menu behavior. DLE21 and Ace A3 use ROM-derived, separately ranked Max score
+  and Fewest moves policies. Validate causal acceptance against simultaneous
+  no-input execution and publish runtime rows only after complete death-free plays
+  and independent replays. Preserve necessary zero-score transitions, including
+  Space Ace's final UP. Do not restore old acceptance-only tables.
+- Cover Space Ace's three skills and four operator difficulties independently.
+  Watch checks must include IRQ publication, Java polling and SDL queue delivery;
+  an immediate-input replay alone does not validate Android timing. Test the merged
+  lookup using only its bundled rows before publishing. Do not add learned or
+  teacher-assisted fallbacks to the checker. Repeated randomized starts
+  sample route changes; they do not prove every branch or global optimality.
+- DL2 US 3.19 accepts moves from RAM segment `1000` offset `A160`; `A15C` is a
+  later cue threshold and `A15A` closes the window exclusively. Input record types
+  0, 1, 4 and 5 are valid. Preserve these ROM semantics rather than adding timing
+  offsets or changing CPU/driver timing to make Watch Mode pass.
 - The DL2 shared scoreboard currently supports US 3.19 only. Its stored score
   is ten times the displayed score. Other revisions must remain disabled until
   their layouts are established. See the Android guide for the RAM field mapping.
@@ -152,6 +164,14 @@ before running it. Java/resource changes normally need assembly and lint; native
 changes need both ARM builds. Input, storage, lifecycle and decoding changes need
 the affected runtime scenario. Documentation-only changes do not need an APK build.
 Honor explicit requests not to test or install on a device.
+
+For move generation and Watch Mode changes, follow `tools/offline-moves/README.md`
+and `WATCH-VERIFY.md` in that directory. Run the skill/difficulty matrix and
+unassisted packaged-selector checks on the host and Android emulator. DL2's
+video-less harness uses the production Java player, JNI guidance, i86 CPU and
+driver methods; include its omitted-input negative controls. Compare backend
+results and keep source fingerprints consistent with the final tested tree.
+Distinguish video-less Android checks from actual APK runs through the launcher.
 
 ## Local tools and data
 

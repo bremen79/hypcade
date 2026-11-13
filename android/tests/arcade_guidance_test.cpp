@@ -29,18 +29,27 @@ int main() {
     word(0x56aa, 2); word(0x5698, 3);
     auto rec = memory.data() + 0x10000 + 0x5a24 + 14*3;
     rec[0]=0; rec[1]=3; rec[2]=100;
-    word(0xa15c, 120); word(0xa15a, 140); word(0xa158, 119);
+    word(0xa160, 120); word(0xa15c, 135); word(0xa15a, 140); word(0xa158, 119);
     auto next = arcade_decode_dl2(memory.data(), memory.size());
     assert(next.controls==8 && !next.ready);
     word(0xa158,107); assert(!arcade_decode_dl2(memory.data(),memory.size()).controls);
     word(0xa158,108); assert(arcade_decode_dl2(memory.data(),memory.size()).controls == 8);
     word(0xa158,120); auto open=arcade_decode_dl2(memory.data(),memory.size());
     assert(open.controls==8 && open.ready && open.window==next.window);
+    // A15C is a later cue threshold; acceptance already opens at A160.
+    word(0xa15c,139);
+    assert(arcade_decode_dl2(memory.data(),memory.size()).ready);
+    for (unsigned type : {0U,1U,4U,5U}) {
+        rec[0]=type;
+        assert(arcade_decode_dl2(memory.data(),memory.size()).ready);
+    }
+    rec[0]=0;
     for (auto pair : std::vector<std::pair<unsigned,unsigned>>{{1,1},{3,8},{5,2},{7,4},{10,16}}) {
         rec[1]=pair.first;
         assert(arcade_decode_dl2(memory.data(),memory.size()).controls == pair.second);
     }
     rec[1]=3;
+    word(0xa158,140); assert(!arcade_decode_dl2(memory.data(),memory.size()).controls);
     word(0xa158,141); assert(!arcade_decode_dl2(memory.data(),memory.size()).controls);
     word(0xa158,130); rec[0]=2; assert(!arcade_decode_dl2(memory.data(),memory.size()).controls);
     rec[0]=0; word(0x5698,65535); assert(!arcade_decode_dl2(memory.data(),memory.size()).controls);

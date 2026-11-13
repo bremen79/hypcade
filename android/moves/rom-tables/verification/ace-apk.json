@@ -1,0 +1,27 @@
+{
+  "game": "ace",
+  "mode": 2,
+  "backend": "actual Android 9 x86 APK through launcher",
+  "media": "Synthetic MPEG2 disc timing",
+  "complete": true,
+  "no_life_loss": true,
+  "starting_lives": 5,
+  "final": {
+    "us": "324859021",
+    "frame": "32840",
+    "status": "3",
+    "scene": "152",
+    "step": "29",
+    "branch": "4096",
+    "published": "468151435264",
+    "lives": "5",
+    "p2lives": "10",
+    "score": "213098",
+    "credits": "0"
+  },
+  "trace_sha256": "ab83d24629cdde8484f477b5e832273fce7c04addf3d35cf9bea07104b22de98",
+  "apk_sha256": "44a91dc2fbd014c28b57ec58276bdc03c1b7bb8e0356a465609f79de5b544781",
+  "skill": "Captain",
+  "difficulty": 1,
+  "trace_scope": "Boot through ending and exit; final marks the completion boundary"
+}

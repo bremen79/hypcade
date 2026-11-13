@@ -1,0 +1,25 @@
+{
+  "game": "dle21",
+  "mode": 2,
+  "backend": "actual Android 9 x86 APK through launcher",
+  "media": "Original game media",
+  "complete": true,
+  "no_life_loss": true,
+  "starting_lives": 5,
+  "final": {
+    "us": "562215177",
+    "frame": "31080",
+    "status": "3",
+    "scene": "164",
+    "step": "15",
+    "branch": "7168",
+    "published": "631360192512",
+    "lives": "5",
+    "p2lives": "15",
+    "score": "314457",
+    "credits": "0"
+  },
+  "trace_sha256": "e16f54986cf4f9d9088a7289ae10b544dd2611e71628bf1ff88c1eb062f4d817",
+  "apk_sha256": "9e2dd6eb77619f4c9042e14fd9a1b10d2ea315e0aee3c009310cfb4fa4976189",
+  "trace_scope": "Boot through ending and exit; final field marks the completion boundary"
+}

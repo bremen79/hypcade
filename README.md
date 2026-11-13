@@ -45,8 +45,14 @@ moves for either policy; Singe games keep their own script menus.
 
 The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
 tables and checked through complete games without a lost life. Randomized
-starts and all three Space Ace skills are tested. These checks do not prove
+starts, all three Space Ace skills and all four operator difficulties are tested.
+Necessary zero-score actions, including Space Ace's final UP, are retained.
+These checks do not prove
 that every retry context is covered or that the routes are globally optimal.
+
+Press **Watch Mode** beside **Start game** to play automatically. It waits for
+the game to accept credits and Player 1 Start, then follows the selected moves.
+Only Pause and Exit remain active during automatic play.
 
 ## Install and run
 
@@ -158,8 +164,8 @@ Unavailable options are grayed out.
 | Fast startup | Shortens startup in supported games. |
 | Show score and lives | Enables the optional scoreboard in supported games. |
 
-Move guidance is available for Dragon's Lair Enhanced 2.1 and Space Ace A3
-when the selected move has ROM evidence of a score increase; Dragon's Lair II
+Move guidance is available for Dragon's Lair Enhanced 2.1 and Space Ace A3,
+using ROM-derived routes checked by complete death-free replays; Dragon's Lair II
 3.19 uses its native prompts. Dragon's Lair I and Space Ace show white action text near
 the bottom of the video and offer an optional timing cue. Dragon's Lair II uses
 its own ROM prompts and the cues already in its video.
@@ -195,11 +201,14 @@ Unsupported renderers show plain video.
 
 This was tested on an **Arcade1Up Yoga Flame** cabinet.
 
-The tested scenarios and remaining gaps, including two-player starts and DL2
-scoreboard counters, are recorded alongside automated checks and Android
-7.1/9/15 emulator results in
-[VALIDATION.md](android/VALIDATION.md). These include storage, playback, input,
-launcher and selected move/retry scenarios.
+The current move validation passed on both the laptop and an Android 9 x86
+emulator: 208 policy runs with independent replays, 234 unassisted Watch Mode
+runs and 45 DL2 timing/difficulty cases per backend. Direct APK runs also reached
+the endings of DLE21, Space Ace and DL2 with their starting lives retained.
+
+[VALIDATION.md](android/VALIDATION.md) explains the test setup, evidence, media
+used and remaining gaps. These emulator results are separate from the earlier
+cabinet test; the current changes have not been retested on physical ARM hardware.
 
 ## Upstream and attribution
 
@@ -229,7 +238,7 @@ no Hypdroid code was imported for this work.
 
 ## AI-assisted development
 
-Hypcade-specific development used **OpenAI GPT-6 and Codex** extensively
+Hypcade-specific development used **OpenAI GPT-6-Astra and Codex** extensively
 for implementation, refactoring, debugging, test creation and execution, build
 work, and documentation. Project requirements and feedback, including the
 cabinet testing, came from me.

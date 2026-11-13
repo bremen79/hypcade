@@ -83,7 +83,9 @@ moves for either policy; Singe games keep their own script menus.
 
 The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
 tables and checked through complete games without a lost life. Randomized
-starts and all three Space Ace skills are tested. These checks do not prove
+starts, all three Space Ace skills and all four operator difficulties are tested.
+Necessary zero-score actions, including Space Ace's final UP, are preserved.
+These checks do not prove
 that every retry context is covered or that the routes are globally optimal.
 
 
@@ -105,7 +107,7 @@ resolution. Moves, subtitles and game overlays are drawn afterward. An
 unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
-**Show correct moves** and **Play move timing cue** support Dragon's Lair
+**Show moves** and **Play move timing cue** support Dragon's Lair
 Enhanced 2.1 (`dle21`) and Space Ace A3 (`ace`). White action text appears near
 the bottom, up to about 400 ms before the move window. The font matches Dragon's
 Lair II, with a transparent background and a small dark shadow.
@@ -114,16 +116,29 @@ Dragon's Lair II 3.19 (`lair2`, default version 6) uses its original ROM prompts
 Its extra timing-cue switch is disabled because the video already contains cues.
 Singe games use their own Lua options menus: assign **Game options / Service**
 or press **Options** on mobile. Unsupported ROM revisions have disabled move
-controls. Moves do not play the game for you, and coverage is not guaranteed
-for every branch, DIP setting or later round. Offline generation tests each
-available control against a no-input ROM simulation and includes only controls
-that raise the score. It samples random screen orders across repeated runs; it
-does not prove coverage of every possible sequence.
+controls. Showing moves displays guidance; **Watch Mode**, beside Start game,
+plays automatically. It inserts coins until the game confirms a credit and
+retries Player 1 Start until the game starts. During play, only Pause and Exit
+remain available. Controller and touch gameplay inputs are blocked.
+
+Offline generation decodes ROM alternatives and ranks routes for each objective.
+Candidate inputs are checked against a simultaneous no-input simulation, and
+runtime rows are published only after complete death-free games and independent
+replays. Required zero-score transitions are retained. Separate unassisted checks
+exercise IRQ publication, Java polling, SDL delivery and button holds. Randomized
+starts sample different paths; they do not establish every retry context or a
+global optimum. See the [validation guide](VALIDATION.md).
+
+DL2 Watch Mode reads the earliest acceptance phase in the US 3.19 ROM, including
+special and exit move records. Its native on-screen prompts keep their original
+presentation. The acceptance decoder does not change the emulated CPU or driver
+timing.
 
 Device media volume controls overall loudness. Command files can also set
 `-volume_vldp` (video audio) and `-volume_nonvldp` (other game audio), from 0 to 64.
-These are useful candidates for future GUI controls, along with seek delays and
-game-specific difficulty, lives and coinage settings.
+Difficulty and Space Ace skill already have GUI controls where supported.
+Volume, seek delays, lives and coinage remain native or game-menu settings where
+the game provides them.
 
 ## Storage and permissions
 
@@ -323,7 +338,10 @@ python3 tests/test_launcher_logic.py
 ```
 
 See the [offline move tool](../tools/offline-moves/README.md) for generating ROM guidance
-without video or real-time waits.
+without video or real-time waits, and its
+[Watch Mode verification guide](../tools/offline-moves/WATCH-VERIFY.md) for
+host/Android checks and DL2 acceptance-window details. The
+[validation guide](VALIDATION.md) summarizes the current results and limitations.
 
 ### How the Android build fits together
 

@@ -100,7 +100,13 @@ timing cues. The offline tool decodes revision-pinned ROM scene/step tables,
 input windows, transitions, score awards and death/scene-exit flags. It derives
 separate candidate routes for Max score and Fewest moves, executes the ROM at
 maximum speed without media, and independently replays successful full games.
+The verification matrix includes all three Space Ace skills and all four
+operator difficulty settings. Watch Mode checks additionally model IRQ
+publication, Java polling, SDL input delivery and button holds, with varied
+queue phases. The tools can run these checks on the laptop and on Android.
 The APK identifies recorded moves by ROM scene, step and branch context.
+The bundler uses the independently replayed ROM routes directly; the Watch Mode
+checker cannot learn or add missing moves.
 Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
 set, defaulting to Max score when the move display is Off. Local route selection
 and sampled successful games are not a proof of global optimality or complete
@@ -110,6 +116,9 @@ Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
 setting. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
 a duplicate move system from Hypcade.
+The DL2 decoder uses the ROM's earliest accepted phase and exclusive closing
+frame, including its special and exit input records. It does not wait for the
+later cue threshold, which can leave too little time for Android input delivery.
 
 Supported games also offer Watch Mode. It inserts coins until the game's own
 credit counter confirms a credit, then retries Player 1 Start until the ROM
@@ -130,12 +139,14 @@ the emulator splash. A short coin-slot sound confirms a coin-button press;
 credit acceptance remains the game's responsibility. Player 2 Start uses the
 emulator's existing input and supports alternating play where the game allows it.
 
-The offline generator tests every distinct available control at each prompt on
-a death-free route. It runs the candidate input alongside a no-input simulation
-and retains only the exact controls that increase either player's ROM score.
-Repeated starts sample randomized screen orders. The generated tables are keyed
-by game state, outcome, control and frame; coverage remains limited to the
-tested ROM revisions and sampled routes.
+The offline generator preserves all decoded input alternatives and ranks local
+routes separately for each objective. It runs candidate inputs alongside a
+no-input simulation to check causal acceptance. Necessary zero-score transitions,
+including Space Ace's final UP, are retained rather than discarded as optional.
+Only complete death-free games publish runtime rows. Repeated starts sample
+randomized screen orders. The generated tables are keyed by game state, outcome,
+control and frame; coverage remains limited to the tested ROM revisions and
+sampled routes.
 
 ## Android integration and smaller packages
 

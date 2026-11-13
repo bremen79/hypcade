@@ -1,0 +1,184 @@
+[
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 0,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 0,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 0,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 0,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 0,
+    "objective": "highest-score",
+    "distinct_sequences": 7
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 0,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 1,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 1,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 1,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 1,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 1,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 1,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 2,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 2,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 2,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 2,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 2,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 2,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 3,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "ace",
+    "difficulty": 3,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 3,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "cadet",
+    "difficulty": 3,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 3,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "ace",
+    "skill": "captain",
+    "difficulty": 3,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "dle21",
+    "skill": "ace",
+    "difficulty": 0,
+    "objective": "highest-score",
+    "distinct_sequences": 8
+  },
+  {
+    "game": "dle21",
+    "skill": "ace",
+    "difficulty": 0,
+    "objective": "shortest",
+    "distinct_sequences": 8
+  }
+]
