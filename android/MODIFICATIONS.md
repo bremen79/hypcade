@@ -180,6 +180,11 @@ score-display switch.
 For Dragon's Lair II US 3.19, Hypcade adds a read-only connection to both players'
 ROM score and life values and the credit count. Other DL2 revisions remain
 unsupported. The stored score is divided by ten for display, matching the ROM.
+The original player count controls visibility: single-player games hide Player
+2's numbers, while two-player games show both scores immediately. A finished
+player's score remains until the match ends, with their lives blank. All player
+numbers are cleared at match end; fixed artwork labels remain. No final-score
+cache or additional blinking is added.
 This addition does not change scoring rules or game memory. Space Ace uses
 the upstream dedicated skill-panel bezel alongside the scoreboard when Show
 score and lives is enabled. Explicit native annunciator layouts take priority;

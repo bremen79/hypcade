@@ -795,6 +795,7 @@
     "android/tests/test_bundled_moves.py",
     "android/tests/test_coin_feedback.py",
     "android/tests/test_crt_shader.py",
+    "android/tests/test_dl2_scoreboard.py",
     "android/tests/test_hardware_video.py",
     "android/tests/test_launcher_logic.py",
     "android/tests/test_mpeg2_neon.py",

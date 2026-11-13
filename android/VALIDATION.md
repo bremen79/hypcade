@@ -75,12 +75,31 @@ vertical bezels at opposite edges and video visible behind the transparent Top
 scoreboard. Top uses the upstream white digit set with only lit segments,
 checked on the cabinet; scoreboards remain outside the CRT-filtered game layer.
 
-In a short DL2 one-player cabinet check, four added coins did not change Player
-2's displayed lives: the captured digit pixels stayed identical at 3. The ROM's
-lives display routine indexes words at `0x1000:56ac` and `0x1000:56ae`; its credit
-counter is separate at `0x1000:a156`. A video-less ROM probe also confirms that
-starting one player initializes both lives slots. The display deliberately keeps
-these raw ROM values. This does not establish every two-player or coinage case.
+Video-less lifecycle probes of DLE21 and DL2 US 3.19 covered single-player and
+two-player starts, both turns, elimination, continues, wins, game over, coins
+and subsequent games. Twenty runs covered 8.75 virtual hours and 17 checked
+lifecycle conditions. DLE21 can retain a nonzero Player 2 score in RAM while
+blanking its display in a new single-player game, so numeric RAM values alone
+do not establish participation. DL2 initializes both lives slots even in a
+single-player game. Its original player count at `0x1000:56a6` distinguishes
+participation and clears at match end; `0x56a4` can shrink during a two-player
+match and must not be used for this purpose.
+
+The DL2 adapter uses that original count to hide inactive numbers. Both scores
+appear immediately in a two-player game; finished players keep their score but
+have blank lives until the whole match ends, when all player numbers disappear.
+Fixed artwork labels remain. DL1's score retention and initial delay before
+showing Player 2's score are deliberately not reproduced, nor is extra blinking.
+`python3 android/tests/test_dl2_scoreboard.py` compiles the production adapter
+against a capturing scoreboard and checks 14 lifecycle/boundary cases, including
+continues after Player 2 is eliminated and stale scores in a new match.
+Eight additional video-less DL2 ROM runs exercised the production adapter at
+the driver's normal scoreboard IRQ, with assertions on every repaint (3.44
+virtual hours). These included the paid-continue case where the original player
+count remains two while the current player limit drops to one; Player 2's score
+must remain visible and their lives blank. All assertions passed.
+These visibility rules require no changes to the ROM, CPU or input timing.
+They have not yet been checked visually on the cabinet.
 
 ## Move policies and Watch Mode
 

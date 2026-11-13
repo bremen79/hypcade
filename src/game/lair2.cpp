@@ -399,15 +399,21 @@ void lair2::update_android_scoreboard()
         return unsigned(m_cpumem[0x10000 + offset]) |
                (unsigned(m_cpumem[0x10000 + offset + 1]) << 8);
     };
+    // The original player count survives elimination/continues; 56a4 can
+    // shrink while a two-player match is still in progress. Zero ends a match.
+    const unsigned players = word(0x56a6);
     for (unsigned player = 0; player < 2; ++player) {
+        const bool participating = players <= 2 && player < players;
         unsigned score = word(0x56b0 + player * 2) / 10;
         for (int digit = 5; digit >= 0; --digit) {
-            m_android_scoreboard->update_player_score(digit, score % 10, player);
+            m_android_scoreboard->update_player_score(
+                digit, participating ? score % 10 : 0xf, player);
             score /= 10;
         }
         const unsigned lives = word(0x56ac + player * 2);
-        // This shared artwork has one lives digit; blank unrepresentable values.
-        m_android_scoreboard->update_player_lives(lives <= 9 ? lives : 0xf, player);
+        // Finished players keep their score until match end, with no lives digit.
+        m_android_scoreboard->update_player_lives(
+            participating && lives > 0 && lives <= 9 ? lives : 0xf, player);
     }
     const unsigned credits = word(0xa156);
     m_android_scoreboard->update_credits(0, credits <= 99 ? credits / 10 : 0xf);

@@ -405,15 +405,23 @@ on/off control for their existing scoreboard.
 
 **Show score and lives** uses the same graphical scoreboard as Dragon's
 Lair I for the US 3.19 ROM (`lair2`, default revision or `-version 6`). It shows
-both players' scores and lives plus the credit count, directly from the ROM's
-state. Turning it off leaves the game's original video and text unchanged.
+the participating players' scores and lives plus the credit count, directly
+from the ROM's state. In a single-player game, Player 2's numbers stay blank;
+the artwork's fixed labels remain. In a two-player game, both scores appear
+from the start. A finished player's score stays visible while the match
+continues, with their lives blank. When the whole match ends, all player
+numbers disappear; final scores are not retained by the overlay.
+Turning it off leaves the game's original video and text unchanged.
 Other DL2 revisions remain disabled because their RAM layouts differ.
 The shared artwork has one digit per life count and two credit digits; values
 outside those display ranges are blank rather than truncated.
 
 Implementation notes: US 3.19 (CRC32 `e9453a1b`) copies its data to segment
 `0x1000`. Player life words are at offsets `0x56ac` and `0x56ae`, score words
-at `0x56b0` and `0x56b2`, and credits at `0xa156`. The ROM's life-display routine
+at `0x56b0` and `0x56b2`, and credits at `0xa156`. The original player count
+at `0x56a6` controls numeric visibility; unlike `0x56a4`, it remains two when
+one player is eliminated and the other continues. Zero means no active match.
+The ROM's life-display routine
 at `0x13b2`, score display at `0x166a` and credit display at `0x220a` establish
 these fields. Scores are divided by ten, matching the ROM's own display and
 high-score comparison. The adapter only reads RAM and updates the existing
