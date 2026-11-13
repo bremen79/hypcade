@@ -39,6 +39,8 @@ public final class ArcadeSetupTest {
         check(found.games.size()==3,"Discover three valid games, ignore bad framefiles and escaped/cyclic links");
         for (LaunchConfig detected : found.games) {
             check(detected.showScore, "Default score preference enabled");
+            check(new VideoOptions(LaunchConfig.splitArguments(detected.extraArguments)).smooth,
+                    "New game profiles default to smooth video scaling");
             check(LaunchConfig.splitArguments(detected.extraArguments).contains("-fastboot") ==
                     LaunchConfig.supportsFastBoot(detected.game), "Fast boot defaults on where supported");
         }
@@ -52,7 +54,8 @@ public final class ArcadeSetupTest {
         java.util.List<String> importedArgs = LaunchConfig.splitArguments(imported.extraArguments);
         VideoOptions importedVideo = new VideoOptions(importedArgs);
         check(importedVideo.scanlines && !importedVideo.vsync && !importedVideo.hardware && importedVideo.showFps
-                && !importedVideo.fastBoot, "Initialize GUI options from commands, including absent fastboot");
+                && !importedVideo.fastBoot && !importedVideo.smooth,
+                "Command-file settings override new-profile defaults");
         check(importedArgs.contains("name # one.png") && java.util.Collections.frequency(importedArgs,"-bank")==2,
                 "Preserve quoted values, comments, repeated ROM banks");
         check(!importedArgs.contains("-framefile") && !importedArgs.contains("-x") && !importedArgs.contains("-config")
@@ -63,7 +66,8 @@ public final class ArcadeSetupTest {
         Files.writeString(commands, "-scanlines -novsync -fastboot -bank 0 1111");
         LaunchConfig rescanned = GameScanner.scan(root.toFile(), Collections.singletonList(edited), ()->false)
                 .games.stream().filter(c->c.id.equals(edited.id)).findFirst().orElseThrow();
-        check(rescanned == edited && !rescanned.showScore && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).scanlines,
+        check(rescanned == edited && !rescanned.showScore && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).scanlines
+                && !new VideoOptions(LaunchConfig.splitArguments(rescanned.extraArguments)).smooth,
                 "Rescan preserves GUI choices and imported native options despite changed file");
         check(!java.util.Arrays.asList(edited.arguments(root.toFile())).contains("-scorebezel"), "GUI score off wins");
         Files.writeString(commands, "-bezel \"unfinished");

@@ -19,7 +19,7 @@ final class GameCommands {
         int dot = name.lastIndexOf('.');
         File file = new File(framefile.getParentFile(),
                 (dot < 0 ? name : name.substring(0, dot)) + ".commands");
-        if (!file.exists()) return LaunchConfig.supportsFastBoot(game) ? "-fastboot" : "";
+        if (!file.exists()) return LaunchConfig.supportsFastBoot(game) ? "-fastboot -linear_scale" : "-linear_scale";
         LaunchConfig.requireInside(root.getCanonicalFile(), file.getCanonicalFile());
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (FileInputStream input = new FileInputStream(file)) {

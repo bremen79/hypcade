@@ -21,6 +21,9 @@ and buttons. It discovers games from their framefiles and scripts, saves setting
 automatically, and highlights the selected control. Opening a settings section
 scrolls its contents into view. Options unsupported by the selected game or ROM
 are hidden, and the help text describes the available controls.
+Multiple-choice settings place their label on the left and a separate selector
+on the right. New game profiles default to smooth video scaling; saved settings
+and imported command-file settings retain their selected behavior.
 
 Directory selection and controller setup are shared by all games. The arcade
 build requires a configured controller before allowing play. The setup wizard

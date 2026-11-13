@@ -41,15 +41,15 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6041397,
-      "sha256": "ad19aa904adc4ccbeec3c18b97feb11907036d1b07b1be38b2d6b385a542606a",
+      "size_bytes": 6041781,
+      "sha256": "f3af517072f2a54ff7bcf99af5a38339c8091dffaf7c934d066aaeaede0304d5",
       "uncompressed_native_bytes": 5072412,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6355955,
-      "sha256": "cce518fad781d0bbf59baa5fe7c60055ae205b3fa37f520ce1b3ca94ad859b22",
+      "size_bytes": 6356315,
+      "sha256": "460ca6884b79ca90f26503fa3e084075e04a1578e63b9cf535669b10e2f583c7",
       "uncompressed_native_bytes": 7156960,
       "uncompressed_support_bytes": 4293786
     }
@@ -57,23 +57,23 @@
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6796769,
-      "sha256": "b4ff153aa8c547581552ea157d31169a408342d17389b35763b5ff9421b91d1e",
+      "size_bytes": 6797149,
+      "sha256": "b31c36dfb7020d337993ab058eeea35a1a354d443db186f12ceb94ac3cdb5dd4",
       "uncompressed_native_bytes": 7866756,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6807158,
-      "sha256": "f8c1e7a49766b5f7b196d19cf57b2fa880cd4cd05574bff812db83e4752e64f3",
+      "size_bytes": 6807514,
+      "sha256": "4b3451ad16b07e5f2e7de11f4ff8e222659adee6188cfe1f759f4711090e16df",
       "uncompressed_native_bytes": 8090208,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 442972,
-    "sha256": "52b4956d2efb2c5a6465e91617e1a0fc1afa40a14e1e7320357ea2fad9e8e00f",
+    "size_bytes": 443099,
+    "sha256": "178baf2cce5d2abc653d255ba4819950a5f94b35973a44b2a6f1f360b1f53761",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -108,7 +108,9 @@
     "mobile_service_menu": "Raw Options / Service switch in the top touch-button row for Singe, Dragon's Lair II and Space Ace 91; hidden in Watch Mode. No automatic button combinations. Mobile touch controls use the same logical Android input dispatch as mapped arcade controls.",
     "space_ace_difficulty": "Original US Space Ace: four explicit native DIP combinations (after 3/5 consecutive episodes; slow/fast progression), initialized from effective -bank values and saved per game. Separate saved Cadet/Captain/Ace skill uses existing native skill inputs on Start. Neither control has a default placeholder. DIP-controlled games share one catalog and reader/writer; no additional native Space Ace code.",
     "startup": "Every game launch receives -nosplash, independently of Fast startup. The GUI fastboot switch controls only the upstream -fastboot ROM shortcut; native fastboot implementation is unchanged.",
-    "launcher_options": "Options unsupported by the selected game/ROM are hidden, including Watch Mode, difficulty, skill, score/lives, fastboot, moves and cues. Assistance help is hidden when irrelevant. Reset controller is hidden without a saved mapping. Supported controls may be temporarily disabled while busy."
+    "launcher_options": "Options unsupported by the selected game/ROM are hidden, including Watch Mode, difficulty, skill, score/lives, fastboot, moves and cues. Assistance help is hidden when irrelevant. Reset controller is hidden without a saved mapping. Supported controls may be temporarily disabled while busy.",
+    "launcher_choices": "Multiple-choice fields show a left caption and a right menu button with a dropdown arrow. Game, ROM override, difficulty, skill and move strategy use the same layout; unsupported fields hide the complete row.",
+    "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings."
   },
   "move_table_sha256": "89619137e90b6cc5e7333f16e1b4c32796c812b890f583e5e32abf153eccf8f4",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
@@ -293,8 +295,8 @@
       "Gradle deprecation warnings."
     ],
     "lint_warnings": {
-      "arcade": 48,
-      "mobile": 43,
+      "arcade": 42,
+      "mobile": 37,
       "errors": 0
     },
     "shared_storage": {
@@ -409,6 +411,16 @@
       "arm_release_lint_passed": true,
       "compiled_labels_checked_in_all_four_apks": true,
       "device_ui_test": false
+    },
+    "choice_layout": {
+      "backend": "Android 9 x86 emulator, release APK through launcher",
+      "new_profiles_smooth_checked": true,
+      "label_left_value_right": true,
+      "move_menu_selects_and_saves": true,
+      "unsupported_difficulty_and_skill_rows_hidden": true,
+      "ace_choice_labels_visible": true,
+      "gameplay_test": false,
+      "apk_sha256": "b31c36dfb7020d337993ab058eeea35a1a354d443db186f12ceb94ac3cdb5dd4"
     }
   },
   "move_generation": {
@@ -524,9 +536,10 @@
   "settings_source_sha256": {
     "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4a5d99e0dfb0b811b8335d0b9fcdd8c74b6de048e61296aec380c238a12a2c74",
     "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "68197dd63046600b6ea11c82f9c40fd9bd7fdb49a7291e4f8b03a760933412f6",
-    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "bd3c9946c6397a1d45bb2dc9603bae01397226768d9032513200418a15af0073",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "970d3d676acf45c1c1db9b994e7a11f4e6320abada938ef892c2c574c8a7587f",
     "android/app/src/main/java/org/hypseus/android/MoveMode.java": "e1bba0c1e56a0eb91068a0cab24183e91bcde558c7f8961e9ae458f8d4e1792f",
-    "android/app/src/main/java/org/hypseus/android/VideoOptions.java": "3e9ad67c2cc2dab04be8ac3ff247e20fc03cf87a575c303b98d5973bd196749e"
+    "android/app/src/main/java/org/hypseus/android/VideoOptions.java": "3e9ad67c2cc2dab04be8ac3ff247e20fc03cf87a575c303b98d5973bd196749e",
+    "android/app/src/main/java/org/hypseus/android/GameCommands.java": "2ccebf7180f17cb010a7f3479d37e9517b9f086503f6de599ebe3972d49a115f"
   },
   "settings_references": [
     {
@@ -541,7 +554,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four signed release APKs rebuilt with unsupported launcher options hidden and help text describing only available features. Every game continues to use -nosplash independently of native -fastboot. Launcher model checks and ARM release lint passed; signatures, SDK/ABI policies and removal of unavailable-option labels verified in all four compiled APKs. Native emulation and move tables are unchanged. No device UI or gameplay run was performed for this visibility change.",
+  "source_tree_status": "All four signed release APKs rebuilt with caption-and-selector rows and smooth scaling enabled by default for new profiles without command-file overrides. Launcher model tests and release lint passed. The Android 9 x86 arcade release APK was launched to verify menu selection/save, label/value placement, hidden unsupported rows and checked smooth-scaling default. Original emulator settings were restored afterward. Signatures and SDK/ABI policies verified; native emulation and move data are unchanged. No physical-device or gameplay test was performed for this layout change.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",

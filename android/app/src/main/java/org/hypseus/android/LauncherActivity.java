@@ -289,9 +289,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         LinearLayout game = card(gameArea);
         heading(game, "AVAILABLE GAMES");
         game.addView(text("Joystick / D-pad: move · A / Start: select · B: back", 12, MUTED));
-        profilePicker = input(action("Choose game", false, view -> chooseAvailableGame()));
-        profilePicker.setContentDescription("Available games");
-        game.addView(profilePicker, spaced(-1, dp(48), 0));
+        profilePicker = choiceOption(game, "Game", view -> chooseAvailableGame());
         scanStatus = text("Choose a game folder to find available games.", 12, MUTED);
         game.addView(scanStatus, spaced(-1, -2, 6));
         game.addView(input(action("Rescan games", false, view -> scanGames(true))), spaced(-1, dp(44), 6));
@@ -302,8 +300,6 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         framefile = fileField(manualSection, "Framefile", "Choose framefile", false);
         detectedGame = text("Choose a framefile to detect the game.", 14, MUTED);
         manualSection.addView(detectedGame, spaced(-1, -2, 6));
-        gameId = input(action("", false, view -> chooseGame()));
-        gameId.setHint("Choose game / ROM version");
         scriptSection = new LinearLayout(this);
         scriptSection.setOrientation(LinearLayout.VERTICAL);
         script = fileField(scriptSection, "Singe script or ZIP", "Choose script or ZIP", true);
@@ -331,17 +327,14 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         advancedSection.setOrientation(LinearLayout.VERTICAL);
         styleSection(advanced, advancedSection, "Game Options", false);
         advancedSection.addView(manualSection);
-        label(advancedSection, "Game / ROM override (only if detection is incorrect)");
-        advancedSection.addView(gameId, spaced(-1, dp(48), 4));
+        gameId = choiceOption(advancedSection, "Game / ROM override", view -> chooseGame());
+        gameId.setHint("Choose ROM");
         fastBoot = option(advancedSection, "Fast startup");
-        difficultyButton = input(action("Difficulty", false, view -> chooseDifficulty()));
-        advancedSection.addView(difficultyButton, spaced(-1, dp(60), 4));
-        skillButton = input(action("Skill", false, view -> chooseSkill()));
-        advancedSection.addView(skillButton, spaced(-1, dp(50), 4));
+        difficultyButton = choiceOption(advancedSection, "Difficulty", view -> chooseDifficulty());
+        skillButton = choiceOption(advancedSection, "Skill", view -> chooseSkill());
         showScore = option(advancedSection, "Show score and lives");
-        showMovesButton = input(action("Show moves", false, view -> chooseSetting(
-                "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value)));
-        advancedSection.addView(showMovesButton, spaced(-1, dp(50), 4));
+        showMovesButton = choiceOption(advancedSection, "Show moves", view -> chooseSetting(
+                "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value));
         timingCue = option(advancedSection, "Play move timing cue");
         assistanceStatus = text("", 12, MUTED);
         advancedSection.addView(assistanceStatus, spaced(-1, -2, 8));
@@ -375,7 +368,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     }
 
     private LaunchConfig emptyProfile() {
-        return new LaunchConfig("", "", "", "", "", "-fastboot");
+        return new LaunchConfig("", "", "", "", "", "-fastboot -linear_scale");
     }
 
     private LaunchConfig readProfile() {
@@ -1158,9 +1151,9 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         } else if (difficulty < 0 || difficulty >= levels.length)
             difficulty = GameDifficulty.importedSelection(game, safeOptions());
         setGameOption(difficultyButton, levels.length > 1, available);
-        if (levels.length > 1) difficultyButton.setText("Difficulty: " + levels[difficulty]);
+        if (levels.length > 1) difficultyButton.setText(levels[difficulty]);
         setGameOption(skillButton, GameDifficulty.spaceAce(game), available);
-        skillButton.setText("Skill: " + GameDifficulty.SKILLS[skill]);
+        skillButton.setText(GameDifficulty.SKILLS[skill]);
         setGameOption(watchButton, support.visual, available);
         setGameOption(showScore, LaunchConfig.supportsScore(game, safeOptions()), available);
         setGameOption(fastBoot, LaunchConfig.supportsFastBoot(game), available);
@@ -1169,7 +1162,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         if (!support.visual) moveMode = MoveMode.OFF;
         moveMode = MoveMode.selected(game, moveMode);
         if (!support.cue) timingCue.setChecked(false);
-        if (support.visual) showMovesButton.setText("Show moves: " + MoveMode.labels(game)[moveMode]);
+        if (support.visual) showMovesButton.setText(MoveMode.labels(game)[moveMode]);
         assistanceStatus.setVisibility(support.scriptControlled || support.visual ? View.VISIBLE : View.GONE);
         assistanceStatus.setText(support.scriptControlled
                 ? "Use the Game options / Service button to open the game's own options menu."
@@ -1179,8 +1172,44 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     }
 
     private void setGameOption(View option, boolean supported, boolean available) {
-        option.setVisibility(supported ? View.VISIBLE : View.GONE);
+        View container = option.getParent() instanceof ChoiceOption ? (View) option.getParent() : option;
+        container.setVisibility(supported ? View.VISIBLE : View.GONE);
         option.setEnabled(supported && available);
+    }
+
+    private Button choiceOption(LinearLayout parent, String title, View.OnClickListener click) {
+        ChoiceOption option = new ChoiceOption(title, click);
+        parent.addView(option, spaced(-1, -2, 4));
+        return option.button;
+    }
+
+    private final class ChoiceOption extends LinearLayout {
+        final Button button;
+
+        ChoiceOption(String title, View.OnClickListener click) {
+            super(LauncherActivity.this);
+            setOrientation(HORIZONTAL);
+            setGravity(Gravity.CENTER_VERTICAL);
+            TextView caption = text(title, 14, TEXT);
+            addView(caption, new LinearLayout.LayoutParams(0, -2, 1));
+            button = input(action("", false, click));
+            button.setId(View.generateViewId());
+            caption.setLabelFor(button.getId());
+            button.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            button.setMinHeight(dp(48));
+            button.setMinimumHeight(dp(48));
+            button.setMaxLines(2);
+            button.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            button.setPadding(dp(12), dp(8), dp(10), dp(8));
+            android.graphics.drawable.Drawable arrow = getDrawable(android.R.drawable.arrow_down_float).mutate();
+            arrow.setTint(ACCENT);
+            arrow.setBounds(0, 0, dp(14), dp(14));
+            button.setCompoundDrawablesRelative(null, null, arrow, null);
+            button.setCompoundDrawablePadding(dp(8));
+            LinearLayout.LayoutParams value = new LinearLayout.LayoutParams(0, -2, 1.25f);
+            value.leftMargin = dp(12);
+            addView(button, value);
+        }
     }
 
     private void chooseDifficulty() {
