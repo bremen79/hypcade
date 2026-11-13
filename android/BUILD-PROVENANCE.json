@@ -41,15 +41,15 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 6034989,
-      "sha256": "597bf96b5f95953d67f8877901b4356256d193c6cf6aa585c281fa82af52b07b",
+      "size_bytes": 6035457,
+      "sha256": "4b1842ba6e55d5b4b1c01dd12fcd44077787749c02fd49a7cccb6bfffb1a5613",
       "uncompressed_native_bytes": 5070364,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6348487,
-      "sha256": "9e7dbbfae87a45cea7bd68dbcd460fb4cfaa6391e0ac271f2a163c85b5d8c50b",
+      "size_bytes": 6348927,
+      "sha256": "94e372d613faba838a102ae80fde5700b7b6e4d34b9b0ed7bf0a4fa2829b053e",
       "uncompressed_native_bytes": 7154944,
       "uncompressed_support_bytes": 4293786
     }
@@ -72,8 +72,8 @@
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 440887,
-    "sha256": "671d3c1a4081edd19a6964ed107bbf7f86acaf8eec7f545c7c89af1e633b8ed8",
+    "size_bytes": 441963,
+    "sha256": "b9de635b2b0c1d0ccca21f04a8a1cd73baef52c47db1e5b64576218854106b42",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -317,9 +317,9 @@
   },
   "settings_source_sha256": {
     "android/app/src/main/java/org/hypseus/android/GameDifficulty.java": "4bbbfdc643b4d11cc9fe7d66a5cad899cda0ddb481617314f90a66f0b73807a5",
-    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "b09b38c748c56d677dd8ced0ebbfd30db8e9815afda1650f580850fb47f2dbba",
-    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "7bcb1fc4916813b17233411d0c46f0196a1d7b8d169e9b12beb4b0acb0212393",
-    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "0e9f42e7dbb4064de0c1396c40daf6a001dd139ec72cdf6c654f7e1c723a6c43"
+    "android/app/src/main/java/org/hypseus/android/LaunchConfig.java": "8cceac4ba4cf4b1647d95af768c6aac6036694ea22dcce98589543f9ea9487ab",
+    "android/app/src/main/java/org/hypseus/android/LauncherActivity.java": "6b91a19252aae1da59ddd4f668138878c2e6cae58c016dd0f95fe8563d0ee48e",
+    "android/app/src/main/java/org/hypseus/android/MoveMode.java": "7f87fedddd503ef07699156cec55687063ef3efeabda3c91d78d81463569aaa7"
   },
   "settings_references": [
     {
@@ -334,5 +334,5 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "The listed release APKs predate the current documentation and About AI-disclosure wording update. Runtime behavior and move data are unchanged; release APKs were not rebuilt for this text update."
+  "source_tree_status": "ARM arcade and mobile release APKs rebuilt with DL2 Off/On move controls, clearer launcher submenu grouping and GPT-6 family AI disclosure. The x86 test APKs remain from the previous build. No device runtime tests were performed for these launcher changes."
 }

@@ -239,7 +239,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         content.addView(setupButton, spaced(-1, dp(48), 12));
         setupSection = new LinearLayout(this);
         setupSection.setOrientation(LinearLayout.VERTICAL);
-        content.addView(setupSection);
+        styleSection(setupButton, setupSection, "Directory & controller", true);
+        content.addView(setupSection, sectionLayout());
         LinearLayout storage = card(setupSection);
         heading(storage, "1   GAME DATA");
         storage.addView(text("Choose the folder containing roms/, vldp/ and/or singe/.", 14, MUTED));
@@ -306,19 +307,20 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         scriptSection.setOrientation(LinearLayout.VERTICAL);
         script = fileField(scriptSection, "Singe script or ZIP", "Choose script or ZIP", true);
         manualSection.addView(scriptSection);
-        game.addView(input(action("Video & performance", false, view -> {
+        Button videoMenu = input(action("Video & performance", false, view -> {
             toggleSection(videoSection);
-        })), spaced(-1, dp(44), 14));
+        }));
+        game.addView(videoMenu, spaced(-1, dp(48), 14));
         videoSection = new LinearLayout(this);
         videoSection.setOrientation(LinearLayout.VERTICAL);
+        styleSection(videoMenu, videoSection, "Video & performance", false);
         showFps = option(videoSection, "Show FPS");
         hardwareVideo = option(videoSection, "Hardware MPEG-2 decoding (automatic fallback)");
         scanlines = option(videoSection, "CRT scanlines (GPU)");
         linearScale = option(videoSection, "Smooth video scaling");
         syncVideo = option(videoSection, "V-sync");
         videoSection.addView(text("Scanlines and smoothing add rendering work. Turning off V-sync can reduce display waits but may make presentation less smooth.", 12, MUTED), spaced(-1, -2, 6));
-        videoSection.setVisibility(View.GONE);
-        game.addView(videoSection);
+        game.addView(videoSection, sectionLayout());
 
         Button advanced = input(action("Game Options", false, view -> {
             toggleSection(advancedSection);
@@ -326,6 +328,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         game.addView(advanced, spaced(-1, dp(44), 14));
         advancedSection = new LinearLayout(this);
         advancedSection.setOrientation(LinearLayout.VERTICAL);
+        styleSection(advanced, advancedSection, "Game Options", false);
         advancedSection.addView(manualSection);
         label(advancedSection, "Game / ROM override (only if detection is incorrect)");
         advancedSection.addView(gameId, spaced(-1, dp(48), 4));
@@ -336,13 +339,12 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         advancedSection.addView(skillButton, spaced(-1, dp(50), 4));
         showScore = option(advancedSection, "Show score and lives");
         showMovesButton = input(action("Show moves", false, view -> chooseSetting(
-                "Show moves", MoveMode.LABELS, moveMode, value -> moveMode = value)));
+                "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value)));
         advancedSection.addView(showMovesButton, spaced(-1, dp(50), 4));
         timingCue = option(advancedSection, "Play move timing cue");
         assistanceStatus = text("", 12, MUTED);
         advancedSection.addView(assistanceStatus, spaced(-1, -2, 8));
-        advancedSection.setVisibility(View.GONE);
-        game.addView(advancedSection);
+        game.addView(advancedSection, sectionLayout());
 
         LinearLayout launchButtons = row();
         playButton = input(action("Start game", true, view -> startGame(false)));
@@ -403,8 +405,8 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         moveMode = config.moveMode;
         timingCue.setChecked(config.timingCue);
         updateGameOptions();
-        advancedSection.setVisibility(View.GONE);
-        videoSection.setVisibility(View.GONE);
+        setSectionExpanded(advancedSection, false);
+        setSectionExpanded(videoSection, false);
         applyingOptions = false;
     }
 
@@ -782,11 +784,11 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         boolean complete = setupComplete();
         boolean available = !changed.busy && !emulatorOpen;
         if (complete != setupWasComplete) {
-            setupSection.setVisibility(complete ? View.GONE : View.VISIBLE);
+            setSectionExpanded(setupSection, !complete);
             if (complete) revealSection(gameArea);
             setupWasComplete = complete;
         }
-        if (!complete) setupSection.setVisibility(View.VISIBLE);
+        if (!complete) setSectionExpanded(setupSection, true);
         setupButton.setVisibility(complete ? View.VISIBLE : View.GONE);
         setupButton.setEnabled(available);
         gameArea.setVisibility(complete ? View.VISIBLE : View.GONE);
@@ -1000,8 +1002,38 @@ public final class LauncherActivity extends Activity implements GameData.Listene
 
     private void toggleSection(View section) {
         boolean expand = section.getVisibility() != View.VISIBLE;
-        section.setVisibility(expand ? View.VISIBLE : View.GONE);
+        setSectionExpanded(section, expand);
         if (expand) revealSection(section);
+    }
+
+    private void styleSection(Button button, LinearLayout section, String title, boolean expanded) {
+        button.setTag(title);
+        button.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        button.setPadding(dp(14), 0, dp(14), 0);
+        section.setTag(button);
+        section.setPadding(dp(14), dp(14), dp(14), dp(14));
+        GradientDrawable panel = new GradientDrawable();
+        panel.setColor(BACKGROUND);
+        panel.setCornerRadius(dp(8));
+        panel.setStroke(dp(1), 0xff8f6b32);
+        section.setBackground(panel);
+        heading(section, title.toUpperCase(java.util.Locale.ROOT));
+        setSectionExpanded(section, expanded);
+    }
+
+    private LinearLayout.LayoutParams sectionLayout() {
+        LinearLayout.LayoutParams params = spaced(-1, -2, 4);
+        params.leftMargin = dp(12);
+        return params;
+    }
+
+    private void setSectionExpanded(View section, boolean expanded) {
+        section.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        Button button = (Button) section.getTag();
+        String title = (String) button.getTag();
+        button.setText((expanded ? "▾  " : "▸  ") + title);
+        button.setContentDescription(title + (expanded ? ", expanded. Collapse options" : ", collapsed. Expand options"));
+        if (Build.VERSION.SDK_INT >= 30) button.setStateDescription(expanded ? "Expanded" : "Collapsed");
     }
 
     private void revealSection(View section) {
@@ -1013,8 +1045,10 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                 if (!focusable.isEmpty()) focusable.get(0).requestFocus();
             }
             android.graphics.Rect bounds = new android.graphics.Rect();
-            section.getDrawingRect(bounds);
-            content.offsetDescendantRectToMyCoords(section, bounds);
+            View anchor = section.getTag() instanceof Button && ((Button) section.getTag()).getVisibility() == View.VISIBLE
+                    ? (Button) section.getTag() : section;
+            anchor.getDrawingRect(bounds);
+            content.offsetDescendantRectToMyCoords(anchor, bounds);
             scroll.smoothScrollTo(0, Math.max(0, bounds.top - dp(12)));
         });
     }
@@ -1137,8 +1171,9 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         showMovesButton.setEnabled(available && support.visual);
         timingCue.setEnabled(available && support.cue);
         if (!support.visual) moveMode = MoveMode.OFF;
+        moveMode = MoveMode.selected(game, moveMode);
         if (!support.cue) timingCue.setChecked(false);
-        showMovesButton.setText(support.visual ? "Show moves: " + MoveMode.LABELS[moveMode] : support.scriptControlled
+        showMovesButton.setText(support.visual ? "Show moves: " + MoveMode.labels(game)[moveMode] : support.scriptControlled
                 ? "Show moves — use game menu" : "Show moves — unavailable");
         timingCue.setText(support.cue ? "Play move timing cue" : support.scriptControlled
                 ? "Timing cue — use game menu" : game.equals("lair2")
@@ -1146,7 +1181,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         assistanceStatus.setText(support.scriptControlled
                 ? "Map Game options / Service in Controller setup, then press that button in the game to open its original menu (where supported). Moves and cues are controlled there."
                 : !support.visual ? "No bundled moves for this game / ROM version."
-                : game.equals("lair2") ? "Dragon's Lair II 3.19 uses its original ROM moves for both policies. Audio cues are included in the video."
+                : game.equals("lair2") ? "Dragon's Lair II 3.19 uses its original ROM moves. Watch Mode follows those moves even when Show moves is Off. Audio cues are included in the video."
                 : "Choose Max score or Fewest moves. Watch Mode follows that selection, or Max score when Show moves is Off. Only recorded move windows are shown.");
     }
 

@@ -83,10 +83,10 @@ public final class LaunchConfig {
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments, int moveMode, boolean timingCue, boolean showScore, int difficulty, int skill) {
         this.showScore = showScore;
-        this.moveMode = MoveMode.selected(moveMode);
         this.id = clean(id);
         this.name = clean(name);
         this.game = clean(game).toLowerCase(Locale.ROOT);
+        this.moveMode = MoveMode.selected(this.game, moveMode);
         this.difficulty = GameDifficulty.selected(this.game, difficulty);
         this.skill = GameDifficulty.selectedSkill(skill);
         this.timingCue = timingCue;
