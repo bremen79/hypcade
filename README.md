@@ -10,10 +10,6 @@ Hypcade brings Hypseus Singe to Android Arcade1Up cabinets, with joystick-and-bu
 navigation, a small game launcher, and games read directly from an SD card or
 another selected folder. Android 7.1 (API 25), including 7.1.2, or newer is required.
 
-This project includes Android platform integration and modifications to the
-emulator engine. This is an independent project, not an official Hypseus Singe
-release. Hypseus Singe and its predecessors remain the foundation of the emulation; Hypcade does not claim to have created that engine.
-
 ## Arcade cabinets first
 
 The primary build ("arcade") is for Arcade1Up Android arcades: physical controls, fixed landscape,
@@ -134,7 +130,6 @@ import or duplicate the videos.
 
 
 Settings save automatically and take effect the next time you start a game.
-Unavailable options are grayed out.
 
 The following game options are available:
 
@@ -171,9 +166,7 @@ in controller setup to open a game's menu where supported. On mobile, use the
 **Options** touch button.
 
 Pressing Coin plays a short coin-slot sound to confirm the input. The game
-itself decides whether to award a credit. The CC0 recording is by
-[bassmosphere](https://freesound.org/people/bassmosphere/sounds/384700/);
-see the [asset credits](android/THIRD_PARTY_NOTICES.md).
+itself decides whether to award a credit.
 
 Optional `.commands` files initialize a game's settings when it is first
 found. Saved GUI choices take priority and survive rescans. See the
@@ -206,6 +199,8 @@ cabinet test; the current changes have not been retested on physical ARM hardwar
 Hypcade is developed and maintained by **Francesco Orabona**.
 **Hypcade — Copyright (C) 2026 Francesco Orabona.**
 Licensed under GPL-3.0-or-later. Upstream components retain their own notices.
+
+Hypcade is an independent project, not an official Hypseus Singe release. Hypseus Singe and its predecessors remain the foundation of the emulation; Hypcade does not claim to have created that engine.
 
 The base is **Hypseus Singe 3.0.2**, pinned to commit
 [`a16e2521ee3233ef20c44e562008c47f4b4293df`](https://github.com/DirtBagXon/hypseus-singe/tree/a16e2521ee3233ef20c44e562008c47f4b4293df).
