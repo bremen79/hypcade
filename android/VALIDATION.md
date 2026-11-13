@@ -100,6 +100,32 @@ checks the native/JVM backend; it does not exercise an APK's full media pipeline
 The actual APK gameplay runs listed below predate the complete-policy build;
 no new full gameplay run through the launcher was performed for this change.
 
+## Move text and audio cues
+
+DL1 and Space Ace calculated text is visible only while the shared native move
+state is ready. Audio observes the same event sequence. Host tests verify that
+previews produce neither text nor a beep, readiness exposes the action, repeated
+polls do not repeat a beep, and stopping cancels audio polling. The ROM lookup
+and Watch Mode timing are unchanged.
+
+DL2 US 3.19 has separate operator-difficulty and per-scene prompt gates. Android
+now bypasses both when Show moves is enabled; disabling moves restores the
+difficulty branch and skips the prompt path. The video-less harness calls that
+production configuration rather than applying a partial copy of the patch.
+With `--check-prompts`, all 45 combinations of five difficulties, three seek
+delays and three input-queue phases pass on both the host and Android 9 x86.
+Each completed game emits all 302 native text prompts, with none appearing
+before its acceptance window or at/after its closing boundary. All games finish
+without a lost life; host and Android results match exactly. First/final input
+omission controls still detect death on both backends.
+
+The signed release flavors are rebuilt and inspected separately. These checks
+measure ROM text generation and software event timing, not physical screen or
+audio latency. The renderer presents text on its next frame, and the Java audio
+callback polls every 16 ms before Android's device-dependent output delay. No
+new full commercial-game run through the APK launcher or on the cabinet was
+performed for this cue-alignment change.
+
 ## Direct APK gameplay
 
 Separate runs went through the launcher on the Android 9 x86 emulator at

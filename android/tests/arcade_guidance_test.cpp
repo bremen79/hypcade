@@ -20,8 +20,10 @@ int main() {
 
     std::vector<uint8_t> memory(0x100000, 0);
     arcade_configure_dl2_moves(memory.data(), memory.size(), true);
+    assert(memory[0xf27f9] == 0x90 && memory[0xf27fa] == 0x90);
     assert(memory[0xf2804] == 0x90 && memory[0xf2805] == 0x90);
     arcade_configure_dl2_moves(memory.data(), memory.size(), false);
+    assert(memory[0xf27f9] == 0x7d && memory[0xf27fa] == 0x55);
     assert(memory[0xf2804] == 0xeb && memory[0xf2805] == 0x4a);
     arcade_configure_dl2_moves(memory.data(), 1, true);
     assert(memory[0xf2804] == 0xeb && memory[0xf2805] == 0x4a);
@@ -117,5 +119,24 @@ int main() {
     const ArcadeRomRule wait[]={{264,0,3,0},{264,0,4,8}};
     const uint16_t wait_order[]={0,1};ram[0xe2]=4;
     assert(!arcade_select_rom_move(nullptr,nullptr,0,wait,wait_order,2,ram,0,false).controls);
+    // A retry-only DL1 state publishes a preview for automation, but neither
+    // visual text nor the audio event may announce it before readiness.
+    std::fill(memory.begin(),memory.end(),0);
+    ram=memory.data()+0xa000;
+    ram[14]=8;ram[15]=2;ram[0xe0]=0x81;ram[0xe1]=1;ram[0xe2]=3;
+    ram[0xed]=20;ram[0xec]=12;
+    arcade_configure_guidance(1,true,false);
+    arcade_guidance_cine(memory.data(),memory.size(),"dle21",true,5000);
+    assert((arcade_guidance_snapshot()&31)==1);
+    assert(!(arcade_guidance_snapshot()&256) && !arcade_visual_controls());
+    const uint64_t before=arcade_guidance_snapshot()>>32;
+    ram[0xec]=0;
+    arcade_guidance_cine(memory.data(),memory.size(),"dle21",true,5000);
+    assert(arcade_visual_controls()==1 && (arcade_guidance_snapshot()&256));
+    assert((arcade_guidance_snapshot()>>32)==before+1);
+    arcade_guidance_cine(memory.data(),memory.size(),"dle21",true,5000);
+    assert((arcade_guidance_snapshot()>>32)==before+1);
+    arcade_guidance_cine(memory.data(),memory.size(),"dle21",false,5000);
+    assert(!arcade_visual_controls());
     puts("Guidance: bounds, retry signatures, native DL2 moves and unknown-state refusal passed");
 }

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Hypcade 0.1 signed releases with complete ROM move policies, strict structural coverage and tested post-death recovery; not published.",
+  "scope": "Hypcade 0.1 signed releases with complete ROM policies, text/audio on a shared ready event, and DL2 native prompts enabled at all difficulties; not published.",
   "project_name": "Hypcade",
   "project_description": "Android arcade-focused fork and adaptation of Hypseus Singe",
   "upstream_repository": "https://github.com/DirtBagXon/hypseus-singe",
@@ -41,39 +41,39 @@
   "distribution_apks": [
     {
       "filename": "hypcade-arcade-armeabi-v7a-release.apk",
-      "size_bytes": 5991521,
-      "sha256": "a33a502f38fc2e8a4afa5cdf43a7c18414fb6f0e7b9762cf1371be0befbd01e6",
-      "uncompressed_native_bytes": 4827388,
+      "size_bytes": 5991377,
+      "sha256": "1e2e94fedab900f62f66c0dfd311a6cef1f1158cf0849de5a74e69691592f7ba",
+      "uncompressed_native_bytes": 4827420,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-arm64-v8a-release.apk",
-      "size_bytes": 6306243,
-      "sha256": "4b8b2e4dbac7b618dbc2bb3e7d1acf98cbf2fe15082719adbdaac87132af4ca7",
-      "uncompressed_native_bytes": 6913344,
+      "size_bytes": 6306315,
+      "sha256": "3eb64380bdce4c4f4e5f9631c6b145385c8ea03225de3aeb653eeaeaf2f45e17",
+      "uncompressed_native_bytes": 6913360,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "test_apks": [
     {
       "filename": "hypcade-arcade-x86-release.apk",
-      "size_bytes": 6747005,
-      "sha256": "a797cdb43c36637f7df47b954373840a7521ca0e3011c0e5256481beb153c1b1",
-      "uncompressed_native_bytes": 7621380,
+      "size_bytes": 6747017,
+      "sha256": "295cf79a498b89124e7c6884fe768156894f0265d99c1c61f41253dd129f63e1",
+      "uncompressed_native_bytes": 7621492,
       "uncompressed_support_bytes": 4293786
     },
     {
       "filename": "hypcade-mobile-x86_64-release.apk",
-      "size_bytes": 6758310,
-      "sha256": "261b4bd7f69722ff0b51a3ca77f90f287eeb90b77a0f3773039588b2fd6b9e68",
-      "uncompressed_native_bytes": 7845760,
+      "size_bytes": 6758414,
+      "sha256": "d6d1b7add87f5946b83a2d3714397f6209cf08b8253b44a21035b89d26f1965a",
+      "uncompressed_native_bytes": 7845824,
       "uncompressed_support_bytes": 4293786
     }
   ],
   "release_notices": {
     "filename": "hypcade-licenses.txt",
-    "size_bytes": 444104,
-    "sha256": "9ebe2716f7e60706fdcdf9c82a534fd9260a7eac1dd589c1f3aada0a170206c9",
+    "size_bytes": 444586,
+    "sha256": "7bb4fe1d4427efc10b2afa15608fc2ca0775078735934b46a8375f300f117140",
     "packaging": "External companion file; no license assets or license browser inside APK"
   },
   "byte_for_byte_reproducibility_claimed": false,
@@ -111,7 +111,8 @@
     "launcher_options": "Options unsupported by the selected game/ROM are hidden, including Watch Mode, difficulty, skill, score/lives, fastboot, moves and cues. Assistance help is hidden when irrelevant. Reset controller is hidden without a saved mapping. Supported controls may be temporarily disabled while busy.",
     "launcher_choices": "Multiple-choice fields show a left caption and a right menu button with a dropdown arrow. Game, ROM override, difficulty, skill and move strategy use the same layout; unsupported fields hide the complete row.",
     "video_defaults": "New game profiles without a .commands override enable smooth video scaling. Saved profiles and command-file imports preserve their selected settings.",
-    "video_backend": "Android-only src/video/video_android.cpp owns font/CRT/FPS state, mobile drawable sizing and texture retirement; shared video.cpp uses small guarded hooks. Desktop bitmap text, CPU scanlines, startup splash and window icon are excluded from Android compilation. Decoder/render locking and render-thread destruction are preserved."
+    "video_backend": "Android-only src/video/video_android.cpp owns font/CRT/FPS state, mobile drawable sizing and texture retirement; shared video.cpp uses small guarded hooks. Desktop bitmap text, CPU scanlines, startup splash and window icon are excluded from Android compilation. Decoder/render locking and render-thread destruction are preserved.",
+    "move_cues": "Calculated DL1/Ace text and optional audio start on the same native ready event, without early visual previews. Audio uses existing 16ms Java polling; physical audio/display latency is not calibrated. UI label: Play move audio cue. DL2 US 3.19 enables native text through both ROM assistance gates at all five difficulties; native input thresholds are retained."
   },
   "move_table_sha256": "a419549d8ecc870286f5f242f83ce82850a7dbc737c8424a3b4cf7ff5bc67099",
   "move_generation_manifest": "moves/rom-tables/manifest.json",
@@ -160,8 +161,8 @@
       "teacher_enabled": false
     },
     "dl2": {
-      "host": 5,
-      "android": 5,
+      "host": 45,
+      "android": 45,
       "difficulties": [
         0,
         1,
@@ -170,13 +171,18 @@
         4
       ],
       "seek_delays_ms": [
-        17
+        0,
+        17,
+        55
       ],
       "queue_phases_ms": [
-        8
+        0,
+        8,
+        16
       ],
+      "check_native_prompts": true,
       "all_passed": true,
-      "negative_controls": "First/final input omission detected death on host and Android."
+      "negative_controls": "First/final omissions detect death on both backends."
     },
     "actual_apk": {
       "android": "9 / API 28",
@@ -267,7 +273,7 @@
       },
       "scope": "Archived earlier selector evidence; no new full commercial-game run through the launcher for the complete-policy change."
     },
-    "limitations": "Structural coverage accounts for every decoded rule, separately from sampled behavioral validation. No new cabinet gameplay or actual-APK full playthrough. No proof of all possible retry timings, random sequences or global optimality. Existing compiler/SDK/Gradle warnings remain.",
+    "limitations": "Native text generation and software event timing checked without video; physical audio/display latency is not measured. No new commercial-game playthrough through the APK launcher or on the cabinet. Previous complete-policy coverage and recovery evidence retained. Existing native/SDK/Gradle warnings remain.",
     "warnings": [
       "Existing native compiler warnings, including missing-override and logical operator parentheses.",
       "SDK XML v4/v3 tool warning.",
@@ -435,12 +441,27 @@
       "desktop_icon_and_splash_absent_from_native_payloads": true,
       "no_new_render_threads_or_gpu_passes": true,
       "physical_device_performance_test": false
+    },
+    "cue_alignment": {
+      "native_visual_ready_gate": true,
+      "java_audio_event_and_lifecycle": true,
+      "dl2_full_plays_per_backend": 45,
+      "native_text_prompts_per_play": 302,
+      "prompts_outside_input_window": 0,
+      "backends": [
+        "host",
+        "Android 9 x86 video-less emulator"
+      ],
+      "cross_backend_results_identical": true,
+      "negative_controls": "First/final input omissions detect death on both backends.",
+      "physical_audio_or_display_latency_measured": false,
+      "actual_apk_gameplay_performed": false
     }
   },
   "move_generation": {
     "method": "Complete decoded ROM rules and ranked runtime policies, with sampled replay timing calibrations",
     "manifest": "moves/rom-tables/manifest.json",
-    "manifest_sha256": "9c69b40f54ff5d2706afaed1b726912da2cb334000f851caa75cd214a396a4db",
+    "manifest_sha256": "12c5f85a1bc602032c55142f3cc327ad6a30cd6feb809538c194275cac01bdd0",
     "rom_coverage": {
       "dle21": {
         "decoded_rules": 3681,
@@ -587,7 +608,7 @@
       "use": "Dragon's Lair difficulty DIP combinations, including B8 forcing Easy in either mode."
     }
   ],
-  "source_tree_status": "All four release APKs rebuilt with complete ROM policies and the current selector. Matching source and independently identified validation reports remain in the checkout; no new source archive.",
+  "source_tree_status": "All four signed release APKs rebuilt with current cue presentation and DL2 prompt configuration; release lint and artifact checks passed. Matching source and current video-less prompt evidence retained; no source archive generated.",
   "move_lookup_source_sha256": {
     "android/app/jni/arcade_guidance.cpp": "88711461d61e21004d43e0300566717c9f9bf83183c2c1efd721b72817ddf776",
     "android/app/jni/arcade_move_policy.h": "548b7a5dc83277ea5df553bc57c7f8398f92addce483e6253cfbe5379effcaf4",

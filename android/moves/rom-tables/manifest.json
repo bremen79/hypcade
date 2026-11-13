@@ -3059,7 +3059,13 @@
     "verification/complete-dl2-negative-host.json": "d7b0f65a7d12fc921474c1e185c4b3ccd9775a58e2e327359d58c5cb23606ad3",
     "verification/complete-dl2-negative-final-host.json": "a5ae27729dfa8a22f50db0dfed3a61a2b2b23a5a0a2c7d02c91faa33451f8d85",
     "verification/complete-dl2-negative-first-android.json": "035af3585d46f4077bf1d96180035ef083658192c1c8a626c26cfbd6f1b6209b",
-    "verification/complete-dl2-negative-final-android.json": "0fd7982fe19f09c94eed09baf3b89e8de7a7f3d1a48905d752cc039be47f1de9"
+    "verification/complete-dl2-negative-final-android.json": "0fd7982fe19f09c94eed09baf3b89e8de7a7f3d1a48905d752cc039be47f1de9",
+    "verification/cue-host-matrix.json": "cdfd130f4732b2ad53d05a6121ea2810b7517ca8c55547edeeb46a130969dff2",
+    "verification/cue-android-matrix.json": "70c4faf8d31e104e4a4147de8366af94fac4c762107c78adfee30ee95838841a",
+    "verification/cue-negative-first-host.json": "683d55e19006fd45ed062e10a9edd6c62c5c41de97731004c1688c3f17517234",
+    "verification/cue-negative-final-host.json": "2e3f39c4cb942c70af0fc67e8d7524916a6a2b8fe2c44f81e5bb309b082036f8",
+    "verification/cue-negative-first-android.json": "fc9ad8cdda53adfeff4afabdfdf9989542ccf07a546c11d4296e2c892dcf5a6e",
+    "verification/cue-negative-final-android.json": "5b1e464583f9e77d35fa177f32163c574bdfe39fd9815331bb99b3db169f0b47"
   },
   "apk_include_sha256": "a419549d8ecc870286f5f242f83ce82850a7dbc737c8424a3b4cf7ff5bc67099",
   "all_scenes_proven": false,

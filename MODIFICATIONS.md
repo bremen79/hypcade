@@ -143,6 +143,10 @@ Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
 Off/On setting. It has no extra timing-cue option because the video already supplies
 cues. Singe games retain their original Lua options menus rather than receiving
 a duplicate move system from Hypcade.
+Calculated DL1 and Space Ace text appears on the same native ready event as
+the optional audio cue, without an early visual preview. Android audio and
+screen output retain their own physical latency. DL2 prompt configuration
+bypasses both ROM assistance gates so Show moves works at all five difficulties.
 The DL2 decoder uses the ROM's earliest accepted phase and exclusive closing
 frame, including its special and exit input records. It does not wait for the
 later cue threshold, which can leave too little time for Android input delivery.

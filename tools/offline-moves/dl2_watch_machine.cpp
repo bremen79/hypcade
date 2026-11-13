@@ -120,6 +120,19 @@ static unsigned input_phase,initial_lives,losses,moves_count;
 static bool started,finished,failed;
 static unsigned final_record,final_frame;
 static unsigned omit_move,omitted;
+static unsigned text_prompts,text_before_open,text_after_close;
+static char previous_text[128]={0};
+static void observe_text() {
+ const char *text=ldp1000::g_LDP1450_Strings[2].String;
+ if(strcmp(text,previous_text)==0)return;
+ strcpy(previous_text,text);
+ if(!started)return;
+ bool visible=false;for(const char *p=text;*p;p++)if(*p!=' ')visible=true;
+ if(!visible)return;
+ ++text_prompts;
+ text_before_open+=word(0xa158)<word(0xa160);
+ text_after_close+=word(0xa158)>=word(0xa15a);
+}
 static unsigned score() {return word(0x56b0)/10;}
 
 extern "C" JNIEXPORT jboolean JNICALL Java_org_hypseus_android_HypseusActivity_nativeEmulatorReady(JNIEnv*,jclass) {
@@ -145,7 +158,7 @@ extern "C" JNIEXPORT jboolean JNICALL Java_org_hypseus_android_NativeRomMachine_
  for(unsigned i=0;i<1200;i++)if(ram[0xf5a24+14*i]==5) {
   final_record=i;final_frame=ram[0xf5a28+14*i]|(ram[0xf5a29+14*i]<<8);
  }
- ram[0xf2804]=ram[0xf2805]=0x90;patch_driver();
+ arcade_configure_dl2_moves(ram,sizeof ram,true);patch_driver();
  arcade_configure_guidance(1,false,true);
  i86_init();i86_reset();i86_set_irq_callback(irq_callback);i86_set_pc(0xffff0);ldp1000::reset();
  return true;
@@ -165,7 +178,7 @@ extern "C" JNIEXPORT void JNICALL Java_org_hypseus_android_NativeRomMachine_adva
    if(elapsed_ms>((uint64_t)(irq_ticks[i]+1)*periods[i])/1000) {++irq_ticks[i];++pending_irq[i];}
   }
   for(unsigned i=0;i<2;i++)if(pending_irq[i]) {board.do_irq(i);--pending_irq[i];break;}
-  player.update();
+  player.update();observe_text();
   // Match SDL_check_input's >16ms throttle, not immediate switch mutation.
   if((elapsed_ms+input_phase)%17==0) {
    while(!input_queue.empty()) {
@@ -192,7 +205,7 @@ extern "C" JNIEXPORT jint JNICALL Java_org_hypseus_android_NativeRomMachine_stat
  return finished?1:failed?-1:quit?-2:0;
 }
 extern "C" JNIEXPORT jstring JNICALL Java_org_hypseus_android_NativeRomMachine_summary(JNIEnv *env,jclass) {
- char text[512];snprintf(text,sizeof text,"{\"complete\":%s,\"no_life_loss\":%s,\"moves\":%u,\"score\":%u,\"lives\":%u,\"milliseconds\":%llu,\"frame\":%u,\"actual_frame\":%d,\"record\":%u,\"opens\":%u,\"closes\":%u,\"pc\":%u,\"losses\":%u,\"omitted\":%u}",
-  finished?"true":"false",losses?"false":"true",moves_count,score(),word(0x56ac),(unsigned long long)elapsed_ms,word(0xa158),player.frame,word(0x5694+2*(word(0x56aa)&63)),word(0xa160),word(0xa15a),i86_get_pc(),losses,omitted);
+ char text[640];snprintf(text,sizeof text,"{\"complete\":%s,\"no_life_loss\":%s,\"moves\":%u,\"score\":%u,\"lives\":%u,\"milliseconds\":%llu,\"frame\":%u,\"actual_frame\":%d,\"record\":%u,\"opens\":%u,\"closes\":%u,\"pc\":%u,\"losses\":%u,\"omitted\":%u,\"text_prompts\":%u,\"text_before_open\":%u,\"text_after_close\":%u}",
+  finished?"true":"false",losses?"false":"true",moves_count,score(),word(0x56ac),(unsigned long long)elapsed_ms,word(0xa158),player.frame,word(0x5694+2*(word(0x56aa)&63)),word(0xa160),word(0xa15a),i86_get_pc(),losses,omitted,text_prompts,text_before_open,text_after_close);
  return env->NewStringUTF(text);
 }

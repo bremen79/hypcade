@@ -133,7 +133,7 @@ resolution. Moves, subtitles and game overlays are drawn afterward. An
 unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
-**Show moves** and **Play move timing cue** support Dragon's Lair
+**Show moves** and **Play move audio cue** support Dragon's Lair
 Enhanced 2.1 (`dle21`) and Space Ace A3 (`ace`). White action text appears near
 the bottom, up to about 400 ms before the move window. The font matches Dragon's
 Lair II, with a transparent background and a small dark shadow.
@@ -155,6 +155,12 @@ coverage boundary. Required zero-score transitions are retained. Separate unassi
 exercise IRQ publication, Java polling, SDL delivery and button holds. Randomized
 starts sample different paths; they do not establish every retry context or a
 global optimum. See the [validation guide](VALIDATION.md).
+
+For DL1 and Space Ace, calculated move text becomes visible when the move is
+ready to perform, rather than showing an early preview. **Play move audio cue**
+uses that same native event. Screen presentation and Android audio output still
+have their own device-dependent latency. DL2 keeps its original ROM text timing;
+Show moves enables its prompts at all five operator difficulties.
 
 DL2 Watch Mode reads the earliest acceptance phase in the US 3.19 ROM, including
 special and exit move records. Its native on-screen prompts keep their original

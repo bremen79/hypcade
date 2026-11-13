@@ -102,7 +102,10 @@ development configurations unless the maintainer explicitly requests it.
   rescanning must not overwrite them. Retain unrepresented native options such
   as `-blend`, banks and ROM versions, subject to launch validation.
 - Move controls are enabled only for supported ROM revisions. DL2 uses its own
-  ROM prompts; Singe uses its native script menu through Service. Do not duplicate
+  ROM prompts; Singe uses its native script menu through Service. Calculated
+  DL1/Ace text and optional audio start on the same native ready event; do not
+  reintroduce early visual previews. DL2 US 3.19 text requires bypassing both its
+  operator-difficulty and per-scene prompt gates when enabled. Do not duplicate
   Lua menu behavior. DLE21 and Ace A3 use ROM-derived, separately ranked Max score
   and Fewest moves policies. Package every decoded ROM rule and every ranked alternative; sampled winning
   routes must never define runtime coverage. Validate causal acceptance against
@@ -180,7 +183,9 @@ For move generation and Watch Mode changes, follow `tools/offline-moves/README.m
 and `WATCH-VERIFY.md` in that directory. Run the skill/difficulty matrix and
 unassisted packaged-selector checks on the host and Android emulator. DL2's
 video-less harness uses the production Java player, JNI guidance, i86 CPU and
-driver methods; include its omitted-input negative controls. Compare backend
+driver methods; include its omitted-input negative controls. Use
+`--check-prompts` to require one native text cue per move inside its acceptance
+window at every DL2 difficulty. Compare backend
 results and keep source fingerprints consistent with the final tested tree.
 Distinguish video-less Android checks from actual APK runs through the launcher.
 

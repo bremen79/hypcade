@@ -17,9 +17,12 @@ def main():
     java=str(jdk/'bin/java') if jdk else 'java';javac=str(jdk/'bin/javac') if jdk else 'javac'
     sources=sorted((root/'android/tests/watch-stubs').rglob('*.java'))
     sources += [root/'android/tests/WatchModeControllerTest.java',
+                root/'android/tests/MoveGuidanceTest.java',
+                root/'android/app/src/main/java/org/hypseus/android/MoveGuidance.java',
                 root/'android/app/src/main/java/org/hypseus/android/WatchModeController.java']
     with tempfile.TemporaryDirectory(prefix='hypcade-watch-') as directory:
         subprocess.run([javac,'-encoding','UTF-8','-Xlint:all','-Werror','-d',directory,*map(str,sources)],check=True)
         subprocess.run([java,'-cp',directory,'org.hypseus.android.WatchModeControllerTest'],check=True)
+        subprocess.run([java,'-cp',directory,'org.hypseus.android.MoveGuidanceTest'],check=True)
 
 if __name__=='__main__':main()

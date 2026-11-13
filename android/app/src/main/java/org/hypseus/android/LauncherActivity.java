@@ -333,7 +333,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         showScore = option(advancedSection, "Show score and lives");
         showMovesButton = choiceOption(advancedSection, "Show moves", view -> chooseSetting(
                 "Show moves", MoveMode.labels(gameId.getText().toString()), moveMode, value -> moveMode = value));
-        timingCue = option(advancedSection, "Play move timing cue");
+        timingCue = option(advancedSection, "Play move audio cue");
         assistanceStatus = text("", 12, MUTED);
         advancedSection.addView(assistanceStatus, spaced(-1, -2, 8));
         game.addView(advancedSection, sectionLayout());

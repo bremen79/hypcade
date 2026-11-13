@@ -117,6 +117,7 @@ def main():
     p.add_argument('--level',type=int,action='append',choices=range(5))
     p.add_argument('--seek-ms',type=int,action='append');p.add_argument('--input-phase',type=int,action='append',choices=range(17))
     p.add_argument('--omit-move',choices=('none','first','final'),default='none',help='Negative control: withhold one input and require a detected death')
+    p.add_argument('--check-prompts',action='store_true',help='Require one native text cue per move, inside its input window, at every selected difficulty')
     a=p.parse_args()
     if a.jdk is None:
         javac=shutil.which('javac')
@@ -158,7 +159,7 @@ def main():
     if any(seek<0 for seek in seeks):p.error('--seek-ms must be nonnegative')
     planned=len(levels)*len(seeks)*len(phases)
     omit=('none','first','final').index(a.omit_move)
-    report=dict(game='lair2',backend='android-x86' if a.android else 'host',omit_move=a.omit_move,rom_sha256=hashlib.sha256(rom).hexdigest(),
+    report=dict(check_prompts=a.check_prompts,game='lair2',backend='android-x86' if a.android else 'host',omit_move=a.omit_move,rom_sha256=hashlib.sha256(rom).hexdigest(),
                 sources=identity,planned=planned,completed=0,results=[],all_passed=False)
     (a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     for level in levels:
@@ -174,6 +175,8 @@ def main():
         events=[json.loads(line) for line in log.read_text().splitlines() if line.startswith('{')]
         final=events[-1] if events else {}
         verified=(result.returncode==0 and final.get('complete') is True and final.get('no_life_loss') is True) if not omit else (result.returncode==1 and final.get('complete') is False and final.get('losses',0)>0 and final.get('omitted')==1)
+        if a.check_prompts and not omit:
+            verified=verified and final.get('text_prompts')==final.get('moves') and final.get('text_before_open')==0 and final.get('text_after_close')==0
         row=dict(level=level,seek_ms=seek,input_phase=phase,returncode=result.returncode,verified=verified,
                  result=final,wall_seconds=round(time.monotonic()-began,3))
         report['results'].append(row);report['completed']=len(report['results'])

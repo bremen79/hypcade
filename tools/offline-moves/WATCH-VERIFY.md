@@ -95,11 +95,11 @@ as the CPU permits. Each case starts a fresh process.
 
 ```bash
 JAVA_HOME=/path/to/jdk17 python3 tools/offline-moves/verify_dl2_watch.py \
-  --rom /path/to/lair2.zip --output local-tools/dl2-host
+  --rom /path/to/lair2.zip --output local-tools/dl2-host --check-prompts
 
 JAVA_HOME=/path/to/jdk17 python3 tools/offline-moves/verify_dl2_watch.py \
   --rom /path/to/lair2.zip --output local-tools/dl2-android \
-  --android emulator-5556
+  --android emulator-5556 --check-prompts
 ```
 
 Each command covers all five difficulties, three seek delays and three input
@@ -112,6 +112,12 @@ one player input and require a detected death. They must never report a win
 because a death seek happened to pass the ending's frame number. A positive
 completion requires the final ROM record, its ending frame and all initial
 lives intact.
+
+The `--check-prompts` check also observes the Sony player's actual third-line
+text updates. Every move must produce one nonblank prompt inside the input
+window at each difficulty. The harness applies the production Android prompt
+configuration, including both the operator-difficulty and per-scene gates.
+This checks ROM text generation; it does not measure physical screen latency.
 
 ### Acceptance timing
 

@@ -91,7 +91,9 @@ void arcade_watch_publish_game_started(bool started) {
 }
 static std::atomic<uint64_t> published{0};
 unsigned arcade_visual_controls() {
-    return arcade_visual_moves_enabled() ? unsigned(published.load(std::memory_order_relaxed)) & 31 : 0;
+    const uint64_t state=published.load(std::memory_order_acquire);
+    // Text and audio use the same ready event: no early visual preview.
+    return arcade_visual_moves_enabled() && (state & 256) ? unsigned(state) & 31 : 0;
 }
 bool arcade_guidance_enabled() { return enabled.load(std::memory_order_relaxed); }
 // These fields are accessed only by the emulation thread.
@@ -204,6 +206,11 @@ Java_org_hypseus_android_HypseusActivity_nativeTakeWatchMove(JNIEnv *, jclass) {
 
 void arcade_configure_dl2_moves(uint8_t *memory, size_t size, bool visual) {
     if (!memory || size <= 0xf2805) return;
+    // US 3.19 has two independent prompt gates: operator difficulty and
+    // per-scene assistance. Bypass both when enabled; restore the difficulty
+    // branch and skip text entirely when disabled. Gameplay timing is unchanged.
+    memory[0xf27f9] = visual ? 0x90 : 0x7d;
+    memory[0xf27fa] = visual ? 0x90 : 0x55;
     memory[0xf2804] = visual ? 0x90 : 0xeb;
     memory[0xf2805] = visual ? 0x90 : 0x4a;
 }
