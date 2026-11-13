@@ -1186,14 +1186,15 @@ public final class LauncherActivity extends Activity implements GameData.Listene
             super(LauncherActivity.this);
             setOrientation(HORIZONTAL);
             setGravity(Gravity.CENTER_VERTICAL);
+            optionRowPadding(this);
             TextView caption = text(title, 14, TEXT);
             addView(caption, new LinearLayout.LayoutParams(0, -2, 1));
             button = input(action("", false, click));
             button.setId(View.generateViewId());
             caption.setLabelFor(button.getId());
             button.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-            button.setMinHeight(dp(48));
-            button.setMinimumHeight(dp(48));
+            button.setMinHeight(dp(50));
+            button.setMinimumHeight(dp(50));
             button.setMaxLines(2);
             button.setEllipsize(android.text.TextUtils.TruncateAt.END);
             button.setPadding(dp(12), dp(8), dp(10), dp(8));
@@ -1306,12 +1307,18 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         return states;
     }
 
+    // Both option types share the same label and control edges.
+    private void optionRowPadding(View row) {
+        row.setPaddingRelative(dp(12), 0, dp(12), 0);
+    }
+
     private void styleSwitch(Switch view) {
         view.setTextSize(14);
         view.setTextColor(new ColorStateList(new int[][]{new int[]{-android.R.attr.state_enabled}, new int[]{android.R.attr.state_focused}, new int[]{}},
                 new int[]{0xff777777, 0xffffffff, TEXT}));
         view.setBackground(focusBackground(0x00000000));
-        view.setPadding(dp(12), 0, dp(12), 0);
+        optionRowPadding(view);
+        view.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         view.setShowText(false);
         int[][] states = {new int[]{-android.R.attr.state_enabled}, new int[]{android.R.attr.state_checked}, new int[]{}};
         view.setThumbTintList(new ColorStateList(states, new int[]{0xff777777, ACCENT, 0xffb49a79}));
