@@ -132,6 +132,10 @@ public final class LauncherLogicTest {
         for (String game : new String[]{"lair", "dle11", "dle21", "lair2", "laireuro", "lair_ita",
                 "lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f"}) {
             check(LaunchConfig.supportsScorePlacement(game), "DL scoreboard placement: " + game);
+            int defaultLayout = game.equals("laireuro") || game.equals("lair_ita")
+                    ? LaunchConfig.SCORE_OFF : LaunchConfig.SCORE_TOP;
+            check(config(game,"vldp/demo/frames.txt","", "").scoreLayout == defaultLayout,
+                    "Default DL scoreboard placement: " + game);
             for (int layout = LaunchConfig.SCORE_OFF; layout <= LaunchConfig.SCORE_TOP; layout++) {
                 LaunchConfig placed = new LaunchConfig("id", "test", game, "vldp/demo/frames.txt", "", "",
                         MoveMode.OFF, false, layout);

@@ -25,7 +25,7 @@ public final class ArcadeSetupTest {
         check(!GuidanceSupport.forArguments(null).visual, "Smoke test has no guidance");
         check(ControlMap.KEYS[11] == 16 && ControlMap.optional(11), "Game options maps to native service key 9");
         Path root=Files.createDirectories(Path.of(args[0],"scan-games"));
-        for(String game:new String[]{"ace","dle21","lair2"}) {
+        for(String game:new String[]{"ace","dle21","lair2","laireuro","lair_ita"}) {
             Path dir=Files.createDirectories(root.resolve(game+".daphne"));
             Files.writeString(dir.resolve(game+".txt"),".\n0 video.m2v\n");
             Files.write(dir.resolve("video.m2v"),new byte[]{0,0,1});
@@ -36,9 +36,12 @@ public final class ArcadeSetupTest {
         Files.createSymbolicLink(root.resolve("escape"),outside);
         Files.createSymbolicLink(root.resolve("loop"),root);
         GameScanner.Result found=GameScanner.scan(root.toFile(),Collections.emptyList(),()->false);
-        check(found.games.size()==3,"Discover three valid games, ignore bad framefiles and escaped/cyclic links");
+        check(found.games.size()==5,"Discover five valid games, ignore bad framefiles and escaped/cyclic links");
         for (LaunchConfig detected : found.games) {
-            check(detected.scoreLayout == LaunchConfig.SCORE_LEFT, "Default score preference enabled");
+            int expected = detected.game.equals("ace") ? LaunchConfig.SCORE_LEFT
+                    : detected.game.equals("laireuro") || detected.game.equals("lair_ita")
+                    ? LaunchConfig.SCORE_OFF : LaunchConfig.SCORE_TOP;
+            check(detected.scoreLayout == expected, "Default scoreboard layout for " + detected.game);
             check(new VideoOptions(LaunchConfig.splitArguments(detected.extraArguments)).smooth,
                     "New game profiles default to smooth video scaling");
             check(LaunchConfig.splitArguments(detected.extraArguments).contains("-fastboot") ==
@@ -87,7 +90,7 @@ public final class ArcadeSetupTest {
         check(again.games.stream().anyMatch(c->c.id.equals(saved.id) && c.moveMode == MoveMode.MAX_SCORE && c.extraArguments.equals("-fastboot")),"Preserve saved settings");
         check(GameScanner.scan(root.toFile(),Collections.emptyList(),()->true).games.isEmpty(),"Cancellation");
         Files.delete(root.resolve("ace.daphne/video.m2v"));
-        check(GameScanner.scan(root.toFile(),Collections.emptyList(),()->false).games.size()==2,"Exclude missing media");
+        check(GameScanner.scan(root.toFile(),Collections.emptyList(),()->false).games.size()==4,"Exclude missing media");
         Path singe=Files.createDirectories(root.resolve("singe/custom"));
         Files.writeString(singe.resolve("custom.txt"),".\n0 video.m2v\n");
         Files.write(singe.resolve("video.m2v"),new byte[]{0,0,1});

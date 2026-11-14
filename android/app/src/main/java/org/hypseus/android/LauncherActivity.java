@@ -120,7 +120,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private Switch fastBoot;
     private Switch showScore;
     private Button scoreLayoutButton;
-    private int scoreLayout = LaunchConfig.SCORE_LEFT;
+    private int scoreLayout = LaunchConfig.defaultScoreLayout("");
     private Button difficultyButton;
     private Button skillButton;
     private int difficulty;
@@ -335,7 +335,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         showScore = option(advancedSection, "Show score and lives");
         showScore.setOnCheckedChangeListener((button, checked) -> {
             if (!applyingOptions) {
-                scoreLayout = checked ? LaunchConfig.SCORE_LEFT : LaunchConfig.SCORE_OFF;
+                scoreLayout = checked ? LaunchConfig.defaultScoreLayout(gameId.getText().toString()) : LaunchConfig.SCORE_OFF;
                 rememberCurrent();
                 saveDraft();
             }
@@ -560,7 +560,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
     private static LaunchConfig fromJson(JSONObject json) {
         return new LaunchConfig(json.optString("id", ""), json.optString("name", ""), json.optString("game", "lair"),
                 json.optString("framefile", ""), json.optString("script", ""), json.optString("extra", ""),
-                json.optInt("moves", MoveMode.OFF), json.optBoolean("cue", false), json.optInt("scoreLayout", LaunchConfig.SCORE_LEFT), json.optInt("difficulty", -1), json.optInt("skill", 0));
+                json.optInt("moves", MoveMode.OFF), json.optBoolean("cue", false), json.optInt("scoreLayout", LaunchConfig.defaultScoreLayout(json.optString("game", "lair"))), json.optInt("difficulty", -1), json.optInt("skill", 0));
     }
 
     private void chooseStorage() {
@@ -882,7 +882,10 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                 try {
                     field.setText(LaunchConfig.relativePath(root, selected));
                     if (!scripts) {
-                        gameId.setText(LaunchConfig.inferGame(framefile.getText().toString()));
+                        String detected = LaunchConfig.inferGame(framefile.getText().toString());
+                        if (!detected.equals(gameId.getText().toString()))
+                            scoreLayout = LaunchConfig.defaultScoreLayout(detected);
+                        gameId.setText(detected);
                         updateGameOptions();
                     }
                     profileName.setText(profileTitle());
@@ -1137,6 +1140,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
                         ? "Game not detected — choose ROM version" : "Override game / ROM version")
                 .setItems(GAME_IDS, (dialog, which) -> {
                     gameId.setText(GAME_IDS[which]);
+                    scoreLayout = LaunchConfig.defaultScoreLayout(GAME_IDS[which]);
                     difficulty = GameDifficulty.importedSelection(GAME_IDS[which], safeOptions());
                     skill = 0;
                     moveMode = MoveMode.OFF;
@@ -1167,7 +1171,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         boolean scoreSupported = LaunchConfig.supportsScore(game, safeOptions());
         boolean scorePlacement = LaunchConfig.supportsScorePlacement(game);
         if (scoreLayout >= LaunchConfig.scoreLayouts(game).length)
-            scoreLayout = LaunchConfig.SCORE_LEFT;
+            scoreLayout = LaunchConfig.defaultScoreLayout(game);
         setGameOption(showScore, scoreSupported && !scorePlacement, available);
         setGameOption(scoreLayoutButton, scoreSupported && scorePlacement, available);
         scoreLayoutButton.setText(LaunchConfig.SCORE_LAYOUTS[scoreLayout]);

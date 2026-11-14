@@ -70,7 +70,7 @@ public final class LaunchConfig {
     public LaunchConfig(String id, String name, String game, String framefile, String script,
                         String extraArguments,
                         int moveMode, boolean timingCue) {
-        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, SCORE_LEFT);
+        this(id, name, game, framefile, script, extraArguments, moveMode, timingCue, defaultScoreLayout(game));
     }
 
     public LaunchConfig(String id, String name, String game, String framefile, String script,
@@ -90,7 +90,7 @@ public final class LaunchConfig {
         this.name = clean(name);
         this.game = clean(game).toLowerCase(Locale.ROOT);
         this.scoreLayout = scoreLayout >= SCORE_OFF && scoreLayout < scoreLayouts(this.game).length
-                ? scoreLayout : SCORE_LEFT;
+                ? scoreLayout : defaultScoreLayout(this.game);
         this.moveMode = MoveMode.selected(this.game, moveMode);
         this.difficulty = GameDifficulty.selected(this.game, difficulty);
         this.skill = GameDifficulty.selectedSkill(skill);
@@ -115,6 +115,12 @@ public final class LaunchConfig {
 
     static String[] scoreLayouts(String game) {
         return GameDifficulty.spaceAce(game) ? ACE_SCORE_LAYOUTS : SCORE_LAYOUTS;
+    }
+
+    static int defaultScoreLayout(String game) {
+        String id = clean(game).toLowerCase(Locale.ROOT);
+        if (!supportsScore(id) || euroLair(id)) return SCORE_OFF;
+        return supportsScorePlacement(id) && scoreLayouts(id).length > SCORE_TOP ? SCORE_TOP : SCORE_LEFT;
     }
 
     static boolean supportsScore(String game) {
