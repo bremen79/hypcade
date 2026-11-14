@@ -5,7 +5,7 @@ than collecting only the moves encountered during successful games. It supports
 Dragon’s Lair Enhancement 2.1 (`dle21`), Space Ace US A3 (`ace`) and
 Space Ace Enhancement 1.0 (`sae`), plus US Dragon’s Lair revisions A–F
 (`lair_a` through `lair_f`). Unlisted ROM revisions are rejected.
-The Italian European-board ROM has the separate exporter described below.
+European and Italian board ROMs use the separate exporter described below.
 Dragon’s Lair II uses its own ROM move display and is
 not an input to this exporter.
 
@@ -230,16 +230,26 @@ and decoded information, but no ROM chip payloads, local absolute paths or
 signing data. Review any generated artifacts separately before publication.
 The exporter additions are GPL-3.0-or-later, like the other Hypcade tools.
 
-## Italian European records
+## European-board records
 
-Use `euro_tables.py --rom /path/to/dl_italian.zip --output OUTPUT` for a
-structural export, or `euro_moves.py` for extraction plus independent replay.
+Use `euro_tables.py --game laireuro --rom /path/to/laireuro.zip --output OUTPUT`
+(or `--game lair_ita` for the Italian clone) for a structural export, or `euro_moves.py` for extraction plus independent replay.
 This is a separate format, not a special case in the Cine compact decoder.
 
-Four 8 KiB program chips are CRC-pinned. At `0x2000`, the ROM stores its
-36-room queue and system-entry record IDs. Records are one-based, 32 bytes
-each, starting at `0x2088`. The pinned revision has 682 nonempty records
-through ID 704; unused slots remain holes.
+Four 8 KiB program chips are CRC-pinned. A complete Italian ZIP contains all
+four program chips; a split `lair_ita.zip` contains only the Italian 45/48
+replacement chips and reads the shared 46/47 chips from an adjacent
+`laireuro.zip`. Both layouts reconstruct the same Italian program. The two
+Italian replacement CRCs must be present in the selected ZIP; the European
+parent is never accepted as an Italian revision. The native game also needs
+the parent ZIP for its shared character graphics.
+
+At `0x2000`, the ROM stores its 36-room queue and system-entry record IDs. Records are one-based, 32 bytes
+each, starting at `0x2088`. Both pinned revisions end at ID 704.
+The Italian ROM has 682 nonempty records;
+the European parent has all 704, including an additional sequence absent from
+the Italian table. The European first/fourth program CRCs are `4D3A9EAC` and
+`36575106`; the Italian replacements are `2ED85958` and `0C0B3011`.
 
 | Record offset | Meaning |
 | --- | --- |
@@ -253,8 +263,14 @@ through ID 704; unused slots remain holes.
 The ROM input handler maps target slots 7/6/5/4/3 to Up/Down/Left/Right/Button.
 Other slots must be unused or extraction fails. Target bit 15 requests an
 immediate transition; it is preserved, while the low 15 bits identify the
-destination. Every referenced destination must exist. Deaths are excluded from
-safe policies; required zero-score transitions remain. Cycles are rejected
+destination. Root destinations must exist. Out-of-range transition targets
+remain explicit
+`unresolved_targets` in the inventory and are excluded from safe continuations.
+No destination is guessed or patched. The pinned European ROM has one such
+default target: record 648 points to 8043 if no action is taken, while UP leads
+to the valid record 649. Withholding that UP in natural execution reaches the
+invalid record, and the verifier rejects it rather than treating corrupt RAM
+as a victory. Deaths are excluded from safe policies; required zero-score transitions remain. Cycles are rejected
 explicitly rather than silently dropping alternatives. Both strategies rank
 all safe alternatives at every record, including records absent from sampled
 plays. Rankings optimize continuations to a ROM room-dispatch boundary, not
@@ -269,3 +285,26 @@ It does not replace this with an unsigned comparison. Scores are packed BCD
 at `A142`–`A144` / `A145`–`A147`; lives are `A149` / `A14A`, credits `A14B`.
 The verifier extracts the production European driver and VP932 methods rather
 than substituting the US board or inventing video timing.
+
+## European and Italian operator difficulty
+
+Upstream `laireuro::set_bank` already accepts both physical switch banks.
+No new engine option or ROM patch is needed. Both pinned programs complement
+the byte read from `E090` and shift it right six times into `A18E`. Thus bank A
+bits 6/7 select operator levels 0–3. The Android catalog changes only raw mask
+`0xC0`, preserving coinage, lives and the other bank. Euro’s factory raw bytes
+are `16 F6` (level 3); Italian’s are `DF EF` (level 0).
+
+These are operator settings, not a replacement for the ROM’s progression.
+The European ROM starts its global current level at `A18F` from `A18E`;
+Italian starts per-player levels at `A18F` / `A28F` and ramps them according
+to the operator setting. Euro’s input handler bypasses the timer comparison
+at current level zero and otherwise uses global cutoff `A189`. Italian always
+performs the signed comparison against the current player’s cutoff at
+`A189` / `A289`. The shared selector follows this distinction, including long
+input records whose remaining frame count has its high bit set.
+
+DLE21 is different: its supplied `readme21.txt` explicitly removes difficulty
+options. Its prototype mode is a separate game mode, so the Android menu does
+not mislabel that switch as difficulty. US A–F retain their existing four
+operator choices; DL2 US 3.19 retains its five EEPROM levels.

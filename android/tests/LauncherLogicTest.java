@@ -300,7 +300,20 @@ public final class LauncherLogicTest {
                     "Unset difficulty does not match native defaults for " + game);
         }
         check(GameDifficulty.importedSelection("lair", Arrays.asList()) == 0, "DL factory setting is Easy");
+        check(GameDifficulty.choices("dle21").length == 1, "DLE21 author removed difficulty settings");
         check(GameDifficulty.importedSelection("lair_a", Arrays.asList()) == 2, "Early DL factory progression is after 5 scenes");
+        check(GameDifficulty.importedSelection("laireuro", Arrays.asList()) == 3, "European factory difficulty is Level 3");
+        check(GameDifficulty.importedSelection("lair_ita", Arrays.asList()) == 0, "Italian factory difficulty is Level 0");
+        for (String game : new String[]{"laireuro", "lair_ita"}) {
+            check(GameDifficulty.choices(game).length == 4, "European board exposes four native difficulty settings");
+            for (int level=0; level<4; level++) {
+                List<String> options=GameDifficulty.arguments(game,level,0,inherited);
+                check((lastBank(options,0)&0xc0)==((3-level)<<6), "Wrong European difficulty bits");
+                check((lastBank(options,0)&0x3f)==(0x22&0x3f), "European difficulty changed unrelated bank-A bits");
+                check(lastBank(options,1)==0xd8, "European difficulty changed bank B");
+                check(GameDifficulty.importedSelection(game,options)==level, "European difficulty does not round-trip");
+            }
+        }
         check(GameDifficulty.importedSelection("cliff", Arrays.asList()) == 2, "Cliff factory setting is Level 2");
         check(GameDifficulty.importedSelection("cliffalt", Arrays.asList()) == 0, "Alternate Cliff factory setting is Level 0");
         for (int a : new int[]{0, 4}) for (int b : new int[]{0x80, 0x90})

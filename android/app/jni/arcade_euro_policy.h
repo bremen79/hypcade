@@ -9,7 +9,7 @@ typedef struct { uint16_t record, target; uint8_t control; } ArcadeEuroRule;
 
 static inline ArcadeMoveSelection arcade_select_euro_move(
         const ArcadeEuroRule *rules, const uint16_t *order, size_t count,
-        const uint8_t *memory, size_t size, unsigned frame) {
+        const uint8_t *memory, size_t size, unsigned frame, bool per_player_difficulty) {
     ArcadeMoveSelection result={0,false,0};
     if(size<0xa28a)return result;
     const uint8_t *ram=memory+0xa000;
@@ -32,8 +32,12 @@ static inline ArcadeMoveSelection arcade_select_euro_move(
         if((ram[0x115+2*slot]|(ram[0x116+2*slot]<<8))!=rule->target)continue;
         // ROM uses CP followed by RET M, not an unsigned comparison. Preserve
         // its wraparound/sign semantics and the full immediate-target bit.
-        unsigned remaining=ram[0x112],cutoff=ram[0x189+(ram[0x152] ? 0x100 : 0)];
-        if(!remaining || ((remaining-cutoff)&128))return result;
+        unsigned player=per_player_difficulty && ram[0x152] ? 0x100 : 0;
+        unsigned remaining=ram[0x112],cutoff=ram[0x189+player];
+        // Euro bypasses CP/RET M at level zero and uses a global cutoff.
+        // Italian always compares, using the current player's cutoff.
+        bool unrestricted=!per_player_difficulty && !ram[0x18f];
+        if(!remaining || (!unrestricted && ((remaining-cutoff)&128)))return result;
         result.controls=rule->control;result.ready=true;
         result.window=((uint64_t)record<<32)|((uint64_t)start<<16)|rule->target;
         return result;

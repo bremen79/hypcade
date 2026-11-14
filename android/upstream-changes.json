@@ -3,7 +3,7 @@
   "upstream": "https://github.com/DirtBagXon/hypseus-singe",
   "revision": "a16e2521ee3233ef20c44e562008c47f4b4293df",
   "notice_date": "2026-11-14",
-  "scope": "Public source compared with pinned Hypseus Singe; Android launcher, complete Cinematronics and Italian European-board move policies, shared data, structural coverage and skill/difficulty/retry validation. Android runtime validation for the new European adapter is deferred. Build outputs and private files excluded.",
+  "scope": "Public source compared with pinned Hypseus Singe; Android launcher, complete Cinematronics and European and Italian board move policies, shared data, structural coverage and skill/difficulty/retry validation. Android runtime validation for the new European adapter is deferred. Build outputs and private files excluded.",
   "modified": [
     {
       "path": ".gitignore",
@@ -315,8 +315,10 @@
     "android/licenses/Nofrendo-LGPL-2.0.txt",
     "android/licenses/libmpeg2-COPYING.txt",
     "android/moves/euro-tables/lair_ita-moves.json",
+    "android/moves/euro-tables/lair_ita-verification.json",
+    "android/moves/euro-tables/laireuro-moves.json",
+    "android/moves/euro-tables/laireuro-verification.json",
     "android/moves/euro-tables/manifest.json",
-    "android/moves/euro-tables/verification.json",
     "android/moves/rom-tables/ace-dle21-generation-verification.json",
     "android/moves/rom-tables/ace-dle21-sae-source-manifest.json",
     "android/moves/rom-tables/ace-dle21-source-manifest.json",

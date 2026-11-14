@@ -1,0 +1,1692 @@
+{
+  "game": "laireuro",
+  "sources": {
+    "src/game/laireuro.cpp": "ad87d1bdf8794552d574aeacdb4acdaa399f9282efe5a175b3f0e4b09669075e",
+    "src/ldp-in/vp932.cpp": "926ac930b663df4b8b7866db362403e1615f88a53d4fa655b08c6fca4aa11433",
+    "android/app/jni/arcade_euro_policy.h": "f3a71fe020bcae4fa32c57593e0487f917add767ec7c2d1f28635531f714afd7",
+    "android/app/jni/arcade_move_policy.h": "f1a3ef33b772f3e9a065598a76ae67309f854103e488a407a465250d93e899a3",
+    "tools/offline-moves/euro_moves.py": "70239f16cca5e9c072a9bb1bc30caebda7b72376b0b343aeafaecad85ecd3771",
+    "tools/offline-moves/euro_tables.py": "13a32a26264043787588c273794137cbe16845500495c8c0053218a60b4426bb",
+    "tools/offline-moves/euro_routes.cpp": "bf9cb6f6016d7f75386d0d1e652403c3aefd8edc832147c18d5eb04250c23399",
+    "tools/offline-moves/move_arrays.py": "8f222a8d7c56e7c0e335904776dc3a105dd93d1ff28204b9bb8b7d36819260a3",
+    "tools/offline-moves/verify_dl2_watch.py": "b4b4fc3d651918cf544bf1621b0813cc2dff60b45ffbee5c17be7d165f186bba",
+    "tools/offline-moves/vendor/src/cpu/z80.c": "a31fd4b9d98851b7497c0a1c9c3bfe96f33bae4927ce324d4268418ed62d8626",
+    "tools/offline-moves/vendor/src/ldp/ldp.c": "2e03b4383e346ea893a8ac51b508ef8f21d26903175bac0706b352123905d56d"
+  },
+  "rom_sha256": "43435324911b31aece7bce964ac677e9038a875c1d4e3e2123f6b69f8353fa91",
+  "backend": "host-video-less",
+  "results": [
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.159
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.068
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.146
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.181
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.463
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.012
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.341
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.217
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.572
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.342
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.141
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 0,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 0,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.231
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.162
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.174
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.149
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.105
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 10.261
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.103
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.345
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.128
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.56
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.223
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.151
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 1,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 1,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.11
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.944
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.911
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.723
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 16.62
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 15.836
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 14.852
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 17.253
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 23.099
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 19.464
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 14.802
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.474
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 2,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 2,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.546
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 12.072
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 11.941
+    },
+    {
+      "objective": "shortest",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 15.183
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 15.224
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.896
+    },
+    {
+      "objective": "highest-score",
+      "start": 0,
+      "start_delay_ms": 0,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 865406,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 14.672
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 15.879
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 22.536
+    },
+    {
+      "objective": "shortest",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 17.404
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 0,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 15.284
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 8,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876790,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.498
+    },
+    {
+      "objective": "highest-score",
+      "start": 1,
+      "start_delay_ms": 11317,
+      "phase": 16,
+      "miss": 0,
+      "difficulty": 3,
+      "verified": true,
+      "proofs": [
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": false,
+          "returncode": 0
+        },
+        {
+          "win": true,
+          "score": 202599,
+          "moves": 207,
+          "lives": 3,
+          "initial_lives": 3,
+          "ms": 876750,
+          "difficulty": 3,
+          "replay": true,
+          "returncode": 0
+        }
+      ],
+      "seconds": 13.732
+    }
+  ],
+  "android_tested": false,
+  "planned": 48,
+  "all_scenes_proven": false,
+  "global_optimum_proven": false,
+  "difficulty_levels": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "configurations": [
+    {
+      "difficulty": 0,
+      "raw_banks": [
+        214,
+        246
+      ]
+    },
+    {
+      "difficulty": 1,
+      "raw_banks": [
+        150,
+        246
+      ]
+    },
+    {
+      "difficulty": 2,
+      "raw_banks": [
+        86,
+        246
+      ]
+    },
+    {
+      "difficulty": 3,
+      "raw_banks": [
+        22,
+        246
+      ]
+    }
+  ]
+}

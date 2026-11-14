@@ -76,13 +76,20 @@ static uint8_t port_read(void*ctx,uint16_t p){return ((EuroMachine*)ctx)->port_r
 static void port_write(void*ctx,uint16_t p,uint8_t v){((EuroMachine*)ctx)->port_write(p,v);}
 struct Input {uint64_t cycle;unsigned action,down;};
 int main(int argc,char**argv) {
-    // program.bin policy trace delay-ms queue-phase missed-move replay
-    if(argc!=8)return 2;
+    // program.bin policy trace delay-ms queue-phase missed-move replay bankA bankB per-player-difficulty
+    if(argc!=11)return 2;
     unsigned delay=unsigned(strtoul(argv[4],nullptr,10));
     unsigned phase=unsigned(strtoul(argv[5],nullptr,10));
     unsigned miss=unsigned(strtoul(argv[6],nullptr,10));
     bool replay=atoi(argv[7])!=0;
     if(phase>16 || delay>30000)return 2;
+    for(unsigned bank=0;bank<2;bank++) {
+        unsigned value=unsigned(strtoul(argv[8+bank],nullptr,10));
+        if(value>255)return 2;
+        machine.m_banks[2+bank]=uint8_t(value);
+    }
+    unsigned difficulty=(~machine.m_banks[2]&255)>>6;
+    bool per_player_difficulty=atoi(argv[10])!=0;
     std::vector<ArcadeEuroRule> rules;
     std::vector<uint16_t> order;
     FILE *policy=fopen(argv[2],"r");
@@ -158,16 +165,33 @@ int main(int argc,char**argv) {
         }
         unsigned record=word(0xa17a),life=machine.m_cpumem[0xa149],flags=machine.m_cpumem[0xa111];
         if(ms>65000+delay&&life>0&&life<=9&&!initial_lives)initial_lives=life;
+        if(initial_lives&&!won&&machine.m_cpumem[0xa18e]!=difficulty) {
+            printf("{\"win\":false,\"difficulty_mismatch\":%u,\"expected\":%u}\n",machine.m_cpumem[0xa18e],difficulty);
+            if(trace)fclose(trace);
+            return 8;
+        }
         if(initial_lives && record!=last_record && record<=704) {
             last_record=record;
             fprintf(stderr,"STEP time=%u record=%u frame=%d score=%u lives=%u\n",ms,record,player.get_current_frame(),score(),life);
         }
-        if(initial_lives&&(flags&64)&&life>0&&player.get_status()==PLAYER_PLAYING&&!won){won=true;ending_at=ms;}
+        if(initial_lives&&!won&&record>704) {
+            printf("{\"win\":false,\"invalid_record\":%u,\"moves\":%u,\"score\":%u,\"lives\":%u,\"ms\":%u}\n",record,moves,score(),life,ms);
+            if(trace)fclose(trace);
+            return 7;
+        }
+        if(initial_lives&&(flags&64)&&life>0&&record>0&&record<=704&&!won) {
+            const unsigned address=0x2088+(record-1)*32;
+            const unsigned first=word(address),frame=player.get_current_frame();
+            if((machine.m_cpumem[address+2]&64)&&word(0xa10f)==first&&
+                player.get_status()==PLAYER_PLAYING&&frame>=first&&frame<=first+machine.m_cpumem[address+3]+1) {
+                won=true;ending_at=ms;
+            }
+        }
         if(won) {
             peak_score=max(peak_score,score());
             if(ms>ending_at+9000) {
                 bool valid=(!miss || (skipped||replay)) && life==initial_lives-(miss?1:0);
-                printf("{\"win\":%s,\"score\":%u,\"moves\":%u,\"lives\":%u,\"initial_lives\":%u,\"ms\":%u,\"replay\":%s}\n",valid?"true":"false",peak_score,moves,life,initial_lives,ms,replay?"true":"false");
+                printf("{\"win\":%s,\"score\":%u,\"moves\":%u,\"lives\":%u,\"initial_lives\":%u,\"ms\":%u,\"difficulty\":%u,\"replay\":%s}\n",valid?"true":"false",peak_score,moves,life,initial_lives,ms,difficulty,replay?"true":"false");
                 if(trace)fclose(trace);
                 return valid?0:5;
             }
@@ -181,7 +205,7 @@ int main(int argc,char**argv) {
         if(now_cycles>=next_nmi) {
             next_nmi+=3579545/50;machine.do_nmi();
             selected=initial_lives&&player.get_status()==PLAYER_PLAYING ?
-                arcade_select_euro_move(rules.data(),order.data(),order.size(),machine.m_cpumem,sizeof machine.m_cpumem,player.get_current_frame()):ArcadeMoveSelection{};
+                arcade_select_euro_move(rules.data(),order.data(),order.size(),machine.m_cpumem,sizeof machine.m_cpumem,player.get_current_frame(),per_player_difficulty):ArcadeMoveSelection{};
             if(selected.ready&&(!previous_ready||last_window!=selected.window))pending=selected;
             if(!selected.ready)pending={};
             previous_ready=selected.ready;last_window=selected.window;

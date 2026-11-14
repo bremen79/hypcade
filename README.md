@@ -170,10 +170,11 @@ accepted joystick/button actions, excluding coins and Start.
 | Dragon’s Lair Rev. D (`lair_d`) | — | 192–207 | 303,514–352,894 | 193–207 | 304,009–354,608 |
 | Dragon’s Lair Rev. E (`lair_e`) | — | 192–198 | 325,753–326,124 | 193–199 | 326,248–326,619 |
 | Dragon’s Lair Rev. F (`lair_f`) | — | 196–198 | 325,745–326,124 | 197–199 | 326,240–326,619 |
-| Dragon’s Lair Italian (`lair_ita`) | — | 69–77 | 67,700–88,250 | 69–77 | 67,700–88,250 |
+| Dragon’s Lair European (`laireuro`) | — | 207 | 202,599 | 207 | 202,599 |
+| Dragon’s Lair Italian (`lair_ita`) | — | 69–76 | 73,949–88,250 | 69–76 | 73,949–88,250 |
 
-The Italian row is host-only at factory operator settings; its Android runtime
-checks are pending. Other rows cover the supported operator difficulty settings. Strategies rank
+The European and Italian rows cover all four native levels and two start times
+on the host; their Android runtime checks are pending. Other rows cover the supported operator difficulty settings. Strategies rank
 routes through the decoded tables; the ROM still chooses scene order, so this
 is not a proof of a global optimum. Watch Mode may issue additional presses
 because it delivers inputs through the normal polling and queue.

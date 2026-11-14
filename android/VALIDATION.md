@@ -107,6 +107,27 @@ They have not yet been checked visually on the cabinet.
 
 ## Move policies and Watch Mode
 
+European Dragon’s Lair (`laireuro`) has 704 decoded records and 592 shared
+ranked rules. Across all four operator levels, both strategies passed two start
+times and three queue phases: 48 death-free host plays and 48 independent
+physical-input replays. Each normal run finished with 207 presses and 202,599
+points. All 36 room-queue entries were observed, with different room orders
+between start times. Both strategies select the same first-ranked action at every record;
+this does not prove a global optimum over ROM dispatch or other settings.
+Eight deliberate-miss recovery cases (four levels, both strategies) also passed
+their independent replays, finishing with two lives, 210 presses and 203,649 points.
+
+The European ROM has one out-of-range default link: record 648 targets 8043
+without input, while UP targets valid record 649. The complete inventory retains
+this raw link; safe policies exclude it without replacing its destination.
+Withholding that UP in a natural run reached record 8043, and the verifier
+correctly returned failure. Victory now requires a decoded victory record and
+its playing ending clip, rather than a RAM flag alone. The same stricter
+verifier passed all 48 Italian difficulty cases; its move data is unchanged.
+The combined revision catalog is checked with a European-only record that must
+not select an Italian action. Bundled validation reconstructs both full policies
+and checks the compiled arrays. Android runtime checks remain deferred.
+
 US Dragon’s Lair revisions A–F passed 96 complete death-free plays and exact
 independent replays on each backend (host and Android 9 x86 video-less), covering
 both strategies, four operator difficulties and two start times. The generated
@@ -115,18 +136,33 @@ host and Android includes match byte for byte. The combined selector passed
 queue phases. A further 48 host cases deliberately withheld move 4 and completed
 after one life loss. Android recovery checks for these revisions remain pending.
 Complete policies are shared where equal: A–D use one rule pool, E–F another;
-only byte-identical calibration arrays are shared. An explicit PR-7820 port-map
+only byte-identical calibration arrays are shared. A fresh host recheck passed all 48 combinations of revision, difficulty and
+strategy at 8 ms queue phase using the updated supplied ZIPs. DLE21 passed both
+strategies with its sole fixed difficulty. DL2 passed all five levels through
+the production Java player, including one correctly timed native text prompt
+per move. These host checks do not replace Android runtime validation.
+An explicit PR-7820 port-map
 regression protects E020 immediate commands and E010 AY register selection.
 
 Italian Dragon’s Lair has 682 decoded fixed records and 573 shared ranked rules.
-At factory operator settings, 24 host cases (four start times, two objectives,
+The normalized split `lair_ita.zip` plus `laireuro.zip` reconstructs the exact
+Italian program used for this export (SHA-256
+`5963d613229f84f82bb188622a9ed4c8166d0122d1af2e0a39293c7c5789e42f`).
+Both bundled policies and the full inventory match. The offline loader accepts
+the parent’s shared chips only after identifying both Italian replacement chips;
+synthetic tests reject the European parent as an Italian set. The native loader
+already supports this parent/clone arrangement. The European parent has its own separately verified policy, described above.
+Across all four operator levels, 48 host cases (two start times, two objectives,
 three queue phases) finished without life loss and passed independent replay
 of their physical input traces in fresh processes. Different start times gave
-different routes: 69–77 presses and 67,700–88,250 points. Both objectives selected
-the same actions in these runs. Four further cases withheld move 4, lost exactly
-one life, resumed guidance and finished; all passed independent replay.
+69–76 presses and 73,949–88,250 points. Both objectives selected the same actions.
+Eight further cases withheld move 4, lost exactly one life, resumed guidance
+and finished at 88,051 points; all passed independent replay.
 Synthetic checks protect full 16-bit immediate targets, partially loaded records,
-death refusal, deliberate waits and the separate Player 2 cutoff.
+death refusal, deliberate waits, the separate Player 2 cutoff, and Euro’s
+level-zero bypass for long input windows. Both ROMs’ requested difficulty is
+checked in actual ROM RAM (`A18E`); the factory settings are Euro 3 and Italian 0.
+The UI calls the existing upstream bank setter and preserves other switch bits.
 These tests reuse production European driver/VP932 methods and the shared native
 selector, but model the 8 ms poll / 17 ms queue instead of running the production
 Java controller. Italian Android runtime and video-backed checks are explicitly

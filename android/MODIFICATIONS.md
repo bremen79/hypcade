@@ -50,6 +50,13 @@ is pressed. All supported difficulty menus show concrete choices, initialized
 from the effective DIP settings or saved EEPROM level. DIP layouts share a
 small catalog and a common reader/writer.
 
+European and Italian Dragon’s Lair expose four native operator levels through
+upstream `-bank`, with defaults read from their distinct factory switch bytes.
+The catalog masks only difficulty bits and preserves other settings. The move
+selector follows Euro's global cutoff and level-zero bypass, and Italian's
+per-player signed comparison. DLE21 has no difficulty setting, as specified by
+its author.
+
 Game Options exposes difficulty for supported games. For Dragon's Lair II US
 3.19, a small driver addition uses the existing `-preset` hook for levels 0–4
 to set the EEPROM difficulty at startup. It preserves other valid saved
@@ -171,11 +178,13 @@ both strategies. Identical immutable arrays are stored once across revisions;
 different timing calibrations remain separate. The host verifier supplies a
 PR-7820 adapter for A–C without changing the pinned vendor sources.
 
-Italian Dragon’s Lair uses a separate fixed-record decoder and compact native
+European and Italian Dragon’s Lair use a shared fixed-record decoder and compact native
 policy with 16-bit targets. A read-only Android hook in the European driver's
 50 Hz tick publishes moves and the ROM's credits/lives through the existing
 guidance and Watch Mode APIs. Emulated CPU, CTC/DART and VP932 timing remain
-unchanged. The host verifier reuses production driver/protocol methods and
+unchanged. A revision catalog selects separate ROM-derived pools, sharing
+identical arrays. Malformed ROM links remain auditable rather than being
+repaired by hand. The host verifier reuses production driver/protocol methods and
 independently replays recorded physical inputs; its modeled Android input
 cadences do not replace an Android runtime test.
 

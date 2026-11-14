@@ -2,10 +2,33 @@
 # Hypcade: Copyright (C) 2026 Francesco Orabona.
 # SPDX-License-Identifier: GPL-3.0-or-later
 import unittest
+from pathlib import Path
+import tempfile
+from unittest.mock import patch
+import zipfile
+import zlib
 import euro_tables as e
 
 
 class EuroTablesTest(unittest.TestCase):
+    def test_split_italian_set_uses_only_shared_parent_chips(self):
+        chips=[bytes([i])*8192 for i in range(4)]
+        pins=tuple(zlib.crc32(b) for b in chips)
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(e.LAYOUTS,{'lair_ita':dict(chips=pins)}):
+            root=Path(tmp);child=root/'lair_ita.zip';parent=root/'laireuro.zip'
+            with zipfile.ZipFile(child,'w') as z:
+                z.writestr('ita45.bin',chips[0]);z.writestr('ita48.bin',chips[3])
+            with self.assertRaisesRegex(ValueError,'requires laireuro.zip'):e.load(child)
+            with zipfile.ZipFile(parent,'w') as z:
+                z.writestr('elu46.bin',chips[1]);z.writestr('elu47.bin',chips[2])
+                z.writestr('elu45.bin',bytes([9])*8192)
+                z.writestr('elu48.bin',bytes([10])*8192)
+            self.assertEqual(e.load(child),b''.join(chips))
+            with self.assertRaisesRegex(ValueError,'Unsupported lair_ita'):e.load(parent)
+            with zipfile.ZipFile(root/'complete.zip','w') as z:
+                for i,b in enumerate(chips):z.writestr(str(i)+'.bin',b)
+            self.assertEqual(e.load(root/'complete.zip'),e.load(child))
+
     def test_fixed_records_preserve_immediate_target_and_zero_flag_input(self):
         rom=bytearray(b'\xff'*32768)
         rom[0x2000:0x2002]=(36).to_bytes(2,'little')
@@ -42,6 +65,15 @@ class EuroTablesTest(unittest.TestCase):
     def test_unknown_cycles_are_rejected_instead_of_silently_dropping_moves(self):
         data=dict(roots=[6],records=[dict(id=6,award=0,default=6,inputs=[],death=False,victory=False)])
         with self.assertRaisesRegex(ValueError,'cycle'):e.policies(data,'shortest')
+
+    def test_invalid_rom_destination_does_not_remove_a_valid_input(self):
+        data=dict(game='laireuro',roots=[6],records=[
+            dict(id=6,award=0,default=8043,inputs=[dict(control=1,target=7)],death=False,victory=False),
+            dict(id=7,award=350,default=0,inputs=[],death=False,victory=False)])
+        for objective in ('shortest','highest-score'):
+            p=e.policies(data,objective)
+            self.assertEqual([c['target'] for c in p['choices'] if c['id']==6],[7])
+        self.assertEqual(data['records'][0]['default'],8043)
 
 
 if __name__=='__main__':unittest.main()

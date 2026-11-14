@@ -91,12 +91,12 @@ uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
 while keeping the move display hidden. Dragon’s Lair II uses its native ROM
 moves for either policy; Singe games keep their own script menus.
 
-The DLE21, US Dragon’s Lair A–F, Italian Dragon’s Lair, Space Ace A3 and
+The DLE21, US Dragon’s Lair A–F, European/Italian Dragon’s Lair, Space Ace A3 and
 Space Ace Enhancement 1.0 move sets are derived from their ROM tables and
 checked through complete games without a lost life. Space Ace A3 covers all
 three skills and four operator difficulties; SAE covers three skills and both
-Easy/Hard settings. US A–F cover all four operator difficulties. The Italian
-adapter has passed host checks at factory settings; Android runtime validation
+Easy/Hard settings. US A–F cover all four operator difficulties. The European/Italian
+adapters have passed host checks at factory settings; Android runtime validation
 is pending.
 All decoded rules and ranked alternatives are retained, including retry-only
 steps; sampled winning games do not limit move coverage. Separate tests withhold
@@ -138,8 +138,8 @@ unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
 **Show moves** and **Play move audio cue** support Dragon's Lair
-Enhanced 2.1 (`dle21`), US revisions A–F (`lair_a` through `lair_f`), Italian
-Dragon’s Lair (`lair_ita`), Space Ace A3 (`ace`) and Space Ace Enhancement 1.0
+Enhanced 2.1 (`dle21`), US revisions A–F (`lair_a` through `lair_f`), European
+Dragon’s Lair (`laireuro`), Italian Dragon’s Lair (`lair_ita`), Space Ace A3 (`ace`) and Space Ace Enhancement 1.0
 (`sae`). White action text appears near
 the bottom when the move becomes ready; text and audio share the same event.
 The font matches Dragon's
@@ -176,7 +176,18 @@ timing.
 
 Device media volume controls overall loudness. Command files can also set
 `-volume_vldp` (video audio) and `-volume_nonvldp` (other game audio), from 0 to 64.
-Difficulty and Space Ace skill already have GUI controls where supported.
+Difficulty uses the existing game settings, with concrete values saved per game:
+
+| Dragon’s Lair ROM | Difficulty choices |
+| --- | --- |
+| US A–F | Easy, Hard, or increase after 5/9 scenes |
+| European and Italian | Levels 0–3; factory settings are 3 and 0 respectively |
+| DL2 US 3.19 | Levels 0–4 |
+| DLE21 | None; its author removed difficulty options |
+
+European and Italian settings use upstream `-bank` support and preserve unrelated
+coinage/lives switches. The ROM retains its own progression during play.
+Space Ace has separate operator difficulty and skill choices.
 Volume, seek delays, lives and coinage remain native or game-menu settings where
 the game provides them.
 

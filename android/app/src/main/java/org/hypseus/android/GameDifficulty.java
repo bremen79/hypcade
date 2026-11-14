@@ -37,6 +37,13 @@ final class GameDifficulty {
                 lairLabels, 0x22, 0xd8, 4, 0x90, lairValues));
         register("lair_a lair_b lair_c lair_d", new Dip(
                 lairLabels, 0, 8, 4, 0x90, lairValues));
+        // Both European-board ROMs read CPL(E090) >> 6 into A18E.
+        // Upstream's existing -bank route sets these switches; retain all
+        // unrelated coin/life/service bits and the revision's factory bytes.
+        String[] euroLabels = {"Level 0 (easiest)", "Level 1", "Level 2", "Level 3 (hardest)"};
+        int[][] euroValues = {{0xc0,0},{0x80,0},{0x40,0},{0,0}};
+        register("laireuro", new Dip(euroLabels, 0x16, 0xf6, 0xc0, 0, euroValues));
+        register("lair_ita", new Dip(euroLabels, 0xdf, 0xef, 0xc0, 0, euroValues));
         // Original Cinematronics manual, Appendix C: A2 and A3, active low.
         register("ace ace_a ace_a2", new Dip(
                 new String[]{"After 5 episodes · slow", "After 5 episodes · fast", "After 3 episodes · slow", "After 3 episodes · fast"},

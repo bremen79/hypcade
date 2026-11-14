@@ -189,12 +189,16 @@ driver methods; include its omitted-input negative controls. Use
 window at every DL2 difficulty. Compare backend
 results and keep source fingerprints consistent with the final tested tree.
 Distinguish video-less Android checks from actual APK runs through the launcher.
-The Italian European-board extractor uses the production CTC/DART/VP932 methods
+The European-board extractor supports European and Italian ROMs, using the
+production CTC/DART/VP932 methods
 with a host Z80/player harness; keep its 16-bit targets separate from Cine's
 compact tables. Run `euro_moves.py` for both strategies, independent physical-input
 replay and deliberate-miss recovery. Its shared selector models 50 Hz publication,
 8 ms polling and 17 ms queue delivery; this is not the production Java player.
-Android runtime validation for this new adapter is currently deferred at the
+European/Italian difficulty uses the upstream `-bank 0` route, raw mask `0xC0`.
+Validate levels 0–3, including Euro’s unrestricted level-zero window and Italian
+per-player cutoffs. DLE21 has no difficulty option; preserve its author's choice.
+Android runtime validation for these board adapters is currently deferred at the
 maintainer's request. Do not launch the Android emulator until requested, and do
 not describe these host checks as Android runtime validation.
 

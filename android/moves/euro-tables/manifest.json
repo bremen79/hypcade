@@ -1,8 +1,14 @@
 {
-  "schema": 1,
+  "schema": 2,
+  "games": [
+    "lair_ita",
+    "laireuro"
+  ],
   "files": {
     "lair_ita-moves.json": "cfa42fc52e9edd81a4df8555c47ba54104e9f29a3616df2775413034106a4e77",
-    "verification.json": "7e311ae2cae749c6c4947b7c50c123e902da6a9cb8b3fd60a871002dcbc09b28",
-    "arcade_euro_moves.inc": "c23f6233030aa2dd7d69c3199cc91826e631f21432b7bad273ebbd6cc6639b4d"
+    "lair_ita-verification.json": "aec5c7da2b5d93ae87833145198ce67193f42c3ef5e6c25a92995a3e0262c8ff",
+    "laireuro-moves.json": "4c96721a9147b8ad598fbdb2940a1bd15525f0d2a4a4585881893975ff51e07d",
+    "laireuro-verification.json": "931111b4335f2b2c190253dfe84741835128161432da9505e08990a02e7450df",
+    "arcade_euro_moves.inc": "cb97f5dbf13c43d543d8f47c1f3b4f0acbf168066294add76d8c4dca64d1b54f"
   }
 }

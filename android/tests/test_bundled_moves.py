@@ -25,7 +25,18 @@ def main():
     args=parser.parse_args()
     if not args.bundle_dir:
         euro_tables.verify_bundle(ROOT/'android/moves/euro-tables',ROOT/'android/app/jni/arcade_euro_moves.inc')
-    euro_table=json.loads((ROOT/'android/moves/euro-tables/lair_ita-moves.json').read_text()) if not args.bundle_dir else None
+    euro_data=ROOT/'android/moves/euro-tables'
+    euro_games=json.loads((euro_data/'manifest.json').read_text())['games'] if not args.bundle_dir else []
+    euro_tables_data=[json.loads((euro_data/(game+'-moves.json')).read_text()) for game in euro_games]
+    for game in euro_games:
+        report=json.loads((euro_data/(game+'-verification.json')).read_text())
+        assert {r['difficulty'] for r in report['results']}==set(range(4)), 'European difficulty verification is incomplete'
+        for row in report['results']:
+            assert all(p['win'] and p['difficulty']==row['difficulty'] for p in row['proofs'])
+    if args.roms:
+        for table in euro_tables_data:
+            game=table['game']
+            assert euro_tables.inventory(euro_tables.load(args.roms/(game+'.zip'),game),game)==table['inventory']
     folder=args.bundle_dir or ROOT/'android/moves/rom-tables';manifest=json.loads((folder/'manifest.json').read_text())
     include=folder/'arcade_moves.inc' if args.bundle_dir else ROOT/'android/app/jni/arcade_moves.inc';source=include.read_text()
     assert hashlib.sha256(include.read_bytes()).hexdigest()==manifest['apk_include_sha256']
@@ -128,7 +139,7 @@ def main():
             libs=[n for n in archive.namelist() if n.endswith('/libmain.so')];assert libs
             for lib in libs:
                 blob=archive.read(lib)
-                if euro_table:
+                for euro_table in euro_tables_data:
                     assert b''.join(struct.pack('<HHBx',*row) for row in euro_table['rules']) in blob,(apk,lib,'Italian rule pool')
                     for order in euro_table['policies'].values():
                         assert struct.pack('<'+'H'*len(order),*order) in blob,(apk,lib,'Italian strategy')

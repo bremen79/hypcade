@@ -47,16 +47,21 @@ vendor sources are unchanged. To combine independently verified exports, use
 It retains each export's evidence and source fingerprints, then shares
 identical immutable arrays. Different timing arrays remain separate.
 
-## Italian European-board Dragon’s Lair
+## European-board Dragon’s Lair
 
-This ROM uses PAL timing, a European board and the serial VP932 player, so its
-fixed records need their own decoder. Generate and check both strategies with:
+The European (`laireuro`) and Italian (`lair_ita`) ROMs use PAL timing and the
+serial VP932 player, so their fixed records need their own decoder. Generate and check both strategies with:
 
 ```bash
 python3 tools/offline-moves/euro_moves.py \
-  --rom /path/to/dl_italian.zip \
-  --output local-tools/italian-moves --starts 4
+  --game laireuro --rom /path/to/laireuro.zip \
+  --output local-tools/european-moves --starts 4
 ```
+
+Use `--difficulty 0` through `--difficulty 3` to check each operator level.
+Omitting it uses the revision’s factory setting (Euro 3, Italian 0). Release
+verification covers all four levels, both strategies, two start times and three
+queue phases per revision. ROM RAM is checked against the requested setting.
 
 The tool checks four program-chip CRCs, decodes every fixed record, and runs
 both policies with 0/8/16 ms input-queue phases. Starts use different delays to
@@ -65,20 +70,27 @@ from its recorded physical inputs in a fresh process, without consulting moves
 to choose inputs. The shared native selector runs at the driver's 50 Hz tick,
 with modeled 8 ms polling, 100 ms holds and 17 ms input delivery. This is a
 host timing model, not execution of the Android Java controller or an APK test.
-No video, sound, real-time waits or previous move files are used.
+No video, sound, real-time waits or previous move files are used. A finish must
+match a decoded victory record and its playing ending clip; a stale RAM flag
+alone is insufficient. Invalid record execution fails verification.
 
 Check recovery separately with `--miss 4 --input-phase 8`. The tool withholds
 that move and requires a finish after exactly one lost life. Failed checks do
 not publish a bundle. Successful normal checks write `bundle/`, containing
 one shared rule pool, both strategy index lists, the complete inventory,
 verification and hashes. Identical strategy lists share one native array.
+The combined APK include has a revision catalog; it never selects Italian
+policies for the European parent. `euro_tables.write_bundle` can combine verified
+revision tables and reports without rerunning unchanged exports.
 Only `arcade_euro_moves.inc` is compiled into the APK; program bytes remain
 private test data. The small Android driver hook only reads state. CPU timing,
 CTC/DART and VP932 protocol behavior are unchanged.
 
-The Italian tests currently use the native factory operator settings. Android
-emulator and video-backed checks are pending; host success does not substitute
-for them. See [the format notes](ROM-EXPORT.md#italian-european-records).
+For Italian moves, use `--game lair_ita --rom /path/to/lair_ita.zip`. A split
+Italian ZIP needs its adjacent `laireuro.zip` parent. Each revision is identified
+by its own program CRCs and uses its native factory operator settings.
+Android emulator and video-backed checks are pending; host success does not substitute
+for them. See [the format notes](ROM-EXPORT.md#european-board-records).
 
 The report includes each setting, start delay, score, move count and pass/fail
 result. Both `shortest` and `highest-score` routes retain their separate evidence.

@@ -9,6 +9,26 @@
 #include <cstdio>
 int main() {
     {
+        std::vector<uint8_t> memory(65536);
+        auto word=[&](unsigned at,unsigned value){memory[at]=value&255;memory[at+1]=value>>8;};
+        word(0xa17a,648);word(0xa10f,27743);
+        word(0x2088+647*32,27743);memory[0x2088+647*32+3]=14;
+        memory[0xa112]=14;memory[0xa189]=14;word(0xa115+14,649);
+        assert(arcade_has_calculated_moves("laireuro") && arcade_has_calculated_moves("lair_ita"));
+        for(int mode : {1,2}) {
+            arcade_set_move_policy(mode);
+            auto move=arcade_decode_euro(memory.data(),memory.size(),"laireuro",27743);
+            assert(move.ready && move.controls==1);
+            assert(!arcade_decode_euro(memory.data(),memory.size(),"lair_ita",27743).controls);
+        }
+        assert(!arcade_decode_euro(memory.data(),memory.size(),"unknown",27743).controls);
+        memory.assign(65536,0);
+        word(0xa17a,60);word(0xa10f,4023);word(0x2088+59*32,4023);
+        memory[0x2088+59*32+3]=200;memory[0xa112]=175;word(0xa115+10,61);
+        assert(arcade_decode_euro(memory.data(),memory.size(),"laireuro",4023).ready);
+        assert(!arcade_decode_euro(memory.data(),memory.size(),"lair_ita",4023).ready);
+    }
+    {
         // Italian record targets exceed one byte, and bit 15 must survive.
         std::vector<uint8_t> memory(65536);
         const ArcadeEuroRule rules[]={{6,0x8007,4},{6,8,8}};
@@ -17,16 +37,24 @@ int main() {
         memory[0xa10f]=100;memory[0xa112]=15;memory[0xa189]=10;
         memory[0xa115+10]=7;memory[0xa116+10]=128;
         memory[0xa115+8]=8;
-        auto pick=[&](){return arcade_select_euro_move(rules,order,2,memory.data(),memory.size(),100);};
+        auto pick=[&](){return arcade_select_euro_move(rules,order,2,memory.data(),memory.size(),100,true);};
         assert(pick().ready && pick().controls==4);
         memory[0xa189]=16;assert(!pick().ready);
         memory[0xa152]=1;memory[0xa289]=14;assert(pick().ready); // P2 cutoff
         memory[0xa111]=16;assert(!pick().controls); // death
         memory[0xa111]=0;memory[0xa10f]=99;assert(!pick().controls); // partial load
         memory[0xa10f]=100;memory[0xa115+10]=8;assert(pick().controls==8);
-        assert(!arcade_select_euro_move(rules,order,2,memory.data(),1,100).controls);
+        assert(!arcade_select_euro_move(rules,order,2,memory.data(),1,100,true).controls);
         const ArcadeEuroRule wait[]={{6,0,0},{6,0x8007,4}};
-        assert(!arcade_select_euro_move(wait,order,2,memory.data(),memory.size(),100).controls);
+        assert(!arcade_select_euro_move(wait,order,2,memory.data(),memory.size(),100,true).controls);
+        memory[0xa115+10]=7;memory[0x2088+5*32+3]=200;
+        memory[0xa112]=175;memory[0xa18f]=0;memory[0xa189]=0;memory[0xa152]=0;
+        assert(arcade_select_euro_move(rules,order,2,memory.data(),memory.size(),100,false).ready);
+        assert(!pick().ready); // Italian retains signed CP/RET M at level zero.
+        memory[0xa112]=100;memory[0xa18f]=1;memory[0xa189]=90;
+        memory[0xa152]=1;memory[0xa289]=110;
+        assert(arcade_select_euro_move(rules,order,2,memory.data(),memory.size(),100,false).ready);
+        assert(!pick().ready); // Euro uses the global cutoff; Italian uses P2.
     }
     assert(arcade_has_calculated_moves("sae") && arcade_has_calculated_moves("ace"));
     assert(!arcade_has_calculated_moves("unknown") && !arcade_has_calculated_moves(nullptr));

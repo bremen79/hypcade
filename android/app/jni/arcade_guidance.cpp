@@ -18,7 +18,7 @@
 #include "arcade_euro_moves.inc"
 
 bool arcade_has_calculated_moves(const char *game) {
-    return game && (!std::strcmp(game,"lair_ita") || arcade_cine_profile(arcade_cine_profiles,
+    return game && (arcade_euro_profile(arcade_euro_profiles,ARCADE_COUNT(arcade_euro_profiles),game) || arcade_cine_profile(arcade_cine_profiles,
         ARCADE_COUNT(arcade_cine_profiles),game)!=nullptr);
 }
 
@@ -41,11 +41,11 @@ ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsi
         ARCADE_COUNT(arcade_cine_profiles),ace ? "ace" : "dle21"),frame);
 }
 
-ArcadeMove arcade_decode_euro(const uint8_t *memory, size_t size, unsigned frame) {
+ArcadeMove arcade_decode_euro(const uint8_t *memory, size_t size, const char *game, unsigned frame) {
+    const auto *profile=arcade_euro_profile(arcade_euro_profiles,ARCADE_COUNT(arcade_euro_profiles),game);
+    if(!profile)return ArcadeMove{};
     bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
-    auto selected=arcade_select_euro_move(lair_ita_rules,
-        fewest ? lair_ita_rules_fewest : lair_ita_rules_max,
-        fewest ? ARCADE_COUNT(lair_ita_rules_fewest) : ARCADE_COUNT(lair_ita_rules_max),memory,size,frame);
+    auto selected=arcade_select_euro_move(profile->rules,profile->order[fewest],profile->count[fewest],memory,size,frame,profile->per_player_difficulty);
     ArcadeMove result;
     result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
     return result;
@@ -139,7 +139,8 @@ void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, boo
     publish(playing && supported ? arcade_decode_dl2(memory, size) : ArcadeMove{});
 }
 void arcade_guidance_euro(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame) {
-    if(!enabled.load(std::memory_order_relaxed) || size<0xa28a || std::strcmp(game,"lair_ita"))return;
+    if(!enabled.load(std::memory_order_relaxed) || size<0xa28a ||
+        !arcade_euro_profile(arcade_euro_profiles,ARCADE_COUNT(arcade_euro_profiles),game))return;
     unsigned player=memory[0xa152] ? 1 : 0;
     unsigned lives=memory[0xa149+player];
     unsigned record=memory[0xa17a]|(memory[0xa17b]<<8);
@@ -149,7 +150,7 @@ void arcade_guidance_euro(const uint8_t *memory, size_t size, const char *game, 
         arcade_watch_publish_credits((credit>>4)<=9 && (credit&15)<=9 ? int((credit>>4)*10+(credit&15)) : -1);
         arcade_watch_publish_game_started(alive && playing);
     }
-    publish(alive && playing ? arcade_decode_euro(memory,size,frame) : ArcadeMove{});
+    publish(alive && playing ? arcade_decode_euro(memory,size,game,frame) : ArcadeMove{});
 }
 void arcade_configure_guidance(int mode, bool cue, bool watch) {
     bool visual=mode==1 || mode==2;

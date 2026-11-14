@@ -16,6 +16,6 @@ def deduplicate(source):
             return match[0]
         aliases[name] = owners[key]
         return '#define %s %s' % (name, owners[key])
-    source = re.sub(r'static const (ArcadeRomMove|ArcadeRomRule|uint16_t) (\w+)\[\] = \{(.*?)\};',
+    source = re.sub(r'static const (ArcadeRomMove|ArcadeRomRule|ArcadeEuroRule|uint16_t) (\w+)\[\] = \{(.*?)\};',
                     array, source, flags=re.S)
     return source, aliases
