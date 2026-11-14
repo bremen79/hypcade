@@ -55,6 +55,25 @@ These checks do not measure Yoga Flame performance or replace commercial-game te
 
 ## Scoreboard layouts
 
+European and Italian Dragon's Lair now use the existing Off, Left, Right and
+Top layouts. Launcher checks cover all US DL1 revisions, DLE11/DLE21, DL2 and
+both European-board revisions, including revision guards and preservation of
+the native character overlay. Adding bezel support does not enable fastboot
+for the European board.
+
+`python3 android/tests/test_euro_scoreboard.py` checks the production RAM adapter
+and shared formatter with a capturing scoreboard, including packed BCD,
+single-player visibility, both turns, elimination, game over and invalid values.
+With `--roms <folder>`, it runs the actual European and Italian ROMs without
+video using the existing CPU/CTC/DART/VP932 harness. One- and two-player runs
+confirmed credit insertion, three starting lives, alternating turns, elimination
+and clearing at game over. With `--traces <verified-difficulties-folder>`, it
+also replays recorded winning inputs to exercise nonzero scores; these are
+scoreboard checks, not new end-to-end Watch Mode proofs. All six ROM scenarios
+passed. DL2's 14 existing adapter cases and shared GLES2/software rendering
+checks also pass after sharing the formatter. No Android emulator or cabinet
+runtime test was performed for the European/Italian scoreboard addition.
+
 Space Ace now offers Off, Left and Right; its dedicated skill panel moves to
 the opposite edge. This extension was built without running tests or a device
 check, as requested. The checks below describe the earlier DL1/DL2 work.

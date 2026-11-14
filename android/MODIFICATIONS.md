@@ -197,7 +197,8 @@ Pause and Exit remain available. Dragon's Lair II reads its native move data
 for automation while the Show moves setting independently controls visibility.
 
 The optional score-and-lives display reuses Hypseus's graphical scoreboard.
-Dragon's Lair I and supported Dragon's Lair II revisions offer Off, Left, Right
+Dragon's Lair I, including European and Italian revisions, and supported
+Dragon's Lair II revisions offer Off, Left, Right
 and Top layouts. Left and Right use the vertical bezel at the corresponding
 screen edge; Top reuses the upstream horizontal overlay scoreboard in a separate,
 unfiltered texture with a transparent background and upstream white, lit-segments-only
@@ -206,6 +207,13 @@ completed by the scoreboard collection after repainting. The texture is reused
 instead of recreated for each vertical-scoreboard update. Layout dimensions and
 placement live in the Android video backend. Other supported games retain their
 score-display switch.
+The European and Italian driver reads both packed-BCD scores, lives, credits
+and participation flags at its existing 50 Hz tick. It shares value formatting,
+range checks and numeric visibility with DL2 through `scoreboard_state.h`;
+the US DL1 driver keeps its direct emulated-register path. Both paths feed the
+existing scoreboard collection and one layout/rendering implementation. No
+additional textures or artwork are introduced for these revisions, and their
+ROM-controlled character overlay remains unchanged.
 For Dragon's Lair II US 3.19, Hypcade adds a read-only connection to both players'
 ROM score and life values and the credit count. Other DL2 revisions remain
 unsupported. The stored score is divided by ten for display, matching the ROM.

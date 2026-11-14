@@ -129,7 +129,9 @@ public final class LauncherLogicTest {
         check(!Arrays.asList(noScore.arguments(root)).contains("-scorebezel") &&
                 Arrays.asList(noScore.arguments(root)).contains("-noscoreboard"), "Off also suppresses the native overlay scoreboard");
         check(noScore.withId("new").scoreLayout == LaunchConfig.SCORE_OFF, "Preserve disabled score preference");
-        for (String game : new String[]{"lair", "dle21", "lair2"}) {
+        for (String game : new String[]{"lair", "dle11", "dle21", "lair2", "laireuro", "lair_ita",
+                "lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f"}) {
+            check(LaunchConfig.supportsScorePlacement(game), "DL scoreboard placement: " + game);
             for (int layout = LaunchConfig.SCORE_OFF; layout <= LaunchConfig.SCORE_TOP; layout++) {
                 LaunchConfig placed = new LaunchConfig("id", "test", game, "vldp/demo/frames.txt", "", "",
                         MoveMode.OFF, false, layout);
@@ -155,7 +157,18 @@ public final class LauncherLogicTest {
                             LaunchConfig.SCORE_LAYOUTS[layout].toLowerCase(java.util.Locale.ROOT)), "Space Ace native layout");
             }
         }
-        for (String unsupported : new String[]{ "ace91", "singe", "laireuro", "aceeuro", "cliff"})
+        for (String game : new String[]{"laireuro", "lair_ita"}) {
+            check(!LaunchConfig.supportsFastBoot(game), "European score support does not enable fastboot");
+            LaunchConfig hidden = new LaunchConfig("id", "test", game, "vldp/demo/frames.txt", "", "",
+                    MoveMode.OFF, false, LaunchConfig.SCORE_OFF);
+            check(!Arrays.asList(hidden.arguments(root)).contains("-noscoreboard"), "Preserve European native ROM text");
+            String version = game.equals("lair_ita") ? "2" : "1";
+            check(LaunchConfig.supportsScore(game, Arrays.asList("-version", version)), "Mapped European revision");
+            check(!LaunchConfig.supportsScore(game, Arrays.asList("-version", "3")), "Unmapped European revision");
+            check(!Arrays.asList(config(game,"vldp/demo/frames.txt","", "-version 3").arguments(root)).contains("-scorebezel"),
+                    "Unmapped European revision has no RAM scoreboard");
+        }
+        for (String unsupported : new String[]{ "ace91", "singe", "aceeuro", "cliff", "lair_d2"})
             check(!LaunchConfig.supportsScore(unsupported), "No optional scoreboard for " + unsupported);
         check(Arrays.asList(config("lair2", "vldp/demo/frames.txt", "", "").arguments(root)).contains("-scorebezel"),
                 "DL2 US 3.19 enables shared scoreboard");

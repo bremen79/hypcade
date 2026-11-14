@@ -58,6 +58,10 @@
       "upstream_sha256": "98357c940dc20406920395838ebb49c7a92756250c8d1214919bbefb44a0f57d"
     },
     {
+      "path": "src/game/laireuro.h",
+      "upstream_sha256": "f730dc126138ea7e1b8c46d1ad4bef45878f2328fafef8f4273283222fb0ce1a"
+    },
+    {
       "path": "src/game/singe.cpp",
       "upstream_sha256": "ff968c4af782a6ff5ce9ad85449df93475b2e7905e51e5c51deb68ba94de9a83"
     },
@@ -1212,6 +1216,7 @@
     "android/tests/test_coin_feedback.py",
     "android/tests/test_crt_shader.py",
     "android/tests/test_dl2_scoreboard.py",
+    "android/tests/test_euro_scoreboard.py",
     "android/tests/test_hardware_video.py",
     "android/tests/test_launcher_logic.py",
     "android/tests/test_mpeg2_neon.py",
@@ -1233,6 +1238,7 @@
     "sound/hypcade-coin.wav",
     "src/io/android_storage.h",
     "src/io/sdl_path.h",
+    "src/scoreboard/scoreboard_state.h",
     "src/video/video_android.cpp",
     "src/video/video_android.h",
     "src/vldp/android_index.h",

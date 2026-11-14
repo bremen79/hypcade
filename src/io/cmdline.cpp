@@ -957,7 +957,10 @@ bool parse_cmd_line(int argc, char **argv)
                 // Final ROM-revision validation happens in lair2::init(), after
                 // all arguments (including -version) have been parsed.
                 supported = supported || (dynamic_cast<lair2 *>(g_game) &&
-                    g_game->get_game_type() == GAME_LAIR2);
+                    g_game->get_game_type() == GAME_LAIR2) ||
+                    (dynamic_cast<laireuro *>(g_game) &&
+                     (!strcmp(g_game->get_shortgamename(), "laireuro") ||
+                      !strcmp(g_game->get_shortgamename(), "lair_ita")));
 #endif
                 if (supported && !get_scoreboard()) {
                     video::set_scoreboard_bezel(true);

@@ -24,6 +24,9 @@
 #define LAIREURO_H
 
 #include "game.h"
+#ifdef __ANDROID__
+class IScoreboard;
+#endif
 
 #define LAIREURO_CPU_HZ 3579545 // speed of cpu - from schematics
 
@@ -75,6 +78,10 @@ class laireuro : public game
 {
   public:
     laireuro();
+#ifdef __ANDROID__
+    bool init() override;
+    void shutdown() override;
+#endif
     void reset();
     void do_irq(Uint32);
     void do_nmi();
@@ -91,6 +98,10 @@ class laireuro : public game
     bool set_bank(Uint8, Uint8);
 
   protected:
+#ifdef __ANDROID__
+    IScoreboard *m_android_scoreboard = nullptr;
+    void update_android_scoreboard();
+#endif
     bool m_splash;
     Uint8 m_wt_misc;
     Uint8 m_character[0x2000];

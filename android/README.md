@@ -411,15 +411,23 @@ scoreboard hardware, raw Linux multi-mouse/lightgun access and extra scoreboard
 windows are unsupported. The app requests neither Internet nor raw Bluetooth
 access; Android-paired controllers use the normal input path.
 
-### Dragon's Lair II scoreboard
+### Dragon's Lair scoreboards
 
-Dragon's Lair I and supported Dragon's Lair II revisions offer a dropdown with
+Dragon's Lair I (including European `laireuro` and Italian `lair_ita`) and
+supported Dragon's Lair II revisions offer a dropdown with
 **Off**, **Left**, **Right** and **Top**. Left is the original vertical bezel;
 Right places that same bezel at the right edge. Top uses Hypseus's horizontal
 scoreboard with white, lit-segments-only digits and a transparent background
 across the top of the screen. The default is Left. These displays
 remain sharp when CRT scanlines are enabled. Other supported games keep the
 on/off control for their existing scoreboard.
+
+European and Italian Dragon's Lair use a read-only RAM adapter for both players'
+scores and lives and the credit count. Player 2's numbers are hidden in a
+single-player game; both players appear in two-player games, with no lives
+digit for an eliminated player. All player numbers clear at game over.
+The original ROM-controlled text remains unchanged, including when the bezel is
+Off. These layouts reuse the same artwork and renderer as the US versions.
 
 **Show score and lives** uses the same graphical scoreboard as Dragon's
 Lair I for the US 3.19 ROM (`lair2`, default revision or `-version 6`). It shows
@@ -445,6 +453,15 @@ these fields. Scores are divided by ten, matching the ROM's own display and
 high-score comparison. The adapter only reads RAM and updates the existing
 image scoreboard at the driver's regular display tick. Commercial ROM images
 and laserdisc media are not packaged; ROM-derived move metadata is included.
+
+For the supported European and Italian revisions, both six-digit scores are
+packed BCD at `0xa142` and `0xa145`, lives are at `0xa149` and `0xa14a`, and
+packed-BCD credits are at `0xa14b`. Bit 0 of `0xa001` marks attract/game over;
+`0xa153` selects one player (0) or two (1). The adapter samples these fields at
+the existing 50 Hz display tick. It shares digit formatting and visibility
+handling with DL2; US DL1 continues to feed the same renderer directly from
+its emulated scoreboard registers. Other European-board games and revisions
+remain excluded until their fields are verified.
 
 ### Source and licensing
 

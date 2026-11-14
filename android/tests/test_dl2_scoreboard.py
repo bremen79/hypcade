@@ -27,6 +27,7 @@ def main():
     method = verify.driver_method((REPO / 'src/game/lair2.cpp').read_text(),
                                   'void lair2::update_android_scoreboard()')
     source = r'''
+#include "scoreboard_state.h"
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -99,6 +100,7 @@ int main() {
     cpp.write_text(source)
     binary = args.output / 'scoreboard-test'
     subprocess.run(['c++', '-std=c++17', '-O2', '-Wall', '-Wextra',
+                    '-I'+str(REPO / 'src/scoreboard'),
                     str(cpp), '-o', str(binary)], check=True)
     subprocess.run([str(binary.resolve())], check=True)
 

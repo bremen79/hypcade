@@ -61,6 +61,9 @@ NORMAL_MODE = 0x20
 #include "lair2.h"
 #ifdef __ANDROID__
 #include "../scoreboard/scoreboard_collection.h"
+#ifdef __ANDROID__
+#include "../scoreboard/scoreboard_state.h"
+#endif
 #endif
 #include "../ldp-out/ldp.h"
 #include "../ldp-in/ldp1000.h"
@@ -401,24 +404,14 @@ void lair2::update_android_scoreboard()
     };
     // The original player count survives elimination/continues; 56a4 can
     // shrink while a two-player match is still in progress. Zero ends a match.
-    const unsigned players = word(0x56a6);
+    ScoreboardState state;
+    state.players = word(0x56a6);
     for (unsigned player = 0; player < 2; ++player) {
-        const bool participating = players <= 2 && player < players;
-        unsigned score = word(0x56b0 + player * 2) / 10;
-        for (int digit = 5; digit >= 0; --digit) {
-            m_android_scoreboard->update_player_score(
-                digit, participating ? score % 10 : 0xf, player);
-            score /= 10;
-        }
-        const unsigned lives = word(0x56ac + player * 2);
-        // Finished players keep their score until match end, with no lives digit.
-        m_android_scoreboard->update_player_lives(
-            participating && lives > 0 && lives <= 9 ? lives : 0xf, player);
+        state.score[player] = word(0x56b0 + player * 2) / 10;
+        state.lives[player] = word(0x56ac + player * 2);
     }
-    const unsigned credits = word(0xa156);
-    m_android_scoreboard->update_credits(0, credits <= 99 ? credits / 10 : 0xf);
-    m_android_scoreboard->update_credits(1, credits <= 99 ? credits % 10 : 0xf);
-    m_android_scoreboard->RepaintIfNeeded();
+    state.credits = word(0xa156);
+    update_scoreboard_state(*m_android_scoreboard, state);
 }
 #endif
 

@@ -1,8 +1,10 @@
 /* Hypcade: Copyright (C) 2026 Francesco Orabona.
- * Android-only read-only move/credit publication; original timing is unchanged.
+ * Android-only read-only moves and scoreboard; original timing is unchanged.
  * See android/MODIFICATIONS.md. Original notices are retained below. */
 #ifdef __ANDROID__
 #include "../../android/app/jni/arcade_guidance.h"
+#include "../scoreboard/scoreboard_collection.h"
+#include "../scoreboard/scoreboard_state.h"
 #endif
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
@@ -150,6 +152,7 @@ void laireuro::do_irq(Uint32 which)
 void laireuro::do_nmi()
 {
 #ifdef __ANDROID__
+    update_android_scoreboard();
     if(arcade_guidance_enabled())
         arcade_guidance_euro(m_cpumem,sizeof(m_cpumem),m_shortgamename,
             g_ldp->get_status()==LDP_PLAYING,g_ldp->get_current_frame());
@@ -175,6 +178,56 @@ void laireuro::do_nmi()
         coinCount++;
     }
 }
+
+#ifdef __ANDROID__
+bool laireuro::init()
+{
+    if (!game::init()) return false;
+    if (m_software_scoreboard) {
+        // Other European-board games/revisions have not been mapped.
+        if (strcmp(m_shortgamename, "laireuro") && strcmp(m_shortgamename, "lair_ita"))
+            return false;
+        m_android_scoreboard = ScoreboardCollection::GetInstance();
+        if (!m_android_scoreboard || !ScoreboardCollection::AddType(
+                m_android_scoreboard, ScoreboardFactory::IMAGE)) return false;
+    }
+    return true;
+}
+
+void laireuro::shutdown()
+{
+    if (m_android_scoreboard) {
+        m_android_scoreboard->PreDeleteInstance();
+        m_android_scoreboard = nullptr;
+    }
+    game::shutdown();
+}
+
+void laireuro::update_android_scoreboard()
+{
+    if (!m_android_scoreboard) return;
+    ScoreboardState state;
+    // Both CRC-checked revisions use the same fields. A001 bit 0 denotes
+    // attract/game over; A153 is 0 for one player, 1 for two. Scores are
+    // big-endian packed BCD, unlike DL2's binary score divided by ten.
+    if (!(m_cpumem[0xa001] & 1) && m_cpumem[0xa153] <= 1)
+        state.players = m_cpumem[0xa153] + 1;
+    for (unsigned player = 0; player < 2; ++player) {
+        unsigned score = 0;
+        for (unsigned byte = 0; byte < 3; ++byte) {
+            const unsigned value = m_cpumem[0xa142 + player * 3 + byte];
+            if ((value >> 4) > 9 || (value & 15) > 9) { score = 1000000; break; }
+            score = score * 100 + (value >> 4) * 10 + (value & 15);
+        }
+        state.score[player] = score;
+        state.lives[player] = m_cpumem[0xa149 + player];
+    }
+    const unsigned credits = m_cpumem[0xa14b]; // Packed BCD, like the score.
+    state.credits = (credits >> 4) <= 9 && (credits & 15) <= 9
+        ? (credits >> 4) * 10 + (credits & 15) : 100;
+    update_scoreboard_state(*m_android_scoreboard, state);
+}
+#endif
 
 void laireuro::reset()
 {

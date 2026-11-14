@@ -110,8 +110,7 @@ public final class LaunchConfig {
     }
 
     static boolean supportsScorePlacement(String game) {
-        return GameDifficulty.spaceAce(game) || game.equals("lair2") || game.equals("dle11") || game.equals("dle21") ||
-                game.equals("lair") || game.matches("lair_[a-f]");
+        return supportsScore(game) && !game.equals("tq");
     }
 
     static String[] scoreLayouts(String game) {
@@ -120,21 +119,27 @@ public final class LaunchConfig {
 
     static boolean supportsScore(String game) {
         return Arrays.asList("lair", "lair_f", "lair_e", "lair_d", "lair_c", "lair_b", "lair_a",
-                "dle11", "dle21", "ace", "ace_a", "ace_a2", "sae", "tq", "lair2").contains(game);
+                "dle11", "dle21", "ace", "ace_a", "ace_a2", "sae", "tq", "lair2",
+                "laireuro", "lair_ita").contains(game);
+    }
+
+    private static boolean euroLair(String game) {
+        return game.equals("laireuro") || game.equals("lair_ita");
     }
 
     static boolean supportsScore(String game, List<String> options) {
-        if (!game.equals("lair2")) return supportsScore(game);
+        if (!game.equals("lair2") && !euroLair(game)) return supportsScore(game);
+        String version = game.equals("lair2") ? "6" : game.equals("lair_ita") ? "2" : "1";
         for (int i = 0; i < options.size(); i++) {
             if (options.get(i).equalsIgnoreCase("-version")) {
-                if (++i >= options.size() || !options.get(i).equals("6")) return false;
+                if (++i >= options.size() || !options.get(i).equals(version)) return false;
             }
         }
         return true;
     }
 
     static boolean supportsFastBoot(String game) {
-        return (supportsScore(game) && !game.equals("tq") && !game.equals("lair2")) ||
+        return (supportsScore(game) && !game.equals("tq") && !game.equals("lair2") && !euroLair(game)) ||
                 Arrays.asList("cliff", "cliffalt", "cliffalt2", "gtg").contains(game);
     }
 
@@ -197,7 +202,7 @@ public final class LaunchConfig {
         }
         List<String> inherited = new ArrayList<>(splitArguments(extraArguments));
         // Lair/Ace otherwise fall back to their original overlay scoreboard.
-        if (scoreLayout == SCORE_OFF && supportsScore(game) && !game.equals("lair2") && !game.equals("tq"))
+        if (scoreLayout == SCORE_OFF && supportsScore(game) && !game.equals("lair2") && !game.equals("tq") && !euroLair(game))
             args.add("-noscoreboard");
         if (scoreLayout != SCORE_OFF && supportsScore(game, inherited)) {
             args.add("-scorebezel");
