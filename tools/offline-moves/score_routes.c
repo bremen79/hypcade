@@ -311,7 +311,10 @@ static RoutePhase settle_victory(Machine *machine, RouteGraph *graph, RouteMonit
     if (finish > graph->deadline) { graph->time_cap = true; return ROUTE_UNRESOLVED; }
     monitored_run(machine, finish, monitor);
     if (monitor->death) return ROUTE_DEATH;
-    if (!monitor->score_valid || player_one_lives(&machine->board) <= 0 ||
+    // Early DL revisions blank lives when a completed game returns to attract.
+    // Entering the known victory clip required a live player; blanking afterward
+    // is valid, while any observed numeric life decrease still fails above.
+    if (!monitor->score_valid ||
         machine->board.cycles - monitor->score_changed < (uint64_t)SCORE_STABLE_SECONDS * CINE_CPU_HZ) {
         graph->score_unsettled = true;
         return ROUTE_UNRESOLVED;
@@ -491,7 +494,8 @@ static bool parse_options(RouteOptions *options, int argc, char **argv) {
     if (argc<6 || argc>10 || (argc-6)%2) return false;
     memset(options,0,sizeof *options);
     options->rom=argv[1];options->game=argv[2];options->skill=argv[3];
-    if (strcmp(options->game,"dle21") && strcmp(options->game,"ace")) return false;
+    const OfflineRom *spec=offline_rom_by_game(options->game);
+    if(!spec)return false;
     if (strcmp(options->skill,"cadet") && strcmp(options->skill,"captain") && strcmp(options->skill,"ace")) return false;
     uint64_t maximum;
     if (!parse_unsigned(argv[5],7200,&maximum) || !maximum) return false;
@@ -503,11 +507,10 @@ static bool parse_options(RouteOptions *options, int argc, char **argv) {
     for (int i=6;i<argc;i+=2) {
         if (!strcmp(argv[i],"--replay") && !options->replay) options->replay=argv[i+1];
         else if (!strcmp(argv[i],"--difficulty") && !has_difficulty) {
-            if (!parse_unsigned(argv[i+1],3,&maximum)) return false;
+            if (!parse_unsigned(argv[i+1],spec->difficulties-1,&maximum)) return false;
             options->difficulty=(unsigned)maximum;has_difficulty=true;
         } else return false;
     }
-    if (!strcmp(options->game,"dle21") && options->difficulty) return false;
     return true;
 }
 
@@ -515,17 +518,18 @@ bool graph_boot(RouteGraph *graph) {
     Machine *machine = &graph->base;
     if (!cine_load_roms(&machine->board, graph->options.rom)) return false;
     bool dle = strcmp(graph->options.game, "dle21") == 0;
-    if (machine->board.game != (dle ? CINE_DRAGONS_LAIR : CINE_SPACE_ACE)) {
+    bool sae = strcmp(graph->options.game, "sae") == 0;
+    const OfflineRom *spec=offline_rom_by_game(graph->options.game);
+    if(!spec)return false;
+    if (machine->board.game != (spec->pr7820 ? CINE_PR7820 : spec->ace ? CINE_SPACE_ACE : CINE_DRAGONS_LAIR)) {
         fprintf(stderr, "ROM game does not match requested game\n"); return false;
     }
-    static const uint32_t dle_crc[] = {0x4f8af481, 0x5fca04c5, 0xc14f36b3};
-    static const uint32_t ace_crc[] = {0x427522d0, 0x18d0262d, 0x4646832d, 0x57db2a79, 0x85cbcdc4};
-    const uint32_t *expected = dle ? dle_crc : ace_crc;
-    unsigned chips = dle ? 3 : 5;
+    const uint32_t *expected = spec->crc;
+    unsigned chips = spec->chips;
     for (unsigned i = 0; i < chips; ++i) {
         if (crc32(0, machine->board.rom + i * 8192, 8192) != expected[i]) {
             fprintf(stderr, "Unsupported ROM revision: this route adapter requires %s exactly\n",
-                    dle ? "Dragon's Lair Enhancement 2.1" : "Space Ace A3");
+                    spec->game);
             return false;
         }
     }
@@ -536,12 +540,25 @@ bool graph_boot(RouteGraph *graph) {
     cine_reset(&machine->board, cine_ldv1000_link(&machine->player));
     original_board_write = machine->board.cpu.bus.write;
     machine->board.cpu.bus.write = monitored_board_write;
-    machine->board.dsw1 = dle ? 0x22 : 0x3d;
-    if (!dle) {
+    machine->board.dsw1 = spec->dsw1;
+    if (spec->ace && !sae) {
         static const uint8_t difficulty_bits[]={0x0c,4,8,0};
         machine->board.dsw1=(machine->board.dsw1&~0x0c)|difficulty_bits[graph->options.difficulty];
     }
-    machine->board.dsw2 = dle ? 0xd8 : 0xfe;
+    machine->board.dsw2 = spec->dsw2;
+    if(sae)machine->board.dsw2^=graph->options.difficulty ? 0x80 : 0;
+    if(!spec->ace && !dle) {
+        static const unsigned a[]={4,4,0,0},b[]={0x10,0,0,0x10};
+        machine->board.dsw1=(machine->board.dsw1&~4)|a[graph->options.difficulty];
+        machine->board.dsw2=(machine->board.dsw2&~0x90)|b[graph->options.difficulty];
+    }
+    if (sae) {
+        // SAE's operator skill selector avoids losing a momentary skill-button
+        // press while Start is being retried across an attract transition.
+        unsigned skill=!strcmp(graph->options.skill,"cadet") ? 0x60 :
+                       !strcmp(graph->options.skill,"captain") ? 0x20 : 0x40;
+        machine->board.dsw2=(machine->board.dsw2&~0x60)|skill;
+    }
     cine_set(&machine->board, CINE_UNLIMITED_LIVES, false);
     cine_set(&machine->board, CINE_FREE_PLAY, true);
     machine->board.ay.rendering = false;
@@ -558,8 +575,19 @@ bool graph_boot(RouteGraph *graph) {
     }
     memset(&machine->board.inputs, 0, sizeof machine->board.inputs);
     uint64_t active_until = machine->board.cycles + 10 * (uint64_t)CINE_CPU_HZ;
-    while (player_one_lives(&machine->board) <= 0 && machine->board.cycles < active_until)
+    while (player_one_lives(&machine->board) <= 0 && machine->board.cycles < active_until) {
+        // SAE can ignore Start during attract transitions. Retry ordinary
+        // button pulses until accepted; never patch RAM or force a game state.
+        if (sae) {
+            bool press=(machine->board.cycles-finish)%CINE_CPU_HZ < CINE_CPU_HZ/5;
+            machine->board.inputs.start1=press;
+            machine->board.inputs.cadet=press && !strcmp(graph->options.skill,"cadet");
+            machine->board.inputs.captain=press && !strcmp(graph->options.skill,"captain");
+            machine->board.inputs.ace=press && !strcmp(graph->options.skill,"ace");
+        }
         run_until(machine, machine->board.cycles + SLICE_CYCLES);
+    }
+    memset(&machine->board.inputs, 0, sizeof machine->board.inputs);
     if (player_one_lives(&machine->board) <= 0) {
         fprintf(stderr, "Start failed: player one has no active lives\n"); return false;
     }

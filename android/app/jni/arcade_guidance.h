@@ -16,12 +16,15 @@ struct ArcadeMove {
 };
 ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame);
 ArcadeMove arcade_decode_dl2(const uint8_t *memory, size_t size);
+ArcadeMove arcade_decode_euro(const uint8_t *memory, size_t size, unsigned frame);
 void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame);
 void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, bool playing);
+void arcade_guidance_euro(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame);
 
 bool arcade_guidance_enabled();
 
 bool arcade_visual_moves_enabled();
+bool arcade_has_calculated_moves(const char *game);
 bool arcade_watch_mode_enabled();
 uint64_t arcade_guidance_snapshot();
 uint64_t arcade_take_watch_move();

@@ -42,7 +42,7 @@ development configurations unless the maintainer explicitly requests it.
 | Filesystem and APK assets | `src/io/sdl_path.h`, `src/io/android_storage.h`, Android storage helpers |
 | Video and decoding | Shared `src/video/video.cpp`, Android backend `src/video/video_android.*`, `src/vldp/`, `src/ldp-out/`, JNI MPEG-2 and MediaCodec helpers |
 | GPU CRT effect | `android/app/jni/android_crt*`, original source and provenance in `android/shaders/` |
-| ROM guidance | JNI `arcade_guidance.*`, `arcade_signature.h`, `arcade_moves.inc`; generator in `tools/offline-moves/` |
+| ROM guidance | JNI `arcade_guidance.*`, `arcade_signature.h`, `arcade_move_catalog.h`, `arcade_moves.inc`; European-board `arcade_euro_policy.h` / `arcade_euro_moves.inc`; generators in `tools/offline-moves/` (`rom_tables.py` / `euro_tables.py`) |
 | Game drivers and Singe | `src/game/` |
 | Tests and original fixtures | `android/tests/`, `tools/offline-moves/` |
 
@@ -189,6 +189,14 @@ driver methods; include its omitted-input negative controls. Use
 window at every DL2 difficulty. Compare backend
 results and keep source fingerprints consistent with the final tested tree.
 Distinguish video-less Android checks from actual APK runs through the launcher.
+The Italian European-board extractor uses the production CTC/DART/VP932 methods
+with a host Z80/player harness; keep its 16-bit targets separate from Cine's
+compact tables. Run `euro_moves.py` for both strategies, independent physical-input
+replay and deliberate-miss recovery. Its shared selector models 50 Hz publication,
+8 ms polling and 17 ms queue delivery; this is not the production Java player.
+Android runtime validation for this new adapter is currently deferred at the
+maintainer's request. Do not launch the Android emulator until requested, and do
+not describe these host checks as Android runtime validation.
 
 ## Local tools and data
 

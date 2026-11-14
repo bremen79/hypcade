@@ -65,6 +65,7 @@ static bool rom_effective(const Machine *source,const Machine *result,RouteGraph
            (score_a && score_b && a>b));
 }
 static int play_tables(RouteGraph *g,const char *output) {
+    const bool verbose=getenv("HYPCADE_ROM_TRIALS")!=NULL;
     Machine m;snapshot_restore(&m,&g->nodes[0].snapshot,g);
     char checkpoint[33];state_text(checkpoint,&m,g,ROUTE_DECISION);
     uint64_t checkpoint_cycle=m.board.cycles,last_trial[5]={0};unsigned trials=0,ignored=0,rejected=0;
@@ -119,7 +120,12 @@ static int play_tables(RouteGraph *g,const char *output) {
                 RoutePhase phase=route_accepted_transition(&trial,g,control,&edge,&baseline,&admitted);++trials;
                 if(!edge.seen){++ignored;continue;}
                 if(!admitted || edge.life_lost || (phase!=ROUTE_DECISION && phase!=ROUTE_VICTORY) ||
-                   !rom_effective(&m,&trial,g,&edge,phase)){++rejected;continue;}
+                   !rom_effective(&m,&trial,g,&edge,phase)){
+                    if(verbose)fprintf(stderr,"Rejected action scene=%u step=%u control=%u frame=%d phase=%d seen=%d lost=%d accepted=%d score=%d->%d trial_scene=%u trial_step=%u trial_frame=%d lives=%d\n",
+                        scene,step,control,edge.frame,phase,edge.seen,edge.life_lost,admitted,edge.before,edge.after,
+                        trial.board.ram[14]&127,trial.board.ram[15]&127,trial.ldp.frame,player_one_lives(&trial.board));
+                    ++rejected;continue;
+                }
                 RomPlayStep *s=&played[played_count++];s->edge=edge;strcpy(s->from,checkpoint);
                 state_text(s->to,&trial,g,phase);strcpy(checkpoint,s->to);
                 checkpoint_cycle=trial.board.cycles;

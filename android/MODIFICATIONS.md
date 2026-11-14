@@ -159,6 +159,26 @@ The DL2 decoder uses the ROM's earliest accepted phase and exclusive closing
 frame, including its special and exit input records. It does not wait for the
 later cue threshold, which can leave too little time for Android input delivery.
 
+Space Ace Enhancement 1.0 has its own CRC-pinned table extraction, complete
+policies and timing calibration for all three skills and both operator
+difficulties. A shared ROM catalog selects the appropriate arrays; aliases
+can share one data set. Combining verified game bundles preserves each game's
+original replay evidence and source fingerprints. SAE skill selection uses
+its operator DIP setting so startup retries cannot lose a skill-button press.
+
+US Dragon’s Lair revisions A–F also have complete ROM-derived policies for
+both strategies. Identical immutable arrays are stored once across revisions;
+different timing calibrations remain separate. The host verifier supplies a
+PR-7820 adapter for A–C without changing the pinned vendor sources.
+
+Italian Dragon’s Lair uses a separate fixed-record decoder and compact native
+policy with 16-bit targets. A read-only Android hook in the European driver's
+50 Hz tick publishes moves and the ROM's credits/lives through the existing
+guidance and Watch Mode APIs. Emulated CPU, CTC/DART and VP932 timing remain
+unchanged. The host verifier reuses production driver/protocol methods and
+independently replays recorded physical inputs; its modeled Android input
+cadences do not replace an Android runtime test.
+
 Supported games also offer Watch Mode. It inserts coins until the game's own
 credit counter confirms a credit, then retries Player 1 Start until the ROM
 spends a credit or reports active lives. This waits through ROM startup that

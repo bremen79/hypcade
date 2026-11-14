@@ -6,6 +6,8 @@
 // commit 1f12c84dfabf3c8e5d028c8804b2f96678c798fa. See Android notices.
 #include "arcade_guidance.h"
 #include "arcade_signature.h"
+#include "arcade_move_catalog.h"
+#include "arcade_euro_policy.h"
 #include <atomic>
 #include <cstring>
 #ifndef HYPSEUS_GUIDANCE_HOST_TEST
@@ -13,26 +15,38 @@
 #endif
 
 #include "arcade_moves.inc"
+#include "arcade_euro_moves.inc"
+
+bool arcade_has_calculated_moves(const char *game) {
+    return game && (!std::strcmp(game,"lair_ita") || arcade_cine_profile(arcade_cine_profiles,
+        ARCADE_COUNT(arcade_cine_profiles),game)!=nullptr);
+}
 
 static std::atomic<int> selected_move_policy{1};
 void arcade_set_move_policy(int mode) {
     selected_move_policy.store(mode==2 ? 2 : 1,std::memory_order_relaxed);
 }
-ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame) {
+static ArcadeMove decode_cine_profile(const uint8_t *memory, size_t size,
+                                      const ArcadeCineProfile *profile, unsigned frame) {
     ArcadeMove result;
     if(size<0xa1e0)return result;
     bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
-    const ArcadeRomMove *entries=ace ? ace_moves : dle21_moves;
-    const ArcadeRomRule *rules=ace ? ace_rules : dle21_rules;
-    const uint16_t *rule_order=ace ? (fewest ? ace_rules_fewest : ace_rules_max)
-                                        : (fewest ? dle21_rules_fewest : dle21_rules_max);
-    size_t rule_count=ace ? (fewest ? sizeof ace_rules_fewest/sizeof *ace_rules_fewest : sizeof ace_rules_max/sizeof *ace_rules_max)
-                          : (fewest ? sizeof dle21_rules_fewest/sizeof *dle21_rules_fewest : sizeof dle21_rules_max/sizeof *dle21_rules_max);
-    const uint16_t *order=ace ? (fewest ? ace_moves_fewest : ace_moves_max)
-                                     : (fewest ? dle21_moves_fewest : dle21_moves_max);
-    size_t count=ace ? (fewest ? sizeof(ace_moves_fewest)/sizeof(*ace_moves_fewest) : sizeof(ace_moves_max)/sizeof(*ace_moves_max))
-                     : (fewest ? sizeof(dle21_moves_fewest)/sizeof(*dle21_moves_fewest) : sizeof(dle21_moves_max)/sizeof(*dle21_moves_max));
-    auto selected=arcade_select_rom_move(entries,order,count,rules,rule_order,rule_count,memory+0xa000,frame,ace);
+    auto selected=arcade_select_profile(profile,fewest,memory+0xa000,frame);
+    result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
+    return result;
+}
+
+ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame) {
+    return decode_cine_profile(memory,size,arcade_cine_profile(arcade_cine_profiles,
+        ARCADE_COUNT(arcade_cine_profiles),ace ? "ace" : "dle21"),frame);
+}
+
+ArcadeMove arcade_decode_euro(const uint8_t *memory, size_t size, unsigned frame) {
+    bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
+    auto selected=arcade_select_euro_move(lair_ita_rules,
+        fewest ? lair_ita_rules_fewest : lair_ita_rules_max,
+        fewest ? ARCADE_COUNT(lair_ita_rules_fewest) : ARCADE_COUNT(lair_ita_rules_max),memory,size,frame);
+    ArcadeMove result;
     result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
     return result;
 }
@@ -117,13 +131,25 @@ static void publish(ArcadeMove move) {
 
 void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame) {
     if (!enabled.load(std::memory_order_relaxed)) return;
-    bool ace = std::strcmp(game, "ace") == 0;
-    publish(playing && (ace || std::strcmp(game, "dle21") == 0)
-        ? arcade_decode_cine(memory, size, ace, frame) : ArcadeMove{});
+    publish(playing ? decode_cine_profile(memory,size,arcade_cine_profile(arcade_cine_profiles,
+        ARCADE_COUNT(arcade_cine_profiles),game),frame) : ArcadeMove{});
 }
 void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, bool playing) {
     if (!enabled.load(std::memory_order_relaxed)) return;
     publish(playing && supported ? arcade_decode_dl2(memory, size) : ArcadeMove{});
+}
+void arcade_guidance_euro(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame) {
+    if(!enabled.load(std::memory_order_relaxed) || size<0xa28a || std::strcmp(game,"lair_ita"))return;
+    unsigned player=memory[0xa152] ? 1 : 0;
+    unsigned lives=memory[0xa149+player];
+    unsigned record=memory[0xa17a]|(memory[0xa17b]<<8);
+    bool alive=lives>0 && lives<=9 && record>=6 && record<=704;
+    if(arcade_watch_mode_enabled()) {
+        unsigned credit=memory[0xa14b];
+        arcade_watch_publish_credits((credit>>4)<=9 && (credit&15)<=9 ? int((credit>>4)*10+(credit&15)) : -1);
+        arcade_watch_publish_game_started(alive && playing);
+    }
+    publish(alive && playing ? arcade_decode_euro(memory,size,frame) : ArcadeMove{});
 }
 void arcade_configure_guidance(int mode, bool cue, bool watch) {
     bool visual=mode==1 || mode==2;

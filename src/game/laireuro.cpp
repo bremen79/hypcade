@@ -1,3 +1,9 @@
+/* Hypcade: Copyright (C) 2026 Francesco Orabona.
+ * Android-only read-only move/credit publication; original timing is unchanged.
+ * See android/MODIFICATIONS.md. Original notices are retained below. */
+#ifdef __ANDROID__
+#include "../../android/app/jni/arcade_guidance.h"
+#endif
 /*
  * ____ DAPHNE COPYRIGHT NOTICE ____
  *
@@ -143,6 +149,11 @@ void laireuro::do_irq(Uint32 which)
 
 void laireuro::do_nmi()
 {
+#ifdef __ANDROID__
+    if(arcade_guidance_enabled())
+        arcade_guidance_euro(m_cpumem,sizeof(m_cpumem),m_shortgamename,
+            g_ldp->get_status()==LDP_PLAYING,g_ldp->get_current_frame());
+#endif
     // Redraws the screen (if needed) on interrupt
     blit();
 

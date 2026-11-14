@@ -26,6 +26,21 @@ static void setup(Machine *m) {
     m->board.ram[MOVE_LIST+2]=3;m->board.ram[MOVE_LIST+13]=255;
 }
 int main(void) {
+    // PR-7820 writes E020 immediately. E010 remains the AY register select;
+    // treating it as a player command prevents early US ROMs from booting.
+    Machine pr;setup(&pr);pr.board.game=CINE_PR7820;
+    cine_reset(&pr.board,cine_ldv1000_link(&pr.player));
+    pr.board.cpu.bus.write(&pr.board,0xe020,0xfd);
+    assert(pr.ldp.state==LDP_PLAYING && pr.player.last_command==0xfd);
+    pr.board.cpu.bus.write(&pr.board,0xe008,0x55);
+    pr.board.cpu.bus.write(&pr.board,0xe010,7);
+    assert(pr.board.misc==0x55 && pr.player.last_command==0xfd);
+    pr.board.cpu.bus.write(&pr.board,0xe020,0xfb);
+    assert(pr.ldp.state==LDP_PAUSED);
+    Machine copied=pr;connect_machine(&copied);
+    assert(copied.board.laserdisc.ctx==&copied.player);
+    copied.board.cpu.bus.write(&copied.board,0xe020,0xfd);
+    assert(copied.ldp.state==LDP_PLAYING && pr.ldp.state==LDP_PAUSED);
     RouteOptions options;
     char *args[]={"test","rom.zip","ace","ace","0","3600","--replay","trace"};
     assert(parse_options(&options,8,args) && options.replay);
@@ -37,6 +52,10 @@ int main(void) {
     settings[7]="3";settings[2]="dle21";settings[3]="ace";
     assert(!parse_options(&options,10,settings));
     settings[7]="0";assert(parse_options(&options,10,settings));
+    settings[2]="sae";settings[7]="1";
+    assert(parse_options(&options,10,settings) && options.difficulty==1);
+    settings[7]="2";assert(!parse_options(&options,10,settings));
+    settings[2]="dle21";settings[7]="0";
     settings[8]="--difficulty";settings[9]="0";assert(!parse_options(&options,10,settings));
     Machine m;setup(&m);
     const uint8_t delayed[]={0x3a,0x08,0xc0,0xe6,0x01,0x20,0xf9,

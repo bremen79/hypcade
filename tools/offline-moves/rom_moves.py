@@ -64,7 +64,7 @@ def run(args):
     print('[ROM] %s: %d unique step records; %d listed transitions; structural parse %.3fs' %
           (args.game,len(data['records']),len(data['edges']),time.monotonic()-started),flush=True)
     binary=build(args.build_dir.resolve());verifier=score_routes.build()
-    skills=args.skill or (['ace'] if args.game=='dle21' else ['cadet','captain','ace'])
+    skills=args.skill or rom_tables.skills(args.game)
     rng=random.Random(args.seed);delays=[0]+[rng.uniform(0,30) for _ in range(args.starts-1)]
     report=dict(game=args.game,method='ROM tables plus natural CPU/player execution and independent exact replay',
                 sources=sources,rom_chips=rom_identity,results=[],unique_step_records=len(data['records']),

@@ -150,8 +150,35 @@ uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
 while keeping the move display hidden. Dragon’s Lair II uses its native ROM
 moves for either policy; Singe games keep their own script menus.
 
-The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
-tables.
+The DLE21, Space Ace A3 and Space Ace Enhancement 1.0 move sets are derived
+from their ROM scene/step tables. The table below summarizes independently
+replayed, death-free games. Ranges reflect randomized routes; counts refer to
+accepted joystick/button actions, excluding coins and Start.
+
+| Game / ROM | Skill | Fewest moves: actions | Score | Max score: actions | Score |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Dragon’s Lair Enhanced 2.1 (`dle21`) | — | 147 | 314,457 | 155 | 333,333 |
+| Space Ace A3 (`ace`) | Cadet | 85 | 185,686 | 134 | 257,784 |
+| Space Ace A3 (`ace`) | Captain | 109–110 | 213,098 | 166 | 289,102 |
+| Space Ace A3 (`ace`) | Ace | 142 | 216,092 | 212 | 371,338 |
+| Space Ace Enhancement 1.0 (`sae`) | Cadet | 85–87 | 150,396–151,568 | 151 | 318,464–319,498 |
+| Space Ace Enhancement 1.0 (`sae`) | Captain | 110 | 179,410 | 183 | 366,836 |
+| Space Ace Enhancement 1.0 (`sae`) | Ace | 119 | 188,112 | 212 | 398,412 |
+| Dragon’s Lair Rev. A (`lair_a`) | — | 191–202 | 305,041–360,613 | 192–205 | 305,536–350,198 |
+| Dragon’s Lair Rev. B (`lair_b`) | — | 191–202 | 300,285–352,449 | 192–205 | 300,780–349,161 |
+| Dragon’s Lair Rev. C (`lair_c`) | — | 191–202 | 300,285–352,449 | 192–205 | 300,780–349,161 |
+| Dragon’s Lair Rev. D (`lair_d`) | — | 192–207 | 303,514–352,894 | 193–207 | 304,009–354,608 |
+| Dragon’s Lair Rev. E (`lair_e`) | — | 192–198 | 325,753–326,124 | 193–199 | 326,248–326,619 |
+| Dragon’s Lair Rev. F (`lair_f`) | — | 196–198 | 325,745–326,124 | 197–199 | 326,240–326,619 |
+| Dragon’s Lair Italian (`lair_ita`) | — | 69–77 | 67,700–88,250 | 69–77 | 67,700–88,250 |
+
+The Italian row is host-only at factory operator settings; its Android runtime
+checks are pending. Other rows cover the supported operator difficulty settings. Strategies rank
+routes through the decoded tables; the ROM still chooses scene order, so this
+is not a proof of a global optimum. Watch Mode may issue additional presses
+because it delivers inputs through the normal polling and queue.
+Dragon’s Lair II US 3.19 uses its native ROM prompts, with one move policy;
+it has no separately calculated Max score/Fewest moves totals in this table.
 
 Press **Watch Mode** beside **Start game** to play automatically. It waits for
 the game to accept credits and Player 1 Start, then follows the selected moves.

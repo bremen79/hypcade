@@ -22,7 +22,7 @@ import bundle_rom_moves
 
 def source_identity():
     sources=rom_moves.identity()
-    for path in (Path(__file__),Path(bundle_rom_moves.__file__)):
+    for path in (Path(__file__),Path(bundle_rom_moves.__file__),Path(bundle_rom_moves.move_arrays.__file__)):
         sources[str(path.resolve().relative_to(rom_moves.REPO))]=hashlib.sha256(path.read_bytes()).hexdigest()
     return sources
 
@@ -34,7 +34,7 @@ def check_case(binary, verifier, args, case):
     trace = folder / 'route.trace'
     rules = args.output / 'rules' / game
     began = time.monotonic()
-    command = [str(binary), str((args.roms / (game + '.zip')).resolve()), game, skill,
+    command = [str(binary), str(args.rom_paths[game].resolve()), game, skill,
                format(delay, '.17g'), str((rules / (objective + '.policy')).resolve()),
                str(trace.resolve()), '3600', str(difficulty)]
     with (folder / 'play.jsonl').open('w') as out, (folder / 'play.log').open('w') as err:
@@ -45,7 +45,7 @@ def check_case(binary, verifier, args, case):
                objective=objective, directory=str(folder.relative_to(args.output)),
                verified=False, returncode=result.returncode, play=proof)
     if result.returncode == 0:
-        options = SimpleNamespace(rom=args.roms / (game + '.zip'), game=game, skill=skill,
+        options = SimpleNamespace(rom=args.rom_paths[game], game=game, skill=skill,
                                   difficulty=difficulty, start_delay=delay, max_seconds=3600)
         with (folder / 'replay.log').open('w') as out:
             replay = args.run_command(score_routes.command(verifier, options) + ['--replay', str(trace.resolve())],
@@ -70,7 +70,11 @@ def check_case(binary, verifier, args, case):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--roms', type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument('--roms', type=Path, help='Directory containing GAME.zip for each selected game')
+    inputs.add_argument('--rom', type=Path, help='Single ROM ZIP; requires exactly one --game')
+    parser.add_argument('--game', action='append', choices=export_rom_moves.rom_tables.LAYOUTS,
+                        help='Games to generate (default: dle21 and ace)')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--starts', type=int, default=8)
     parser.add_argument('--jobs', type=int, default=2)
@@ -78,6 +82,10 @@ def main():
     parser.add_argument('--timeout',type=float,default=300,help='Wall seconds per play or replay; virtual time remains capped at one hour')
     parser.add_argument('--android',metavar='SERIAL',help='Run the full check on an x86 Android emulator')
     args = parser.parse_args()
+    games = list(dict.fromkeys(args.game or ('dle21', 'ace')))
+    if args.rom and (not args.game or len(games) != 1):
+        parser.error('--rom requires exactly one --game')
+    args.rom_paths = {game: args.rom if args.rom else args.roms / (game + '.zip') for game in games}
     if not 1 <= args.starts <= 100 or not 1 <= args.jobs <= 4:
         parser.error('--starts must be 1..100; --jobs must be 1..4')
     if not 0<args.timeout<86400:parser.error('--timeout must be positive and less than one day')
@@ -85,8 +93,8 @@ def main():
         parser.error('Choose a new output directory')
     args.output = args.output.resolve()
     args.output.mkdir(parents=True)
-    for game in ('dle21', 'ace'):
-        export_rom_moves.export(args.roms / (game + '.zip'), game, args.output / 'rules' / game)
+    for game in games:
+        export_rom_moves.export(args.rom_paths[game], game, args.output / 'rules' / game)
     binary = rom_moves.build(rom_moves.REPO / 'local-tools/rom-table-build')
     verifier = score_routes.build()
     args.run_command=subprocess.run
@@ -102,9 +110,9 @@ def main():
     rng = random.Random(args.seed)
     delays = [0] + [rng.uniform(0, 30) for _ in range(args.starts - 1)]
     cases = [(game, skill, difficulty, start, delay, objective)
-             for game in ('dle21', 'ace')
-             for difficulty in (range(4) if game == 'ace' else (0,))
-             for skill in (('cadet', 'captain', 'ace') if game == 'ace' else ('ace',))
+             for game in games
+             for difficulty in range(export_rom_moves.rom_tables.difficulty_count(game))
+             for skill in export_rom_moves.rom_tables.skills(game)
              for start, delay in enumerate(delays)
              for objective in ('shortest', 'highest-score')]
     report = dict(schema=1, sources=sources,backend=backend, results=[], planned=len(cases), completed=0,

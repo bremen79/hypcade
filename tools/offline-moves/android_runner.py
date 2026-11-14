@@ -13,6 +13,7 @@ import moves as move_tools
 
 
 def compile_android(source, output, flags=()):
+    move_tools.ensure_native_catalog()
     sdk=Path(os.environ.get('ANDROID_HOME',Path.home()/'Android/Sdk'))
     cc=sdk/'ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android25-clang'
     src=move_tools.ROOT/'vendor/src'

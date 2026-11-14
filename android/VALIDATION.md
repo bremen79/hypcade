@@ -107,6 +107,55 @@ They have not yet been checked visually on the cabinet.
 
 ## Move policies and Watch Mode
 
+US Dragon’s Lair revisions A–F passed 96 complete death-free plays and exact
+independent replays on each backend (host and Android 9 x86 video-less), covering
+both strategies, four operator difficulties and two start times. The generated
+host and Android includes match byte for byte. The combined selector passed
+144 normal Watch timing cases on each backend, using both strategies and three
+queue phases. A further 48 host cases deliberately withheld move 4 and completed
+after one life loss. Android recovery checks for these revisions remain pending.
+Complete policies are shared where equal: A–D use one rule pool, E–F another;
+only byte-identical calibration arrays are shared. An explicit PR-7820 port-map
+regression protects E020 immediate commands and E010 AY register selection.
+
+Italian Dragon’s Lair has 682 decoded fixed records and 573 shared ranked rules.
+At factory operator settings, 24 host cases (four start times, two objectives,
+three queue phases) finished without life loss and passed independent replay
+of their physical input traces in fresh processes. Different start times gave
+different routes: 69–77 presses and 67,700–88,250 points. Both objectives selected
+the same actions in these runs. Four further cases withheld move 4, lost exactly
+one life, resumed guidance and finished; all passed independent replay.
+Synthetic checks protect full 16-bit immediate targets, partially loaded records,
+death refusal, deliberate waits and the separate Player 2 cutoff.
+These tests reuse production European driver/VP932 methods and the shared native
+selector, but model the 8 ms poll / 17 ms queue instead of running the production
+Java controller. Italian Android runtime and video-backed checks are explicitly
+deferred at the maintainer's request.
+
+SAE 1.0 has a separate CRC-pinned exporter layout and runtime policy. Both
+objectives passed eight randomized starts at all three skills and both operator
+difficulties: 96 complete, death-free plays and independent exact replays on
+the host, repeated inside the Android 9 x86 emulator. The host and Android
+exports produce identical move tables. Coverage retains all 9,984 decoded
+rules and all 2,441 ranked choices; the 156 unranked candidates have no safe
+local completion. The three scene-choice lists remain explicit dispatch data.
+Using the combined APK selector, both backends passed 54 normal Watch Mode
+cases (Off/Max score/Fewest moves and three input phases), plus 24 cases with
+a deliberate missed move, including alternate-policy branch detours. These
+are fast video-less executions, not cabinet tests or proof of every possible
+retry context. SAE's operator skill setting selects the requested skill during
+these checks and in the launcher, avoiding a lost momentary skill press.
+The signed x86 arcade APK also launched SAE through the launcher with
+synthetic video, Hard difficulty, Ace skill, Fewest moves, CRT and the Right
+scoreboard. Watch Mode inserted coins and started automatically. Read-only
+process-memory samples showed the score advancing from 29,540 to 76,878 with
+five lives retained. The skill panel was on the left. This short APK smoke
+check does not establish a full video-backed finish or commercial-media sync.
+The missing SAE text was a renderer whitelist omission, independent of Watch
+Mode input selection. Font initialization now queries the shared move catalog.
+Host GLES and software pipeline tests include SAE and Italian calculated text;
+this does not claim an Android text screenshot or a physical-cabinet test.
+
 Bundled coverage is checked independently of successful games. Reconstructing
 the full inventory from the supplied ROM ZIPs accounts for all 3,681 DLE21 and
 10,267 Space Ace A3 rules. Every ranked alternative is represented in both

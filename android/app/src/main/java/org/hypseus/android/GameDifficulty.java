@@ -113,7 +113,7 @@ final class GameDifficulty {
         return (data[0] & 255) == 0x41 && (data[1] & 255) == 0x12 && level <= 4 ? level : 0;
     }
 
-    static List<String> arguments(String game, int selection, List<String> inherited) {
+    static List<String> arguments(String game, int selection, int skill, List<String> inherited) {
         List<String> result = new ArrayList<>(inherited);
         int level = selected(game, selection);
         if (game.equals("lair2")) {
@@ -125,8 +125,14 @@ final class GameDifficulty {
             Dip layout = DIPS.get(game);
             if (layout == null) return result;
             int[] raw = rawBanks(inherited, layout.defaults);
-            for (int bank = 0; bank < 2; bank++) if (layout.masks[bank] != 0) {
-                int value = ((raw[bank] & ~layout.masks[bank]) | layout.values[level][bank]) ^ 255;
+            for (int bank = 0; bank < 2; bank++) {
+                int mask = layout.masks[bank], bits = layout.values[level][bank];
+                if (game.equals("sae") && bank == 1) {
+                    mask |= 0x60;
+                    bits |= new int[]{0x60, 0x20, 0x40}[selectedSkill(skill)];
+                }
+                if (mask == 0) continue;
+                int value = ((raw[bank] & ~mask) | bits) ^ 255;
                 result.add("-bank"); result.add(Integer.toString(bank));
                 result.add(String.format(java.util.Locale.ROOT, "%8s", Integer.toBinaryString(value)).replace(' ', '0'));
             }

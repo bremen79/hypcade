@@ -12,10 +12,10 @@ public final class ArcadeSetupTest {
         check(!emptyControls.canPlay(false, false), "Mobile requires some input");
         check(!emptyControls.canPlay(true, true), "Arcade requires controller even if touch requested");
         check(!emptyControls.canPlay(true, false), "Arcade blocks missing controller");
-        for (String game : new String[]{"ace", "dle21", "lair2"}) {
+        for (String game : new String[]{"ace", "dle21", "sae", "lair2", "lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f", "lair_ita"}) {
             GuidanceSupport support = GuidanceSupport.forArguments(new String[]{game, "vldp"});
             check(support.visual && support.cue == !game.equals("lair2"), "Supported ROM guidance");
-            check(!GuidanceSupport.forArguments(new String[]{game,"-VERSION","2"}).visual, "Unsupported revision");
+            check(!GuidanceSupport.forArguments(new String[]{game,"-VERSION",game.equals("lair_ita") ? "3" : "2"}).visual, "Unsupported revision");
             check(!GuidanceSupport.forArguments(new String[]{game,"-version"}).visual, "Missing revision");
         }
         check(!GuidanceSupport.forArguments(new String[]{"ace","-version","1","-version","2"}).cue, "Repeated revision cannot bypass guard");

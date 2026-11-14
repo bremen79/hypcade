@@ -46,4 +46,25 @@ class RomTablesTest(unittest.TestCase):
         rom=bytearray(0x3000);rom[0x2500:0x2505]=bytes([0x81,0x0d,0,0,1])
         with self.assertRaisesRegex(ValueError,'selector'):r.decode_record(rom,0x2500,'dle21')
 
+    def test_sae_score_and_conditional_trailer(self):
+        rom=bytearray(0x3000)
+        rom[0x2505:0x2507]=(250).to_bytes(2,'little')
+        payload=bytes([1,255,0,0,0x61,0,0,11,12,13,14,15])
+        rom[0x2800:0x2800+len(payload)]=payload
+        record=r.decode_record(rom,0x2800,'sae')
+        self.assertEqual(record['award'],500)
+        self.assertEqual(record['extension'],[11,12,13,14,15])
+        self.assertEqual(record['end'],0x2800+len(payload))
+
+    def test_sae_scene_choice_lists_are_not_step_pointers(self):
+        spec=r.LAYOUTS['sae'];rom=bytearray(0x3000)
+        for scene in spec['dispatch_scenes']:
+            address=0x2800+4*scene
+            p=spec['roots']+2*scene
+            rom[p:p+2]=address.to_bytes(2,'little')
+            rom[address:address+4]=bytes([0x82,0x83,0x84,255])
+        data=r.inventory(rom,'sae')
+        self.assertEqual(data['nodes'],[])
+        self.assertEqual([g['dispatch'] for g in data['groups']],[[0x82,0x83,0x84,255]]*3)
+
 if __name__=='__main__':unittest.main()

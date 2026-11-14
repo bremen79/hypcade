@@ -213,7 +213,7 @@ public final class LaunchConfig {
                 args.add("-dedannunbezel");
         }
         inherited.removeIf(option -> option.equalsIgnoreCase("-nosplash"));
-        args.addAll(GameDifficulty.arguments(game, difficulty, inherited));
+        args.addAll(GameDifficulty.arguments(game, difficulty, skill, inherited));
         for (String argument : args) checkArgument(argument);
         return args.toArray(new String[0]);
     }

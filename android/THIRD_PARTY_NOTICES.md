@@ -126,11 +126,20 @@ above, under GPL-3.0. Its local changes and file hashes are recorded in
 `vendor/provenance.json`, and its full license is included in `vendor/LICENSE`.
 The tools decode ROM scene/step policies, validate selected input timings
 against a simultaneous no-input simulation, and independently replay complete
-games before packaging their observed moves into two Android tables. The
-structural exporter also retains windows not visited by those games. Required
+games before packaging the complete ROM policies as shared pools with strategy
+index lists. The structural exporter retains windows not visited by those games. Required
 zero-score actions are retained. This is a
 laptop build tool, not linked into or packaged in the APK. See
 `tools/offline-moves/README.md` for its source and reproduction instructions.
+
+The PR-7820 adapter in `tools/offline-moves/board_adapter.c` adapts Hypseus/DAPHNE
+protocol code by Warren Ondras (2003), based on work by Matt Ownby and Mark
+Broadhead, under GPL-2.0-or-later. Its notices remain in the source.
+The European-board verifier extracts methods from `src/game/laireuro.cpp`
+(Mark Broadhead, 2001–2007; DirtBagXon, 2024) and `src/ldp-in/vp932.cpp`
+(Mark Broadhead, 2005–2007), retaining their GPL-2.0-or-later notices in the
+repository. The host adaptations are GPL-3.0-or-later. No commercial ROM
+program bytes or character graphics are distributed with the move policies.
 
 ## zfast-crt shader
 

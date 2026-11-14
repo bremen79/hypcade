@@ -13,6 +13,9 @@
 static unsigned testControls = 0;
 bool arcade_visual_moves_enabled() { return true; }
 unsigned arcade_visual_controls() { return testControls; }
+bool arcade_has_calculated_moves(const char *game) {
+    return game && (!strcmp(game,"dle21") || !strcmp(game,"ace") || !strcmp(game,"sae") || !strcmp(game,"lair_ita"));
+}
 
 constexpr int W = 128, H = 96;
 using Pixels = std::vector<unsigned char>;
@@ -117,7 +120,7 @@ static void checkMoveSources(SDL_Renderer *r) {
     using namespace video::android_video;
     SDL_Surface *bitmap=SDL_LoadBMP("pics/ldp1450font.bmp");
     assert(bitmap && SDL_SetSurfaceColorKey(bitmap,true,SDL_MapSurfaceRGB(bitmap,0,0,0)));
-    for(const char *game : {"lair2","ace91","dle21","ace"}) {
+    for(const char *game : {"lair2","ace91","dle21","ace","sae","lair_ita"}) {
         bool native=std::strcmp(game,"lair2")==0 || std::strcmp(game,"ace91")==0;
         release_renderer(r);assert(init_text(r,bitmap,false,game,native));
         queue_text(2,native ? "SWORD" : "",20,22);
@@ -159,7 +162,7 @@ static void checkBackend(SDL_Renderer *r) {
     assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
     assert(capture(r)==blank); // Native prompt cleared: no generic replacement.
     // Calculated moves are drawn for DLE21 and Ace, using that same font path.
-    for(const char *game : {"dle21","ace"}) {
+    for(const char *game : {"dle21","ace","sae","lair_ita"}) {
         release_renderer(r);assert(init_text(r,bitmap,false,game,false));
         assert(SDL_RenderClear(r));draw_game_text(r,{0,0,320,240},{0,0,W,H});
         assert(capture(r)!=blank);

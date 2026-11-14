@@ -91,9 +91,13 @@ uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
 while keeping the move display hidden. Dragon’s Lair II uses its native ROM
 moves for either policy; Singe games keep their own script menus.
 
-The DLE21 and Space Ace A3 move sets are derived from their ROM scene/step
-tables and checked through complete games without a lost life. Randomized
-starts, all three Space Ace skills and all four operator difficulties are tested.
+The DLE21, US Dragon’s Lair A–F, Italian Dragon’s Lair, Space Ace A3 and
+Space Ace Enhancement 1.0 move sets are derived from their ROM tables and
+checked through complete games without a lost life. Space Ace A3 covers all
+three skills and four operator difficulties; SAE covers three skills and both
+Easy/Hard settings. US A–F cover all four operator difficulties. The Italian
+adapter has passed host checks at factory settings; Android runtime validation
+is pending.
 All decoded rules and ranked alternatives are retained, including retry-only
 steps; sampled winning games do not limit move coverage. Separate tests withhold
 inputs to check that guidance resumes after a lost life.
@@ -134,8 +138,11 @@ unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
 **Show moves** and **Play move audio cue** support Dragon's Lair
-Enhanced 2.1 (`dle21`) and Space Ace A3 (`ace`). White action text appears near
-the bottom, up to about 400 ms before the move window. The font matches Dragon's
+Enhanced 2.1 (`dle21`), US revisions A–F (`lair_a` through `lair_f`), Italian
+Dragon’s Lair (`lair_ita`), Space Ace A3 (`ace`) and Space Ace Enhancement 1.0
+(`sae`). White action text appears near
+the bottom when the move becomes ready; text and audio share the same event.
+The font matches Dragon's
 Lair II, with a transparent background and a small dark shadow.
 
 Dragon's Lair II 3.19 (`lair2`, default version 6) uses its original ROM prompts.

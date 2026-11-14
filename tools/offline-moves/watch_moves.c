@@ -8,6 +8,7 @@
 #ifndef HYPCADE_MOVES_INCLUDE
 #define HYPCADE_MOVES_INCLUDE "../../android/app/jni/arcade_moves.inc"
 #endif
+#include "../../android/app/jni/arcade_move_catalog.h"
 #include HYPCADE_MOVES_INCLUDE
 int main(int argc,char **argv) {
     if(argc<9 || argc>11)return 2;
@@ -27,19 +28,10 @@ int main(int argc,char **argv) {
     if(!g.nodes)return 1;
     if(!graph_boot(&g))return 3;
     Machine m=g.base;connect_machine(&m);bool ace=m.board.game==CINE_SPACE_ACE;
-    const ArcadeRomMove *entries=ace ? ace_moves : dle21_moves;
-    const ArcadeRomRule *rules=ace ? ace_rules : dle21_rules;
-    const uint16_t *rule_order=ace ? (mode==2 ? ace_rules_fewest : ace_rules_max)
-                                        : (mode==2 ? dle21_rules_fewest : dle21_rules_max);
-    size_t rule_count=ace ? (mode==2 ? sizeof ace_rules_fewest/sizeof *ace_rules_fewest : sizeof ace_rules_max/sizeof *ace_rules_max)
-                          : (mode==2 ? sizeof dle21_rules_fewest/sizeof *dle21_rules_fewest : sizeof dle21_rules_max/sizeof *dle21_rules_max);
-    const uint16_t *order=ace ? (mode==2 ? ace_moves_fewest : ace_moves_max) : (mode==2 ? dle21_moves_fewest : dle21_moves_max);
-    size_t count=ace ? (mode==2 ? sizeof ace_moves_fewest/sizeof *ace_moves_fewest : sizeof ace_moves_max/sizeof *ace_moves_max)
-                     : (mode==2 ? sizeof dle21_moves_fewest/sizeof *dle21_moves_fewest : sizeof dle21_moves_max/sizeof *dle21_moves_max);
-    const uint16_t *alternate=ace ? (mode==2 ? ace_moves_max : ace_moves_fewest)
-                                      : (mode==2 ? dle21_moves_max : dle21_moves_fewest);
-    size_t alternate_count=ace ? (mode==2 ? sizeof ace_moves_max/sizeof *ace_moves_max : sizeof ace_moves_fewest/sizeof *ace_moves_fewest)
-                              : (mode==2 ? sizeof dle21_moves_max/sizeof *dle21_moves_max : sizeof dle21_moves_fewest/sizeof *dle21_moves_fewest);
+    const ArcadeCineProfile *policy=arcade_cine_profile(arcade_cine_profiles,
+        ARCADE_COUNT(arcade_cine_profiles),g.options.game);
+    if(!policy)return 2;
+    unsigned strategy=mode==2, other_strategy=!strategy;
     unsigned detour_seen=0;uint32_t detour_state=UINT32_MAX,last_difference=UINT32_MAX;
     bool detour_applied=false;
     uint64_t poll=((m.board.cycles+31999)/32000)*32000,guide=m.board.next_irq,release=0,previous=0;
@@ -64,10 +56,10 @@ int main(int argc,char **argv) {
         }
         if(m.board.cycles>=guide) {
             selected=(ArcadeMoveSelection){0,false,0};
-            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_rom_move(entries,order,count,rules,rule_order,rule_count,m.board.ram,m.ldp.frame,ace);
+            if(m.ldp.state==LDP_PLAYING)selected=arcade_select_profile(policy,strategy,m.board.ram,m.ldp.frame);
             uint32_t state=arcade_rom_state(m.board.ram[14],m.board.ram[15],ace?move_branch(&m):0);
             if(detour_target && m.ldp.state==LDP_PLAYING) {
-                ArcadeMoveSelection other=arcade_select_rom_move(entries,alternate,alternate_count,rules,ace ? (mode==2 ? ace_rules_max : ace_rules_fewest) : (mode==2 ? dle21_rules_max : dle21_rules_fewest),ace ? (mode==2 ? sizeof ace_rules_max/sizeof *ace_rules_max : sizeof ace_rules_fewest/sizeof *ace_rules_fewest) : (mode==2 ? sizeof dle21_rules_max/sizeof *dle21_rules_max : sizeof dle21_rules_fewest/sizeof *dle21_rules_fewest),m.board.ram,m.ldp.frame,ace);
+                ArcadeMoveSelection other=arcade_select_profile(policy,other_strategy,m.board.ram,m.ldp.frame);
                 if(!detour_applied && state!=last_difference &&
                    (selected.ready || other.ready) && selected.controls!=other.controls) {
                     last_difference=state;++detour_seen;

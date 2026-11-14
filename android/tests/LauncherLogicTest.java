@@ -245,7 +245,7 @@ public final class LauncherLogicTest {
     private static void difficulties() {
         List<String> inherited = Arrays.asList("-bank", "0", "11011101", "-bank", "1", "00100111", "-blend");
         for (int level = 0; level < 4; level++) {
-            List<String> options = GameDifficulty.arguments("lair", level, inherited);
+            List<String> options = GameDifficulty.arguments("lair", level, 0, inherited);
             check((lastBank(options, 0) & ~4) == (0x22 & ~4), "Difficulty changed coinage/lives in bank A");
             check((lastBank(options, 1) & ~0x90) == (0xd8 & ~0x90), "Difficulty changed other bank B switches");
             check(options.contains("-blend"), "Difficulty dropped native options");
@@ -253,12 +253,12 @@ public final class LauncherLogicTest {
             check((lastBank(options, 1) & 0x90) == (level == 0 || level == 3 ? 0x10 : 0), "Wrong DL difficulty progression");
         }
         List<String> duplicate = Arrays.asList("-bank", "0", "11111111", "-bank", "0", "10101010");
-        check((lastBank(GameDifficulty.arguments("lair", 2, duplicate), 0) & ~4) == (0x55 & ~4), "Last bank setting not preserved");
+        check((lastBank(GameDifficulty.arguments("lair", 2, 0, duplicate), 0) & ~4) == (0x55 & ~4), "Last bank setting not preserved");
         check(GameDifficulty.choices("dle21").length == 1, "DLE21 must not expose difficulty");
         check(GameDifficulty.choices("lair2").length == 5, "DL2 must show actual levels, with no default choice");
         check(GameDifficulty.choices("lair2", Arrays.asList("-version", "5")).length == 1, "Unverified DL2 revision enabled");
         for (int i = 0; i <= 4; i++) {
-            List<String> options = GameDifficulty.arguments("lair2", i, Arrays.asList("-preset", "2", "-blend"));
+            List<String> options = GameDifficulty.arguments("lair2", i, 0, Arrays.asList("-preset", "2", "-blend"));
             check(options.get(options.size() - 2).equals("-preset"), "DL2 must use the existing preset hook");
             check(options.get(options.size() - 1).equals(Integer.toString(i)), "Wrong DL2 difficulty argument");
             check(options.contains("-blend"), "DL2 difficulty dropped other options");
@@ -269,7 +269,7 @@ public final class LauncherLogicTest {
         check(GameDifficulty.choices("ace").length == 4, "Space Ace operator difficulty should have four explicit DIP choices");
         check(GameDifficulty.importedSelection("ace", Arrays.asList()) == 0, "Space Ace factory DIP setting decoded incorrectly");
         for (int i = 0; i < aceBits.length; i++) {
-            List<String> options = GameDifficulty.arguments("ace", i, aceBanks);
+            List<String> options = GameDifficulty.arguments("ace", i, 0, aceBanks);
             check((lastBank(options, 0) & 0x0c) == aceBits[i], "Wrong Space Ace difficulty DIP polarity");
             check((lastBank(options, 0) & ~0x0c) == (0x3d & ~0x0c), "Space Ace difficulty changed coinage, lives or audio");
             check(lastBank(options, 1) == 0xfe && options.contains("-blend"), "Space Ace difficulty changed unrelated options");
@@ -278,17 +278,22 @@ public final class LauncherLogicTest {
         for (int i = 0; i < 3; i++) check(GameDifficulty.startSkill("ace", i) == i + 1, "Wrong Ace skill switch");
         check(GameDifficulty.startSkill("lair", 2) == 0, "Skill switch leaked into another game");
         check(GameDifficulty.selected("ace", 9) == 0, "Out-of-range difficulty accepted");
-        check((lastBank(GameDifficulty.arguments("cliff", 0, Arrays.asList()), 0) & 15) == 15, "Wrong easiest Cliff setting");
-        check((lastBank(GameDifficulty.arguments("cliff", 15, Arrays.asList()), 0) & 15) == 0, "Wrong hardest Cliff setting");
-        check(lastBank(GameDifficulty.arguments("roadblaster", 0, Arrays.asList()), 1) == 0xf8, "Road Blaster defaults changed beyond difficulty");
-        check(lastBank(GameDifficulty.arguments("roadblaster", 1, Arrays.asList()), 1) == 0xe8, "Wrong active-low Road Blaster difficulty");
+        for (int skill = 0; skill < 3; skill++) {
+            int value = lastBank(GameDifficulty.arguments("sae", 1, skill, Arrays.asList()), 1);
+            check((value & 0x60) == new int[]{0x60, 0x20, 0x40}[skill], "SAE operator skill selector");
+            check((value & 0x80) == 0, "SAE hard setting preserved alongside skill");
+        }
+        check((lastBank(GameDifficulty.arguments("cliff", 0, 0, Arrays.asList()), 0) & 15) == 15, "Wrong easiest Cliff setting");
+        check((lastBank(GameDifficulty.arguments("cliff", 15, 0, Arrays.asList()), 0) & 15) == 0, "Wrong hardest Cliff setting");
+        check(lastBank(GameDifficulty.arguments("roadblaster", 0, 0, Arrays.asList()), 1) == 0xf8, "Road Blaster defaults changed beyond difficulty");
+        check(lastBank(GameDifficulty.arguments("roadblaster", 1, 0, Arrays.asList()), 1) == 0xe8, "Wrong active-low Road Blaster difficulty");
         String[] dipGames = {"lair", "lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f",
                 "ace", "ace_a", "ace_a2", "sae", "roadblaster", "cliff", "cliffalt", "cliffalt2"};
         for (String game : dipGames) {
             String[] choices = GameDifficulty.choices(game);
             for (int i = 0; i < choices.length; i++) {
                 check(!choices[i].equalsIgnoreCase("Game default"), "Placeholder difficulty in " + game);
-                check(GameDifficulty.importedSelection(game, GameDifficulty.arguments(game, i, inherited)) == i,
+                check(GameDifficulty.importedSelection(game, GameDifficulty.arguments(game, i, 0, inherited)) == i,
                         "Difficulty did not round-trip for " + game + " level " + i);
             }
             check(GameDifficulty.selected(game, -1) == GameDifficulty.importedSelection(game, Arrays.asList()),

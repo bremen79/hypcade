@@ -14,8 +14,9 @@ REPO = ROOT.parents[1]
 
 
 def source_identity():
+    move_tools.ensure_native_catalog()
     paths = [ROOT/name for name in ('score_routes.c', 'score_trial.h', 'score_routes.py',
-             'simulation.c', 'moves.py', 'vendor/provenance.json')]
+             'simulation.c', 'moves.py', 'board_adapter.c', 'offline_board.h', 'rom_catalog.inc', 'vendor/provenance.json')]
     paths += [REPO/'android/app/jni'/name for name in ('arcade_signature.h', 'arcade_move_policy.h')]
     return {str(p.relative_to(REPO)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
 

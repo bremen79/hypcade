@@ -13,11 +13,31 @@ import zipfile
 import zlib
 
 LAYOUTS = {
+    'sae': dict(chips=5, prefix='sae10', crc=[0xcbc5e425,0x71a26f47,0xbac5cdd8,0xe18380f9,0x8a536cb0],
+                roots=0x2571, count=80, score=0x2503, multiplier=2,
+                dispatch_scenes=[77,78,79]),
     'dle21': dict(chips=3, prefix='dle21', crc=[0x4f8af481,0x5fca04c5,0xc14f36b3],
                   roots=0x2370, count=106, score=0x2302, multiplier=1),
     'ace': dict(chips=5, prefix='sa_a3', crc=[0x427522d0,0x18d0262d,0x4646832d,0x57db2a79,0x85cbcdc4],
                 roots=0x2183, count=33, score=0x2115, multiplier=2),
 }
+# US revisions A-D share table structure; E/F add four root slots.
+LAYOUTS['lair_a'] = {'chips': 5, 'prefix': 'dl_a', 'crc': [3614344172, 2795971544, 1388679188, 2454524658, 1858271681], 'roots': 14626, 'count': 90, 'score': 14516, 'multiplier': 1, 'difficulties': 4, 'dips': [0, 8], 'pr7820': True}
+LAYOUTS['lair_b'] = {'chips': 5, 'prefix': 'dl_b', 'crc': [3614344172, 1733365821, 1388679188, 2454524658, 1858271681], 'roots': 14626, 'count': 90, 'score': 14516, 'multiplier': 1, 'difficulties': 4, 'dips': [0, 8], 'pr7820': True}
+LAYOUTS['lair_c'] = {'chips': 5, 'prefix': 'dl_c', 'crc': [3468681834, 1733365821, 1388679188, 2454524658, 1858271681], 'roots': 14626, 'count': 90, 'score': 14516, 'multiplier': 1, 'difficulties': 4, 'dips': [0, 8], 'pr7820': True}
+LAYOUTS['lair_d'] = {'chips': 5, 'prefix': 'dl_d', 'crc': [190492960, 2481717243, 585521439, 1601311435, 726047881], 'roots': 14626, 'count': 90, 'score': 14516, 'multiplier': 1, 'difficulties': 4, 'dips': [0, 8], 'pr7820': False}
+LAYOUTS['lair_e'] = {'chips': 4, 'prefix': 'dl_e', 'crc': [43516966, 2543668375, 2306601077, 1321204645], 'roots': 8147, 'count': 94, 'score': 8037, 'multiplier': 1, 'difficulties': 4, 'dips': [34, 216], 'pr7820': False}
+LAYOUTS['lair_f'] = {'chips': 4, 'prefix': 'dl_f', 'crc': [117205313, 3703693298, 2874232411, 2820092494], 'roots': 8456, 'count': 94, 'score': 8346, 'multiplier': 1, 'difficulties': 4, 'dips': [34, 216], 'pr7820': False}
+
+def space_ace(game):
+    return game in ('ace', 'sae')
+
+def difficulty_count(game):
+    return LAYOUTS[game].get('difficulties', 4 if game=='ace' else 2 if game=='sae' else 1)
+
+def skills(game):
+    return ('cadet','captain','ace') if space_ace(game) else ('ace',)
+
 CONTROLS = {0:16,1:1,2:2,4:4,8:8}
 
 
@@ -60,7 +80,7 @@ def decode_record(rom, address, game):
     # Ace's optional trailer fields are decoded separately from the common
     # seven bytes. Their runtime interpretation stays with the original ROM.
     extension=[]
-    if game=='ace':
+    if game in ('ace', 'sae'):
         if trailer[4]&32:extension.extend(byte() for _ in range(2))
         if trailer[4]&64:extension.extend(byte() for _ in range(2))
         if trailer[4]&1:extension.append(byte())
@@ -75,6 +95,13 @@ def inventory(rom, game):
     for scene in range(spec['count']):
         base=word(rom,spec['roots']+scene*2)
         if not base:continue
+        if scene in spec.get('dispatch_scenes', []):
+            # SAE's final three roots are FF-terminated scene-choice byte
+            # lists, not arrays of step pointers. Preserve them for audit.
+            end=rom.index(255,base)
+            groups.append(dict(scene=scene,address=base,steps=[],
+                               dispatch=list(rom[base:end+1])))
+            continue
         boundary=len(rom);steps=[]
         for step in range(128):
             pos=base+step*2

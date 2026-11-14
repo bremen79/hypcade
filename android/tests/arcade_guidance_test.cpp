@@ -2,11 +2,34 @@
 #include "arcade_guidance.h"
 #include "arcade_signature.h"
 #include "arcade_move_policy.h"
+#include "arcade_euro_policy.h"
 #include <vector>
 #include <algorithm>
 #include <cassert>
 #include <cstdio>
 int main() {
+    {
+        // Italian record targets exceed one byte, and bit 15 must survive.
+        std::vector<uint8_t> memory(65536);
+        const ArcadeEuroRule rules[]={{6,0x8007,4},{6,8,8}};
+        const uint16_t order[]={0,1};
+        memory[0xa17a]=6;memory[0x2088+5*32]=100;memory[0x2088+5*32+3]=20;
+        memory[0xa10f]=100;memory[0xa112]=15;memory[0xa189]=10;
+        memory[0xa115+10]=7;memory[0xa116+10]=128;
+        memory[0xa115+8]=8;
+        auto pick=[&](){return arcade_select_euro_move(rules,order,2,memory.data(),memory.size(),100);};
+        assert(pick().ready && pick().controls==4);
+        memory[0xa189]=16;assert(!pick().ready);
+        memory[0xa152]=1;memory[0xa289]=14;assert(pick().ready); // P2 cutoff
+        memory[0xa111]=16;assert(!pick().controls); // death
+        memory[0xa111]=0;memory[0xa10f]=99;assert(!pick().controls); // partial load
+        memory[0xa10f]=100;memory[0xa115+10]=8;assert(pick().controls==8);
+        assert(!arcade_select_euro_move(rules,order,2,memory.data(),1,100).controls);
+        const ArcadeEuroRule wait[]={{6,0,0},{6,0x8007,4}};
+        assert(!arcade_select_euro_move(wait,order,2,memory.data(),memory.size(),100).controls);
+    }
+    assert(arcade_has_calculated_moves("sae") && arcade_has_calculated_moves("ace"));
+    assert(!arcade_has_calculated_moves("unknown") && !arcade_has_calculated_moves(nullptr));
     arcade_configure_guidance(0, false, true);
     assert(arcade_guidance_enabled() && arcade_watch_mode_enabled() && !arcade_visual_moves_enabled());
     assert(arcade_hide_dl2_move_text("lair2",32,47,2));
@@ -137,6 +160,16 @@ int main() {
     arcade_guidance_cine(memory.data(),memory.size(),"dle21",true,5000);
     assert((arcade_guidance_snapshot()>>32)==before+1);
     arcade_guidance_cine(memory.data(),memory.size(),"dle21",false,5000);
+    assert(!arcade_visual_controls());
+    // SAE 1.0 scene 2/step 1: its first RIGHT is a necessary zero-score
+    // transition. Exercise the production ROM catalog, not the A3 alias.
+    std::fill(memory.begin(),memory.end(),0);
+    ram=memory.data()+0xa000;
+    ram[14]=2;ram[15]=1;ram[0xe0]=0x88;ram[0xe1]=1;ram[0xe2]=2;ram[0xed]=30;
+    arcade_configure_guidance(1,false,true);
+    arcade_guidance_cine(memory.data(),memory.size(),"sae",true,1287);
+    assert(arcade_visual_controls()==8 && (arcade_guidance_snapshot()&256));
+    arcade_guidance_cine(memory.data(),memory.size(),"unknown",true,1287);
     assert(!arcade_visual_controls());
     puts("Guidance: bounds, retry signatures, native DL2 moves and unknown-state refusal passed");
 }

@@ -220,8 +220,7 @@ bool init_text(SDL_Renderer *renderer, SDL_Surface *font, bool linear,
                const char *game, bool native_prompts) {
     // DL2 guidance also drives Watch Mode, but its ROM already draws the
     // prompt. Only games with calculated text get an additional move label.
-    calculated_moves_enabled = !native_prompts && game &&
-            (std::strcmp(game, "dle21") == 0 || std::strcmp(game, "ace") == 0);
+    calculated_moves_enabled = !native_prompts && arcade_has_calculated_moves(game);
     if (!native_prompts && !(arcade_visual_moves_enabled() && calculated_moves_enabled)) return true;
     g_ldp1450_font = SDL_CreateTextureFromSurface(renderer, font);
     if (!g_ldp1450_font) {

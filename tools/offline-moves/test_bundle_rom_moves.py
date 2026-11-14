@@ -12,9 +12,19 @@ from bundle_rom_moves import bundle, ranked_rows, runtime_policy, rule_coverage
 from test_rom_export import graph
 import export_rom_moves
 import rom_tables
+import move_arrays
 
 
 class BranchCoverageTest(unittest.TestCase):
+    def test_identical_rom_arrays_share_storage_without_merging_different_policies(self):
+        source=('static const uint16_t a[] = {1, 2};\n'
+                'static const uint16_t b[] = {1,2};\n'
+                'static const uint16_t c[] = {2,1};\n')
+        shared,aliases=move_arrays.deduplicate(source)
+        self.assertEqual(aliases,{'b':'a'})
+        self.assertIn('#define b a',shared)
+        self.assertIn('c[] = {2,1}',shared)
+        self.assertEqual(move_arrays.deduplicate(shared),(shared,aliases))
     def policy(self, objective, choices):
         return dict(objective=objective, choices=[dict(source=[scene,0],control=control,
                     window=0,outcome=3,rank=0) for scene,control in choices])

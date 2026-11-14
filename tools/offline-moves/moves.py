@@ -11,12 +11,12 @@ import zipfile
 import zlib
 
 ROOT = Path(__file__).resolve().parent
-CHIPS = {
-    'dle21': [('dle21_u1.bin', 0x4f8af481), ('dle21_u2.bin', 0x5fca04c5), ('dle21_u3.bin', 0xc14f36b3)],
-    'ace': [('sa_a3_u1.bin', 0x427522d0), ('sa_a3_u2.bin', 0x18d0262d),
-            ('sa_a3_u3.bin', 0x4646832d), ('sa_a3_u4.bin', 0x57db2a79), ('sa_a3_u5.bin', 0x85cbcdc4)],
-}
-SOURCES = ['games/cinematronics/board.c', 'cpu/z80.c', 'audio/ay8910.c',
+import rom_tables
+CHIPS = {game: [(f'{layout["prefix"]}_u{i+1}.bin', crc)
+                for i, crc in enumerate(layout['crc'])]
+         for game, layout in rom_tables.LAYOUTS.items()}
+
+SOURCES = ['../../board_adapter.c', 'cpu/z80.c', 'audio/ay8910.c',
            'ldp/ldp.c', 'ldp/ldv1000.c', 'util/roms.c', 'util/zip.c']
 
 
@@ -61,3 +61,18 @@ def atomic_json(path, data):
         f.write('\n')
         temp = Path(f.name)
     os.replace(temp, path)
+
+
+def ensure_native_catalog():
+    lines=['// Generated from rom_tables.LAYOUTS; keep ROM pin data consistent.',
+           'static const OfflineRom offline_roms[] = {']
+    for game, layout in rom_tables.LAYOUTS.items():
+        names=', '.join('"'+name+'"' for name, _ in CHIPS[game])
+        crcs=', '.join('0x%08xU'%crc for _, crc in CHIPS[game])
+        defaults=layout.get('dips', [0x3d,0xfe] if game=='ace' else [0x66,0x98] if game=='sae' else [0x22,0xd8])
+        lines.append('    {"%s", %d, {%s}, {%s}, %s, %s, %d, %d, %d},' %
+            (game,layout['chips'],names,crcs,'true' if rom_tables.space_ace(game) else 'false',
+             'true' if layout.get('pr7820') else 'false',rom_tables.difficulty_count(game),*defaults))
+    lines.append('};')
+    path=ROOT/'rom_catalog.inc';data='\n'.join(lines)+'\n'
+    if not path.exists() or path.read_text()!=data:path.write_text(data)

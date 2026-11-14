@@ -1,7 +1,8 @@
 # Offline arcade move tools
 
-These laptop tools reconstruct moves for Dragon’s Lair Enhancement 2.1 (DLE21)
-and Space Ace US A3. They run the original Z80 ROM with a simulated LD-V1000,
+These laptop tools reconstruct moves for Dragon’s Lair Enhancement 2.1 (DLE21),
+US Dragon’s Lair revisions A–F, Space Ace US A3 and Space Ace Enhancement 1.0.
+They run the original Z80 ROM with a simulated LD-V1000 or PR-7820,
 without opening video/audio or waiting for real time. Commercial ROMs and media
 are not included. The APK does not contain ROM payloads.
 
@@ -27,6 +28,57 @@ operator difficulty settings: 208 complete games, each followed by an independen
 exact replay. Space Ace's operator difficulty controls when and how the game
 speeds up; it is separate from Cadet, Captain or Ace. DLE21 has no difficulty
 selector.
+
+For SAE alone, use `--game sae --rom /path/to/SAE_10.zip` instead of `--roms`.
+The same eight-start check covers all three skills and both Easy/Hard settings
+(96 games, each independently replayed). SAE has its own layout and policy;
+it does not reuse A3's moves. For a combined cold export, repeat `--game` for
+`dle21`, `ace` and `sae`, with a directory containing each `GAME.zip`.
+The runtime ROM catalog can point aliases at one set of arrays, so identical
+policies need not be copied for every revision.
+
+For US Dragon’s Lair, use `--game lair_a --rom /path/to/dl_reva.zip`, and
+similarly `lair_b` through `lair_f`. Each revision covers all four operator
+difficulties. A–C use the PR-7820 board adapter, D–F the LD-V1000 adapter.
+`rom_tables.py` is the single source for chip pins and board defaults; the
+generated `rom_catalog.inc` keeps the C verifier in agreement. The pinned
+vendor sources are unchanged. To combine independently verified exports, use
+`merge_rom_bundles.py --input FIRST --input SECOND --output COMBINED`.
+It retains each export's evidence and source fingerprints, then shares
+identical immutable arrays. Different timing arrays remain separate.
+
+## Italian European-board Dragon’s Lair
+
+This ROM uses PAL timing, a European board and the serial VP932 player, so its
+fixed records need their own decoder. Generate and check both strategies with:
+
+```bash
+python3 tools/offline-moves/euro_moves.py \
+  --rom /path/to/dl_italian.zip \
+  --output local-tools/italian-moves --starts 4
+```
+
+The tool checks four program-chip CRCs, decodes every fixed record, and runs
+both policies with 0/8/16 ms input-queue phases. Starts use different delays to
+exercise ROM route selection. Each completed run is independently replayed
+from its recorded physical inputs in a fresh process, without consulting moves
+to choose inputs. The shared native selector runs at the driver's 50 Hz tick,
+with modeled 8 ms polling, 100 ms holds and 17 ms input delivery. This is a
+host timing model, not execution of the Android Java controller or an APK test.
+No video, sound, real-time waits or previous move files are used.
+
+Check recovery separately with `--miss 4 --input-phase 8`. The tool withholds
+that move and requires a finish after exactly one lost life. Failed checks do
+not publish a bundle. Successful normal checks write `bundle/`, containing
+one shared rule pool, both strategy index lists, the complete inventory,
+verification and hashes. Identical strategy lists share one native array.
+Only `arcade_euro_moves.inc` is compiled into the APK; program bytes remain
+private test data. The small Android driver hook only reads state. CPU timing,
+CTC/DART and VP932 protocol behavior are unchanged.
+
+The Italian tests currently use the native factory operator settings. Android
+emulator and video-backed checks are pending; host success does not substitute
+for them. See [the format notes](ROM-EXPORT.md#italian-european-records).
 
 The report includes each setting, start delay, score, move count and pass/fail
 result. Both `shortest` and `highest-score` routes retain their separate evidence.

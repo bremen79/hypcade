@@ -25,8 +25,9 @@ final class GuidanceSupport {
 
     static GuidanceSupport forGame(String game, List<String> options) {
         if ("singe".equals(game)) return new GuidanceSupport(false, false, true);
-        boolean visual = "dle21".equals(game) || "ace".equals(game) || "lair2".equals(game);
-        String supportedVersion = "lair2".equals(game) ? "6" : "1";
+        boolean visual = "dle21".equals(game) || "ace".equals(game) || "sae".equals(game)
+                || game.matches("lair_[a-f]") || "lair_ita".equals(game) || "lair2".equals(game);
+        String supportedVersion = "lair2".equals(game) ? "6" : "lair_ita".equals(game) ? "2" : "1";
         // Reject unsupported or ambiguous revision selections, including repeated flags.
         for (int i = 0; i < options.size(); i++) {
             if ("-version".equalsIgnoreCase(options.get(i))) {

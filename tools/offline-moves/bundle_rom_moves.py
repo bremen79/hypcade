@@ -16,6 +16,7 @@ import tempfile
 import moves as move_tools
 import score_routes
 import export_rom_moves
+import move_arrays
 
 
 def ranked_rows(candidates, policy):
@@ -115,13 +116,16 @@ def write_move_table(path,data):
 
 def bundle(results,destination,include):
     destination.mkdir(parents=True,exist_ok=True);files={};profiles=[]
-    rows={g:{o:{} for o in ('shortest','highest-score')} for g in ('dle21','ace')}
-    candidates={g:[] for g in rows}
     policies={}; complete_rules={}
     report=json.loads((results/'report.json').read_text())
     if (not report['all_passed'] or report['completed']!=report['planned'] or
             report['failed_runs'] or report['verified_runs']!=len(report['results'])):
         raise ValueError('Full skill/difficulty verification is incomplete')
+    games=sorted({entry['game'] for entry in report['results']})
+    if not games or any(game not in export_rom_moves.rom_tables.LAYOUTS for game in games):
+        raise ValueError('Unsupported or empty game set')
+    rows={g:{o:{} for o in ('shortest','highest-score')} for g in games}
+    candidates={g:[] for g in rows}
     for game in rows:
         rules=results/'rules'/game
         export_rom_moves.verify(rules)
@@ -132,7 +136,8 @@ def bundle(results,destination,include):
     files[generation.name]=hashlib.sha256(generation.read_bytes()).hexdigest()
     for entry in report['results']:
         game=entry['game'];objective=entry['objective'];difficulty=entry['difficulty']
-        if game not in rows or objective not in rows[game] or difficulty not in range(4):
+        levels=range(export_rom_moves.rom_tables.difficulty_count(game))
+        if game not in rows or objective not in rows[game] or difficulty not in levels:
             raise ValueError('Unsupported matrix profile')
         folder=(results/entry['directory']).resolve()
         if not folder.is_relative_to(results.resolve()):raise ValueError('Route outside results directory')
@@ -214,17 +219,27 @@ def bundle(results,destination,include):
         table=destination/(game+'-moves.json')
         write_move_table(table,data)
         files[table.name]=hashlib.sha256(table.read_bytes()).hexdigest()
-    include.write_text('\n'.join(lines)+'\n')
+    lines.append('static const ArcadeCineProfile arcade_cine_profiles[] = {')
+    lines += ['    ARCADE_CINE_PROFILE("%s", %s, %s),'%(game,game,'true' if export_rom_moves.rom_tables.space_ace(game) else 'false') for game in rows]
+    lines.append('};')
+    source,aliases=move_arrays.deduplicate('\n'.join(lines)+'\n')
+    include.write_text(source)
     manifest=dict(schema=4,method='Complete decoded ROM rules and ranked runtime policies, with sampled replay timing calibrations',profiles=profiles,counts=counts,shared_counts=shared_counts,rom_coverage=coverage,calibration_coverage=calibration_coverage,
                   bundler_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   files=files,apk_include_sha256=hashlib.sha256(include.read_bytes()).hexdigest(),
                   all_scenes_proven=False,global_optimum_proven=False,
                   limits='Every decoded rule is retained. Runtime tables include all ranked alternatives; unranked and non-playable rules have explicit classifications in the audit. Replay timing validation remains separate from structural coverage.')
+    manifest['array_aliases']=aliases
     move_tools.atomic_json(destination/'manifest.json',manifest)
     print('Bundled',len(profiles),'full-game routes:',counts,flush=True)
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--results',type=Path,required=True)
-    p.add_argument('--destination',type=Path,default=score_routes.REPO/'android/moves/rom-tables')
-    p.add_argument('--include',type=Path,default=score_routes.REPO/'android/app/jni/arcade_moves.inc')
-    a=p.parse_args();bundle(a.results,a.destination,a.include)
+    p.add_argument('--destination',type=Path)
+    p.add_argument('--include',type=Path)
+    a=p.parse_args()
+    games={r['game'] for r in json.loads((a.results/'report.json').read_text())['results']}
+    if games!={'dle21','ace'} and (a.destination is None or a.include is None):
+        p.error('A different game set needs explicit --destination and --include; do not replace the APK bundle accidentally')
+    bundle(a.results,a.destination or score_routes.REPO/'android/moves/rom-tables',
+           a.include or score_routes.REPO/'android/app/jni/arcade_moves.inc')
