@@ -49,6 +49,11 @@ identical immutable arrays. Different timing arrays remain separate.
 
 ## European-board Dragon’s Lair
 
+For the real Java coin/Start sequence and full automatic play, use
+`verify_euro_watch.py`; see [Watch verification](WATCH-VERIFY.md#european-and-italian-dragons-lair).
+The extractor's own driver replays below use a modeled player and do not, by
+themselves, validate Java startup behavior.
+
 The European (`laireuro`) and Italian (`lair_ita`) ROMs use PAL timing and the
 serial VP932 player, so their fixed records need their own decoder. Generate and check both strategies with:
 

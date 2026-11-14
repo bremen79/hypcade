@@ -1254,6 +1254,7 @@
     "tools/offline-moves/euro_moves.py",
     "tools/offline-moves/euro_routes.cpp",
     "tools/offline-moves/euro_tables.py",
+    "tools/offline-moves/euro_watch_machine.cpp",
     "tools/offline-moves/export_rom_moves.py",
     "tools/offline-moves/merge_rom_bundles.py",
     "tools/offline-moves/move_arrays.py",
@@ -1294,6 +1295,7 @@
     "tools/offline-moves/vendor/src/util/zip.c",
     "tools/offline-moves/vendor/src/util/zip.h",
     "tools/offline-moves/verify_dl2_watch.py",
+    "tools/offline-moves/verify_euro_watch.py",
     "tools/offline-moves/verify_rom_matrix.py",
     "tools/offline-moves/verify_watch_moves.py",
     "tools/offline-moves/watch_moves.c"

@@ -124,6 +124,39 @@ must remain visible and their lives blank. All assertions passed.
 These visibility rules require no changes to the ROM, CPU or input timing.
 They have not yet been checked visually on the cabinet.
 
+## Watch Mode startup
+
+All supported games use the same production Java coin/Start controller. It
+waits two seconds after native readiness, retries coins until credits increase,
+and requires the ROM's gameplay signal before enabling automatic moves. The
+unit tests cover the initial delay, three coins per credit, late Start
+acknowledgment, credit resets, stale move events and pause/stop releases.
+
+The European/Italian failure was reproduced with that Java controller and
+the actual JNI publisher: RAM-test patterns looked like credits, lives and
+record IDs, so automation could enter PLAYING without a Start press. Those
+revisions copy EI/RETI to A102 after the memory test. The publisher now rejects
+credits until that stub exists and uses A001 bit 0 to exclude attract mode.
+No ROM, CPU, driver timing or game-specific startup sequence was changed.
+
+`tools/offline-moves/verify_euro_watch.py` checks the production Java player,
+JNI publisher and packaged selector with the original video-less European
+CPU/CTC/DART/VP932 harness. The 48-case matrix covers both ROMs, four operator
+levels, both move policies and input queue phases 0/8/16. Every case must insert
+coins, press Start and complete a full play without losing a life. It also
+checks all 256 uniform RAM-test patterns against the real publisher.
+All 48 full plays passed with every starting life intact.
+The five DL2 difficulty/prompt replays and an omitted-first-move negative
+control pass with the shared controller. Another 86 classic-ROM selector
+replays pass; those use the existing modeled timing player, not the Java
+startup controller, and are not proof of Java startup on those ROMs.
+
+The four signed release APKs build successfully and pass SDK/ABI, signature,
+flavor and packaged move-table checks. ARM release lint reports no errors,
+with the existing warnings retained. These are host and package checks;
+Android emulator/cabinet startup testing remains deferred at the maintainer's
+request. The root README is unchanged.
+
 ## Move policies and Watch Mode
 
 European Dragon’s Lair (`laireuro`) has 704 decoded records and 592 shared

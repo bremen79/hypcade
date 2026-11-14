@@ -8,13 +8,16 @@ final class HypseusActivity {
     static final ArrayDeque<Long> events = new ArrayDeque<>();
     static long guidance;
     static int credits;
+    static int coinsPerCredit, coins, startPresses;
     static boolean started, automation;
     static void reset() {
         Arrays.fill(held, false); events.clear(); guidance = 0;
         credits = 0; started = automation = false;
+        coinsPerCredit = 1; coins = startPresses = 0;
     }
     static void nativeArcadeInput(int action, boolean down) {
-        if (action == 7 && down && !held[action]) credits++;
+        if (action == 7 && down && !held[action] && ++coins % coinsPerCredit == 0) credits++;
+        if (action == 8 && down && !held[action]) startPresses++;
         held[action] = down;
     }
     static boolean nativeEmulatorReady() { return true; }

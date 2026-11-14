@@ -232,6 +232,14 @@ A short coin-slot sound confirms a coin-button press;
 credit acceptance remains the game's responsibility. Player 2 Start uses the
 emulator's existing input and supports alternating play where the game allows it.
 
+Watch Mode uses one Java coin/Start state machine for every supported ROM. It
+waits two seconds after native readiness before its first coin, retries coins
+until credits increase, and enables automatic moves only after the ROM signals
+gameplay. Credit decreases are not used as a substitute for that signal.
+The European/Italian state publisher rejects RAM self-test patterns until the
+ROM installs its interrupt-return stub, then uses the ROM's match flag to
+exclude attract mode. It does not alter the ROM or CPU timing.
+
 The generator checks candidate inputs against simultaneous no-input execution.
 Necessary zero-score transitions, including Space Ace's final UP, are retained.
 Repeated starts sample randomized screen orders; deliberate input omissions

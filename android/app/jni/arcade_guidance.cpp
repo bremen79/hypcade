@@ -144,10 +144,15 @@ void arcade_guidance_euro(const uint8_t *memory, size_t size, const char *game, 
     unsigned player=memory[0xa152] ? 1 : 0;
     unsigned lives=memory[0xa149+player];
     unsigned record=memory[0xa17a]|(memory[0xa17b]<<8);
-    bool alive=lives>0 && lives<=9 && record>=6 && record<=704;
+    // Both ROMs copy EI; RETI from 0762 to A102 after the RAM self-test
+    // (07A3..07AC). Before that, test patterns can masquerade as BCD credits,
+    // lives and record IDs. A001 bit 0 distinguishes attract from a match.
+    const bool initialized=memory[0xa102]==0xfb && memory[0xa103]==0xed && memory[0xa104]==0x4d;
+    const bool match=initialized && !(memory[0xa001]&1);
+    bool alive=match && lives>0 && lives<=9 && record>=6 && record<=704;
     if(arcade_watch_mode_enabled()) {
         unsigned credit=memory[0xa14b];
-        arcade_watch_publish_credits((credit>>4)<=9 && (credit&15)<=9 ? int((credit>>4)*10+(credit&15)) : -1);
+        arcade_watch_publish_credits(initialized && (credit>>4)<=9 && (credit&15)<=9 ? int((credit>>4)*10+(credit&15)) : -1);
         arcade_watch_publish_game_started(alive && playing);
     }
     publish(alive && playing ? arcade_decode_euro(memory,size,game,frame) : ArcadeMove{});

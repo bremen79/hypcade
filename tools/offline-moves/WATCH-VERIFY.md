@@ -69,6 +69,43 @@ bundled policies and calibrations, with no teacher or learned repair. Repeat
 with different `--miss-at` values to sample other retry routes. Each positive
 result must report exactly one intended death and a completed recovery.
 
+## European and Italian Dragon's Lair
+
+`verify_euro_watch.py` exercises the production Java `WatchModeController`, JNI
+state publication and packaged policies with the original European Z80, CTC,
+DART and VP932 methods. It uses the shared virtual Android clock and models the
+17 ms SDL input queue and 125 ms sticky coin queue. It supplies no recorded
+inputs or replacement startup player. Video, sound and real-time waits are
+omitted; no Android emulator is started.
+
+```bash
+python3 tools/offline-moves/verify_euro_watch.py \
+  --roms /path/to/roms --output local-tools/euro-watch --jdk /path/to/jdk17
+```
+
+The default matrix covers both ROMs, levels 0–3, both strategies and queue
+phases 0/8/16. It requires the Java player to insert coins, press Start and
+complete a full play with every starting life intact. `--startup-only` instead
+stops after three move presses and a positive score; it is a startup regression,
+not proof of a completed game. Logs and `report.json` retain counters and source
+fingerprints. The ROM loader checks revision CRCs and resolves the Italian
+split clone from the adjacent European parent.
+
+Both ROMs test RAM before initializing their interrupt-return stub: at 07A3–07AC,
+they copy `EI; RETI` from 0762 to A102. Until those bytes are installed, even
+valid-looking packed-BCD credits and lives are test data. The JNI publisher
+reports unknown credits and no gameplay during that phase. Afterward, A001
+bit 0 distinguishes attract mode from a match. The checker also tests every
+uniform RAM byte pattern against the actual publisher before each ROM run.
+
+All games use one Java startup sequence: wait two seconds after native readiness,
+insert coins until the credit count increases, retry Player 1 Start and wait
+for the ROM's gameplay signal. A credit decrease is not a Start acknowledgment.
+The two-second delay is a courtesy, not an assumption that every ROM boots in
+two seconds. ROM boot duration and coinage remain controlled by the ROM.
+Host success does not validate Android scheduling or decoding load; actual APK
+checks through the launcher are still separate and currently deferred.
+
 ## Dragon's Lair II US 3.19
 
 Host checks require Python 3.9+, JDK 17, a C++17 compiler and zlib development

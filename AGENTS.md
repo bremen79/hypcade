@@ -201,6 +201,13 @@ per-player cutoffs. DLE21 has no difficulty option; preserve its author's choice
 Android runtime validation for these board adapters is currently deferred at the
 maintainer's request. Do not launch the Android emulator until requested, and do
 not describe these host checks as Android runtime validation.
+`verify_euro_watch.py` additionally runs the production Java Watch controller,
+JNI publisher and packaged selector against the original European CPU/driver
+without video. Check both strategies, all four levels and queue phases 0/8/16.
+All games share the two-second initial coin delay and coin/Start state machine;
+only ROM state decoding varies. European self-test RAM is not valid credits:
+require the ROM-installed EI/RETI stub at A102 before publication and the A001
+match flag for gameplay. Credit decreases never acknowledge Start by themselves.
 
 ## Local tools and data
 

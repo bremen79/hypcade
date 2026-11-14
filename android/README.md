@@ -150,8 +150,13 @@ Its extra timing-cue switch is disabled because the video already contains cues.
 Singe games use their own Lua options menus: assign **Game options / Service**
 or press **Options** on mobile. Unsupported ROM revisions have disabled move
 controls. Showing moves displays guidance; **Watch Mode**, beside Start game,
-plays automatically. It inserts coins until the game confirms a credit and
-retries Player 1 Start until the game starts. During play, only Pause and Exit
+plays automatically. It waits two seconds after native initialization, inserts
+coins until the game confirms a credit, and retries Player 1 Start until the
+ROM confirms gameplay. Credit decreases alone do not mean the game has started.
+European and Italian Dragon's Lair ignore self-test RAM values until their
+interrupt-return stub is initialized, and distinguish attract mode from a match.
+The same startup controller handles every supported game and coinage setting.
+During play, only Pause and Exit
 remain available. Controller and touch gameplay inputs are blocked.
 
 Offline generation decodes ROM alternatives and ranks routes for each objective.

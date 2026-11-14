@@ -15,6 +15,7 @@ final class WatchModeController {
     private static final int START1 = 8;
     private static final long POLL_MS = 8;
     private static final long KEY_HOLD_MS = 100;
+    private static final long INITIAL_COIN_DELAY_MS = 2000;
     private static final long COIN_RETRY_MS = 2000;
     private static final long START_RETRY_MS = 3000;
     private static final int WAIT_READY = 0;
@@ -23,6 +24,7 @@ final class WatchModeController {
     private static final int START_DOWN = 3;
     private static final int WAIT_START_ACK = 4;
     private static final int PLAYING = 5;
+    private static final int WAIT_INITIAL_COIN = 6;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final ArrayDeque<Long> moves = new ArrayDeque<>();
@@ -36,7 +38,6 @@ final class WatchModeController {
     private int phase = WAIT_READY;
     private int heldActions;
     private int creditsBeforeCoin = -1;
-    private int creditsBeforeStart = -1;
     private long deadline;
     private long pauseStarted;
     private long tracedGuidance = Long.MIN_VALUE;
@@ -46,7 +47,6 @@ final class WatchModeController {
         running = true;
         phase = WAIT_READY;
         creditsBeforeCoin = -1;
-        creditsBeforeStart = -1;
         tracedGuidance = Long.MIN_VALUE;
         handler.post(tick);
     }
@@ -154,6 +154,11 @@ final class WatchModeController {
         switch (phase) {
             case WAIT_READY:
                 if (!HypseusActivity.nativeEmulatorReady()) break;
+                phase = WAIT_INITIAL_COIN;
+                deadline = now + INITIAL_COIN_DELAY_MS;
+                break;
+            case WAIT_INITIAL_COIN:
+                if (now < deadline) break;
                 creditsBeforeCoin = HypseusActivity.nativeWatchCredits();
                 send(COIN, true);
                 coinHeld = true;
@@ -172,9 +177,8 @@ final class WatchModeController {
                 {
                     int credits = HypseusActivity.nativeWatchCredits();
                     boolean creditAdded = credits >= 0 &&
-                        (creditsBeforeCoin < 0 ? credits > 0 : credits != creditsBeforeCoin || credits == 99);
+                        (creditsBeforeCoin < 0 ? credits > 0 : credits > creditsBeforeCoin || credits == 99);
                     if (creditAdded) {
-                        creditsBeforeStart = credits;
                         phase = WAIT_START_ACK;
                         deadline = now + START_RETRY_MS;
                     } else if (now >= deadline) {
@@ -204,10 +208,9 @@ final class WatchModeController {
                 break;
             case WAIT_START_ACK:
                 {
-                    int credits = HypseusActivity.nativeWatchCredits();
-                    boolean creditSpent = creditsBeforeStart >= 0 && credits >= 0 &&
-                        credits < creditsBeforeStart;
-                    if (HypseusActivity.nativeWatchGameStarted() || creditSpent) {
+                    // Only the ROM's gameplay signal acknowledges Start. A
+                    // credit decrease can also be a boot test or a counter reset.
+                    if (HypseusActivity.nativeWatchGameStarted()) {
                         phase = PLAYING;
                         HypseusActivity.nativeSetWatchAutomation(true);
                         HypseusActivity.nativeRequestCurrentWatchMove();
