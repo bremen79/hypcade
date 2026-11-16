@@ -130,7 +130,7 @@ int main(int argc,char**argv) {
     ArcadeMoveSelection selected{},pending{};
     unsigned initial_lives=0,moves=0,offered=0,ending_at=0,peak_score=0;
     unsigned held=0,poll=0,delivery=0,queued=0,last_record=0;
-    bool coin=false,start=false,won=false,previous_ready=false,skipped=false;
+    bool coin=false,start=false,won=false,previous_ready=false,skipped=false,queue_reported=false;
     size_t replay_at=0;
     while(now_cycles<3600ULL*3579545) {
         unsigned ms=now_cycles*1000/3579545;
@@ -165,6 +165,13 @@ int main(int argc,char**argv) {
         }
         unsigned record=word(0xa17a),life=machine.m_cpumem[0xa149],flags=machine.m_cpumem[0xa111];
         if(ms>65000+delay&&life>0&&life<=9&&!initial_lives)initial_lives=life;
+        if(initial_lives && record>=6 && !queue_reported) {
+            queue_reported=true;
+            unsigned count=per_player_difficulty ? 17 : 36;
+            fprintf(stderr,"QUEUE count=%u",count);
+            for(unsigned i=0;i<count;i++)fprintf(stderr," %u",word(0xa002+2*i));
+            fprintf(stderr,"\n");
+        }
         if(initial_lives&&!won&&machine.m_cpumem[0xa18e]!=difficulty) {
             printf("{\"win\":false,\"difficulty_mismatch\":%u,\"expected\":%u}\n",machine.m_cpumem[0xa18e],difficulty);
             if(trace)fclose(trace);

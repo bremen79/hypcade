@@ -645,7 +645,8 @@ int graph_replay(RouteGraph *graph) {
         if (!fgets(line, sizeof line, file) ||
             sscanf(line, "%u %" SCNu64 " %" SCNu64 " %" SCNu64 " %32s %32s %u %c",
                    &control, &press, &release, &until, from, to, &terminal_proof, &extra) != 7 ||
-            (control && control!=1 && control!=2 && control!=4 && control!=8 && control!=16) || terminal_proof>1 || !valid_hash(from) || !valid_hash(to) || phase != ROUTE_DECISION ||
+            (control && control!=1 && control!=2 && control!=4 && control!=5 && control!=6 &&
+             control!=8 && control!=9 && control!=10 && control!=16) || terminal_proof>1 || !valid_hash(from) || !valid_hash(to) || phase != ROUTE_DECISION ||
             !hash_matches(from, key.a, key.b)) {
             fprintf(stderr, "Invalid replay step/source checkpoint at step %u\n", i); fclose(file); return 3;
         }
@@ -720,6 +721,11 @@ int graph_replay(RouteGraph *graph) {
         moves != expected_moves || !hash_matches(final_hash, key.a, key.b)) {
         fprintf(stderr, "Replay did not reproduce the requested victory score/move count\n"); return 3;
     }
+#ifdef HYPCADE_REPLAY_COMPLETION
+    /* Optional host proof harness: inspect a copy after the exact replay has
+     * passed, without changing its input execution or checkpoint hashes. */
+    if (!HYPCADE_REPLAY_COMPLETION(&machine)) return 3;
+#endif
     printf("{\"type\":\"replay\",\"verified\":true,\"terminal\":true,\"score\":%d,\"move_count\":%u,"
            "\"steps\":%u,\"root_hash\":\"%s\",\"final_hash\":\"%s\",\"lives\":%d}\n",
            score, moves, steps, root_hash, final_hash, player_one_lives(&machine.board));

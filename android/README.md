@@ -162,8 +162,9 @@ remain available. Controller and touch gameplay inputs are blocked.
 Offline generation decodes ROM alternatives and ranks routes for each objective.
 Candidate inputs are checked against a simultaneous no-input simulation, and
 complete policies retain every decoded rule and ranked alternative. Successful
-death-free games and independent replays supply timing calibration, not the
-coverage boundary. Required zero-score transitions are retained. Separate unassisted checks
+death-free games and independent replays retain host timing evidence, not the
+coverage boundary. The APK stores complete policies and reads live ROM timers
+for the current skill and difficulty; replay timing arrays remain host-only. Required zero-score transitions are retained. Separate unassisted checks
 exercise IRQ publication, Java polling, SDL delivery and button holds. Randomized
 starts sample different paths; they do not establish every retry context or a
 global optimum. See the [validation guide](VALIDATION.md).

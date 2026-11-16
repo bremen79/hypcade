@@ -6,6 +6,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import json
+import os
 from pathlib import Path
 import random
 import subprocess
@@ -20,10 +21,28 @@ def check_case(binary, run, args, case):
     with log.open('w') as stream:
         rom=args.rom if args.rom else args.roms/(game+'.zip')
         command=[str(binary.resolve()),str(rom.resolve()),game,skill,format(delay,'.17g'),'3600',str(mode),str(difficulty),str(phase),str(detour),str(args.miss_at)]
-        process=run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=120)
+        trace=log.with_suffix('.inputs')
+        if args.android:
+            process=run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=120)
+        else:
+            env=dict(os.environ,HYPCADE_WATCH_RECORD=str(trace.resolve()))
+            env.pop('HYPCADE_WATCH_REPLAY',None)
+            process=run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=120,env=env)
     rows=[json.loads(line) for line in log.read_text().splitlines() if line.startswith('{')]
     proof=next((x for x in rows if x['type']=='watch_replay'),{})
-    return dict(game=game,skill=skill,difficulty=difficulty,input_phase=phase,start=start,start_delay=delay,mode=mode,detour=detour,detour_applied=proof.get('detour_applied',False),verified=process.returncode==0 and proof.get('verified',False),result=proof,log=log.name)
+    verified=process.returncode==0 and proof.get('verified',False)
+    replay=None
+    if verified and not args.android:
+        env=dict(os.environ,HYPCADE_WATCH_REPLAY=str(trace.resolve()))
+        env.pop('HYPCADE_WATCH_RECORD',None)
+        replay_log=log.with_suffix('.replay.log')
+        with replay_log.open('w') as stream:
+            checked=run(command,stdout=stream,stderr=subprocess.STDOUT,timeout=120,env=env)
+        replay=next((json.loads(line) for line in replay_log.read_text().splitlines()
+                     if line.startswith('{') and json.loads(line).get('type')=='watch_physical_replay'),{})
+        verified=checked.returncode==0 and replay.get('verified',False) and replay.get('score')==proof.get('score')
+        if verified:trace.unlink() # Validated temporary schedules are regenerated, not archived.
+    return dict(game=game,skill=skill,difficulty=difficulty,input_phase=phase,start=start,start_delay=delay,mode=mode,detour=detour,detour_applied=proof.get('detour_applied',False),verified=verified,result=proof,independent_replay=replay,log=log.name)
 
 
 def main():
@@ -65,7 +84,9 @@ def main():
     planned=len(configurations)*a.starts*len(modes)*len(phases)*len(detours)
     cases=[(g,s,d,q,i,delay,m,t) for g,s,d in configurations for q in phases
            for i,delay in enumerate(delays) for m in modes for t in detours]
-    with ThreadPoolExecutor(max_workers=a.jobs) as pool:
+    pool=ThreadPoolExecutor(max_workers=a.jobs)
+    futures=[]
+    try:
         futures=[pool.submit(check_case,binary,run,a,case) for case in cases]
         for future in as_completed(futures):
             row=future.result();results.append(row);proof=row['result']
@@ -77,6 +98,12 @@ def main():
                         limitations='Headless input timing model; not a physical Android device test. No claim of all retry contexts or global optimality.')
             move_tools.atomic_json(a.output/'report.json',report)
             print(row['game'],row['skill'],row['difficulty'],row['input_phase'],row['start'],row['mode'],'detour',row['detour'],'PASS' if row['verified'] else 'FAIL',proof.get('score'),proof.get('moves'),'diverted' if row['detour_applied'] else '',flush=True)
+    except BaseException:
+        for future in futures:future.cancel()
+        pool.shutdown(wait=False,cancel_futures=True)
+        raise
+    else:
+        pool.shutdown()
     if not all(x['verified'] for x in results):raise SystemExit(1)
 
 if __name__=='__main__':main()

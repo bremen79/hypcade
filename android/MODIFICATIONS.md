@@ -135,10 +135,11 @@ The verification matrix includes all three Space Ace skills and all four
 operator difficulty settings. Watch Mode checks additionally model IRQ
 publication, Java polling, SDL input delivery and button holds, with varied
 queue phases. The tools can run these checks on the laptop and on Android.
-The APK identifies recorded moves by ROM scene, step and branch context.
+The APK identifies ranked rules by ROM scene and step, matching live inputs.
 The bundler retains every decoded ROM rule and ranked alternative, including
 retry-only scenes absent from sampled winning games. Successful independent
-replays supply timing calibrations rather than defining runtime coverage.
+replays retain timing measurements in the host audit rather than defining
+runtime coverage. Replay timing arrays are not compiled into the APK.
 The selector matches live ROM-loaded controls, windows and outcomes, preserving
 conditional inputs and skill-dependent timers. Both strategies remain available
 after alternate actions or a lost life. Structural checks reconstruct the
@@ -146,12 +147,19 @@ complete ROM inventory and reject missing decoded windows or ranked playable
 alternatives. Death, ignored and otherwise non-playable rules remain auditable
 with explicit exclusions. A player receives one selected action;
 ROM rankings preserve deliberate waiting instead of inserting optional actions.
-Shared rule and calibration pools use compact 16-bit strategy indices.
+Shared rule pools use compact 16-bit strategy indices. The running ROM supplies
+timers for its current skill, operator setting and in-game difficulty progression;
+no separate expanded timing table is loaded for a difficulty level.
 
 Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
-set, defaulting to Max score when the move display is Off. Local route selection
-and sampled successful games are not a proof of global optimality or complete
-context coverage.
+set, defaulting to Max score when the move display is Off. Rankings use inputs
+and rewards inside the current scene plus the chosen exit's continuation cost.
+Independent ROM decision-DAG and scheduler proofs establish the requested
+one-life primary objectives: an attainable smallest input count or highest
+score, without probability estimates. Only cardinal directions and the action
+button are candidates. Complete rule inventories supply runtime coverage;
+successful plays provide separate physical attainment and delivery evidence.
+Optimality after arbitrary mistakes/deaths is outside the current proof scope.
 
 Dragon's Lair II US 3.19 uses its own ROM prompts, controlled by the launcher
 Off/On setting. Its Watch Mode guidance does not draw a second calculated
@@ -167,7 +175,7 @@ frame, including its special and exit input records. It does not wait for the
 later cue threshold, which can leave too little time for Android input delivery.
 
 Space Ace Enhancement 1.0 has its own CRC-pinned table extraction, complete
-policies and timing calibration for all three skills and both operator
+policies and host replay evidence for all three skills and both operator
 difficulties. A shared ROM catalog selects the appropriate arrays; aliases
 can share one data set. Combining verified game bundles preserves each game's
 original replay evidence and source fingerprints. SAE skill selection uses
@@ -175,7 +183,7 @@ its operator DIP setting so startup retries cannot lose a skill-button press.
 
 US Dragon’s Lair revisions A–F also have complete ROM-derived policies for
 both strategies. Identical immutable arrays are stored once across revisions;
-different timing calibrations remain separate. The host verifier supplies a
+replay timing evidence remains in the host audit. The host verifier supplies a
 PR-7820 adapter for A–C without changing the pinned vendor sources.
 
 European and Italian Dragon’s Lair use a shared fixed-record decoder and compact native

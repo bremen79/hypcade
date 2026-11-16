@@ -1,0 +1,1750 @@
+{
+  "scope": "Previously established one-life cost-plus-future policy ranges, retained independently of the retired local-search comparison. Cardinal/button only; no intentional deaths, probability estimates or arbitrary-deviation optimality claim.",
+  "cases": [
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 217,
+          "max": 217
+        },
+        "score": {
+          "min": 374338,
+          "max": 374338
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 136,
+          "max": 136
+        },
+        "score": {
+          "min": 213092,
+          "max": 213092
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 217,
+          "max": 217
+        },
+        "score": {
+          "min": 374338,
+          "max": 374338
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 136,
+          "max": 136
+        },
+        "score": {
+          "min": 213092,
+          "max": 213092
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 217,
+          "max": 217
+        },
+        "score": {
+          "min": 374338,
+          "max": 374338
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 136,
+          "max": 136
+        },
+        "score": {
+          "min": 213092,
+          "max": 213092
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 217,
+          "max": 217
+        },
+        "score": {
+          "min": 374338,
+          "max": 374338
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 136,
+          "max": 136
+        },
+        "score": {
+          "min": 213092,
+          "max": 213092
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 134,
+          "max": 134
+        },
+        "score": {
+          "min": 257784,
+          "max": 257784
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 185686,
+          "max": 185686
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 134,
+          "max": 134
+        },
+        "score": {
+          "min": 257784,
+          "max": 257784
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 185686,
+          "max": 185686
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 134,
+          "max": 134
+        },
+        "score": {
+          "min": 257784,
+          "max": 257784
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 185686,
+          "max": 185686
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 134,
+          "max": 134
+        },
+        "score": {
+          "min": 257784,
+          "max": 257784
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "cadet",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 185686,
+          "max": 185686
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 166,
+          "max": 166
+        },
+        "score": {
+          "min": 289102,
+          "max": 289102
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 109,
+          "max": 109
+        },
+        "score": {
+          "min": 213098,
+          "max": 213098
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 166,
+          "max": 166
+        },
+        "score": {
+          "min": 289102,
+          "max": 289102
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 109,
+          "max": 109
+        },
+        "score": {
+          "min": 213098,
+          "max": 213098
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 166,
+          "max": 166
+        },
+        "score": {
+          "min": 289102,
+          "max": 289102
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 109,
+          "max": 109
+        },
+        "score": {
+          "min": 213098,
+          "max": 213098
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 166,
+          "max": 166
+        },
+        "score": {
+          "min": 289102,
+          "max": 289102
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "ace",
+      "skill": "captain",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 109,
+          "max": 109
+        },
+        "score": {
+          "min": 213098,
+          "max": 213098
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 155,
+          "max": 155
+        },
+        "score": {
+          "min": 333333,
+          "max": 333333
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 147,
+          "max": 147
+        },
+        "score": {
+          "min": 314457,
+          "max": 314457
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 274243,
+          "max": 365156
+        },
+        "moves": {
+          "min": 186,
+          "max": 209
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 273748,
+          "max": 364661
+        },
+        "moves": {
+          "min": 185,
+          "max": 208
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 273864,
+          "max": 365156
+        },
+        "moves": {
+          "min": 180,
+          "max": 209
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 273369,
+          "max": 364661
+        },
+        "moves": {
+          "min": 179,
+          "max": 208
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365651
+        },
+        "moves": {
+          "min": 180,
+          "max": 212
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365156
+        },
+        "moves": {
+          "min": 179,
+          "max": 211
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 365156
+        },
+        "moves": {
+          "min": 177,
+          "max": 209
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 364661
+        },
+        "moves": {
+          "min": 177,
+          "max": 208
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365651
+        },
+        "moves": {
+          "min": 180,
+          "max": 212
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365156
+        },
+        "moves": {
+          "min": 179,
+          "max": 211
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 365156
+        },
+        "moves": {
+          "min": 177,
+          "max": 209
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 364661
+        },
+        "moves": {
+          "min": 177,
+          "max": 208
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 254712,
+          "max": 377011
+        },
+        "moves": {
+          "min": 173,
+          "max": 219
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 254217,
+          "max": 376516
+        },
+        "moves": {
+          "min": 173,
+          "max": 218
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365651
+        },
+        "moves": {
+          "min": 180,
+          "max": 212
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268782,
+          "max": 365156
+        },
+        "moves": {
+          "min": 179,
+          "max": 211
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 365156
+        },
+        "moves": {
+          "min": 177,
+          "max": 209
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 268403,
+          "max": 364661
+        },
+        "moves": {
+          "min": 177,
+          "max": 208
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 326248,
+          "max": 326619
+        },
+        "moves": {
+          "min": 198,
+          "max": 199
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 325753,
+          "max": 326124
+        },
+        "moves": {
+          "min": 197,
+          "max": 198
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 325869,
+          "max": 326619
+        },
+        "moves": {
+          "min": 192,
+          "max": 199
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 325374,
+          "max": 326124
+        },
+        "moves": {
+          "min": 191,
+          "max": 198
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 326248,
+          "max": 326619
+        },
+        "moves": {
+          "min": 198,
+          "max": 199
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 325753,
+          "max": 326124
+        },
+        "moves": {
+          "min": 197,
+          "max": 198
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "score": {
+          "min": 325869,
+          "max": 326619
+        },
+        "moves": {
+          "min": 192,
+          "max": 199
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "score": {
+          "min": 325374,
+          "max": 326124
+        },
+        "moves": {
+          "min": 191,
+          "max": 198
+        }
+      },
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "lair_ita",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 76,
+          "max": 76
+        },
+        "score": {
+          "min": 88250,
+          "max": 88250
+        }
+      },
+      "range_scope": "Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "laireuro",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 207,
+          "max": 207
+        },
+        "score": {
+          "min": 202599,
+          "max": 202599
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 212,
+          "max": 212
+        },
+        "score": {
+          "min": 398412,
+          "max": 398412
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 119,
+          "max": 119
+        },
+        "score": {
+          "min": 188112,
+          "max": 188112
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 212,
+          "max": 212
+        },
+        "score": {
+          "min": 398412,
+          "max": 398412
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 119,
+          "max": 119
+        },
+        "score": {
+          "min": 188112,
+          "max": 188112
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "cadet",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 151,
+          "max": 151
+        },
+        "score": {
+          "min": 318706,
+          "max": 319498
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "cadet",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 150396,
+          "max": 150396
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "cadet",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 151,
+          "max": 151
+        },
+        "score": {
+          "min": 318706,
+          "max": 319498
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "cadet",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 85,
+          "max": 85
+        },
+        "score": {
+          "min": 150396,
+          "max": 150396
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "captain",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 183,
+          "max": 183
+        },
+        "score": {
+          "min": 366836,
+          "max": 366836
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "captain",
+      "difficulty": 0,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 110,
+          "max": 110
+        },
+        "score": {
+          "min": 179410,
+          "max": 179410
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "captain",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "ranges": {
+        "moves": {
+          "min": 183,
+          "max": 183
+        },
+        "score": {
+          "min": 366836,
+          "max": 366836
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    },
+    {
+      "game": "sae",
+      "skill": "captain",
+      "difficulty": 1,
+      "objective": "shortest",
+      "ranges": {
+        "moves": {
+          "min": 110,
+          "max": 110
+        },
+        "score": {
+          "min": 179410,
+          "max": 179410
+        }
+      },
+      "range_scope": "ROM decision-DAG policy support; primary endpoint physically attained"
+    }
+  ],
+  "italian_pool_enclosures": {
+    "moves": {
+      "min": 53,
+      "max": 91
+    },
+    "score": {
+      "min": 53549,
+      "max": 97650
+    },
+    "joint_rng_attainment_proven": false
+  }
+}

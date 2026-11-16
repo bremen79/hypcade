@@ -1,0 +1,796 @@
+{
+  "all_passed": true,
+  "boards": [
+    "classic",
+    "european"
+  ],
+  "us": [
+    {
+      "game": "lair_a",
+      "rom_sha256": "104299e6307165d9c53d7666fc42e5b6d13a2ae532ab8f71d9512f24737fa7fa",
+      "selectors": [
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 9405,
+        "transfer_pc": 10412,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_a",
+        "advance_pc": 11293,
+        "fresh_selector_pc": 10769,
+        "native_advance_cases": 3072,
+        "native_fresh_selector_cases": 22272,
+        "ordinary_roots": [
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          71,
+          72,
+          73,
+          74,
+          75,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ],
+        "final_order": [
+          60,
+          70,
+          76
+        ],
+        "itinerary": "Every surviving ordinary or optional completion advances one group; final descending masks 0/4/6 select return-to-one, return-to-one, win",
+        "scope": "Canonical raw-hard single-player surviving progression and room-boundary roles. Queued/death dispatch and arbitrary-clock controllability remain separate."
+      }
+    },
+    {
+      "game": "lair_b",
+      "rom_sha256": "6251b89644444da1f0554ea0b6a927b81978a904b312008561047313e0984fb3",
+      "selectors": [
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": true
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 9405,
+        "transfer_pc": 10412,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_b",
+        "advance_pc": 11293,
+        "fresh_selector_pc": 10769,
+        "native_advance_cases": 3072,
+        "native_fresh_selector_cases": 22272,
+        "ordinary_roots": [
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          71,
+          72,
+          73,
+          74,
+          75,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ],
+        "final_order": [
+          60,
+          70,
+          76
+        ],
+        "itinerary": "Every surviving ordinary or optional completion advances one group; final descending masks 0/4/6 select return-to-one, return-to-one, win",
+        "scope": "Canonical raw-hard single-player surviving progression and room-boundary roles. Queued/death dispatch and arbitrary-clock controllability remain separate."
+      }
+    },
+    {
+      "game": "lair_c",
+      "rom_sha256": "204d301b4f3dee72e21ff6ebe014f4dde4acb24131cf07f0162dfc56efd11c97",
+      "selectors": [
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": true
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 9405,
+        "transfer_pc": 10412,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_c",
+        "advance_pc": 11293,
+        "fresh_selector_pc": 10769,
+        "native_advance_cases": 3072,
+        "native_fresh_selector_cases": 22272,
+        "ordinary_roots": [
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          71,
+          72,
+          73,
+          74,
+          75,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ],
+        "final_order": [
+          60,
+          70,
+          76
+        ],
+        "itinerary": "Every surviving ordinary or optional completion advances one group; final descending masks 0/4/6 select return-to-one, return-to-one, win",
+        "scope": "Canonical raw-hard single-player surviving progression and room-boundary roles. Queued/death dispatch and arbitrary-clock controllability remain separate."
+      }
+    },
+    {
+      "game": "lair_d",
+      "rom_sha256": "190982921c1d0179fd85916edd1e706e5b5c9f072a97c26c8778e63974c181d7",
+      "selectors": [
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": true
+        },
+        {
+          "cases": 48384,
+          "entry_pc": 10909,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 9405,
+        "transfer_pc": 10412,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_d",
+        "advance_pc": 11293,
+        "fresh_selector_pc": 10769,
+        "native_advance_cases": 3072,
+        "native_fresh_selector_cases": 22272,
+        "ordinary_roots": [
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          71,
+          72,
+          73,
+          74,
+          75,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ],
+        "final_order": [
+          60,
+          70,
+          76
+        ],
+        "itinerary": "Every surviving ordinary or optional completion advances one group; final descending masks 0/4/6 select return-to-one, return-to-one, win",
+        "scope": "Canonical raw-hard single-player surviving progression and room-boundary roles. Queued/death dispatch and arbitrary-clock controllability remain separate."
+      }
+    },
+    {
+      "game": "lair_e",
+      "rom_sha256": "1c5d19974524be6b51dedac56b838bde049a602dc0cb02fc2db7e5089587ebcc",
+      "selectors": [
+        {
+          "cases": 1512,
+          "entry_pc": 7195,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 1512,
+          "entry_pc": 7195,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 1512,
+          "entry_pc": 7195,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 5633,
+        "transfer_pc": 6655,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_e",
+        "rom_sha256": "1c5d19974524be6b51dedac56b838bde049a602dc0cb02fc2db7e5089587ebcc",
+        "native_cases": {
+          "initialize": 512,
+          "resume_selector": 3072,
+          "fresh_selector": 66816,
+          "assign": 1280
+        },
+        "total_cases": 71680,
+        "operator_levels": [
+          0,
+          1
+        ],
+        "symbolic_progression": [
+          "Zero-cost automatic bridge selects group one with empty histories/queue",
+          "Each regular survivor or deferred death advances one logical group",
+          "Each selection consumes one fresh variant; fixed versions make phases irrelevant to suffix values",
+          "Final group selects intermission 62, intermission 72, then dragon 78",
+          "Intermissions explicitly return to group one; only the dragon wins",
+          "Queued playback bypasses selection; immediate retries preserve histories",
+          "A queued-room death re-appends its consumed room without changing any history",
+          "Empty drain restores the already-selected dragon; no fourth normal pass"
+        ],
+        "symbolic_rank": "Every fresh selection consumes one of 39 variant bits; only two final intermission returns precede the winning dragon. Pending completions consume queued rooms; local decisions follow their checked DAG. Deaths are external.",
+        "scope": "Single-player canonical-mask macro progression; composes with separately audited retry and factor contracts",
+        "limits": "Not a cross-player alias proof or universal acceptance/delivery proof"
+      }
+    },
+    {
+      "game": "lair_f",
+      "rom_sha256": "3c179125ef527c4bca8a1276f5633ef459ace53fa26436a481b078d7b917ec75",
+      "selectors": [
+        {
+          "cases": 1512,
+          "entry_pc": 7504,
+          "raw_hard": false,
+          "hard": false,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 1512,
+          "entry_pc": 7504,
+          "raw_hard": false,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        },
+        {
+          "cases": 1512,
+          "entry_pc": 7504,
+          "raw_hard": true,
+          "hard": true,
+          "all_groups_checked": true,
+          "phase_bits": 3,
+          "first_visit_extra_possible": false
+        }
+      ],
+      "progression": {
+        "cases": 2048,
+        "thresholds": [
+          5,
+          9
+        ],
+        "normal_first_lap_groups": [
+          0,
+          0,
+          4,
+          8
+        ],
+        "invariant": "Harder-version flag is monotone during surviving play; start counter is 1, so thresholds affect selection after 4/8 completions"
+      },
+      "rewards": {
+        "cases": 80,
+        "load_pc": 5742,
+        "transfer_pc": 6964,
+        "invariant": "Fixed per-record award, no timing multiplier and no SAE A00A.1 suppression"
+      },
+      "itinerary": {
+        "game": "lair_f",
+        "rom_sha256": "3c179125ef527c4bca8a1276f5633ef459ace53fa26436a481b078d7b917ec75",
+        "native_cases": {
+          "initialize": 512,
+          "resume_selector": 3072,
+          "fresh_selector": 66816,
+          "assign": 1280
+        },
+        "total_cases": 71680,
+        "operator_levels": [
+          0,
+          1
+        ],
+        "symbolic_progression": [
+          "Zero-cost automatic bridge selects group one with empty histories/queue",
+          "Each regular survivor or deferred death advances one logical group",
+          "Each selection consumes one fresh variant; fixed versions make phases irrelevant to suffix values",
+          "Final group selects intermission 62, intermission 72, then dragon 78",
+          "Intermissions explicitly return to group one; only the dragon wins",
+          "Queued playback bypasses selection; immediate retries preserve histories",
+          "A queued-room death re-appends its consumed room without changing any history",
+          "Empty drain restores the already-selected dragon; no fourth normal pass"
+        ],
+        "symbolic_rank": "Every fresh selection consumes one of 39 variant bits; only two final intermission returns precede the winning dragon. Pending completions consume queued rooms; local decisions follow their checked DAG. Deaths are external.",
+        "scope": "Single-player canonical-mask macro progression; composes with separately audited retry and factor contracts",
+        "limits": "Not a cross-player alias proof or universal acceptance/delivery proof"
+      }
+    }
+  ],
+  "dle": {
+    "native_cases": 159744,
+    "macro_states": 412,
+    "initial": {
+      "fewest": 147,
+      "score_at_fewest": 314457,
+      "highest_score": 333333,
+      "fewest_at_score": 155
+    }
+  },
+  "space_ace": null,
+  "european": {
+    "all_passed": true,
+    "cases": [
+      {
+        "game": "laireuro",
+        "recovery_cases": 2592,
+        "room_dispatch_boundary_checked": true,
+        "rom_sha256": "43435324911b31aece7bce964ac677e9038a875c1d4e3e2123f6b69f8353fa91",
+        "root_values": {
+          "minimum_commands": 207,
+          "maximum_score": 202599
+        }
+      },
+      {
+        "game": "lair_ita",
+        "recovery_cases": 578,
+        "room_dispatch_boundary_checked": true,
+        "rom_sha256": "5963d613229f84f82bb188622a9ed4c8166d0122d1af2e0a39293c7c5789e42f",
+        "shuffle_cases": 128,
+        "pools": [
+          {
+            "entries": [
+              [
+                170
+              ],
+              [
+                177
+              ],
+              [
+                184
+              ],
+              [
+                412
+              ]
+            ],
+            "initial_count": 1,
+            "spare_count": 1
+          },
+          {
+            "entries": [
+              [
+                132,
+                346
+              ],
+              [
+                197,
+                365
+              ],
+              [
+                239,
+                419
+              ],
+              [
+                334,
+                508
+              ],
+              [
+                9
+              ],
+              [
+                30
+              ],
+              [
+                86
+              ],
+              [
+                102
+              ],
+              [
+                118
+              ],
+              [
+                317
+              ]
+            ],
+            "initial_count": 6,
+            "spare_count": 2
+          },
+          {
+            "entries": [
+              [
+                42,
+                273
+              ],
+              [
+                58,
+                289
+              ],
+              [
+                151,
+                438
+              ],
+              [
+                215,
+                484
+              ],
+              [
+                258
+              ],
+              [
+                470
+              ],
+              [
+                584
+              ],
+              [
+                595
+              ],
+              [
+                634
+              ]
+            ],
+            "initial_count": 4,
+            "spare_count": 1
+          },
+          {
+            "entries": [
+              [
+                383
+              ],
+              [
+                457
+              ],
+              [
+                520
+              ],
+              [
+                556
+              ],
+              [
+                621
+              ]
+            ],
+            "initial_count": 1,
+            "spare_count": 1
+          }
+        ],
+        "initial_rooms": 12,
+        "spares": 5
+      }
+    ],
+    "sources": {
+      "verify_euro_scheduler.py": "2b5f338a1a455b7324228900f901b6a5377522f385f3ce5e948a9351ae664c9b",
+      "euro_optimality.py": "1b49320a8a75b723b454cc1b01eec6ef71c260e5508087417b2db5a0ae73e792",
+      "euro_tables.py": "13a32a26264043787588c273794137cbe16845500495c8c0053218a60b4426bb",
+      "rom_proof.py": "2957d9fe23b0fb19ca5f80271622a05c2eb1dc7bb708ab5a80e8bce66e3ffb9c",
+      "rom_kernel.py": "40aac55cf8e169a4196c0fc5f5e7a19fec4c2f0a6077ecc5c71dd7cec57bac0b",
+      "rom_kernel.c": "02829b1274ca44f0847a3affa3a92af2f553bd8317b49385c6a9864cbe792969"
+    },
+    "scope": "Semantic queue and room-boundary invariants; no input timing or Android runtime validation"
+  },
+  "seconds": 90.75157867395319,
+  "peak_rss_kib": 39364,
+  "sources": {
+    "audit_schedulers.py": "58672639ea2af646b1c594fa5fa145cb4d4cd954651f55d1e1c75f13d18b8952",
+    "dl1_selector.py": "e1b6b0a545fde018902b4a7b3ac116a0a6ead42d96f03f24c0740b1850ff42f5",
+    "dle_scheduler_graph.py": "2c14b5d41b5e3ca52fa53c90a26bfcfc6d6dcd10d278a293b1ccd442d9edd4ae",
+    "late_progression_rules.py": "9d539204e1cc9b77a7b327b1e6a3f5539cf48611299bc633ee7633088f577b80",
+    "us_progression_rules.py": "78b0ca952dbf162b51a690868d6f0d8ea340025278c82b428675f994c58888bf",
+    "verify_dl1_scheduler.py": "50fdcb56b25c259c4b8f925a2ec9374de3614a68297eff2301042f64f39fc2b1",
+    "rom_kernel.py": "40aac55cf8e169a4196c0fc5f5e7a19fec4c2f0a6077ecc5c71dd7cec57bac0b",
+    "rom_kernel.c": "02829b1274ca44f0847a3affa3a92af2f553bd8317b49385c6a9864cbe792969",
+    "rom_tables.py": "317fb9e1040880f8661e6317b7405c3cdbd191429d6ed74a999147f453be3bc2",
+    "rom_proof.py": "2957d9fe23b0fb19ca5f80271622a05c2eb1dc7bb708ab5a80e8bce66e3ffb9c",
+    "cine_room_optimality.py": "df98282f5b6ff1ca8939ff381da01ef382cd7f0f640571c150665244c41cc8fa",
+    "late_retry_rules.py": "e42dbd5a7f80f7d71a5a67dfb45aa2bfa2650e487fb209044eb7cd9e1d9b00ca",
+    "verify_dle_rules.py": "d3b2f2d852bd19debbcdde8fb4a4aed1405a4956248bd4abcc4e908f1e4399b3",
+    "dle_retry_rules.py": "1a457e767e56e2942531f4d23e998458c04a39b50e25aa70119ab8b98c23f37a",
+    "rom_controls.py": "de54db37be71e8b3de85abed7a509158f93a99c4c7f1640c9aed4480d2deffcd",
+    "ace_rules.py": "5bdfa840ff9386d59d5c8a430df1104533c62d91e25ce7cd1202c08cba03df75",
+    "verify_cine_recovery.py": "1bde20bba485de86d03ed5043ba3ddb0b67c9d3b9377a88383355a5a6c0fb759",
+    "cine_recovery_model.py": "b37b63d4c3a5b86afa5408f48cfcbffd1fc852a69e5f858cafd07bc6cef1263d",
+    "cine_global_model.py": "fede5186a104ed6ade0caac75ecda1a93768af67b8920abfb780cbcf3ce9462d",
+    "sae_rules.py": "4e0b65097aca023cab1d081ca10285bb33e95714e0ff1edea6ceefa4a3b25ecb",
+    "verify_sae_rules.py": "9b423e1a074167325c650a6040542a8cbb0bb56ab101c9c09e570192249a1a95",
+    "rom_rules.py": "1a5d41c5f50208353f197f3998047f4bb5d83e91b5a430ea773d8a358b48b79d"
+  },
+  "scope": "Original CPU scheduler support, reward and progression contracts for the requested boards. No Android runtime or universal phase-controllability claim."
+}

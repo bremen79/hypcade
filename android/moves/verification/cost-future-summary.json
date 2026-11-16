@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "production_bundle": "android/moves/strategies",
+  "objectives": "One-life attainable primary extrema, cardinal/button only; no probability estimates or arbitrary-deviation optimality claim",
+  "complete_rom_profiles": 11,
+  "settings_objectives": 102,
+  "host_checks": {
+    "cine_normal_independent_replays": 258,
+    "cine_recovery_independent_replays": 258,
+    "european_java_jni_cases": 48,
+    "classic_primary_attainment_replays": 50,
+    "space_ace_primary_attainment_replays": 36,
+    "remaining_unit_tests": 213
+  },
+  "linked_apk_validation": "Pending permission for higher-memory builds and Android emulator checks",
+  "runtime_size": {
+    "previous_live_rom": {
+      "bytes": 266800,
+      "by_type": {
+        "ArcadeRomRule": 153090,
+        "uint16_t": 106720,
+        "ArcadeEuroRule": 6990
+      }
+    },
+    "previous_committed_calibrated": {
+      "bytes": 452880,
+      "by_type": {
+        "ArcadeRomMove": 140856,
+        "uint16_t": 151944,
+        "ArcadeRomRule": 153090,
+        "ArcadeEuroRule": 6990
+      }
+    },
+    "cost_future": {
+      "bytes": 106496,
+      "by_type": {
+        "ArcadeCostRule": 43904,
+        "uint16_t": 38208,
+        "ArcadeRomRule": 17394,
+        "ArcadeEuroRule": 6990
+      }
+    },
+    "live_rom_saving_bytes": 160304,
+    "committed_saving_bytes": 346384,
+    "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings."
+  },
+  "cleanup": {
+    "superseded_bundle_bytes": 187536593,
+    "removed_analysis_bytes": 899894556,
+    "retained_roms": 12,
+    "retained_scratch_sources": 3,
+    "removed_previous_integration_bytes": 369506081,
+    "removed_extra_analysis_scripts": 40,
+    "removed_associated_tests": 6,
+    "removed_redundant_native_checkers": 2,
+    "removed_obsolete_guides": 5,
+    "individual_witness_files_consolidated": 50,
+    "removed_other_run_output_bytes": 187443044
+  },
+  "reports": {
+    "runtime-size.json": "55bff603aba7c6739e9a447edb38fe6aa70ea418b56541bf57028e07d85b7118",
+    "euro-watch.json": "57a5fd34c519af0bbd4a02fd930d2f9955dc591389eb12c4d3f97ca8b590cd47",
+    "cine-watch.json": "a5c1db399818028a6340f71c183be92455cfebd1c793ca2ab266f7f7adbc953e",
+    "arm-guidance-objects.json": "70bd6ba771e6cc8874ff7757b179e8f309b4e90ffe89a17b4419dd92cfd53cda",
+    "space-ace-attainment.json": "d7622879efa81850e5b8a3b400dbdf39da65bb269183e4f15d6a915cc24ee3ba",
+    "one-life-ranges.json": "4d5fdd175f207e010721e1b2da58cc4aaa570a5049fc34ce6d69959d01766f7c",
+    "classic-scheduler-audit.json": "8da3cf0e83d4b4126883aa05fa0b15588f6ab42b37cbd4d9a799887fe135d4b8",
+    "cine-recovery.json": "bb6cfe8461252a036801fd7dd7898843a664d74758578271d52ce29e8e6127a5",
+    "classic-attainment.json": "3152cea091b9c7e38b99fed08ee1f3ee267f471ba1f6c4bf6d6b355fbce9aa96",
+    "space-ace-rules-audit.json": "10f200b982130b0a77a61f6a000d666fb4320fa0c48308a36d8369e8cebdeb90"
+  },
+  "future_rom_tools": {
+    "directory": "tools/offline-moves/future_roms",
+    "analysis_modules": 21,
+    "test_modules": 16,
+    "native_helpers": 3,
+    "production_dependency": false
+  }
+}

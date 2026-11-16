@@ -16,11 +16,19 @@ static bool offline_won(const CineBoard *b, const Ldp *ldp) {
 }
 #define HYPSEUS_OFFLINE_TERMINAL(board, ldp) offline_won(board, ldp)
 #define connect_machine original_connect_machine
+#define run_until original_run_until
 #include "games/cinematronics/autoplay.c"
+#undef run_until
 #undef connect_machine
 static void connect_machine(Machine *m) {
     original_connect_machine(m);
     if(m->board.game==CINE_PR7820)m->board.laserdisc=offline_pr7820_link(&m->player);
+}
+/* Verification may record advance deadlines; normal execution has no hook. */
+static void (*offline_run_hook)(Machine *,uint64_t);
+static void run_until(Machine *m,uint64_t deadline) {
+    if(offline_run_hook)offline_run_hook(m,deadline);
+    original_run_until(m,deadline);
 }
 #include <inttypes.h>
 #include <errno.h>

@@ -135,6 +135,78 @@ def inventory(rom, game):
                 limits='Table boundaries inferred from forward data pointers. ROM dispatch, skill, random routing and timing require natural execution validation.')
 
 
+def solve_scene(graph, members, exit_values):
+    """Solve one local DAG with explicit, already-solved continuation values.
+
+    No exit is assigned zero merely because it leaves the scene. Values include
+    the current record award. Unresolved external targets fail; a resolved dead
+    continuation has four None values. Branch extrema are conditional support
+    bounds, not expectations. Paths retain the local/continuation decomposition.
+    """
+    members = set(members)
+    keys = ('fewest', 'highest_score', 'score_at_fewest', 'fewest_at_score')
+    values = {k: {} for k in keys}
+    paths = {o: {} for o in ('shortest', 'highest-score')}
+    reverse = {u: [] for u in members}
+    remaining = {}
+    for u in members:
+        internal = [v for _, ts in graph['actions'][u] for v in ts if v in members]
+        remaining[u] = len(internal)
+        for v in internal:
+            reverse[v].append(u)
+        for _, ts in graph['actions'][u]:
+            for v in ts:
+                if v not in members and v not in exit_values:
+                    raise ValueError('Scene exit has no continuation value: %r -> %r' % (u, v))
+    ready = [u for u in sorted(members) if not remaining[u]]
+    goals = set(graph['goals'])
+    for u in ready:
+        award = graph['awards'][u]
+        if u in goals:
+            values['fewest'][u] = values['fewest_at_score'][u] = 0
+            values['highest_score'][u] = values['score_at_fewest'][u] = award
+            for objective in paths:
+                paths[objective][u] = dict(local_inputs=0, local_score=award, exit=None,
+                                           exit_inputs=0, exit_score=0)
+        else:
+            options = {o: [] for o in paths}
+            for label, targets in graph['actions'][u]:
+                cost = int(bool(label[0]))
+                for v in targets:
+                    tail = {k: values[k][v] for k in keys} if v in members else exit_values[v]
+                    if tail['fewest'] is None:
+                        continue
+                    for objective in paths:
+                        commands = tail['fewest' if objective == 'shortest' else 'fewest_at_score']
+                        score = tail['score_at_fewest' if objective == 'shortest' else 'highest_score']
+                        part = dict(paths[objective][v]) if v in members else dict(
+                            local_inputs=0, local_score=0, exit=v, exit_inputs=commands, exit_score=score)
+                        part['local_inputs'] += cost
+                        part['local_score'] += award
+                        pair = (cost + commands, -award - score) if objective == 'shortest' else (-award - score, cost + commands)
+                        options[objective].append((pair, label, v, part))
+            if not options['shortest']:
+                for k in keys:
+                    values[k][u] = None
+                for objective in paths:
+                    paths[objective][u] = None
+            else:
+                for objective in paths:
+                    pair, _, _, part = min(options[objective], key=lambda x: (x[0], x[1], x[2]))
+                    paths[objective][u] = part
+                    if objective == 'shortest':
+                        values['fewest'][u], values['score_at_fewest'][u] = pair[0], -pair[1]
+                    else:
+                        values['highest_score'][u], values['fewest_at_score'][u] = -pair[0], pair[1]
+        for parent in reverse[u]:
+            remaining[parent] -= 1
+            if not remaining[parent]:
+                ready.append(parent)
+    if len(ready) != len(members):
+        raise ValueError('Local scene is not a DAG')
+    return values, paths
+
+
 def policies(data, objective):
     nodes={(n['scene'],n['step']):n for n in data['nodes']};records={r['address']:r for r in data['records']}
     outgoing={n:[] for n in nodes}
@@ -190,11 +262,16 @@ def write_policy(path,data):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--game',choices=LAYOUTS,required=True)
     p.add_argument('--rom',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    if a.game in ('sae', 'ace'):
+        # Established contextual contracts use local + continuation costs.
+        if a.game == 'ace':
+            from ace_scene_strategies import generate
+        else:
+            from scene_strategies import generate
+        generate(a.rom, a.output)
+        return
     a.output.mkdir(parents=True,exist_ok=True);d=inventory(load(a.rom,a.game),a.game)
     (a.output/'inventory.json').write_text(json.dumps(d,indent=2)+'\n')
-    for obj in ('shortest','highest-score'):
-        policy=policies(d,obj);write_policy(a.output/(obj+'.policy'),policy)
-        (a.output/(obj+'.json')).write_text(json.dumps(policy,indent=2)+'\n')
     print('ROM inventory:',len(d['groups']),'scene slots;',len(d['records']),'unique steps;',len(d['edges']),'transitions;',len(d['unresolved_targets']),'unresolved targets',flush=True)
 
 if __name__=='__main__':main()

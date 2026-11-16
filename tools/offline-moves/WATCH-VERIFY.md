@@ -7,10 +7,10 @@ input queue will deliver that sequence at those same times.
 
 ## DLE21 and Space Ace
 
-`verify_rom_matrix.py` tests both extracted policies at every supported skill
-and operator difficulty, including independent replays, then directly writes
-one merged JSON file per game and `arcade_moves.inc` into its output
-directory. Pass that include to `verify_watch_moves.py` with `--include` to
+`cost_runtime.py` reconstructs complete cost-plus-future policies and independent
+Bellman certificates for all supported skills and operator settings. See
+[COST-FUTURE.md](COST-FUTURE.md) for generation and optimality audits.
+Pass its `arcade_moves.inc` to `verify_watch_moves.py` with `--include` to
 check the generated bundle before publishing it. The Watch Mode checker
 then tests the APK's merged lookup with IRQ publication, 8 ms Java polling,
 100 ms holds and SDL's 17 ms queue cadence. Queue phases 0, 8 and 16 ms are
@@ -20,7 +20,7 @@ The checker uses only the packaged ROM-derived rows. It does not learn moves,
 consult a teacher, or silently repair a missing state. Fix a failure in the ROM
 extraction/generation or timing model, regenerate the bundle, and rerun the
 checks. Complete ROM tables supply the policy; independently replayed full
-games supply timing calibration and execution evidence.
+games supply host-only timing measurements and execution evidence.
 
 Both strategies retain the complete set of ranked ROM alternatives, including
 branches and retry steps absent from sampled winning games. The bundler ranks
@@ -28,11 +28,20 @@ the continuation at each scene/step using the selected ROM policy, regardless
 of which strategy originally reached it. It preserves a policy's deliberate
 choice to wait, rather than inserting an optional action from the other policy.
 This lets guidance resume after an alternate action or a lost life.
-Each merged JSON contains its move pool and both strategy lists. The APK
-stores one pool of unique rows per game and a 16-bit index list for
-each strategy. Each list keeps that strategy's original priority order; the
+The source bundle retains complete graphs and value certificates. The APK stores only
+the complete ranked rule pool and a 16-bit index list for each strategy, with
+identical arrays shared across ROM revisions. Timing comes from live ROM state. Each list keeps that strategy's original priority order; the
 runtime binary search follows the indices without copying or expanding rows.
 The bundle checks verify index bounds, ordering and complete use of the pools.
+
+On the host, each successful case records its actual CPU advances and physical
+input events. A fresh process then replays that schedule without consulting the
+policy and must match the final machine hash, score and native accepted-input
+count. Successfully checked schedules are temporary and removed; failed schedules
+remain for diagnosis. `moves` counts attempted pulses, while Space Ace's
+`accepted_commands` counts original-ROM acceptance. Use the latter when checking
+its Fewest moves bound. `optimality.py --watch-report REPORT` requires an attaining,
+independently replayed execution for every one of the 36 Space Ace objectives.
 
 To exercise that recovery, add `--game ace --mode 1 --mode 2 --detour 1` to
 the checker. At the first decision where the two strategies offer different
@@ -65,7 +74,7 @@ python3 tools/offline-moves/verify_watch_moves.py \
 ```
 
 Add `--android emulator-5556` for the Android backend. The checker uses only the
-bundled policies and calibrations, with no teacher or learned repair. Repeat
+bundled policies and live ROM timers, with no teacher or learned repair. Repeat
 with different `--miss-at` values to sample other retry routes. Each positive
 result must report exactly one intended death and a completed recovery.
 

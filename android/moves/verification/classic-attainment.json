@@ -1,0 +1,1404 @@
+{
+  "cases": [
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "808e8266c88a145c34323db55e88d1cf",
+        "final_hash": "24cff6e25e894bf8361d880afaec5a27",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "0cf1819f06a24187ca37f6d4e72d67ac",
+        "final_hash": "2e896f9c86e9a885d0753e45011bbb72",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "07956b03730d5d9fab97001d77b8ad78",
+        "final_hash": "d2e4ef80bfc1e297110dffc8e1da4930",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "07956b03730d5d9fab97001d77b8ad78",
+        "final_hash": "a274fa2dd8b3ea1621b83bbb605eed2d",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 206,
+      "score": 365156,
+      "primary_bound": 365156,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365156,
+        "move_count": 206,
+        "steps": 206,
+        "root_hash": "fa359a988fdd65f6dff08cd90f4a71ed",
+        "final_hash": "febc3f77d1dc192c5fe201b6604daf2f",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 185,
+      "score": 284640,
+      "primary_bound": 185,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 284640,
+        "move_count": 185,
+        "steps": 185,
+        "root_hash": "fa359a988fdd65f6dff08cd90f4a71ed",
+        "final_hash": "e0c1f705d9b2e4e4305e94197b6719cb",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 201,
+      "score": 365156,
+      "primary_bound": 365156,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365156,
+        "move_count": 201,
+        "steps": 201,
+        "root_hash": "086b5056d76b6995acc76a5a2e779592",
+        "final_hash": "d2bfa1c8518fcf8f5a3d98a4eb0f1624",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_a",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 179,
+      "score": 284261,
+      "primary_bound": 179,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 284261,
+        "move_count": 179,
+        "steps": 179,
+        "root_hash": "41fe4c1e251a52346aadd06de50c857f",
+        "final_hash": "0e897ac1caa8aae2411c6b91205273fd",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "912a3c8860d20ff1385b0e7c5e15a252",
+        "final_hash": "677c34efb079154cfbea3f8d7d79bb8f",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "4bdfdd2919966ea2b42e9014e58003c9",
+        "final_hash": "76d2708372350dadc1c93d1ef1c7b8e2",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "c13b9dc28d2e20be8398b19e31a6e879",
+        "final_hash": "a469e4b9ac38d0b4e3a4b626f2b6daeb",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "c13b9dc28d2e20be8398b19e31a6e879",
+        "final_hash": "232fac9026f0b91117c888af8908b0f2",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 209,
+      "score": 365651,
+      "primary_bound": 365651,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365651,
+        "move_count": 209,
+        "steps": 209,
+        "root_hash": "03eb35a9ff046acbf0dd7163ed094c20",
+        "final_hash": "07f254d6edf86640995eeb35f66545af",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 179,
+      "score": 277205,
+      "primary_bound": 179,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 277205,
+        "move_count": 179,
+        "steps": 179,
+        "root_hash": "03eb35a9ff046acbf0dd7163ed094c20",
+        "final_hash": "98fd780b197bde6ed1d61a6517399d11",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 201,
+      "score": 365156,
+      "primary_bound": 365156,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365156,
+        "move_count": 201,
+        "steps": 201,
+        "root_hash": "428f1fc659691314f1cb3f86d1583353",
+        "final_hash": "5ee687f5905a6e6908bb3387e1ae3ffa",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_b",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 177,
+      "score": 275367,
+      "primary_bound": 177,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 275367,
+        "move_count": 177,
+        "steps": 177,
+        "root_hash": "d9e96fe6ed1f3db99bc18a6eb586c542",
+        "final_hash": "c4c1811660dfa8c3104a66f994c8e138",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "ef74d0132fd97f0429ddfa57b3bb752f",
+        "final_hash": "cc21624db8dc8b118d364609bac6133a",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "9874304d2eb835ff137a9ce66e09b48c",
+        "final_hash": "c7b2ef7de8ac6b4ce0eeda476f1d8cbb",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "31814b8208863ee7aec8b7ab5b36ed18",
+        "final_hash": "e8666729d6aa28fdd1cfc39924782bca",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "31814b8208863ee7aec8b7ab5b36ed18",
+        "final_hash": "0ce34737f3cc69047b1b06c72df5d7af",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 209,
+      "score": 365651,
+      "primary_bound": 365651,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365651,
+        "move_count": 209,
+        "steps": 209,
+        "root_hash": "05993bdafac1317e5892e07baa9630cd",
+        "final_hash": "79cbe783005a64c1ddd7fbdccd4cc9e6",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 179,
+      "score": 277205,
+      "primary_bound": 179,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 277205,
+        "move_count": 179,
+        "steps": 179,
+        "root_hash": "05993bdafac1317e5892e07baa9630cd",
+        "final_hash": "dc710714bf4974cf38612a3eefbb6b08",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 201,
+      "score": 365156,
+      "primary_bound": 365156,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365156,
+        "move_count": 201,
+        "steps": 201,
+        "root_hash": "2ac9d40f1c73e4edc6b1bd0d2485a3b2",
+        "final_hash": "9273bdbff6e01d9493b941f714affeaf",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_c",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 177,
+      "score": 275367,
+      "primary_bound": 177,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 275367,
+        "move_count": 177,
+        "steps": 177,
+        "root_hash": "4287c429b5cb09fc3787cd10e3d5d15f",
+        "final_hash": "c456ecd8af9ecdf62573d91174826c85",
+        "lives": -1
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "f4fa6e24b658738cacca75819b0ee507",
+        "final_hash": "c3b376e78f821a928c6e0a47514f0e01",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "124424d50a105423b35314680640580c",
+        "final_hash": "9c2cbf51373a459bc7a68bf053d63088",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 215,
+      "score": 377011,
+      "primary_bound": 377011,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 377011,
+        "move_count": 215,
+        "steps": 215,
+        "root_hash": "696a52709051838d6d71d4edaf8bd162",
+        "final_hash": "d8a1c4f28b91e9671701f3b722cbf5c8",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 173,
+      "score": 287442,
+      "primary_bound": 173,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 287442,
+        "move_count": 173,
+        "steps": 173,
+        "root_hash": "696a52709051838d6d71d4edaf8bd162",
+        "final_hash": "7332593cf688ac86088d529cd26eeec5",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 209,
+      "score": 365651,
+      "primary_bound": 365651,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365651,
+        "move_count": 209,
+        "steps": 209,
+        "root_hash": "2e78f8d0ac8c76f848e0727e39a35c8b",
+        "final_hash": "7729b38989405a90a203e63686d4a377",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 179,
+      "score": 277205,
+      "primary_bound": 179,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 277205,
+        "move_count": 179,
+        "steps": 179,
+        "root_hash": "2e78f8d0ac8c76f848e0727e39a35c8b",
+        "final_hash": "c589ab98cce0b36f8be5f625e39d3010",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 201,
+      "score": 365156,
+      "primary_bound": 365156,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 365156,
+        "move_count": 205,
+        "steps": 205,
+        "root_hash": "3f1751caa89ab0136b39f9fe8deff734",
+        "final_hash": "e7778e0a68cddad659889713139291d1",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_d",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 177,
+      "score": 275367,
+      "primary_bound": 177,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 275367,
+        "move_count": 177,
+        "steps": 177,
+        "root_hash": "3f1751caa89ab0136b39f9fe8deff734",
+        "final_hash": "f0bf2f50c1c8ee819e013bbadb5f1a9e",
+        "lives": 3
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 9179,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 199,
+      "score": 326619,
+      "primary_bound": 326619,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326619,
+        "move_count": 199,
+        "steps": 199,
+        "root_hash": "8cdaae6b5910239da76dbc0357a067ca",
+        "final_hash": "a335e20be493262148e2b1f54a35bf1e",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "8cdaae6b5910239da76dbc0357a067ca",
+        "final_hash": "ac7f55f04dbcbf0146f491379eea7172",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 194,
+      "score": 326619,
+      "primary_bound": 326619,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326619,
+        "move_count": 194,
+        "steps": 194,
+        "root_hash": "24edda12c984fdee2bc4e91f51f9afed",
+        "final_hash": "941f1643c2bdf8828da97dc095d55ee5",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 191,
+      "score": 325374,
+      "primary_bound": 191,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325374,
+        "move_count": 191,
+        "steps": 191,
+        "root_hash": "24edda12c984fdee2bc4e91f51f9afed",
+        "final_hash": "4bb011b343e28c3f67ddd955f69f4db0",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "moves": 199,
+      "score": 326619,
+      "primary_bound": 326619,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326619,
+        "move_count": 199,
+        "steps": 199,
+        "root_hash": "7abc152c27dd17d7b8546692e8bdfd34",
+        "final_hash": "7d8afc641c9076987532c829cbb6b683",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "7abc152c27dd17d7b8546692e8bdfd34",
+        "final_hash": "badc48026ebe26a15ab65ac537ade08e",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "moves": 194,
+      "score": 326619,
+      "primary_bound": 326619,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326619,
+        "move_count": 194,
+        "steps": 194,
+        "root_hash": "a885de18f1ac8c54ba2a158faa8cdfcb",
+        "final_hash": "eb2a4ea4d5af34e3c90c34c4fef57a6c",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "moves": 191,
+      "score": 325374,
+      "primary_bound": 191,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325374,
+        "move_count": 191,
+        "steps": 191,
+        "root_hash": "a885de18f1ac8c54ba2a158faa8cdfcb",
+        "final_hash": "21ddc93775b286deaae6e252c1a3cde5",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 147,
+      "score": 314457,
+      "primary_bound": 147,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 314457,
+        "move_count": 147,
+        "steps": 148,
+        "root_hash": "0d4f334f1a6c9d6add968022299a5039",
+        "final_hash": "5b41d1674665777e86e32efc27ccc115",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "dle21",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 155,
+      "score": 333333,
+      "primary_bound": 333333,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 333333,
+        "move_count": 155,
+        "steps": 156,
+        "root_hash": "0d4f334f1a6c9d6add968022299a5039",
+        "final_hash": "b7c6ac3149865873fbabf8cd04503588",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "3daf296e6f6c6f8cd34cb6dd8e44b19b",
+        "final_hash": "3e58c6fb5fcff79dba0a85c93061a1e6",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 198,
+      "score": 326248,
+      "primary_bound": 326248,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326248,
+        "move_count": 198,
+        "steps": 198,
+        "root_hash": "3daf296e6f6c6f8cd34cb6dd8e44b19b",
+        "final_hash": "7a25bd326be11ac421a300e1e908d72f",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "19a173aa335e79d90c51bce0e3916a7a",
+        "final_hash": "77710fed7d5fc4b36902d2dde10649a4",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 198,
+      "score": 326248,
+      "primary_bound": 326248,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326248,
+        "move_count": 198,
+        "steps": 198,
+        "root_hash": "19a173aa335e79d90c51bce0e3916a7a",
+        "final_hash": "ca0dfcdb8d1b03fa4ee4300ef49a1851",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5407,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "9eda695897aad8df4f36ae3b9a57c940",
+        "final_hash": "aef51f18eb912758bf418deeeec9a18f",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "moves": 198,
+      "score": 326248,
+      "primary_bound": 326248,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326248,
+        "move_count": 198,
+        "steps": 198,
+        "root_hash": "9eda695897aad8df4f36ae3b9a57c940",
+        "final_hash": "3f97fc32e63a894526612b54194e2772",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "moves": 197,
+      "score": 325753,
+      "primary_bound": 197,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 325753,
+        "move_count": 197,
+        "steps": 197,
+        "root_hash": "a70f534d62af3e97ca12485137cf31e0",
+        "final_hash": "f47776a828bf54d93d37631ac01e62e2",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "moves": 198,
+      "score": 326248,
+      "primary_bound": 326248,
+      "verified": true,
+      "replay": {
+        "type": "replay",
+        "verified": true,
+        "terminal": true,
+        "score": 326248,
+        "move_count": 198,
+        "steps": 198,
+        "root_hash": "a70f534d62af3e97ca12485137cf31e0",
+        "final_hash": "01289f3ab3f90ce469d2db40ff59805b",
+        "lives": 5
+      },
+      "rom_end": {
+        "type": "rom_end",
+        "verified": true,
+        "handler_pc": 5516,
+        "additional_inputs": 0,
+        "during_replay": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "previous_live_rom": {
+    "bytes": 266800,
+    "by_type": {
+      "ArcadeRomRule": 153090,
+      "uint16_t": 106720,
+      "ArcadeEuroRule": 6990
+    }
+  },
+  "previous_committed_calibrated": {
+    "bytes": 452880,
+    "by_type": {
+      "ArcadeRomMove": 140856,
+      "uint16_t": 151944,
+      "ArcadeRomRule": 153090,
+      "ArcadeEuroRule": 6990
+    }
+  },
+  "cost_future": {
+    "bytes": 106496,
+    "by_type": {
+      "ArcadeCostRule": 43904,
+      "uint16_t": 38208,
+      "ArcadeRomRule": 17394,
+      "ArcadeEuroRule": 6990
+    }
+  },
+  "live_rom_saving_bytes": 160304,
+  "committed_saving_bytes": 346384,
+  "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings."
+}

@@ -1,0 +1,103 @@
+game,skill,difficulty,objective,moves_min,moves_max,score_min,score_max,range_scope
+ace,ace,0,highest-score,217,217,374338,374338,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,0,shortest,136,136,213092,213092,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,1,highest-score,217,217,374338,374338,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,1,shortest,136,136,213092,213092,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,2,highest-score,217,217,374338,374338,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,2,shortest,136,136,213092,213092,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,3,highest-score,217,217,374338,374338,ROM decision-DAG policy support; primary endpoint physically attained
+ace,ace,3,shortest,136,136,213092,213092,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,0,highest-score,134,134,257784,257784,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,0,shortest,85,85,185686,185686,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,1,highest-score,134,134,257784,257784,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,1,shortest,85,85,185686,185686,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,2,highest-score,134,134,257784,257784,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,2,shortest,85,85,185686,185686,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,3,highest-score,134,134,257784,257784,ROM decision-DAG policy support; primary endpoint physically attained
+ace,cadet,3,shortest,85,85,185686,185686,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,0,highest-score,166,166,289102,289102,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,0,shortest,109,109,213098,213098,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,1,highest-score,166,166,289102,289102,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,1,shortest,109,109,213098,213098,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,2,highest-score,166,166,289102,289102,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,2,shortest,109,109,213098,213098,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,3,highest-score,166,166,289102,289102,ROM decision-DAG policy support; primary endpoint physically attained
+ace,captain,3,shortest,109,109,213098,213098,ROM decision-DAG policy support; primary endpoint physically attained
+dle21,ace,0,highest-score,155,155,333333,333333,ROM decision-DAG policy support; primary endpoint physically attained
+dle21,ace,0,shortest,147,147,314457,314457,ROM decision-DAG policy support; primary endpoint physically attained
+lair_a,ace,0,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,0,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,1,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,1,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,2,highest-score,186,209,274243,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,2,shortest,185,208,273748,364661,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,3,highest-score,180,209,273864,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_a,ace,3,shortest,179,208,273369,364661,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,0,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,0,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,1,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,1,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,2,highest-score,180,212,268782,365651,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,2,shortest,179,211,268782,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,3,highest-score,177,209,268403,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_b,ace,3,shortest,177,208,268403,364661,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,0,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,0,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,1,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,1,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,2,highest-score,180,212,268782,365651,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,2,shortest,179,211,268782,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,3,highest-score,177,209,268403,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_c,ace,3,shortest,177,208,268403,364661,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,0,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,0,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,1,highest-score,173,219,254712,377011,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,1,shortest,173,218,254217,376516,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,2,highest-score,180,212,268782,365651,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,2,shortest,179,211,268782,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,3,highest-score,177,209,268403,365156,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_d,ace,3,shortest,177,208,268403,364661,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,0,highest-score,198,198,326248,326248,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,0,shortest,197,197,325753,325753,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,1,highest-score,198,198,326248,326248,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,1,shortest,197,197,325753,325753,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,2,highest-score,198,199,326248,326619,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,2,shortest,197,198,325753,326124,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,3,highest-score,192,199,325869,326619,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_e,ace,3,shortest,191,198,325374,326124,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,0,highest-score,198,198,326248,326248,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,0,shortest,197,197,325753,325753,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,1,highest-score,198,198,326248,326248,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,1,shortest,197,197,325753,325753,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,2,highest-score,198,199,326248,326619,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,2,shortest,197,198,325753,326124,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,3,highest-score,192,199,325869,326619,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_f,ace,3,shortest,191,198,325374,326124,Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable
+lair_ita,ace,0,highest-score,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,0,shortest,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,1,highest-score,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,1,shortest,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,2,highest-score,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,2,shortest,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,3,highest-score,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+lair_ita,ace,3,shortest,76,76,88250,88250,Pool/selected-queue qualifications apply; the 76-input/88250-point result is conditional on the recorded initial queue
+laireuro,ace,0,highest-score,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,0,shortest,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,1,highest-score,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,1,shortest,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,2,highest-score,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,2,shortest,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,3,highest-score,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+laireuro,ace,3,shortest,207,207,202599,202599,ROM decision-DAG policy support; primary endpoint physically attained
+sae,ace,0,highest-score,212,212,398412,398412,ROM decision-DAG policy support; primary endpoint physically attained
+sae,ace,0,shortest,119,119,188112,188112,ROM decision-DAG policy support; primary endpoint physically attained
+sae,ace,1,highest-score,212,212,398412,398412,ROM decision-DAG policy support; primary endpoint physically attained
+sae,ace,1,shortest,119,119,188112,188112,ROM decision-DAG policy support; primary endpoint physically attained
+sae,cadet,0,highest-score,151,151,318706,319498,ROM decision-DAG policy support; primary endpoint physically attained
+sae,cadet,0,shortest,85,85,150396,150396,ROM decision-DAG policy support; primary endpoint physically attained
+sae,cadet,1,highest-score,151,151,318706,319498,ROM decision-DAG policy support; primary endpoint physically attained
+sae,cadet,1,shortest,85,85,150396,150396,ROM decision-DAG policy support; primary endpoint physically attained
+sae,captain,0,highest-score,183,183,366836,366836,ROM decision-DAG policy support; primary endpoint physically attained
+sae,captain,0,shortest,110,110,179410,179410,ROM decision-DAG policy support; primary endpoint physically attained
+sae,captain,1,highest-score,183,183,366836,366836,ROM decision-DAG policy support; primary endpoint physically attained
+sae,captain,1,shortest,110,110,179410,179410,ROM decision-DAG policy support; primary endpoint physically attained

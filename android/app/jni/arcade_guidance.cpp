@@ -27,18 +27,18 @@ void arcade_set_move_policy(int mode) {
     selected_move_policy.store(mode==2 ? 2 : 1,std::memory_order_relaxed);
 }
 static ArcadeMove decode_cine_profile(const uint8_t *memory, size_t size,
-                                      const ArcadeCineProfile *profile, unsigned frame) {
+                                      const ArcadeCineProfile *profile) {
     ArcadeMove result;
     if(size<0xa1e0)return result;
     bool fewest=selected_move_policy.load(std::memory_order_relaxed)==2;
-    auto selected=arcade_select_profile(profile,fewest,memory+0xa000,frame);
+    auto selected=arcade_select_profile(profile,fewest,memory+0xa000);
     result.controls=selected.controls;result.ready=selected.ready;result.window=selected.window;
     return result;
 }
 
-ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned frame) {
+ArcadeMove arcade_decode_cine(const uint8_t *memory, size_t size, bool ace, unsigned /*frame*/) {
     return decode_cine_profile(memory,size,arcade_cine_profile(arcade_cine_profiles,
-        ARCADE_COUNT(arcade_cine_profiles),ace ? "ace" : "dle21"),frame);
+        ARCADE_COUNT(arcade_cine_profiles),ace ? "ace" : "dle21"));
 }
 
 ArcadeMove arcade_decode_euro(const uint8_t *memory, size_t size, const char *game, unsigned frame) {
@@ -129,10 +129,10 @@ static void publish(ArcadeMove move) {
                                   std::memory_order_release);
 }
 
-void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned frame) {
+void arcade_guidance_cine(const uint8_t *memory, size_t size, const char *game, bool playing, unsigned /*frame*/) {
     if (!enabled.load(std::memory_order_relaxed)) return;
     publish(playing ? decode_cine_profile(memory,size,arcade_cine_profile(arcade_cine_profiles,
-        ARCADE_COUNT(arcade_cine_profiles),game),frame) : ArcadeMove{});
+        ARCADE_COUNT(arcade_cine_profiles),game)) : ArcadeMove{});
 }
 void arcade_guidance_dl2(const uint8_t *memory, size_t size, bool supported, bool playing) {
     if (!enabled.load(std::memory_order_relaxed)) return;

@@ -26,57 +26,65 @@ static inline uint64_t arcade_move_signature(const uint8_t *table, size_t size, 
     return signature;
 }
 
-/* ROM scene/step identity avoids confusing equal prompt shapes in different
- * scenes. Ace's complete branch bytes remain part of the key. */
-typedef struct {
-    uint32_t state,frame;
-    uint16_t timing;
-    uint8_t outcome,control;
-} ArcadeRomMove;
-
+/* ROM scene/step identity is also used by the host replay audit. */
 static inline uint32_t arcade_rom_state(unsigned scene,unsigned step,uint16_t branch) {
     return (scene&127U) | ((step&127U)<<7) | ((uint32_t)branch<<14);
 }
 
-static inline ArcadeMoveSelection arcade_select_calibrated_move(const ArcadeRomMove *moves,const uint16_t *order,size_t count,
-        const uint8_t *ram,unsigned frame,bool ace) {
-    ArcadeMoveSelection result={0,false,0};
-    uint16_t branch=ace ? (uint16_t)((ram[0x16]<<8)|ram[0x35]) : 0;
-    uint32_t state=arcade_rom_state(ram[14],ram[15],branch);
-    size_t low=0,high=count;
-    while(low<high){size_t mid=low+(high-low)/2;if(moves[order[mid]].state<state)low=mid+1;else high=mid;}
-    for(size_t i=low;i<count && moves[order[i]].state==state;i++) {
-        const ArcadeRomMove *move=moves+order[i];
-        unsigned slot=(move->timing>>8)&63,entry=slot/3,window=slot%3,ticks=move->timing&255;
-        if(entry>=16 || !ticks)continue;
-        const uint8_t *x=ram+0xe0+entry*16;
-        unsigned control=(x[0]&15) ? (x[0]&15) : 16;
-        if(!(x[0]&128) || window>=(x[1]&3) || control!=move->control ||
-           x[2+((x[1]>>(2+2*window))&3)]!=move->outcome || !x[13+window])continue;
-        unsigned delay=x[12];for(unsigned w=0;w<window;w++)delay+=x[13+w];
-        unsigned end=move->frame+(ticks*786U+999U)/1000U+2;
-        if(delay>12 || frame+10<move->frame || frame>end)continue;
-        bool ready=!delay && frame>=move->frame && x[13+window]<=ticks;
-        if(!ready && result.controls)continue;
-        result.controls=move->control;result.ready=ready;
-        result.window=((uint64_t)state<<32)|((uint64_t)(slot+1)<<8)|move->outcome;
-        if(ready)return result;
-    }
-    return result;
-}
-
 /* Complete ROM policies: no sampled branch bytes or absolute video frames.
- * The ROM itself loads/filters entries and scales timers for current skill.
+ * The ROM loads/filters entries and executes its current difficulty rules.
  * Match their control, local window and outcome, never their ROM ordinal. */
 typedef struct {
     uint16_t state;
     uint8_t window,outcome,control;
 } ArcadeRomRule;
 
+/* Contextual local-cost + exit-cost policies. Each two-bit context field
+ * stores skill (0..2, 3=any), replay (0/1, 2=any), score gate (0/1, 2=any).
+ * A3's loader can filter descriptors: slot=255 searches its loaded list.
+ * SAE pins slot and header to distinguish its score-restoring descriptors. */
+typedef struct {
+    uint16_t state;
+    uint8_t context,slot,window,header,outcome,control;
+} ArcadeCostRule;
+
+static inline ArcadeMoveSelection arcade_select_cost_move(
+        const ArcadeCostRule *rules,const uint16_t *order,size_t count,
+        const uint8_t *ram) {
+    ArcadeMoveSelection result={0,false,0};
+    unsigned state=arcade_rom_state(ram[14],ram[15],0);
+    size_t low=0,high=count;
+    while(low<high){size_t mid=low+(high-low)/2;
+        if(rules[order[mid]].state<state)low=mid+1;else high=mid;}
+    for(size_t i=low;i<count && rules[order[i]].state==state;i++) {
+        const ArcadeCostRule *r=rules+order[i];
+        unsigned skill=r->context&3,replay=(r->context>>2)&3,gate=(r->context>>4)&3;
+        if((skill!=3 && skill!=ram[0xd4]) ||
+           (replay!=2 && replay!=((ram[0x35]>>3)&1)) ||
+           (gate!=2 && gate!=((ram[10]>>1)&1)))continue;
+        if(!r->control)return result;
+        if(r->control!=1 && r->control!=2 && r->control!=4 && r->control!=8 && r->control!=16)continue;
+        for(unsigned slot=0;slot<16;slot++) {
+            const uint8_t *x=ram+0xe0+16*slot;
+            if(!(x[0]&128))break;
+            unsigned w=r->window,control=(x[0]&15)?(x[0]&15):16;
+            if((r->slot!=255 && r->slot!=slot) || (r->header && r->header!=x[0]) ||
+               control!=r->control || w>=(x[1]&3) || !x[13+w] ||
+               x[2+((x[1]>>(2+2*w))&3)]!=r->outcome)continue;
+            unsigned delay=x[12];for(unsigned j=0;j<w;j++)delay+=x[13+j];
+            if(delay>12)return result;
+            result.controls=control;result.ready=delay==0;
+            result.window=((uint64_t)r->context<<48)|((uint64_t)state<<32)|
+                          ((uint64_t)(slot*3+w+1)<<8)|r->outcome;
+            return result;
+        }
+    }
+    return result;
+}
+
 static inline ArcadeMoveSelection arcade_select_rom_move(
-        const ArcadeRomMove *moves,const uint16_t *order,size_t count,
         const ArcadeRomRule *rules,const uint16_t *rule_order,size_t rule_count,
-        const uint8_t *ram,unsigned frame,bool ace) {
+        const uint8_t *ram) {
     ArcadeMoveSelection result={0,false,0};
     unsigned state=arcade_rom_state(ram[14],ram[15],0);
     size_t low=0,high=rule_count;
@@ -97,8 +105,6 @@ static inline ArcadeMoveSelection arcade_select_rom_move(
             if(delay>12)return result;
             result.controls=control;result.ready=delay==0;
             result.window=((uint64_t)state<<32)|((uint64_t)(e*3+w+1)<<8)|rule->outcome;
-            ArcadeMoveSelection calibrated=arcade_select_calibrated_move(moves,order,count,ram,frame,ace);
-            if(calibrated.controls==control && (calibrated.window&255)==rule->outcome)return calibrated;
             return result;
         }
     }

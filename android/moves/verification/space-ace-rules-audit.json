@@ -1,0 +1,332 @@
+{
+  "all_passed": true,
+  "boards": [
+    "space-ace"
+  ],
+  "us": [],
+  "dle": null,
+  "space_ace": {
+    "ace": {
+      "rom_sha256": "5f88e53637c6c2859bcd1e8f56dd98abf8fa7f4ea7e9c9e6db8318d325d3d262",
+      "rewards_progress": {
+        "original_rom_cases": 2096,
+        "score": "Fixed per-record doubled award; no SAE score suppression",
+        "progress": "Monotone harder-mode flag at 4/6 completions; selected skill remains unchanged",
+        "timing_limit": "Input acceptance and harder-mode window changes need separate loader/delivery validation"
+      },
+      "cases": [
+        {
+          "skill": "cadet",
+          "states": 698,
+          "transition_restart_cases": 1404
+        },
+        {
+          "skill": "captain",
+          "states": 612,
+          "transition_restart_cases": 1502
+        },
+        {
+          "skill": "ace",
+          "states": 882,
+          "transition_restart_cases": 2184
+        }
+      ]
+    },
+    "sae": {
+      "all_passed": true,
+      "rom_sha256": "bbe71c4bfd548b178b83a5a608f4422480a032aa0af2302c0f605fc7e2263a2d",
+      "sources": {
+        "rom_rules.py": "1a5d41c5f50208353f197f3998047f4bb5d83e91b5a430ea773d8a358b48b79d",
+        "sae_rules.py": "4e0b65097aca023cab1d081ca10285bb33e95714e0ff1edea6ceefa4a3b25ecb",
+        "verify_sae_rules.py": "9b423e1a074167325c650a6040542a8cbb0bb56ab101c9c09e570192249a1a95",
+        "rom_kernel.c": "02829b1274ca44f0847a3affa3a92af2f553bd8317b49385c6a9864cbe792969",
+        "rom_kernel.py": "40aac55cf8e169a4196c0fc5f5e7a19fec4c2f0a6077ecc5c71dd7cec57bac0b",
+        "rom_tables.py": "317fb9e1040880f8661e6317b7405c3cdbd191429d6ed74a999147f453be3bc2",
+        "rom_proof.py": "2957d9fe23b0fb19ca5f80271622a05c2eb1dc7bb708ab5a80e8bce66e3ffb9c",
+        "vendor/src/cpu/z80.c": "a31fd4b9d98851b7497c0a1c9c3bfe96f33bae4927ce324d4268418ed62d8626"
+      },
+      "literal_routines": {
+        "fixed_score_load": 16,
+        "fixed_score_transfer": 32,
+        "initial_queue": 3,
+        "outcome": 256,
+        "queue_or_explicit": 2304,
+        "selector": 20480,
+        "selector_gates": 4,
+        "progress": 2048
+      },
+      "cases": [
+        {
+          "skill": "cadet",
+          "difficulty": 0,
+          "states": 4591,
+          "dag_nodes": 1600,
+          "automatic_records_collapsed": 401,
+          "minimum_commands_bound": 85,
+          "maximum_score_bound": 319498,
+          "queue_variants": [
+            [
+              130,
+              131,
+              132
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 24182,
+            "restart_cases": 4964
+          },
+          "projection": {
+            "selector_macro_states": 26,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 6,
+              "highest-score": 4
+            },
+            "unequal_external_branches": {
+              "shortest": 8,
+              "highest-score": 8
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.8024428669596091,
+          "solve_seconds": 0.03561334603000432
+        },
+        {
+          "skill": "cadet",
+          "difficulty": 1,
+          "states": 834,
+          "dag_nodes": 489,
+          "automatic_records_collapsed": 94,
+          "minimum_commands_bound": 85,
+          "maximum_score_bound": 319498,
+          "queue_variants": [
+            [
+              130,
+              131,
+              132
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 6220,
+            "restart_cases": 458
+          },
+          "projection": {
+            "selector_macro_states": 15,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 1,
+              "highest-score": 1
+            },
+            "unequal_external_branches": {
+              "shortest": 2,
+              "highest-score": 2
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.1731282570399344,
+          "solve_seconds": 0.0042630399111658335
+        },
+        {
+          "skill": "captain",
+          "difficulty": 0,
+          "states": 6099,
+          "dag_nodes": 2120,
+          "automatic_records_collapsed": 503,
+          "minimum_commands_bound": 110,
+          "maximum_score_bound": 366836,
+          "queue_variants": [
+            [
+              130,
+              143,
+              144
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 32090,
+            "restart_cases": 6512
+          },
+          "projection": {
+            "selector_macro_states": 31,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 8,
+              "highest-score": 4
+            },
+            "unequal_external_branches": {
+              "shortest": 0,
+              "highest-score": 0
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.7834127639653161,
+          "solve_seconds": 0.03128965792711824
+        },
+        {
+          "skill": "captain",
+          "difficulty": 1,
+          "states": 1102,
+          "dag_nodes": 651,
+          "automatic_records_collapsed": 122,
+          "minimum_commands_bound": 110,
+          "maximum_score_bound": 366836,
+          "queue_variants": [
+            [
+              130,
+              143,
+              144
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 8228,
+            "restart_cases": 578
+          },
+          "projection": {
+            "selector_macro_states": 18,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 1,
+              "highest-score": 1
+            },
+            "unequal_external_branches": {
+              "shortest": 0,
+              "highest-score": 0
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.2526322619523853,
+          "solve_seconds": 0.005883778911083937
+        },
+        {
+          "skill": "ace",
+          "difficulty": 0,
+          "states": 8475,
+          "dag_nodes": 2850,
+          "automatic_records_collapsed": 814,
+          "minimum_commands_bound": 119,
+          "maximum_score_bound": 398412,
+          "queue_variants": [
+            [
+              154,
+              155,
+              156
+            ],
+            [
+              154,
+              155,
+              158
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 44628,
+            "restart_cases": 9190
+          },
+          "projection": {
+            "selector_macro_states": 45,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 8,
+              "highest-score": 4
+            },
+            "unequal_external_branches": {
+              "shortest": 0,
+              "highest-score": 0
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.9655458490597084,
+          "solve_seconds": 0.03787997295148671
+        },
+        {
+          "skill": "ace",
+          "difficulty": 1,
+          "states": 1498,
+          "dag_nodes": 858,
+          "automatic_records_collapsed": 191,
+          "minimum_commands_bound": 119,
+          "maximum_score_bound": 398412,
+          "queue_variants": [
+            [
+              154,
+              155,
+              156
+            ],
+            [
+              154,
+              155,
+              158
+            ]
+          ],
+          "original_rom": {
+            "boundary_cases": 11218,
+            "restart_cases": 816
+          },
+          "projection": {
+            "selector_macro_states": 25,
+            "possibly_revisited_episodes": [],
+            "complete_record_graph_acyclic": true,
+            "nonaliased_histories_fresh_proven": true,
+            "exact_history_projection": true,
+            "context_dependent_rankings": {
+              "shortest": 1,
+              "highest-score": 1
+            },
+            "unequal_external_branches": {
+              "shortest": 0,
+              "highest-score": 0
+            },
+            "qualification": "Exact history elimination under boundary contracts; not refresh-phase independence or timing feasibility"
+          },
+          "graph_seconds": 0.27649230300448835,
+          "solve_seconds": 0.007091926061548293
+        }
+      ],
+      "seconds": 58.005108868004754,
+      "routine_audit_seconds": 4.75952291698195,
+      "peak_rss_kib": 79568,
+      "scope": "Exact RAM boundary transcriptions under explicit R observations, then an audited timing-relaxed support DAG. No assumption of independent randomness, numerical expectation, or timing-optimal gameplay."
+    }
+  },
+  "european": null,
+  "seconds": 61.24080755992327,
+  "peak_rss_kib": 50328,
+  "sources": {
+    "audit_schedulers.py": "58672639ea2af646b1c594fa5fa145cb4d4cd954651f55d1e1c75f13d18b8952",
+    "dl1_selector.py": "e1b6b0a545fde018902b4a7b3ac116a0a6ead42d96f03f24c0740b1850ff42f5",
+    "dle_scheduler_graph.py": "2c14b5d41b5e3ca52fa53c90a26bfcfc6d6dcd10d278a293b1ccd442d9edd4ae",
+    "late_progression_rules.py": "9d539204e1cc9b77a7b327b1e6a3f5539cf48611299bc633ee7633088f577b80",
+    "us_progression_rules.py": "78b0ca952dbf162b51a690868d6f0d8ea340025278c82b428675f994c58888bf",
+    "verify_dl1_scheduler.py": "50fdcb56b25c259c4b8f925a2ec9374de3614a68297eff2301042f64f39fc2b1",
+    "rom_kernel.py": "40aac55cf8e169a4196c0fc5f5e7a19fec4c2f0a6077ecc5c71dd7cec57bac0b",
+    "rom_kernel.c": "02829b1274ca44f0847a3affa3a92af2f553bd8317b49385c6a9864cbe792969",
+    "rom_tables.py": "317fb9e1040880f8661e6317b7405c3cdbd191429d6ed74a999147f453be3bc2",
+    "rom_proof.py": "2957d9fe23b0fb19ca5f80271622a05c2eb1dc7bb708ab5a80e8bce66e3ffb9c",
+    "cine_room_optimality.py": "df98282f5b6ff1ca8939ff381da01ef382cd7f0f640571c150665244c41cc8fa",
+    "late_retry_rules.py": "e42dbd5a7f80f7d71a5a67dfb45aa2bfa2650e487fb209044eb7cd9e1d9b00ca",
+    "verify_dle_rules.py": "d3b2f2d852bd19debbcdde8fb4a4aed1405a4956248bd4abcc4e908f1e4399b3",
+    "dle_retry_rules.py": "1a457e767e56e2942531f4d23e998458c04a39b50e25aa70119ab8b98c23f37a",
+    "rom_controls.py": "de54db37be71e8b3de85abed7a509158f93a99c4c7f1640c9aed4480d2deffcd",
+    "ace_rules.py": "5bdfa840ff9386d59d5c8a430df1104533c62d91e25ce7cd1202c08cba03df75",
+    "verify_cine_recovery.py": "1bde20bba485de86d03ed5043ba3ddb0b67c9d3b9377a88383355a5a6c0fb759",
+    "cine_recovery_model.py": "b37b63d4c3a5b86afa5408f48cfcbffd1fc852a69e5f858cafd07bc6cef1263d",
+    "cine_global_model.py": "fede5186a104ed6ade0caac75ecda1a93768af67b8920abfb780cbcf3ce9462d",
+    "sae_rules.py": "4e0b65097aca023cab1d081ca10285bb33e95714e0ff1edea6ceefa4a3b25ecb",
+    "verify_sae_rules.py": "9b423e1a074167325c650a6040542a8cbb0bb56ab101c9c09e570192249a1a95",
+    "rom_rules.py": "1a5d41c5f50208353f197f3998047f4bb5d83e91b5a430ea773d8a358b48b79d"
+  },
+  "scope": "Original CPU scheduler support, reward and progression contracts for the requested boards. No Android runtime or universal phase-controllability claim."
+}

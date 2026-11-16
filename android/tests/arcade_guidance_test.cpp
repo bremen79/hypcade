@@ -9,6 +9,36 @@
 #include <cstdio>
 int main() {
     {
+        static_assert(sizeof(ArcadeCostRule)==8,"Compact context rule size changed");
+        uint8_t ram[1024]={0};ram[14]=1;
+        const ArcadeCostRule rules[]={{1,32,255,0,0,3,4},
+                                     {1,34,255,0,0,4,8},
+                                     {1,38,255,0,0,5,16}};
+        const uint16_t order[]={0,1,2};
+        auto pick=[&](){return arcade_select_cost_move(rules,order,3,ram);};
+        ram[0xe0]=0x84;ram[0xe1]=1;ram[0xe2]=3;ram[0xed]=20;
+        assert(pick().ready && pick().controls==4);
+        ram[0xd4]=2;assert(!pick().controls); // same record, different skill
+        ram[0xe0]=0x88;ram[0xe2]=4;ram[0xec]=3;
+        assert(pick().controls==8 && !pick().ready);
+        ram[0xec]=0;assert(pick().ready);
+        ram[0x35]=8;assert(!pick().controls); // bounded replay changes ranking
+        ram[0xe0]=0x80;ram[0xe2]=5;assert(pick().controls==16);
+        ram[0xed]=0;assert(!pick().controls); // exclusive window close
+    }
+    {
+        uint8_t ram[1024]={0};ram[14]=1;
+        const ArcadeCostRule rules[]={{1,11,0,0,0x88,3,8},{1,27,1,0,0x98,3,8}};
+        const uint16_t order[]={0,1};
+        auto pick=[&](){return arcade_select_cost_move(rules,order,2,ram);};
+        ram[0xe0]=0x88;ram[0xe1]=1;ram[0xe2]=3;ram[0xed]=20;
+        assert(pick().ready && pick().controls==8);
+        ram[10]=2;assert(!pick().controls); // scoring must be restored first
+        ram[0xf0]=0x98;ram[0xf1]=1;ram[0xf2]=3;ram[0xfd]=20;
+        assert(pick().ready && pick().controls==8);
+        ram[0xf0]=0x88;assert(!pick().controls); // identical direction is insufficient
+    }
+    {
         std::vector<uint8_t> memory(65536);
         auto word=[&](unsigned at,unsigned value){memory[at]=value&255;memory[at+1]=value>>8;};
         word(0xa17a,648);word(0xa10f,27743);
@@ -156,20 +186,38 @@ int main() {
     ram[0xe0]=0x81;ram[0xe1]=1;ram[0xe2]=3;ram[0xed]=20;
     for(unsigned branch : {0U,8U,65535U}) {
         ram[0x16]=branch>>8;ram[0x35]=branch&255;
-        auto move=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,5000,true);
+        auto move=arcade_select_rom_move(rules,order,3,ram);
         assert(move.controls==1 && move.ready);
     }
     ram[0xec]=12;
-    auto future=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false);
+    auto future=arcade_select_rom_move(rules,order,3,ram);
     assert(future.controls==1 && !future.ready);
     ram[0xec]=0;ram[0xe0]=0x88;ram[0xe2]=4;
-    auto alternate=arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false);
+    auto alternate=arcade_select_rom_move(rules,order,3,ram);
     assert(alternate.controls==8 && alternate.ready);
     ram[0xe2]=99;
-    assert(!arcade_select_rom_move(nullptr,nullptr,0,rules,order,3,ram,0,false).controls);
+    assert(!arcade_select_rom_move(rules,order,3,ram).controls);
     const ArcadeRomRule wait[]={{264,0,3,0},{264,0,4,8}};
     const uint16_t wait_order[]={0,1};ram[0xe2]=4;
-    assert(!arcade_select_rom_move(nullptr,nullptr,0,wait,wait_order,2,ram,0,false).controls);
+    assert(!arcade_select_rom_move(wait,wait_order,2,ram).controls);
+    // A3 guidance follows live timer changes at every difficulty/progression
+    // context, without a recorded absolute frame or sampled branch key.
+    std::fill(memory.begin(),memory.end(),0);
+    ram[14]=1;ram[15]=2;ram[0xe0]=0x88;ram[0xe1]=1;ram[0xe2]=3;
+    for(unsigned dip : {0x3dU,0x35U,0x39U,0x31U}) {
+        for(unsigned cutoff : {0U,2U,3U,4U,6U,9U}) {
+            for(unsigned progressed : {0U,16U}) {
+                ram[0x10]=dip;ram[0x16]=cutoff;ram[0x35]=progressed;
+                ram[0xec]=2;ram[0xed]=9;
+                assert(!arcade_decode_cine(memory.data(),memory.size(),true,1).ready);
+                ram[0xec]=0;
+                auto live=arcade_decode_cine(memory.data(),memory.size(),true,99999);
+                assert(live.controls==8 && live.ready);
+                ram[0xed]=0;
+                assert(!arcade_decode_cine(memory.data(),memory.size(),true,99999).controls);
+            }
+        }
+    }
     // A retry-only DL1 state publishes a preview for automation, but neither
     // visual text nor the audio event may announce it before readiness.
     std::fill(memory.begin(),memory.end(),0);
@@ -195,6 +243,9 @@ int main() {
     ram=memory.data()+0xa000;
     ram[14]=2;ram[15]=1;ram[0xe0]=0x88;ram[0xe1]=1;ram[0xe2]=2;ram[0xed]=30;
     arcade_configure_guidance(1,false,true);
+    arcade_guidance_cine(memory.data(),memory.size(),"sae",true,1287);
+    assert(!arcade_visual_controls()); // The ROM descriptor is flagged, not 0x88.
+    ram[0xe0]=0x98;ram[0xe7]=128;
     arcade_guidance_cine(memory.data(),memory.size(),"sae",true,1287);
     assert(arcade_visual_controls()==8 && (arcade_guidance_snapshot()&256));
     arcade_guidance_cine(memory.data(),memory.size(),"unknown",true,1287);
