@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "flavor": "arcade",
+      "abi": "armeabi-v7a",
+      "apk_bytes": 5993441,
+      "sha256": "f4af3c7bebebb5c08c11470056ccae8851c29c993639560af19debada84a114c",
+      "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
+      "libmain_bytes": 2670800,
+      "libmain_compressed_bytes": 1473081,
+      "apk_reduction_bytes": 169880,
+      "native_reduction_bytes": 346832
+    },
+    {
+      "flavor": "mobile",
+      "abi": "arm64-v8a",
+      "apk_bytes": 6308635,
+      "sha256": "689c4cf2c7eeb6756ffa7db7e53af8f996a1329082f51fc4ab3028d168f6d87b",
+      "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
+      "libmain_bytes": 3812136,
+      "libmain_compressed_bytes": 1651016,
+      "apk_reduction_bytes": 170644,
+      "native_reduction_bytes": 346800
+    },
+    {
+      "flavor": "arcadeEmulator",
+      "abi": "x86",
+      "apk_bytes": 6749117,
+      "sha256": "ce06d60f32a0c36149c14f0ac9eec7d2c4dd99e8c6d6922ddae6dc486ea672fd",
+      "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
+      "libmain_bytes": 4284456,
+      "libmain_compressed_bytes": 1908566,
+      "apk_reduction_bytes": 170716,
+      "native_reduction_bytes": 346752
+    },
+    {
+      "flavor": "mobileEmulator",
+      "abi": "x86_64",
+      "apk_bytes": 6761282,
+      "sha256": "7c6f2fb547acc8bdfdf801678631e52f8c3b13ca7f06e0c0160a6f55b0d6ce83",
+      "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
+      "libmain_bytes": 4408112,
+      "libmain_compressed_bytes": 1919889,
+      "apk_reduction_bytes": 169840,
+      "native_reduction_bytes": 347648
+    }
+  ],
+  "baseline_scope": "Existing pre-change APKs; size differences include all previously unbuilt source changes, not only table data.",
+  "version_name": "v0.2.1",
+  "version_code": 42,
+  "min_sdk": 25,
+  "target_sdk": 36,
+  "all_passed": true,
+  "checks": [
+    "All four APKs contain exact current complete ROM rule/index arrays.",
+    "Release certificate, APK digest, SDK/version and single ABI checked for each flavor.",
+    "ARM flavor policies and R8 mapping checked."
+  ],
+  "build": "JDK 17, Gradle 8.13, NDK 28.2.13676358; all four release variants assembled successfully with one Gradle worker.",
+  "warnings": "Existing native compiler warnings and Gradle deprecation warnings remain; no physical-device or cabinet validation."
+}

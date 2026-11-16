@@ -68,8 +68,18 @@ Neither host check is an Android emulator or physical-device validation.
 
 After candidate checks pass, replace the source bundle and both JNI includes
 together. Do not copy timings from a witness or publish only its visited rows.
-Higher-memory APK builds and Android emulator checks require the maintainer's
-permission under the current testing restriction.
+The maintainer authorized the current APK build and Android validation run.
+All four signed APKs passed package checks; Android API-25 x86 passed 258 Cine
+normal cases, 258 recovery cases and 48 European/Italian Java/JNI cases.
+Two complete installed-APK plays additionally exercised the real launcher and
+event loop. Results and limits are recorded in
+[`android/VALIDATION.md`](../../android/VALIDATION.md).
+
+`verify_euro_watch.py --android SERIAL` runs the same Java/JNI matrix on an
+already running x86 emulator. It cross-compiles the native harness for API 25
+and runs the controller under Android ART. Its relocated test Handler keeps
+the clock deterministic; this is an accelerated harness test, separate from
+an installed-APK play with the real Android Handler.
 
 ## Retained tools for other ROMs
 

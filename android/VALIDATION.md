@@ -36,8 +36,42 @@ link-time optimization and APK compression. Standalone API-25 guidance objects
 compile for both ARM ABIs; text/read-only sections shrink by 346,708 bytes on
 ARMv7 and 346,724 bytes on ARM64 against the committed calibrated baseline
 with `-Oz`. Peak compiler RSS is 113 MiB. These are translation-unit checks,
-not full native-engine/APK builds. New APK sizes/builds and Android
-emulator validation remain pending permission for higher-memory work.
+not full native-engine/APK builds.
+
+All four signed release APKs now build and pass bundled-policy checks, SDK/ABI
+inspection and release-certificate verification. They retain v0.2.1/code 42,
+minimum API 25 and target API 36. Relative to the saved pre-change local release
+APKs, ARMv7 arcade shrinks by 169,880 bytes and ARM64 mobile by 170,644 bytes;
+the x86 arcade and x86_64 mobile APKs shrink by 170,716 and 169,840 bytes.
+These linked size differences include previously unbuilt source changes and
+cannot be attributed exclusively to the policy tables. Sizes and hashes are in
+[the APK report](moves/verification/release-apks.json); the tested APKs and their
+checksums are under `android/artifacts/`.
+
+On Android 7.1/API 25 x86, the current bundled selector passes all 258 normal
+Cine cases and all 258 intentional-death recovery cases. These native
+video-less tests model IRQ publication, 8 ms polling and 17 ms queued delivery;
+they do not run the production Java event loop. The European/Italian Java/JNI
+checker passes all 48 cases on both the host JVM and Android ART, covering both
+strategies, four operator levels and queue phases 0/8/16. It uses the production
+Watch controller body, JNI publisher and original ROM/driver methods, with a
+test Handler and simulated clock. Source fingerprints match the final tree.
+
+Two complete plays also ran through the real launcher and Watch button in the
+installed signed x86 arcade APK, with its actual Java Handler, JNI, SDL queue
+and software MPEG-2 decoder. DLE21 Fewest finished at 314,457 points and Space
+Ace A3 Ace/operator 0 Max score at 374,338 points. Read-only RAM observation
+confirmed decoded ROM winning states and five lives intact at victory in both
+plays; DLE21 also displayed a captured move cue. The app returned to the launcher
+and the test emulator was shut down. See
+[the installed-APK evidence](moves/verification/android-apk-plays.json).
+
+These plays use original synthetic black video without audio. They do not
+validate commercial-media synchronization, physical controls or cabinet
+performance. Installed-APK full plays cover those two configurations; the
+remaining settings are covered by the accelerated Android harness matrices.
+The x86_64 mobile APK was built and inspected, but not run. The 213-test unit
+suite also passes in a fresh source layout without a pre-existing `local-tools/`.
 
 The saved [one-life min/max results](moves/verification/one-life-ranges.json)
 cover all 102 ROM/skill/operator/objective combinations. US intervals remain
@@ -46,43 +80,23 @@ are conditional on the original ROM-created queue; pool enclosures do not
 prove joint RNG attainment. Optimality after arbitrary deviations/deaths is
 outside the current requested scope.
 
-## Previous live-ROM selector validation
+## Retained DL2 validation
 
-The runtime selector uses the complete ranked ROM rules and live input timers.
-Replay timing arrays are absent from the APK inputs; their original measurements
-and replay evidence remain in the host audit. The current
-[host report](moves/verification/previous-selector/live-timers-host.json) fingerprints
-the tested native selector, bundle and harness sources.
+DL2 continues to use live ROM prompts and is outside the DL1/Space Ace policy
+optimization. Its existing reports are retained in
+[`moves/verification/dl2/`](moves/verification/dl2/); they record their tested
+source fingerprints and were not rerun for the current policy integration.
+The superseded DL1/Space Ace selector reports have been removed.
 
-All low-memory host checks passed:
-
-| Check | Completed cases | Coverage |
-| --- | ---: | --- |
-| Cinematronics normal Watch play | 516 | DLE21, Space Ace A3, SAE 1.0 and US Lair A–F; both strategies, every skill/operator setting, two starts and queue phases 0/8/16 ms |
-| Cinematronics life-loss recovery | 258 | Same ROM/settings/strategy matrix and three queue phases; omit move 20, then finish after exactly one intended death |
-| European/Italian Java/JNI Watch play | 48 | Both boards, four levels, both strategies and three queue phases; complete without life loss |
-| DL2 Java/JNI play and native prompts | 45 | All five difficulties, three seek delays and three queue phases; one prompt per move inside its acceptance window |
-| DL2 omitted-input controls | 10 | Withhold first or final move at every difficulty; require a detected death |
-
-The ROM-authenticity check reconstructs every bundled inventory from the supplied
-ROM ZIPs and verifies all decoded rules and ranked alternatives. Native decoder,
-exporter, policy, replay and bundler regression checks pass. Repacking the audit
-also reproduces the runtime rules without adding replay timing arrays. The report
-records a coordinator-report recovery after an interrupted earlier run reused
-the same output directory; all 516 individual normal-play proofs were checked.
-
-Removing the calibration arrays saves 186,080 bytes of native table payload.
-Standalone Android ARM cross-compiles reduce guidance code/data by 187,168 bytes
-on ARMv7 and 187,276 bytes on ARM64. These are object-section measurements,
-not linked APK savings: release linking uses ThinLTO. The single native replay
-used about 3 MiB RSS; the coverage/repack checks peaked near 162 MiB, and the
-Java harnesses used a capped 96 MiB heap.
-
-Gradle builds, new APK checksums/signature/flavor validation and Android emulator
-tests remain pending maintainer permission for higher-memory work. Older APK and
-Android reports below do not validate this calibration-free selector. Host
-video-less checks do not establish physical-device behavior, visible/audio cue
-latency, every retry state, every random branch or global optimality.
+The [host prompt matrix](moves/verification/dl2/cue-host-matrix.json) and
+[Android prompt matrix](moves/verification/dl2/cue-android-matrix.json) each
+passed 45 cases covering all five difficulties, three seek delays and three
+queue phases. Omitted-first/final-input negative controls and earlier full-play
+matrices are retained alongside them. The
+[installed-APK report](moves/verification/dl2/correct-window-apk-proof.json)
+records an Android 9 x86 play at difficulty 4, reaching the ending with all
+three starting lives using synthetic black video. This historical evidence
+does not establish commercial-video/audio synchronization or cabinet behavior.
 
 ## Android video backend
 
@@ -232,8 +246,8 @@ startup controller, and are not proof of Java startup on those ROMs.
 The four signed release APKs build successfully and pass SDK/ABI, signature,
 flavor and packaged move-table checks. ARM release lint reports no errors,
 with the existing warnings retained. These are host and package checks;
-Android emulator/cabinet startup testing remains deferred at the maintainer's
-request. The root README is unchanged.
+Current Android startup validation is described above; cabinet startup remains
+untested. The root README is unchanged.
 
 ## Move policies and Watch Mode
 
@@ -256,7 +270,8 @@ its playing ending clip, rather than a RAM flag alone. The same stricter
 verifier passed all 48 Italian difficulty cases; its move data is unchanged.
 The combined revision catalog is checked with a European-only record that must
 not select an Italian action. Bundled validation reconstructs both full policies
-and checks the compiled arrays. Android runtime checks remain deferred.
+and checks the compiled arrays. Current Android Java/JNI coverage is described
+above; a video-backed European installed-APK play remains untested.
 
 US Dragon’s Lair revisions A–F passed 96 complete death-free plays and exact
 independent replays on each backend (host and Android 9 x86 video-less), covering
@@ -264,7 +279,7 @@ both strategies, four operator difficulties and two start times. The generated
 host and Android includes match byte for byte. The combined selector passed
 144 normal Watch timing cases on each backend, using both strategies and three
 queue phases. A further 48 host cases deliberately withheld move 4 and completed
-after one life loss. Android recovery checks for these revisions remain pending.
+after one life loss. Current Android recovery coverage is described above.
 Complete policies are shared where equal: A–D use one rule pool, E–F another;
 replay timing arrays belonged to the earlier selector and now remain host-only.
 A previous host recheck passed all 48 combinations of revision, difficulty and
@@ -296,8 +311,8 @@ checked in actual ROM RAM (`A18E`); the factory settings are Euro 3 and Italian 
 The UI calls the existing upstream bank setter and preserves other switch bits.
 These tests reuse production European driver/VP932 methods and the shared native
 selector, but model the 8 ms poll / 17 ms queue instead of running the production
-Java controller. Italian Android runtime and video-backed checks are explicitly
-deferred at the maintainer's request.
+Java controller. Current Italian Android Java/JNI coverage is described above;
+a video-backed Italian installed-APK play remains untested.
 
 SAE 1.0 has a separate CRC-pinned exporter layout and runtime policy. Both
 objectives passed eight randomized starts at all three skills and both operator
@@ -348,11 +363,9 @@ Before the fix, several of those tests lost a second life because retry-only
 steps had no packaged rows. The failure occurs without video; it is not caused
 by HD media resolution.
 
-Successful sampled routes remain as timing calibration evidence, separate from
-the complete ROM policy. The archived 208-case policy/replay matrices and older
-Watch/actual-APK reports describe the earlier sampled selector; they are not
-new tests of this implementation. New reports under `verification/complete-*`
-record the current selector source fingerprints. Space Ace's necessary
+The older sampled-selector reports have been removed. Current policy and
+replay evidence is indexed in `moves/verification/cost-future-summary.json`;
+retained DL2 reports are under `moves/verification/dl2/`. Space Ace's necessary
 zero-score final UP remains covered, and DL2 continues to read its live ROM
 prompts rather than a sampled move export.
 

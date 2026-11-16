@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "backend": "Installed signed arcadeEmulator APK; Android 7.1 API 25 x86, KVM",
+  "apk_sha256": "ce06d60f32a0c36149c14f0ac9eec7d2c4dd99e8c6d6922ddae6dc486ea672fd",
+  "entry": "LauncherActivity game selection and Watch button; real Java Handler, JNI, SDL input and software MPEG-2 decoding",
+  "media": "Original synthetic black MPEG-2 fixture, no audio",
+  "observation": "Read-only process RAM sampling, matching libmain build and symbols; decoded ROM winning scene/step and score, with five lives before and at victory. No injected moves or ROM-state writes.",
+  "completed_plays": [
+    {
+      "game": "dle21",
+      "objective": "fewest_moves",
+      "skill": null,
+      "operator_difficulty": null,
+      "score": 314457,
+      "starting_lives": 5,
+      "lives_at_win": 5,
+      "no_sampled_life_loss": true,
+      "winning_state": {
+        "sample_ms": 205060,
+        "scene": 36,
+        "step": 15,
+        "lives_raw": 133,
+        "score_ram": 314457,
+        "guidance": 639950127376,
+        "skill": 0,
+        "flags": 28
+      },
+      "observation_sha256": "f77928afca40fa6592f32b7aeb16a3fe663171394ff92c2e9b71d3c2b2428e10",
+      "observation_rows": 534
+    },
+    {
+      "game": "ace",
+      "objective": "max_score",
+      "skill": "ace",
+      "operator_difficulty": 0,
+      "score": 374338,
+      "starting_lives": 5,
+      "lives_at_win": 5,
+      "no_sampled_life_loss": true,
+      "winning_state": {
+        "sample_ms": 527480,
+        "scene": 24,
+        "step": 29,
+        "lives_raw": 133,
+        "score_ram": 374338,
+        "guidance": 936302870785,
+        "skill": 2,
+        "flags": 16
+      },
+      "observation_sha256": "c3598838a7bc708901453277443a746ea46e49003d843dc66b830116c2fb2ecd",
+      "observation_rows": 1815
+    }
+  ],
+  "returned_to_launcher": true,
+  "emulator_shutdown": true,
+  "limitations": [
+    "Representative installed-APK plays cover DLE21 Fewest and A3 Ace/operator 0 Max, not every installed-APK setting.",
+    "Matrix-wide Android tests use accelerated harnesses with modeled scheduling, separately reported.",
+    "No physical cabinet/device test, commercial-video or audible synchronization validation.",
+    "Mobile x86_64 APK was built and inspected, not run.",
+    "Sampled RAM observations are behavioral evidence, not a replacement for ROM optimality proofs."
+  ]
+}
