@@ -36,7 +36,7 @@ python3 -m unittest discover -s tools/offline-moves -p 'test_*.py'
 
 Only bounded native checks and small fixtures are used by these tests; they do
 not launch Android. Actual ROM analysis commands can have larger work budgets;
-inspect their options first. The current restriction still requires permission
-for higher-memory work. [ROM-WAIT-RULES.md](ROM-WAIT-RULES.md) documents the
+inspect their options and resource budgets first.
+[ROM-WAIT-RULES.md](ROM-WAIT-RULES.md) documents the
 optional timing models and their explicit preconditions. Statistical solvers
 here are not part of the current attainable-extreme objectives.

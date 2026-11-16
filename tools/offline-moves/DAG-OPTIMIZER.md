@@ -1,8 +1,7 @@
 # Whole-game decision-DAG optimization
 
 `rom_proof.py` solves the reduced whole-game models with a backward pass.
-`sae_optimality.py` uses the same DAG validation and removes its former
-priority-queue lower-bound solver and recursive policy evaluation.
+`sae_optimality.py` uses the same DAG validation and backward evaluation.
 DLE21, US DL1 A–F, A3, SAE, European and Italian proof models share the solver.
 DL2 is excluded.
 
@@ -47,14 +46,11 @@ Supply the eleven supported DL1/Ace ZIPs; no DL2 ROM is read. Checks are
 sequential, use no media and do not launch Android or build APKs. Original-ROM boundary audits run through `audit_schedulers.py --board space-ace`.
 These bounded routine audits are distinct from full play/replay timing checks.
 
-On this laptop, the 15-case reconstruction/regression run took approximately
-2.45 seconds and peaked at 96 MiB RSS. Original records totalled 22,806:
-4,055 automatic records were collapsed, 6,401 had no surviving completion,
-and 12,350 nodes remained. Individual solve-and-check calls took 3–91 ms.
-All four value arrays and both complete rankings matched 12 saved certificates;
-three US revision graphs had no saved comparison certificate. The old DLE21
-certificate used an earlier graph, so its regression was checked separately
-from reconstructing the current model.
+The production bundle is checked against every saved independent Bellman
+certificate by `verify_cost_runtime.py`. Supplying ROMs also authenticates the
+underlying inventories and contextual graphs. Current attained primary bounds
+and delivery matrices are indexed in
+[`cost-future-summary.json`](../../android/moves/verification/cost-future-summary.json).
 
 ## Scope
 

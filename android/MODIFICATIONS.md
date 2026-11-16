@@ -198,7 +198,7 @@ cadences do not replace an Android runtime test.
 
 Supported games also offer Watch Mode. It inserts coins until the game's own
 credit counter confirms a credit, then retries Player 1 Start until the ROM
-spends a credit or reports active lives. This waits through ROM startup that
+signals gameplay. A credit decrease alone does not acknowledge Start. This waits through ROM startup that
 ignores early input. Watch Mode then replays the same native move events used
 by the move system. During automatic play, ordinary controls are blocked;
 Pause and Exit remain available. Dragon's Lair II reads its native move data
@@ -252,7 +252,9 @@ The generator checks candidate inputs against simultaneous no-input execution.
 Necessary zero-score transitions, including Space Ace's final UP, are retained.
 Repeated starts sample randomized screen orders; deliberate input omissions
 check recovery after a lost life. These checks apply to the supported ROM
-revisions and do not establish global optimality or every possible input timing.
+revisions and do not establish every possible input timing or retry context.
+One-life optimality instead follows from the separate ROM/DAG bounds and
+attaining executions, with the queue qualifications documented in VALIDATION.md.
 
 ## Android integration and smaller packages
 
@@ -287,7 +289,7 @@ Its prompt and provenance are in [android/artwork](artwork/).
 
 Development used **GPT-6 family and Codex** extensively for implementation,
 refactoring, debugging, builds, tests and documentation. Francesco Orabona
-provides requirements, review, feedback and physical cabinet testing. See the
+provides requirements, review and feedback. See the
 [AI-assistance disclosure](../README.md#ai-assisted-development).
 
 Hypseus Singe, Hypseus, Daphne and Singe remain the foundation of the emulator.

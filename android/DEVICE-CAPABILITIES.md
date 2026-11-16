@@ -28,24 +28,26 @@ XML, display/SurfaceFlinger dumps and read-only system properties instead.
 
 Use the ARMv7 arcade APK on this OS. The panel mode is 1280×960.
 
-Subsequent tests exercised
-`OMX.MTK.VIDEO.DECODER.MPEG2` with readable YUV output. Its runtime capability
-query reported a maximum width of 1920 (the XML declares 2048). The production
-packet reader/Java decoder passed 172 sampled seek frames across generated
-720×480 progressive and interlaced MPEG-2 streams, including open-GOP preroll.
-Sparse luma comparisons against libmpeg2 had worst mean error below 0.009/255.
-This tests sampled image correctness, not every pixel or all MPEG profiles.
+## Hardware MPEG-2 decoding
 
-A separate 90-frame production-backend probe took 635–787 ms per pass, with
-192–216 ms measured decoder-thread CPU time. These are synthetic decode-only
-figures, not end-to-end game benchmarks or a total-system CPU comparison.
-Dragon's Lair II attract playback selected hardware decoding and repeatedly
-sought clips; the renderer reported OpenGL ES at 1280×960.
+`OMX.MTK.VIDEO.DECODER.MPEG2` provides readable YUV output. Its runtime
+capability query reports a maximum width of 1920, despite the XML declaration
+of 2048; the advertised XML limits must not override the runtime query.
 
-Unsupported hardware/streams and very short clips retain software decoding.
-A per-game switch can force software. The build minimum is API 25; this physical device is API 29 and does not
-establish physical-device compatibility with older Android versions.
+The production packet-reader/Java-decoder probe covered 172 sampled seek frames
+from generated 720×480 progressive and interlaced MPEG-2 streams, including
+open-GOP preroll. Sparse luma comparisons against libmpeg2 had a worst mean
+error below 0.009/255. This establishes sampled image agreement, not every pixel
+or support for all MPEG profiles.
+
+A 90-frame production-backend probe took 635–787 ms per pass, with 192–216 ms
+of decoder-thread CPU time. These are synthetic decode-only measurements;
+they do not establish end-to-end gameplay speed or total-system CPU savings.
+
+Hardware decoding is automatic and retains the software fallback for unsupported
+hardware/streams and very short clips. There is no per-game decoder switch.
+The build minimum is API 25; the system described here is API 29.
 
 Inspection date: November 9, 2026. Raw device dumps remain local and are not
-part of the public repository. These results describe this cabinet, not every
-Arcade1Up model or firmware revision.
+part of the public repository. The properties above describe this model and
+firmware; they are not declarations for every Arcade1Up system.

@@ -90,7 +90,15 @@ omitted; no Android emulator is started.
 ```bash
 python3 tools/offline-moves/verify_euro_watch.py \
   --roms /path/to/roms --output local-tools/euro-watch --jdk /path/to/jdk17
+# On an already running x86 emulator, with the pinned SDK/NDK installed:
+python3 tools/offline-moves/verify_euro_watch.py \
+  --roms /path/to/roms --output local-tools/euro-watch-android \
+  --jdk /path/to/jdk17 --android SERIAL
 ```
+
+The Android option runs under ART with the same relocated test Handler and
+virtual clock. It checks the Java/JNI Android backend, not real-time Android
+Handler scheduling or an installed APK's media pipeline.
 
 The default matrix covers both ROMs, levels 0–3, both strategies and queue
 phases 0/8/16. It requires the Java player to insert coins, press Start and
@@ -113,7 +121,9 @@ for the ROM's gameplay signal. A credit decrease is not a Start acknowledgment.
 The two-second delay is a courtesy, not an assumption that every ROM boots in
 two seconds. ROM boot duration and coinage remain controlled by the ROM.
 Host success does not validate Android scheduling or decoding load; actual APK
-checks through the launcher are still separate and currently deferred.
+checks through the launcher are separate. See
+[the validation guide](../../android/VALIDATION.md) for current backend coverage
+and installed-APK results.
 
 ## Dragon's Lair II US 3.19
 

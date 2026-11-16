@@ -28,7 +28,7 @@ python3 tools/offline-moves/dl1_exit_strategies.py \
 The nine `*-exit-values.json` files cover DLE21, US A–F, European and Italian
 Dragon's Lair. They save every graph record, per-exit local values, all retained
 action alternatives and their per-exit values, explicit no-safe-completion
-states, and the zero-future comparison with the original local optimizer.
+states, and a zero-future comparison with the scene-only reference decoder.
 They also record controls excluded by the independently checked cardinal-input
 reduction and the complete ROM-inventory fingerprint. Timing comes from live
 ROM scene/step descriptors or European record IDs; no calibrated frames are
@@ -40,15 +40,14 @@ inventory. The graph covers record closures from the existing ROM models,
 including decoded aliases; it is not a claim that every alias is naturally
 selected by the supported game configuration.
 
-All **8,954 states** pass four-value checks, 35,816 checks in total. The
-independent reference appends actual input/reward paths after every exit,
-solves that extended game, and compares all original states. This tests exit
-costs with different primary and secondary objectives without feeding the
-reference solution to the coefficient calculation. Seven unit tests additionally
-cover exit-dependent choices, common offsets, terminal rewards, off-policy
-states, unsafe paths and missing/probabilistic contracts.
+The independent reference appends input/reward paths after every exit,
+solves that extended game and compares the original states. It checks different
+primary and secondary continuation values without feeding the reference
+solution into the coefficient calculation. Focused unit cases cover exit-dependent
+choices, common offsets, terminal rewards, alternate-path states, unsafe paths
+and missing/probabilistic contracts.
 
-Zero future values reproduce the existing local optimizer without primary or
+Zero future values reproduce the scene-only reference values without primary or
 secondary losses for any of the nine ROMs. This is a scene-boundary comparison,
 not an APK binary comparison or unconditional whole-game proof.
 
@@ -68,12 +67,15 @@ this exporter does not silently identify their exit values.
 
 For the supported A–D difficulty settings, optional-room injection remains
 enabled. Its disabling gate is A011 bit 7; changing the difficulty does not
-provide the proposed fixed-multiset shortcut. The phase/resource model remains
-necessary. Adding one constant per semantic room exit cannot recover the
-documented physical timing gains, because all surviving local choices already
-share that exit class. A phase-aware exit relation must distinguish the future
+make the multiset fixed. Scheduler support and physical attainment must
+therefore be checked separately. Adding one constant per semantic room exit
+cannot recover room-allocation differences caused by physical timing, because
+all surviving local choices already share that exit class. A phase-aware exit relation must distinguish the future
 states created by different legal input timings.
 
 SAE and A3 retain their separately validated contextual local-plus-exit
 generators. DL2 remains excluded. No Android runtime test or APK size gain is
-claimed by these offline coefficients.
+claimed by these offline coefficients alone. Production policies, proof
+certificates, tested APKs and size measurements are documented in
+[COST-FUTURE.md](COST-FUTURE.md) and
+[VALIDATION.md](../../android/VALIDATION.md).

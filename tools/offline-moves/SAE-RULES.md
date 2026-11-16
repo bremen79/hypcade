@@ -9,7 +9,8 @@ original Z80 and exports typed rules, the complete record graph and a decision
 DAG. `verify_sae_timing.py --matrix` then constructs physical input schedules,
 independently replays them and checks attainment of the DAG bounds. Both
 lexicographic objectives are now certified for all six SAE skill/operator
-settings at start delay zero. This work does not replace the APK policies.
+settings at start delay zero. The production generator consumes these models
+to construct the packaged policies; standalone timing exports are audit inputs.
 
 ## Rules, DAG and timing
 
@@ -169,15 +170,13 @@ actual RAM. Results keep both selector-conditioned values unless a bit is
 supplied. Values include the current record's award; subtract `current_award`
 when querying just after that award was already published by the loader.
 
-The full matrix deliberately omits a real input in twelve cases and takes a
-different surviving ROM alternative in twelve more: both strategies, all
-skills and both operator settings. Every case finishes through the successful
-ROM end without another death and independently replays every original
-CPU/player checkpoint. Each concrete resumed suffix attains the full remaining
-lexicographic bound. These 24 timing witnesses complement complete ROM closure
-and Bellman checks; they do not define the policy's coverage or prove physical
-timing attainability at every possible CPU-cycle phase. Policies remain host
-analysis artifacts, not a replacement APK bundle.
+The continuation API retains structural values for alternative and retry
+contexts. Its optional recovery/deviation checks bind concrete original-CPU
+schedules to those values; they do not establish physical attainability or
+optimality at every possible CPU-cycle phase after arbitrary mistakes. These
+audit exports are not directly packaged. `cost_runtime.py` generates production
+policies from the contextual models, with current validation scope recorded in
+[VALIDATION.md](../../android/VALIDATION.md).
 
 ```bash
 python3 tools/offline-moves/test_sae_continuations.py
@@ -186,12 +185,6 @@ python3 tools/offline-moves/sae_continuations.py \
   --recovery-matrix --deviation-matrix \
   --output local-tools/sae-continuations
 ```
-
-The ROM graph, conditional policies and native input audits alone take about
-12 seconds. Constructing and independently checking the 24 complete games took
-182 seconds. A fresh independent replay of saved schedules (`--reuse-schedules`)
-took 83 seconds. Peak Python RSS stayed near 71 MiB; native compilation peaked
-near 71 MiB separately. All checks run sequentially without video or Android.
 
 SAE's skill byte remains fixed. At `1E0A–1E0B`, SAE NOPs the harder-mode flag
 write that A3 performs after its episode threshold. The current SAE rules
@@ -230,34 +223,13 @@ score-aware closure. Original
 synthetic fixtures independently test byte aliases, checkpoint gates, external
 reads, explicit probabilities and the native read observer.
 
-The 12-case strategy matrix, including construction, independent replay and
-omitted-input controls, took 90.7 seconds on the maintainer's laptop. Python
-peaked at 32.3 MiB RSS and native compilation at 65.8 MiB; a timing session's
-two machines and fixed buffers occupy 271352 bytes. The current 151709-case
-ROM-routine audit took 43.5 seconds at 78.0 MiB RSS. Individual graphs take
-fractions of a second to build and milliseconds to solve. These are host
-measurements, not Android performance estimates.
-
-The attained initial optima are identical at both operator settings:
-
-| Skill | Minimum commands | Score at minimum | Maximum score | Commands at maximum |
-| --- | ---: | ---: | ---: | ---: |
-| Cadet | 85 | 150396 | 319498 | 151 |
-| Captain | 110 | 179410 | 366836 | 183 |
-| Ace | 119 | 188112 | 398412 | 212 |
-
-These are exact lexicographic optima for the corresponding tested initial
-machines, with the physical acceptance/phase effects of every input included.
-Every replay reaches the actual successful ROM end handler at scene 25:63.
-All twelve omitted-input checks lose exactly one life, bind the automatic
-death/restart boundaries, and verify deterministic checkpoint restoration.
-The continuation matrix above additionally finishes recovery and detour games,
-and calculates the policies at every ROM context. Universal physical timing
-attainability at arbitrary CPU-cycle phases remains separate from these exact
-conditional DAG solutions and concrete timed certificates.
-No intentional-death optimization, probability distribution, unconditional
-expectation over unknown phases, Android validation or other-ROM timing proof
-is claimed.
+These tools run on the host without video or real-time waits. Their timed
+bindings check concrete accepted inputs and successful ROM completion against
+the decision-DAG values. Current one-life endpoints, conditional ranges and
+Android delivery results are maintained in
+[VALIDATION.md](../../android/VALIDATION.md) and its linked reports. Do not
+interpret a concrete timing certificate as universal attainability after
+arbitrary deviations or deaths.
 
 ## Current integration scope
 

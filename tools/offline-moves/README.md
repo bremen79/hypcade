@@ -46,8 +46,9 @@ a relaxed graph endpoint needs physical attainment before it proves an optimum.
 [WATCH-VERIFY.md](WATCH-VERIFY.md) distinguishes original-CPU physical replay,
 modeled input delivery and the Java/JNI host harness from Android runtime tests.
 Use one native worker for modest CPU use; each video-less machine uses little
-RAM. Higher-memory APK builds and Android emulator tests remain subject to the
-maintainer’s permission. An Android host model is not a physical-device test.
+RAM. Current build, matrix and installed-APK results are maintained in
+[the validation guide](../../android/VALIDATION.md), with their source
+fingerprints and scope limitations.
 
 Optional tools for other ROMs, their tests, native helpers and timing notes are
 in [future_roms/](future_roms/README.md). They are not dependencies of the current

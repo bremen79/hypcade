@@ -92,18 +92,20 @@ while keeping the move display hidden. Dragon’s Lair II uses its native ROM
 moves for either policy; Singe games keep their own script menus.
 
 The DLE21, US Dragon’s Lair A–F, European/Italian Dragon’s Lair, Space Ace A3 and
-Space Ace Enhancement 1.0 move sets are derived from their ROM tables and
-checked through complete games without a lost life. Space Ace A3 covers all
-three skills and four operator difficulties; SAE covers three skills and both
-Easy/Hard settings. US A–F cover all four operator difficulties. The European/Italian
-adapters have passed host checks at factory settings; Android runtime validation
-is pending.
+Space Ace Enhancement 1.0 use ROM-derived policies with live ROM timing.
+Space Ace A3 covers all three skills and four operator difficulties; SAE covers three skills and both
+Easy/Hard settings. US A–F and European/Italian cover all four operator levels.
+Current host, Android harness and installed-APK coverage is recorded in
+[VALIDATION.md](VALIDATION.md).
 All decoded rules and ranked alternatives are retained, including retry-only
 steps; sampled winning games do not limit move coverage. Separate tests withhold
 inputs to check that guidance resumes after a lost life.
 Necessary zero-score actions, including Space Ace's final UP, are preserved.
-These checks do not prove
-that every retry context is covered or that the routes are globally optimal.
+ROM-derived bounds and independent attaining replays establish the requested
+one-life optima: a non-zero possibility of the fewest accepted inputs or highest
+score, using cardinal directions and button presses only. European/Italian
+results are conditional on the ROM-created queue. Optimal continuation after
+arbitrary mistakes or deaths is outside this proof scope.
 
 
 **Video & performance** has CRT scanlines, smoothing,
@@ -133,7 +135,8 @@ emulated CPU timing or disc frame numbers.
 CRT scanlines use a lightweight zfast-crt GPU shader. Video sampling, colour
 conversion and the CRT pattern share one draw. Scanlines follow the final video
 rectangle, with one dark row every two output pixels, independent of the source
-resolution. Moves, subtitles and game overlays are drawn afterward. An
+resolution. Native ROM text and calculated moves share the filtered game layer;
+added score/lives, FPS, subtitles and bezels are drawn afterward without filtering. An
 unsupported renderer or shader failure leaves the video unfiltered and writes
 a log message. See the [shader credits](THIRD_PARTY_NOTICES.md#zfast-crt-shader).
 
@@ -164,10 +167,12 @@ Candidate inputs are checked against a simultaneous no-input simulation, and
 complete policies retain every decoded rule and ranked alternative. Successful
 death-free games and independent replays retain host timing evidence, not the
 coverage boundary. The APK stores complete policies and reads live ROM timers
-for the current skill and difficulty; replay timing arrays remain host-only. Required zero-score transitions are retained. Separate unassisted checks
-exercise IRQ publication, Java polling, SDL delivery and button holds. Randomized
-starts sample different paths; they do not establish every retry context or a
-global optimum. See the [validation guide](VALIDATION.md).
+for the current skill and difficulty. Required zero-score transitions are
+retained. Rankings combine scene cost with the chosen exit's continuation cost.
+Independent ROM/DAG proofs and attaining executions establish the one-life
+objectives separately from delivery checks. Randomized starts and deliberate
+misses test behavior without proving every retry context. See the
+[validation guide](VALIDATION.md) for the precise guarantees and limits.
 
 For DL1 and Space Ace, calculated move text becomes visible when the move is
 ready to perform, rather than showing an early preview. **Play move audio cue**
@@ -425,8 +430,9 @@ supported Dragon's Lair II revisions offer a dropdown with
 Right places that same bezel at the right edge. Top uses Hypseus's horizontal
 scoreboard with white, lit-segments-only digits and a transparent background
 across the top of the screen. The default is Left. These displays
-remain sharp when CRT scanlines are enabled. Other supported games keep the
-on/off control for their existing scoreboard.
+remain sharp when CRT scanlines are enabled. Space Ace A3 and SAE offer
+**Off**, **Left** and **Right**, with the dedicated skill panel opposite the
+score bezel. Games without placement support keep an on/off control.
 
 European and Italian Dragon's Lair use a read-only RAM adapter for both players'
 scores and lives and the credit count. Player 2's numbers are hidden in a
