@@ -40,7 +40,9 @@ int main(void) {
 }
 '''
         moves.verify_vendor();vendor=ROOT/'vendor/src'
-        with tempfile.TemporaryDirectory(prefix='end-observer-',dir=ROOT.parents[1]/'local-tools') as temporary:
+        scratch=ROOT.parents[1]/'local-tools'
+        scratch.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='end-observer-',dir=scratch) as temporary:
             folder=Path(temporary);source=folder/'test.c';source.write_text(program);binary=folder/'test'
             built=subprocess.run([os.environ.get('CC','cc'),'-O1','-std=c11','-D_POSIX_C_SOURCE=200809L',
                 '-Wall','-Wextra','-Werror','-I'+str(ROOT),'-I'+str(vendor),str(source),
