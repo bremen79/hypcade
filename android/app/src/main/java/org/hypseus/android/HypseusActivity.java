@@ -101,11 +101,11 @@ public final class HypseusActivity extends SDLActivity {
         nativeConfigureDisplay(!BuildConfig.ARCADE);
         nativeConfigureVideo(true);
         nativeConfigureStartSkill(getIntent().getIntExtra(EXTRA_START_SKILL, 0));
-        nativeEnableGuidance(GuidanceSupport.forArguments(
-                getIntent().getStringArrayExtra(EXTRA_ARGUMENTS)).visual
-                ? MoveMode.selected(getIntent().getIntExtra("move_mode", MoveMode.OFF)) : MoveMode.OFF, useTimingCue(),
-                getIntent().getBooleanExtra(EXTRA_WATCH, false));
         String[] arguments = getIntent().getStringArrayExtra(EXTRA_ARGUMENTS);
+        nativeEnableGuidance(GuidanceSupport.forArguments(
+                arguments).visual
+                ? MoveMode.selected(arguments[0], getIntent().getIntExtra("move_mode", MoveMode.OFF)) : MoveMode.OFF, useTimingCue(),
+                getIntent().getBooleanExtra(EXTRA_WATCH, false));
         if (arguments == null) return new String[]{"--android-smoke-test"};
         if (!BuildConfig.ARCADE) return arguments;
         android.graphics.Point size = new android.graphics.Point();

@@ -84,12 +84,17 @@ when choosing an APK. Both variants share the application ID
 
 ## Video, sound and moves
 
-**Show moves** offers **Off**, **Max score** and **Fewest moves** for supported
-ROM revisions. Max score selects the higher-scoring ROM route; Fewest moves
-selects the route with fewer joystick/button actions. Watch Mode
-uses the selected policy. With Show moves set to Off, Watch Mode uses Max score
-while keeping the move display hidden. Dragon’s Lair II uses its native ROM
-moves for either policy; Singe games keep their own script menus.
+**Show moves** offers **Off**, **Max score** and **Fewest moves** for DLE21,
+Space Ace A3 and SAE 1.0. US Dragon's Lair A–F and European/Italian Dragon's Lair
+show only **Off / On**; On uses Max score. The generator calculates both
+objectives first, then retains only Max score when ROM-derived comparisons
+certify at most one extra input for corresponding room allocations. A generated
+catalog keeps these UI choices synchronized with the packaged rankings.
+See the [per-ROM policy results](moves/README.md) for packaged sets and input/score
+ranges, including the distinction between attained extrema and bounds.
+Watch Mode uses the selected retained policy. With Show moves Off, it uses
+Max score while keeping guidance hidden. Dragon's Lair II also shows Off / On
+and uses native ROM prompts. Singe games keep their own script menus.
 
 The DLE21, US Dragon’s Lair A–F, European/Italian Dragon’s Lair, Space Ace A3 and
 Space Ace Enhancement 1.0 use ROM-derived policies with live ROM timing.

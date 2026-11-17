@@ -28,6 +28,7 @@ def main():
             javac, "-encoding", "UTF-8", "-Xlint:all", "-Werror", "-d", str(compiled),
             str(root / "android/app/src/main/java/org/hypseus/android/LaunchConfig.java"),
             str(root / "android/app/src/main/java/org/hypseus/android/MoveMode.java"),
+            str(root / "android/app/src/main/java/org/hypseus/android/MovePolicyCatalog.java"),
             str(root / "android/app/src/main/java/org/hypseus/android/GameDifficulty.java"),
             str(root / "android/app/src/main/java/org/hypseus/android/GuidanceSupport.java"),
             str(root / "android/app/src/main/java/org/hypseus/android/GameScanner.java"),

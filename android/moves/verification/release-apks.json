@@ -3,59 +3,155 @@
     {
       "flavor": "arcade",
       "abi": "armeabi-v7a",
-      "apk_bytes": 5993441,
-      "sha256": "f4af3c7bebebb5c08c11470056ccae8851c29c993639560af19debada84a114c",
+      "filename": "hypcade-arcade-armeabi-v7a-release.apk",
+      "apk_bytes": 5993385,
+      "sha256": "cc3df77542854e9a6d4e6560896c0d9bf2c07c02dbb45f14064db546f9c24b54",
       "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-      "libmain_bytes": 2670800,
-      "libmain_compressed_bytes": 1473081,
-      "apk_reduction_bytes": 169880,
-      "native_reduction_bytes": 346832
+      "libmain_bytes": 2664768,
+      "uncompressed_native_bytes": 4834908,
+      "uncompressed_support_bytes": 4293786,
+      "apk_reduction_bytes": 56,
+      "native_reduction_bytes": 6032,
+      "discarded_strategy_arrays_absent": [
+        "lair_f",
+        "lair_ita",
+        "lair_d",
+        "lair_b",
+        "lair_a",
+        "lair_c",
+        "lair_e",
+        "laireuro"
+      ],
+      "version_name": "v0.2.1",
+      "version_code": 42,
+      "min_sdk": 25,
+      "target_sdk": 36
     },
     {
       "flavor": "mobile",
       "abi": "arm64-v8a",
-      "apk_bytes": 6308635,
-      "sha256": "689c4cf2c7eeb6756ffa7db7e53af8f996a1329082f51fc4ab3028d168f6d87b",
+      "filename": "hypcade-mobile-arm64-v8a-release.apk",
+      "apk_bytes": 6308471,
+      "sha256": "77ad71e559e1dd6876a5905f920087f89c31666bb8a443d3f59e34392ef4edc3",
       "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-      "libmain_bytes": 3812136,
-      "libmain_compressed_bytes": 1651016,
-      "apk_reduction_bytes": 170644,
-      "native_reduction_bytes": 346800
+      "libmain_bytes": 3806120,
+      "uncompressed_native_bytes": 6924800,
+      "uncompressed_support_bytes": 4293786,
+      "apk_reduction_bytes": 164,
+      "native_reduction_bytes": 6016,
+      "discarded_strategy_arrays_absent": [
+        "lair_f",
+        "lair_ita",
+        "lair_d",
+        "lair_b",
+        "lair_a",
+        "lair_c",
+        "lair_e",
+        "laireuro"
+      ],
+      "version_name": "v0.2.1",
+      "version_code": 42,
+      "min_sdk": 25,
+      "target_sdk": 36
     },
     {
       "flavor": "arcadeEmulator",
       "abi": "x86",
-      "apk_bytes": 6749117,
-      "sha256": "ce06d60f32a0c36149c14f0ac9eec7d2c4dd99e8c6d6922ddae6dc486ea672fd",
+      "filename": "hypcade-arcade-x86-release.apk",
+      "apk_bytes": 6749201,
+      "sha256": "b7ac3d5cabf11e874fd0221d3968e8b6288adad0ad05a3a6589fa41d16131a39",
       "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-      "libmain_bytes": 4284456,
-      "libmain_compressed_bytes": 1908566,
-      "apk_reduction_bytes": 170716,
-      "native_reduction_bytes": 346752
+      "libmain_bytes": 4278424,
+      "uncompressed_native_bytes": 7631572,
+      "uncompressed_support_bytes": 4293786,
+      "apk_reduction_bytes": -84,
+      "native_reduction_bytes": 6032,
+      "discarded_strategy_arrays_absent": [
+        "lair_f",
+        "lair_ita",
+        "lair_d",
+        "lair_b",
+        "lair_a",
+        "lair_c",
+        "lair_e",
+        "laireuro"
+      ],
+      "version_name": "v0.2.1",
+      "version_code": 42,
+      "min_sdk": 25,
+      "target_sdk": 36
     },
     {
       "flavor": "mobileEmulator",
       "abi": "x86_64",
-      "apk_bytes": 6761282,
-      "sha256": "7c6f2fb547acc8bdfdf801678631e52f8c3b13ca7f06e0c0160a6f55b0d6ce83",
+      "filename": "hypcade-mobile-x86_64-release.apk",
+      "apk_bytes": 6761162,
+      "sha256": "fe22a0f43a863093d7420021822899d0a5f7331f81af773463d7c58458a89d22",
       "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-      "libmain_bytes": 4408112,
-      "libmain_compressed_bytes": 1919889,
-      "apk_reduction_bytes": 169840,
-      "native_reduction_bytes": 347648
+      "libmain_bytes": 4402048,
+      "uncompressed_native_bytes": 7856720,
+      "uncompressed_support_bytes": 4293786,
+      "apk_reduction_bytes": 120,
+      "native_reduction_bytes": 6064,
+      "discarded_strategy_arrays_absent": [
+        "lair_f",
+        "lair_ita",
+        "lair_d",
+        "lair_b",
+        "lair_a",
+        "lair_c",
+        "lair_e",
+        "laireuro"
+      ],
+      "version_name": "v0.2.1",
+      "version_code": 42,
+      "min_sdk": 25,
+      "target_sdk": 36
     }
   ],
-  "baseline_scope": "Existing pre-change APKs; size differences include all previously unbuilt source changes, not only table data.",
+  "baseline_scope": "Signed APKs before the post-calculation one-input retention change.",
+  "all_passed": true,
   "version_name": "v0.2.1",
   "version_code": 42,
   "min_sdk": 25,
   "target_sdk": 36,
-  "all_passed": true,
+  "build": "All four signed release variants assembled sequentially with one Gradle worker; arcade and mobile release lint passed.",
   "checks": [
-    "All four APKs contain exact current complete ROM rule/index arrays.",
-    "Release certificate, APK digest, SDK/version and single ABI checked for each flavor.",
-    "ARM flavor policies and R8 mapping checked."
+    "Current retained native rule/index arrays present in all four APKs; eight omitted Fewest arrays absent.",
+    "Existing release certificate, SDK/version and single ABI verified for every flavor.",
+    "ARM flavor orientation, controls and R8 mapping verified."
   ],
-  "build": "JDK 17, Gradle 8.13, NDK 28.2.13676358; all four release variants assembled successfully with one Gradle worker.",
-  "warnings": "Existing native compiler warnings and Gradle deprecation warnings remain; no physical-device or cabinet validation."
+  "warnings": "Existing native compiler and Gradle deprecation warnings remain.",
+  "lint": {
+    "arcade": {
+      "errors": 0,
+      "warnings": 42,
+      "issue_ids": [
+        "AndroidGradlePluginVersion",
+        "DataExtractionRules",
+        "DiscouragedApi",
+        "NonResizeableActivity",
+        "ObsoleteSdkInt",
+        "ScopedStorage",
+        "SetTextI18n",
+        "StaticFieldLeak",
+        "UnusedAttribute"
+      ]
+    },
+    "mobile": {
+      "errors": 0,
+      "warnings": 37,
+      "issue_ids": [
+        "AndroidGradlePluginVersion",
+        "DataExtractionRules",
+        "DiscouragedApi",
+        "ObsoleteSdkInt",
+        "ScopedStorage",
+        "SetTextI18n",
+        "StaticFieldLeak",
+        "UnusedAttribute",
+        "ViewConstructor"
+      ]
+    }
+  }
 }

@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "profiles": {
+    "ace": {
+      "objectives": [
+        "highest-score",
+        "shortest"
+      ],
+      "initial_input_gaps": [
+        81,
+        49,
+        57
+      ],
+      "contract": "Contextual objectives retained independently"
+    },
+    "dle21": {
+      "objectives": [
+        "highest-score",
+        "shortest"
+      ],
+      "initial_input_gaps": [
+        8
+      ],
+      "contract": "Authored chapter objectives retained independently"
+    },
+    "lair_a": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_b": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_c": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_d": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_e": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_f": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 1,
+      "contract": "Monotone ROM room histories; each original-room slot used at most once"
+    },
+    "lair_ita": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 0,
+      "contract": "Equal room input potentials for any ROM-created queue"
+    },
+    "laireuro": {
+      "objectives": [
+        "highest-score"
+      ],
+      "max_extra_inputs": 0,
+      "contract": "Equal room input potentials for any ROM-created queue"
+    },
+    "sae": {
+      "objectives": [
+        "highest-score",
+        "shortest"
+      ],
+      "initial_input_gaps": [
+        93,
+        93,
+        93,
+        93,
+        66,
+        66,
+        66,
+        66,
+        73,
+        73,
+        73,
+        73
+      ],
+      "contract": "Contextual objectives retained independently"
+    }
+  },
+  "one_input_tolerance": 1,
+  "comparison": "Corresponding ROM-created room allocations; not unrelated randomized plays.",
+  "calculation_equivalence": {
+    "underlying_calculated_policies_unchanged": true,
+    "verified_files": [
+      "android/moves/strategies/ace.json",
+      "android/moves/strategies/dle21.json",
+      "android/moves/strategies/lair_a.json",
+      "android/moves/strategies/lair_b.json",
+      "android/moves/strategies/lair_c.json",
+      "android/moves/strategies/lair_d.json",
+      "android/moves/strategies/lair_e.json",
+      "android/moves/strategies/lair_f.json",
+      "android/moves/strategies/lair_ita.json",
+      "android/moves/strategies/laireuro.json",
+      "android/moves/strategies/sae.json",
+      "android/moves/strategies/proofs/ace-ace-proof.json",
+      "android/moves/strategies/proofs/ace-cadet-proof.json",
+      "android/moves/strategies/proofs/ace-captain-proof.json",
+      "android/moves/strategies/proofs/ace-inventory.json",
+      "android/moves/strategies/proofs/sae-ace-d0-proof.json",
+      "android/moves/strategies/proofs/sae-ace-d1-proof.json",
+      "android/moves/strategies/proofs/sae-cadet-d0-proof.json",
+      "android/moves/strategies/proofs/sae-cadet-d1-proof.json",
+      "android/moves/strategies/proofs/sae-captain-d0-proof.json",
+      "android/moves/strategies/proofs/sae-captain-d1-proof.json",
+      "android/moves/strategies/proofs/sae-inventory.json"
+    ],
+    "recomputed_initial_objectives": 86,
+    "original_classic_attaining_replays_still_match": 50,
+    "scope": "Retention changes packaging, not calculated transitions, values or rankings. Existing unchanged original-ROM witnesses are reused rather than replaying unexposed or duplicate policies."
+  },
+  "ui_source": "android/app/src/main/java/org/hypseus/android/MovePolicyCatalog.java",
+  "native_payload": {
+    "before": {
+      "bytes": 106496,
+      "by_type": {
+        "ArcadeCostRule": 43904,
+        "uint16_t": 38208,
+        "ArcadeRomRule": 17394,
+        "ArcadeEuroRule": 6990
+      }
+    },
+    "after": {
+      "bytes": 100462,
+      "by_type": {
+        "ArcadeCostRule": 43904,
+        "uint16_t": 32174,
+        "ArcadeRomRule": 17394,
+        "ArcadeEuroRule": 6990
+      }
+    },
+    "saving_bytes": 6034,
+    "scope": "Unique generated rule/index payload, including native struct padding; excludes catalogs, selector code and compression."
+  },
+  "all_passed": true
+}

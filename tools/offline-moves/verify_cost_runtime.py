@@ -19,6 +19,7 @@ import cost_runtime
 import rom_proof
 import rom_tables
 import euro_tables
+import policy_retention
 
 
 def check_context_graphs(folder, roms):
@@ -141,7 +142,7 @@ def euro_expected(table):
 
 def verify_bundle(folder, include=None, roms=None, euro_include=None):
     folder=Path(folder);manifest=json.loads((folder/'manifest.json').read_text())
-    if manifest['schema']!=6 or manifest['runtime_timing']!='live-rom':
+    if manifest['schema']!=7 or manifest['runtime_timing']!='live-rom':
         raise ValueError('Expected the cost-plus-future live-ROM bundle')
     if manifest.get('sources')!=cost_runtime.source_identity():
         raise ValueError('Policy generator/proof source changed; regenerate the bundle')
@@ -213,6 +214,14 @@ def verify_bundle(folder, include=None, roms=None, euro_include=None):
     # Alias counts describe source serialization, not semantic coverage.
     expected['equivalent_ranked_aliases']=tables['sae']['equivalent_ranked_aliases']
     same_table(tables['sae'],expected)
+    for game, table in tables.items():
+        if table.get('retention') != policy_retention.decide(game, table, proof_dir):
+            raise ValueError('Incorrect retained policies: '+game)
+    catalog = policy_retention.java_catalog(tables)
+    if (folder/'MovePolicyCatalog.java').read_text() != catalog:
+        raise ValueError('UI policy catalog differs from retained strategies')
+    if include and (cost_runtime.REPO/'android/app/src/main/java/org/hypseus/android/MovePolicyCatalog.java').read_text() != catalog:
+        raise ValueError('Launcher policy catalog differs from packaged strategies')
     source=cost_runtime.include(tables)
     if source!=(folder/'arcade_moves.inc').read_text():raise ValueError('Compiled bundle omits policy rows')
     if include and source!=Path(include).read_text():raise ValueError('APK include differs from verified bundle')
@@ -237,7 +246,8 @@ def main():
     folder=args.bundle_dir or root/'android/moves/strategies'
     result=verify_bundle(folder,None if args.bundle_dir else root/'android/app/jni/arcade_moves.inc',args.roms,
                          None if args.bundle_dir else root/'android/app/jni/arcade_euro_moves.inc')
-    tables=[json.loads(p.read_text()) for p in sorted(folder.glob('*.json')) if p.name!='manifest.json']
+    tables=[policy_retention.runtime_table(json.loads(p.read_text()))
+            for p in sorted(folder.glob('*.json')) if p.name!='manifest.json']
     for apk in args.apk:
         with zipfile.ZipFile(apk) as archive:
             libraries=[n for n in archive.namelist() if n.endswith('/libmain.so')]

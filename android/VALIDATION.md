@@ -14,14 +14,21 @@ certificates. It does not contain game ROM payloads. The generator is
 `tools/offline-moves/cost_runtime.py`; optional analysis tools for additional
 ROMs are isolated in `tools/offline-moves/future_roms/`.
 
-The two objectives are one-life, death-free play with cardinal directions or
-button presses only:
+The calculated objectives are one-life, death-free play with cardinal directions
+or button presses only:
 
 - Fewest moves: the policy can attain the minimum number of accepted commands
   with non-zero possibility.
 - Max score: the policy can attain the highest score with non-zero possibility.
 
 Neither objective optimizes an expectation or deliberately spends lives.
+Post-calculation [policy retention](../tools/offline-moves/COST-FUTURE.md#policy-retention)
+selects which complete rankings enter the APK. The
+[retention audit](moves/verification/policy-retention.json) records each decision,
+86 recomputed initial objectives and semantic equality of 22 calculated-policy
+and proof files, apart from retention metadata. This preserves the applicability
+of the mathematical attaining witnesses; it does not substitute for current
+runtime delivery checks.
 ROM-derived decision graphs, scene-exit continuation costs and scheduler
 contracts establish bounds. Independent executions establish attainment of the
 primary endpoints: all [50 classic Cine setting/objective cases](moves/verification/classic-attainment.json)
@@ -30,9 +37,23 @@ their original-CPU replay checks. Space Ace move counts use
 accepted commands, which can differ from attempted input pulses. European and
 Italian policies are optimal conditional on the ROM-created room queue.
 
-The [one-life min/max results](moves/verification/one-life-ranges.json) cover
-102 ROM/skill/operator/objective combinations. US non-primary range endpoints
-remain support enclosures rather than independently attained extrema. Italian
+The [readable ROM policy results](moves/README.md) summarize the
+[one-life min/max dataset](moves/verification/one-life-ranges.json), covering
+102 ROM/skill/operator/objective combinations. Some US non-primary endpoints
+remain unestablished; certified endpoints are identified in the data rather
+than treating every support limit as attained. The
+[E/F range refinement](moves/verification/late-attained-ranges.json) combines
+ROM inventory/Bellman/scheduler calculations, 48 host Watch plays with
+independent replays, and eight original-ROM winning replays. A verified
+score/input affine invariant establishes accepted-command counts at level 2
+without using attempted Watch pulses. A further
+[direct acceptance-count refinement](moves/verification/counted-attained-ranges.json)
+adds six endpoints from 43 independently replayed plays. Its read-only observer
+recognizes the ROM's accepted-outcome instruction after rejected-input checks;
+the independent replay must reproduce the accepted count. Ten common cases
+also retain the complete-state hashes of the uninstrumented checker. These
+refinements add 22 attained endpoints in total. They are host-only and do not
+change the APK policies or their runtime validation. Italian
 pool-wide enclosures do not prove joint RNG attainment. These qualifications
 are part of the reported scope, not guarantees about every random sequence.
 
@@ -58,16 +79,17 @@ been rerun for the current integration and do not certify the current APK.
 
 ## Watch Mode matrices
 
-The current bundled selector passed the following complete matrices. Cine
-covers DLE21, Space Ace A3, SAE 1.0 and US Lair A–F, both strategies, every
-supported skill/operator setting and queue phases 0/8/16 ms. European/Italian
-covers both boards, four operator levels, both strategies and the same phases.
+The matrices exercise distinct retained policies. Cine covers DLE21, Space Ace
+A3, SAE 1.0 and US Lair A–F, every supported skill/operator setting and queue
+phases 0/8/16 ms. European/Italian covers both boards, four operator levels and
+the same phases. A single-policy ROM is exercised once per setting/phase,
+without replaying its Max/Fewest alias as another policy.
 
 | Check | Host | Android API-25 x86 | Evidence |
 | --- | ---: | ---: | --- |
-| Cine normal play | 258 | 258 | [Host](moves/verification/cine-watch.json), [Android](moves/verification/android-cine-watch.json) |
-| Cine intentional-death recovery | 258 | 258 | [Host](moves/verification/cine-recovery.json), [Android](moves/verification/android-cine-recovery.json) |
-| European/Italian Java/JNI play | 48 | 48 | [Host](moves/verification/euro-watch.json), [Android](moves/verification/android-euro-watch.json) |
+| Cine normal play | 186 | 186 | [Host](moves/verification/cine-watch.json), [Android](moves/verification/android-cine-watch.json) |
+| Cine intentional-death recovery | 186 | Not rerun for this integration | [Host](moves/verification/cine-recovery.json) |
+| European/Italian Java/JNI play | 24 | 24 | [Host](moves/verification/euro-watch.json), [Android](moves/verification/android-euro-watch.json) |
 
 The Cine harness runs the original CPU/player with IRQ publication, modeled
 8 ms controller polling, 17 ms queued input delivery and 100 ms input holds.
@@ -96,28 +118,28 @@ and [Watch verification guide](../tools/offline-moves/WATCH-VERIFY.md).
 it does not launch one. Saved matrix source fingerprints match the tested
 implementation.
 
-## Installed-APK gameplay
+## Installed-APK checks
 
-The signed x86 arcade release APK was launched through the normal launcher and
-Watch button on Android 7.1/API 25. These plays use the actual Java Handler,
-JNI publisher, SDL queue and software MPEG-2 decoder, with original synthetic
-black video and no audio.
+The signed emulator release APKs were launched through the normal launcher and
+Watch button, using the actual Java Handler, JNI publisher, SDL queue and
+media decoder. Media is synthetic black MPEG-2 video without audio.
 
-| Game | Configuration | Result |
+| APK / platform | Menu checks | Runtime checks |
 | --- | --- | --- |
-| DLE21 | Fewest moves | ROM winning state, 314,457 points, all five starting lives retained |
-| Space Ace A3 | Ace skill, operator 0, Max score | ROM winning state, 374,338 points, all five starting lives retained |
+| Arcade / API-25 x86 | All 12 profiles | All 14 distinct retained policy selections: match started, first two native ready events and no early life loss |
+| Mobile / API-35 x86_64 | All 12 profiles | US Lair A On and DLE21 Fewest moves: visible game/score output, touch Exit and return to launcher |
 
-Read-only process RAM sampling confirmed the winning states, scores and five
-lives before and at victory. It did not inject moves or write ROM state.
-DLE21 also displayed a captured move cue. These observations complement the
-independent ROM proofs; sampled RAM alone is not an exhaustive trace of every
-CPU state. The app returned to the launcher and the emulator was shut down.
-See [the installed-APK evidence](moves/verification/android-apk-plays.json).
+Arcade read-only process sampling confirmed the selected native policy,
+visual/Watch flags, ROM match acknowledgment and lives. It did not inject moves
+or modify ROM state. Mobile checks use screenshots and process/UI observations,
+without RAM inspection. Each game process exited while the launcher remained
+available; both test emulators were shut down. Digests and observations are in
+[the installed-APK report](moves/verification/android-apk-plays.json).
 
-Other configurations were exercised by the accelerated matrices, not full
-installed-APK plays. The x86_64 mobile APK was built and inspected but not run.
-These checks do not establish commercial-media synchronization, audible cue
+These are startup checks, not complete installed-APK games. Arcade uses one
+saved configuration per ROM, and mobile uses two representative configurations.
+The accelerated matrices provide broader settings and full-game coverage.
+Neither backend establishes commercial-media synchronization, audible cue
 latency or physical-control fidelity.
 
 ## Build, packaging and size
@@ -130,27 +152,29 @@ arrays. ARM flavor checks also verified fixed arcade landscape and absence of
 touch-control code, with mobile controls and orientation policy retained.
 Hashes and measurements are in [the APK report](moves/verification/release-apks.json).
 
-Native rule/index payload is 106,496 bytes, saving 160,304 bytes against the
-live-ROM baseline and 346,384 bytes against the calibrated-table baseline.
-These counts include C structure padding but exclude catalogs, selector code,
-linking and APK compression. The linked APK changes are:
+Native rule/index payload is 100,462 bytes: a reduction of 6,034 bytes from the
+106,496-byte two-policy package, 166,338 bytes against the live-ROM baseline and
+352,418 bytes against the calibrated-table baseline. These counts include C
+structure padding but exclude catalogs, selector code, linking and APK
+compression. The current APK measurements are:
 
-| Flavor | APK bytes | Reduction from saved pre-change APK |
+| Flavor | APK bytes | Change from saved two-policy APK |
 | --- | ---: | ---: |
-| ARMv7 arcade | 5,993,441 | 169,880 |
-| ARM64 mobile | 6,308,635 | 170,644 |
-| x86 arcade | 6,749,117 | 170,716 |
-| x86_64 mobile | 6,761,282 | 169,840 |
+| ARMv7 arcade | 5,993,385 | −56 |
+| ARM64 mobile | 6,308,471 | −164 |
+| x86 arcade | 6,749,201 | +84 |
+| x86_64 mobile | 6,761,162 | −120 |
 
-The linked reductions include previously unbuilt source changes; they cannot
-be attributed exclusively to policy-table changes. Build diagnostics retain
-native compiler and Gradle deprecation warnings. Assembly is not a lint run;
-the final integration has no separately recorded fresh release-lint result.
+APK compression and the UI changes largely offset the raw table saving; native
+payload reduction is not an equivalent APK reduction. Both ARM release lint
+checks passed with zero errors and 42 arcade / 37 mobile warnings. Native
+compiler and Gradle deprecation warnings also remain.
 
-The 213-test offline unit suite passes in a fresh source layout without a
-pre-existing `local-tools/` directory. Full ROM/bundle and packaged-array checks
-also pass for all four final APKs. Documentation changes do not change the
-tested native libraries.
+The 221-test offline unit suite, launcher/control tests, native guidance checks
+and full ROM/bundle checks pass. Package checks verify all four final APKs,
+including absence of the eight discarded Fewest index arrays. The test planner
+has regression coverage for deduplicating effective policies. Documentation
+changes do not change the tested native libraries.
 
 ## Component regression coverage
 
@@ -212,7 +236,8 @@ tested recoveries, not every retry branch or optimality after a death.
 
 Synthetic timing media exercises ROM control flow, frame advancement and seeks;
 it cannot establish commercial video accuracy or audible synchronization.
-Two installed-APK full plays do not cover every ROM/settings combination,
-mobile runtime, device, storage/lifecycle scenario or live scoreboard counter.
+Installed-APK startup checks do not establish full-game completion under real
+Android scheduling or cover every ROM/settings combination, device,
+storage/lifecycle scenario or live scoreboard counter.
 A synthetic fixture's `ANDROID_MEDIA_TEST PASS` marker confirms frame
 advancement, not commercial-game accuracy.

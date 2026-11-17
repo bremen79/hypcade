@@ -22,14 +22,14 @@ extraction/generation or timing model, regenerate the bundle, and rerun the
 checks. Complete ROM tables supply the policy; independently replayed full
 games supply host-only timing measurements and execution evidence.
 
-Both strategies retain the complete set of ranked ROM alternatives, including
+Both calculated strategies retain the complete source set of ranked ROM alternatives, including
 branches and retry steps absent from sampled winning games. The bundler ranks
 the continuation at each scene/step using the selected ROM policy, regardless
 of which strategy originally reached it. It preserves a policy's deliberate
 choice to wait, rather than inserting an optional action from the other policy.
 This lets guidance resume after an alternate action or a lost life.
 The source bundle retains complete graphs and value certificates. The APK stores only
-the complete ranked rule pool and a 16-bit index list for each strategy, with
+the retained ranked rule pool and a 16-bit index list for each retained strategy, with
 identical arrays shared across ROM revisions. Timing comes from live ROM state. Each list keeps that strategy's original priority order; the
 runtime binary search follows the indices without copying or expanding rows.
 The bundle checks verify index bounds, ordering and complete use of the pools.
@@ -56,7 +56,11 @@ Use `--jobs 2` to run two independent replays concurrently. Each replay has its
 own emulated machine; concurrency does not change its virtual timing.
 
 Use `--include /path/to/candidate.inc` to test a candidate without replacing the
-APK input. `--android emulator-5556` compiles and runs the same check on Android.
+APK input. Reports distinguish the requested `mode` from `effective_mode`:
+single-policy profiles map requests for Fewest inputs to retained Max score.
+The default planner checks each effective policy once per configuration. It
+reads the generated single-profile declarations and deduplicates equivalent
+selection values; focused explicit alias checks remain possible. `--android emulator-5556` compiles and runs the same check on Android.
 The source arrays carry scene/step and branch context; operator DIP settings
 are applied to the machine rather than guessed from the currently visible
 prompt. A successful finite matrix does not prove every possible retry context
@@ -100,8 +104,9 @@ The Android option runs under ART with the same relocated test Handler and
 virtual clock. It checks the Java/JNI Android backend, not real-time Android
 Handler scheduling or an installed APK's media pipeline.
 
-The default matrix covers both ROMs, levels 0–3, both strategies and queue
-phases 0/8/16. It requires the Java player to insert coins, press Start and
+The default matrix covers both ROMs, levels 0–3, retained strategies and queue
+phases 0/8/16. Both current ROMs package only Max score, so the matrix has 24
+cases; it does not repeat the same policy under a Fewest selection. It requires the Java player to insert coins, press Start and
 complete a full play with every starting life intact. `--startup-only` instead
 stops after three move presses and a positive score; it is a startup regression,
 not proof of a completed game. Logs and `report.json` retain counters and source

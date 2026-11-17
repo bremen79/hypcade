@@ -6,7 +6,8 @@ describes the current differences from upstream Hypseus Singe.
 ## v0.2.1
 
 - Improved user interface.
-- More reliable ROM-derived moves, Max score and Fewest moves policies, and Watch Mode.
+- More reliable ROM-derived moves and Watch Mode, with automatic policy retention
+  and an Off/On selector when only Max score is packaged.
 - Game difficulty and Space Ace skill selection, with its dedicated bezel.
 - Faster game-text rendering and consistent CRT filtering of game graphics and text.
 - Smaller packages and improved build tooling and documentation.

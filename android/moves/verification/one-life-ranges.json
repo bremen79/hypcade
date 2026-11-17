@@ -1002,7 +1002,18 @@
           "max": 326248
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1019,7 +1030,18 @@
           "max": 325753
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1036,7 +1058,18 @@
           "max": 326248
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1053,7 +1086,18 @@
           "max": 325753
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1070,7 +1114,18 @@
           "max": 199
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 199
+        },
+        "score": {
+          "min": 326248,
+          "max": 326619
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1087,7 +1142,18 @@
           "max": 198
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 198
+        },
+        "score": {
+          "min": 325753,
+          "max": 326124
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1104,7 +1170,18 @@
           "max": 199
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": null,
+          "max": 199
+        },
+        "score": {
+          "min": 325869,
+          "max": 326619
+        }
+      },
+      "attainment_report": "counted-attained-ranges.json"
     },
     {
       "game": "lair_e",
@@ -1121,7 +1198,18 @@
           "max": 198
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 191,
+          "max": 198
+        },
+        "score": {
+          "min": 325374,
+          "max": 326124
+        }
+      },
+      "attainment_report": "counted-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1138,7 +1226,18 @@
           "max": 326248
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1155,7 +1254,18 @@
           "max": 325753
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1172,7 +1282,18 @@
           "max": 326248
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1189,7 +1310,18 @@
           "max": 325753
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1206,7 +1338,18 @@
           "max": 199
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 199
+        },
+        "score": {
+          "min": 326248,
+          "max": 326619
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1223,7 +1366,18 @@
           "max": 198
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 198
+        },
+        "score": {
+          "min": 325753,
+          "max": 326124
+        }
+      },
+      "attainment_report": "late-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1240,7 +1394,18 @@
           "max": 199
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": null,
+          "max": 199
+        },
+        "score": {
+          "min": 325869,
+          "max": 326619
+        }
+      },
+      "attainment_report": "counted-attained-ranges.json"
     },
     {
       "game": "lair_f",
@@ -1257,7 +1422,18 @@
           "max": 198
         }
       },
-      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable"
+      "range_scope": "Support enclosure for this policy; optimal primary endpoint physically attained; other endpoints are not all proved attainable",
+      "attained_endpoints": {
+        "moves": {
+          "min": 191,
+          "max": 198
+        },
+        "score": {
+          "min": 325374,
+          "max": 326124
+        }
+      },
+      "attainment_report": "counted-attained-ranges.json"
     },
     {
       "game": "lair_ita",

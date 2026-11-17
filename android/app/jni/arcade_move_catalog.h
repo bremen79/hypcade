@@ -37,6 +37,15 @@ static inline const ArcadeEuroProfile *arcade_euro_profile(
 #define ARCADE_COST_PROFILE(game, data) {game,NULL, \
     {data##_rules_max,data##_rules_fewest}, \
     {ARCADE_COUNT(data##_rules_max),ARCADE_COUNT(data##_rules_fewest)},data##_rules}
+#define ARCADE_CINE_SINGLE_PROFILE(game, data) {game,data##_rules, \
+    {data##_rules_max,data##_rules_max}, \
+    {ARCADE_COUNT(data##_rules_max),ARCADE_COUNT(data##_rules_max)},NULL}
+#define ARCADE_COST_SINGLE_PROFILE(game, data) {game,NULL, \
+    {data##_rules_max,data##_rules_max}, \
+    {ARCADE_COUNT(data##_rules_max),ARCADE_COUNT(data##_rules_max)},data##_rules}
+#define ARCADE_EURO_SINGLE_PROFILE(game, data, per_player) {game,data##_rules, \
+    {data##_rules_max,data##_rules_max}, \
+    {ARCADE_COUNT(data##_rules_max),ARCADE_COUNT(data##_rules_max)},per_player}
 
 static inline const ArcadeCineProfile *arcade_cine_profile(
         const ArcadeCineProfile *profiles,size_t count,const char *game) {

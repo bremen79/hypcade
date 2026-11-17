@@ -1,0 +1,3032 @@
+{
+  "schema": 1,
+  "method": "Only promote a scheduler-support endpoint when an independent original-ROM execution attains it. Affine invariants translate validated scores into accepted-command counts without counting attempted pulses.",
+  "calculation": {
+    "cases": [
+      {
+        "game": "lair_e",
+        "difficulty": 0,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 197
+          },
+          "score": {
+            "min": 325753,
+            "max": 325753
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 1,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 197
+          },
+          "score": {
+            "min": 325753,
+            "max": 325753
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 2,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 198
+          },
+          "score": {
+            "min": 325753,
+            "max": 326124
+          }
+        },
+        "score_input_invariant": {
+          "formula": "score = coefficient * accepted_commands + constant",
+          "coefficient": 371,
+          "constant": 252666
+        }
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 3,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 191,
+            "max": 198
+          },
+          "score": {
+            "min": 325374,
+            "max": 326124
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 0,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 198
+          },
+          "score": {
+            "min": 326248,
+            "max": 326248
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 1,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 198
+          },
+          "score": {
+            "min": 326248,
+            "max": 326248
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 2,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 199
+          },
+          "score": {
+            "min": 326248,
+            "max": 326619
+          }
+        },
+        "score_input_invariant": {
+          "formula": "score = coefficient * accepted_commands + constant",
+          "coefficient": 371,
+          "constant": 252790
+        }
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 3,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 192,
+            "max": 199
+          },
+          "score": {
+            "min": 325869,
+            "max": 326619
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 0,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 197
+          },
+          "score": {
+            "min": 325753,
+            "max": 325753
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 1,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 197
+          },
+          "score": {
+            "min": 325753,
+            "max": 325753
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 2,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 197,
+            "max": 198
+          },
+          "score": {
+            "min": 325753,
+            "max": 326124
+          }
+        },
+        "score_input_invariant": {
+          "formula": "score = coefficient * accepted_commands + constant",
+          "coefficient": 371,
+          "constant": 252666
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 3,
+        "objective": "shortest",
+        "support": {
+          "moves": {
+            "min": 191,
+            "max": 198
+          },
+          "score": {
+            "min": 325374,
+            "max": 326124
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 0,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 198
+          },
+          "score": {
+            "min": 326248,
+            "max": 326248
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 1,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 198
+          },
+          "score": {
+            "min": 326248,
+            "max": 326248
+          }
+        },
+        "score_input_invariant": null
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 2,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 198,
+            "max": 199
+          },
+          "score": {
+            "min": 326248,
+            "max": 326619
+          }
+        },
+        "score_input_invariant": {
+          "formula": "score = coefficient * accepted_commands + constant",
+          "coefficient": 371,
+          "constant": 252790
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 3,
+        "objective": "highest-score",
+        "support": {
+          "moves": {
+            "min": 192,
+            "max": 199
+          },
+          "score": {
+            "min": 325869,
+            "max": 326619
+          }
+        },
+        "score_input_invariant": null
+      }
+    ],
+    "sources": {
+      "tools/offline-moves/late_ranges.py": "79251e312b87a39995d19b72eb1c0b57186eb4d5beda09ad170816c8ef76675e",
+      "tools/offline-moves/dl1_allocation.py": "440315a5c2ebe2e3e4df472d5fe2f96ec496822049698948e2268209eaeb3f87",
+      "tools/offline-moves/rom_proof.py": "2957d9fe23b0fb19ca5f80271622a05c2eb1dc7bb708ab5a80e8bce66e3ffb9c",
+      "tools/offline-moves/rom_tables.py": "317fb9e1040880f8661e6317b7405c3cdbd191429d6ed74a999147f453be3bc2",
+      "tools/offline-moves/verify_cost_runtime.py": "a0990ae31f3ffc20a22f5d9158862025f3d156437c5c7143de8dba800e8b6da4",
+      "tools/offline-moves/cost_runtime.py": "30b03e06e81da9e533244bb3b6985ed3dad5003f11667408426c6ba25cc2c473",
+      "tools/offline-moves/proof-inputs/us-selectors.json": "40632f18ad1999ff09317f80845e93245030c4a0b76ea87550b5f2bd8efefaf9",
+      "android/moves/strategies/lair_e.json": "32c7469112d014de20bbe4e3cc2174b5410a57150f04227cce3a5153bc2305ce",
+      "android/moves/strategies/lair_f.json": "76e79557bd63bbe57f53eddd9319838704e102eb7674abf0262cc0de7a5f7989"
+    },
+    "scope": "ROM-authenticated policy room costs and audited scheduler support. Scalar extrema need attaining executions; verified affine invariants hold over the entire support."
+  },
+  "fresh_watch": {
+    "results": [
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685871,
+          "input_events": 416,
+          "final_hash": "69fca91dee011fec076b6ddf0c77b7af"
+        },
+        "log": "lair_e-ace-d0-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685436,
+          "input_events": 414,
+          "final_hash": "6c3d3cbeb0154a304b62ad7cfd642e4b"
+        },
+        "log": "lair_e-ace-d0-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685710,
+          "input_events": 416,
+          "final_hash": "b84668ba3bd5e0256176e4bf7c1718fe"
+        },
+        "log": "lair_e-ace-d0-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684970,
+          "input_events": 414,
+          "final_hash": "1811ad8c400af6f6dd8a182ff808ecbd"
+        },
+        "log": "lair_e-ace-d0-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685672,
+          "input_events": 416,
+          "final_hash": "3194e5b586226d69ada5a944dc286612"
+        },
+        "log": "lair_e-ace-d0-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685002,
+          "input_events": 414,
+          "final_hash": "5b9583e42f6640984dfe320c59ae72c3"
+        },
+        "log": "lair_e-ace-d0-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685467,
+          "input_events": 416,
+          "final_hash": "fb03eaceeb38d492755ae0d0125ad2fd"
+        },
+        "log": "lair_e-ace-d1-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684964,
+          "input_events": 414,
+          "final_hash": "7d2e7c3354d76a1e5eff31c3729a4451"
+        },
+        "log": "lair_e-ace-d1-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685917,
+          "input_events": 416,
+          "final_hash": "24494867507159285bc8847b4f4163ef"
+        },
+        "log": "lair_e-ace-d1-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685310,
+          "input_events": 414,
+          "final_hash": "53e4a33b86632234c9cab85843466003"
+        },
+        "log": "lair_e-ace-d1-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685724,
+          "input_events": 416,
+          "final_hash": "fd17028be5dc287213b057ab5ca78ee9"
+        },
+        "log": "lair_e-ace-d1-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685178,
+          "input_events": 414,
+          "final_hash": "f9f8e70518e658254a2eeca5273c8116"
+        },
+        "log": "lair_e-ace-d1-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685677,
+          "input_events": 416,
+          "final_hash": "a18d1d7cb244a212f98c656b3154c1f5"
+        },
+        "log": "lair_e-ace-d2-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684923,
+          "input_events": 414,
+          "final_hash": "2b5ec7d67578d17d9788749a5cfba176"
+        },
+        "log": "lair_e-ace-d2-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685632,
+          "input_events": 416,
+          "final_hash": "3424a9bac64c9c83081b63f0a85352f4"
+        },
+        "log": "lair_e-ace-d2-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684982,
+          "input_events": 414,
+          "final_hash": "24c73f942f18cc6891c35201f02afe6f"
+        },
+        "log": "lair_e-ace-d2-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 689808,
+          "input_events": 416,
+          "final_hash": "2e24f689abfd072fe725ecd99acdff58"
+        },
+        "log": "lair_e-ace-d2-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 689163,
+          "input_events": 414,
+          "final_hash": "c5f5d61b699480fe4d6d1e5ee8e02249"
+        },
+        "log": "lair_e-ace-d2-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 202,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 694169,
+          "input_events": 404,
+          "final_hash": "4ba9eea7fb6e01d12df2e9ea610d051a"
+        },
+        "log": "lair_e-ace-d3-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 201,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 693325,
+          "input_events": 402,
+          "final_hash": "b73f2245f146ab53318f93742ef8f8ec"
+        },
+        "log": "lair_e-ace-d3-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 691188,
+          "input_events": 416,
+          "final_hash": "594e778ccee8ce626f1a5a282cef5899"
+        },
+        "log": "lair_e-ace-d3-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 690468,
+          "input_events": 414,
+          "final_hash": "b72ee04182eaa86db34b8db74f2a4c2a"
+        },
+        "log": "lair_e-ace-d3-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 695652,
+          "input_events": 414,
+          "final_hash": "1c54fedf8dd207634f8b0f17980fef38"
+        },
+        "log": "lair_e-ace-d3-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_e",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 206,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 694940,
+          "input_events": 412,
+          "final_hash": "a915f8225e20d0c8bdb57bce029dffe3"
+        },
+        "log": "lair_e-ace-d3-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685170,
+          "input_events": 416,
+          "final_hash": "441151c063657d9c15a01cc26a7e7803"
+        },
+        "log": "lair_f-ace-d0-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684523,
+          "input_events": 414,
+          "final_hash": "26fcec88d6437a8a9cabfb2f3b3e1065"
+        },
+        "log": "lair_f-ace-d0-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685550,
+          "input_events": 416,
+          "final_hash": "a217bc8208bf63cc28ef8a3604c55dfb"
+        },
+        "log": "lair_f-ace-d0-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684883,
+          "input_events": 414,
+          "final_hash": "512e359cb43b839edd388a6f33695431"
+        },
+        "log": "lair_f-ace-d0-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685258,
+          "input_events": 416,
+          "final_hash": "1336beb9105c9c41403fb1388ee51b82"
+        },
+        "log": "lair_f-ace-d0-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 0,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684566,
+          "input_events": 414,
+          "final_hash": "baa7215582c390c5c2a35562367b2762"
+        },
+        "log": "lair_f-ace-d0-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 684942,
+          "input_events": 416,
+          "final_hash": "e71cf2471ff184135c57bcd33b43552c"
+        },
+        "log": "lair_f-ace-d1-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684287,
+          "input_events": 414,
+          "final_hash": "04046df7d02259437159e0af8fb5c548"
+        },
+        "log": "lair_f-ace-d1-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685483,
+          "input_events": 416,
+          "final_hash": "c850f14736223fbaff0759720191c441"
+        },
+        "log": "lair_f-ace-d1-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 684844,
+          "input_events": 414,
+          "final_hash": "cb1ce468469f7f76de020da01b954091"
+        },
+        "log": "lair_f-ace-d1-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685684,
+          "input_events": 416,
+          "final_hash": "8dc63584ccbb34168f3dd9425e71f2a9"
+        },
+        "log": "lair_f-ace-d1-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 1,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685033,
+          "input_events": 414,
+          "final_hash": "1b97fed38a6121837a8edd262a4b5e0c"
+        },
+        "log": "lair_f-ace-d1-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 689187,
+          "input_events": 416,
+          "final_hash": "afd9c31042878da115da243c23596216"
+        },
+        "log": "lair_f-ace-d2-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 688536,
+          "input_events": 414,
+          "final_hash": "2129bdb980ee1521c10b5158077f56ca"
+        },
+        "log": "lair_f-ace-d2-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685956,
+          "input_events": 416,
+          "final_hash": "a538b90ac093ac1b68b32ca7c4a45508"
+        },
+        "log": "lair_f-ace-d2-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685391,
+          "input_events": 414,
+          "final_hash": "577e8518c712a7b8f3c98d8d57e65737"
+        },
+        "log": "lair_f-ace-d2-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326248,
+          "moves": 208,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326248,
+          "accepted_commands": 0,
+          "advances": 685947,
+          "input_events": 416,
+          "final_hash": "d312542f6dd53b0282e29d8bdec4ff15"
+        },
+        "log": "lair_f-ace-d2-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 2,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 325753,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 325753,
+          "accepted_commands": 0,
+          "advances": 685117,
+          "input_events": 414,
+          "final_hash": "e0431e06ebe25a12954918103d43b389"
+        },
+        "log": "lair_f-ace-d2-q16-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 693678,
+          "input_events": 414,
+          "final_hash": "d559f7b9338342f067cce6b3725e1d67"
+        },
+        "log": "lair_f-ace-d3-q0-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 0,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 206,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 693026,
+          "input_events": 412,
+          "final_hash": "e44d3b7206d3d802f80b8ecd1e6df68d"
+        },
+        "log": "lair_f-ace-d3-q0-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 207,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 698028,
+          "input_events": 414,
+          "final_hash": "10bbaf16dcbd3a709e3ed2b2b4837e9b"
+        },
+        "log": "lair_f-ace-d3-q8-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 8,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 206,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 697183,
+          "input_events": 412,
+          "final_hash": "705b253f15f7c1570508c49a1dac3dec"
+        },
+        "log": "lair_f-ace-d3-q8-00-2-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 1,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 1,
+          "score": 326619,
+          "moves": 203,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326619,
+          "accepted_commands": 0,
+          "advances": 691028,
+          "input_events": 406,
+          "final_hash": "c075ede62cb49ac994c5ee819d333872"
+        },
+        "log": "lair_f-ace-d3-q16-00-1-detour0.log"
+      },
+      {
+        "game": "lair_f",
+        "skill": "ace",
+        "difficulty": 3,
+        "input_phase": 16,
+        "start": 0,
+        "start_delay": 0,
+        "mode": 2,
+        "detour": 0,
+        "detour_applied": false,
+        "verified": true,
+        "result": {
+          "type": "watch_replay",
+          "verified": true,
+          "mode": 2,
+          "score": 326124,
+          "moves": 202,
+          "accepted_commands": 0,
+          "rom_end": null,
+          "detour_applied": false,
+          "differences": 0,
+          "intentional_death": false,
+          "losses": 0
+        },
+        "independent_replay": {
+          "type": "watch_physical_replay",
+          "verified": true,
+          "score": 326124,
+          "accepted_commands": 0,
+          "advances": 690306,
+          "input_events": 404,
+          "final_hash": "8143f03016c0a4d39934a9e57cd9e104"
+        },
+        "log": "lair_f-ace-d3-q16-00-2-detour0.log"
+      }
+    ],
+    "backend": {
+      "kind": "host"
+    },
+    "include_sha256": "cb2761790b818b485bfaa0470b279f66cee20d9d2b1e9a2170e6ab2de9fc3aa7",
+    "source_sha256": {
+      "tools/offline-moves/watch_moves.c": "f6cfcf6a5bc461bce4d332a36ef2de27dd7d0791aa794af0f94aa33a5b520d1b",
+      "tools/offline-moves/rom_routes.c": "f9d5dcaf289bad17350e0d78b7bf37a8c0b7df0d4d318409d9a7f860316d33ce",
+      "tools/offline-moves/score_routes.c": "c42418019bb41b8c63d674fb5f9920d29e99e87bbd1cb3fcc9a35bf4ab101e70",
+      "tools/offline-moves/score_trial.h": "417e1117d8342ee5ff873c940fa025432de6050cb466536b44b46608adbafb0f",
+      "tools/offline-moves/simulation.c": "c6cccb7e7b0ffc09f1bd720a0c1ac5b8598bffab16510f16c9f40aa49606ebcb",
+      "tools/offline-moves/board_adapter.c": "7b7d49141a5c5aa1cb52da4b93047ff3c5c63d1ec7919e067bc00b69ef4fe196",
+      "tools/offline-moves/offline_board.h": "30fee1fba3121f22f9c31e1d9d24051fa946d00ab084a69f7541302addd13c50",
+      "tools/offline-moves/rom_catalog.inc": "e81e94f7f6df4cb95dd2113143d2d165c635ead2895c3a87c6547955a7a01fe9",
+      "tools/offline-moves/verify_watch_moves.py": "e47a638e5da0e9a48404f93a65ef5e030bc0794e4a06684f9a4c46c1fe19faa7",
+      "android/app/jni/arcade_move_policy.h": "6b46352c03e28694c622ab90ff5fc29b02c60934b863ccb6df3b2e28782e40d7",
+      "android/app/jni/arcade_signature.h": "ca5b88a792bebd792d538e0169eeb67a80d85fded706681a0fcc8096b53be969",
+      "android/app/jni/arcade_move_catalog.h": "b269447b2c90e02fc942863c935fb92a46c89c88698b1493b77267457c49a75f"
+    },
+    "seed": 20261115,
+    "all_passed": true,
+    "completed": 48,
+    "planned": 48,
+    "intentional_miss_at": 0,
+    "detours_requested": 0,
+    "detours_exercised": 0,
+    "all_scenes_proven": false,
+    "wall_seconds": 260.441,
+    "method": "Packaged ROM-state selector, original CPU/player, IRQ guidance, 8ms controller polling, 17ms SDL input delivery with varied phases, 100ms input holds. Mode 0 tests Off selecting Max score for automation.",
+    "limitations": "Headless input timing model; not a physical Android device test. No claim of all retry contexts or global optimality."
+  },
+  "fresh_classic": {
+    "cases": [
+      {
+        "game": "lair_e",
+        "difficulty": 2,
+        "objective": "highest-score",
+        "verified": true,
+        "trace_sha256": "24d61b62a97a1937e402323832e783d034d0a8a3480dceca6e9baa3a9d19ceeb",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 326619,
+          "move_count": 199,
+          "steps": 199,
+          "root_hash": "8cdaae6b5910239da76dbc0357a067ca",
+          "final_hash": "a335e20be493262148e2b1f54a35bf1e",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5407,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 2,
+        "objective": "shortest",
+        "verified": true,
+        "trace_sha256": "7acc429ad7774d9cb73d51db32888d3cef8af1c9b5b87e47c5b6119e8a86912f",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 325753,
+          "move_count": 197,
+          "steps": 197,
+          "root_hash": "8cdaae6b5910239da76dbc0357a067ca",
+          "final_hash": "ac7f55f04dbcbf0146f491379eea7172",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5407,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 3,
+        "objective": "highest-score",
+        "verified": true,
+        "trace_sha256": "ae368c0506c56d0cb0e4edcfbe8ae1658e6eafc095a591d2543543ed2bf42abb",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 326619,
+          "move_count": 194,
+          "steps": 194,
+          "root_hash": "24edda12c984fdee2bc4e91f51f9afed",
+          "final_hash": "941f1643c2bdf8828da97dc095d55ee5",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5407,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_e",
+        "difficulty": 3,
+        "objective": "shortest",
+        "verified": true,
+        "trace_sha256": "8a925d98ffdf64a08b0841d267c433617cf73a62e35cbfc69d558d01187bf124",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 325374,
+          "move_count": 191,
+          "steps": 191,
+          "root_hash": "24edda12c984fdee2bc4e91f51f9afed",
+          "final_hash": "4bb011b343e28c3f67ddd955f69f4db0",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5407,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 2,
+        "objective": "highest-score",
+        "verified": true,
+        "trace_sha256": "caae8cf378fbf12b5cb2cfcb036e736deca2948f27c02446a0cf1d707ea4b65f",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 326619,
+          "move_count": 199,
+          "steps": 199,
+          "root_hash": "7abc152c27dd17d7b8546692e8bdfd34",
+          "final_hash": "7d8afc641c9076987532c829cbb6b683",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5516,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 2,
+        "objective": "shortest",
+        "verified": true,
+        "trace_sha256": "da12a2d6983f4f1f047302be40b339dd86e185591543ab1ffb18a49b6a27b3ea",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 325753,
+          "move_count": 197,
+          "steps": 197,
+          "root_hash": "7abc152c27dd17d7b8546692e8bdfd34",
+          "final_hash": "badc48026ebe26a15ab65ac537ade08e",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5516,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 3,
+        "objective": "highest-score",
+        "verified": true,
+        "trace_sha256": "564988b6242f62c07f3d90e2f62fc1e382e75cbcc25010d5680e4fa547797d79",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 326619,
+          "move_count": 194,
+          "steps": 194,
+          "root_hash": "a885de18f1ac8c54ba2a158faa8cdfcb",
+          "final_hash": "eb2a4ea4d5af34e3c90c34c4fef57a6c",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5516,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      },
+      {
+        "game": "lair_f",
+        "difficulty": 3,
+        "objective": "shortest",
+        "verified": true,
+        "trace_sha256": "b259b9e0966b76e664c10dcf18d9019b67f795fb48e0e5153195b6df5cf30d51",
+        "replay": {
+          "type": "replay",
+          "verified": true,
+          "terminal": true,
+          "score": 325374,
+          "move_count": 191,
+          "steps": 191,
+          "root_hash": "a885de18f1ac8c54ba2a158faa8cdfcb",
+          "final_hash": "21ddc93775b286deaae6e252c1a3cde5",
+          "lives": 5
+        },
+        "rom_end": {
+          "type": "rom_end",
+          "verified": true,
+          "handler_pc": 5516,
+          "additional_inputs": 0,
+          "during_replay": true
+        }
+      }
+    ],
+    "sources": {
+      "tools/offline-moves/score_routes.c": "c42418019bb41b8c63d674fb5f9920d29e99e87bbd1cb3fcc9a35bf4ab101e70",
+      "tools/offline-moves/score_trial.h": "417e1117d8342ee5ff873c940fa025432de6050cb466536b44b46608adbafb0f",
+      "tools/offline-moves/score_routes.py": "f25bb1a5a3d1ad6535d7eec552ecc569ba73f5daf4d29f0bc857d874e44ebee3",
+      "tools/offline-moves/simulation.c": "c6cccb7e7b0ffc09f1bd720a0c1ac5b8598bffab16510f16c9f40aa49606ebcb",
+      "tools/offline-moves/moves.py": "402f22733e8daa8c4b25576d7313b28845586217236f7a4023237ae4134c8dd6",
+      "tools/offline-moves/board_adapter.c": "7b7d49141a5c5aa1cb52da4b93047ff3c5c63d1ec7919e067bc00b69ef4fe196",
+      "tools/offline-moves/offline_board.h": "30fee1fba3121f22f9c31e1d9d24051fa946d00ab084a69f7541302addd13c50",
+      "tools/offline-moves/rom_catalog.inc": "e81e94f7f6df4cb95dd2113143d2d165c635ead2895c3a87c6547955a7a01fe9",
+      "tools/offline-moves/vendor/provenance.json": "bbeccd7589810ef13e1e36e63a6126adbc139de57bcabc5d2681a527b24da19b",
+      "android/app/jni/arcade_signature.h": "ca5b88a792bebd792d538e0169eeb67a80d85fded706681a0fcc8096b53be969",
+      "android/app/jni/arcade_move_policy.h": "6b46352c03e28694c622ab90ff5fc29b02c60934b863ccb6df3b2e28782e40d7",
+      "tools/offline-moves/verify_cine_end.py": "cabc989f04760331c0152a1f19cefa677aec02f42d91b44970c15690f726ccc3",
+      "tools/offline-moves/cine_end_replay.c": "ce92769a2e733db04870e63778256bf357f605be16d83317550b5a4ae668bf0f",
+      "tools/offline-moves/rom_moves.py": "ff6a7d2540b112f6a21d86f3ef86a315c03bd99a3fd604624d4841f73dfaf8c0",
+      "tools/offline-moves/cine_room_optimality.py": "df98282f5b6ff1ca8939ff381da01ef382cd7f0f640571c150665244c41cc8fa"
+    }
+  },
+  "cases": [
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/1",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/1",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/1",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/1",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/7",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/7",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/7",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/7",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 198
+        },
+        "score": {
+          "min": 325753,
+          "max": 326124
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/13",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326124,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/17",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/13",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326124,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/17",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 191,
+          "max": null
+        },
+        "score": {
+          "min": 325374,
+          "max": 326124
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325374,
+              "moves": 191
+            },
+            "witness": "fresh_classic/cases/3",
+            "method": "Independent original-ROM accepted-transition replay and successful end-handler observation."
+          },
+          "max": null
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325374,
+              "moves": 191
+            },
+            "witness": "fresh_classic/cases/3",
+            "method": "Independent original-ROM accepted-transition replay and successful end-handler observation."
+          },
+          "max": {
+            "point": {
+              "score": 326124
+            },
+            "witness": "fresh_watch/results/19",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/0",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/0",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/0",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/0",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/6",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/6",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/6",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/6",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 199
+        },
+        "score": {
+          "min": 326248,
+          "max": 326619
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/12",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326619,
+              "moves": 199
+            },
+            "witness": "fresh_watch/results/16",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/12",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326619,
+              "moves": 199
+            },
+            "witness": "fresh_watch/results/16",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_e",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": null,
+          "max": null
+        },
+        "score": {
+          "min": null,
+          "max": 326619
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": null,
+          "max": null
+        },
+        "score": {
+          "min": null,
+          "max": {
+            "point": {
+              "score": 326619
+            },
+            "witness": "fresh_watch/results/18",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/25",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/25",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/25",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/25",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 197
+        },
+        "score": {
+          "min": 325753,
+          "max": 325753
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/31",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/31",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/31",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/31",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 197,
+          "max": 198
+        },
+        "score": {
+          "min": 325753,
+          "max": 326124
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/39",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326124,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/37",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325753,
+              "moves": 197
+            },
+            "witness": "fresh_watch/results/39",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326124,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/37",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "shortest",
+      "attained_endpoints": {
+        "moves": {
+          "min": 191,
+          "max": null
+        },
+        "score": {
+          "min": 325374,
+          "max": 326124
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 325374,
+              "moves": 191
+            },
+            "witness": "fresh_classic/cases/7",
+            "method": "Independent original-ROM accepted-transition replay and successful end-handler observation."
+          },
+          "max": null
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 325374,
+              "moves": 191
+            },
+            "witness": "fresh_classic/cases/7",
+            "method": "Independent original-ROM accepted-transition replay and successful end-handler observation."
+          },
+          "max": {
+            "point": {
+              "score": 326124
+            },
+            "witness": "fresh_watch/results/43",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 0,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/24",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/24",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/24",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/24",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 1,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 198
+        },
+        "score": {
+          "min": 326248,
+          "max": 326248
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/30",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/30",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/30",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          },
+          "max": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/30",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Fixed accepted-input sum over all room allocations."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 2,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": 198,
+          "max": 199
+        },
+        "score": {
+          "min": 326248,
+          "max": 326619
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/38",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326619,
+              "moves": 199
+            },
+            "witness": "fresh_watch/results/36",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        },
+        "score": {
+          "min": {
+            "point": {
+              "score": 326248,
+              "moves": 198
+            },
+            "witness": "fresh_watch/results/38",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          },
+          "max": {
+            "point": {
+              "score": 326619,
+              "moves": 199
+            },
+            "witness": "fresh_watch/results/36",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used. Accepted-input count follows from the independently verified score/input affine invariant."
+          }
+        }
+      }
+    },
+    {
+      "game": "lair_f",
+      "skill": "ace",
+      "difficulty": 3,
+      "objective": "highest-score",
+      "attained_endpoints": {
+        "moves": {
+          "min": null,
+          "max": null
+        },
+        "score": {
+          "min": null,
+          "max": 326619
+        }
+      },
+      "evidence": {
+        "moves": {
+          "min": null,
+          "max": null
+        },
+        "score": {
+          "min": null,
+          "max": {
+            "point": {
+              "score": 326619
+            },
+            "witness": "fresh_watch/results/42",
+            "method": "Original-CPU Watch play and independent physical-input replay; attempted-pulse count is not used."
+          }
+        }
+      }
+    }
+  ]
+}

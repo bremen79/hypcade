@@ -764,7 +764,7 @@ public final class LauncherActivity extends Activity implements GameData.Listene
         intent.putExtra(HypseusActivity.EXTRA_WATCH, watchMode);
         intent.putExtra(HypseusActivity.EXTRA_START_SKILL, startSkill);
         GuidanceSupport support = GuidanceSupport.forArguments(arguments);
-        intent.putExtra("move_mode", support.visual ? MoveMode.selected(moves) : MoveMode.OFF);
+        intent.putExtra("move_mode", support.visual ? MoveMode.selected(arguments[0], moves) : MoveMode.OFF);
         intent.putExtra("timing_cue", cue && support.cue);
         intent.putExtra(HypseusActivity.EXTRA_TOUCH, !BuildConfig.ARCADE && setup.touchControls());
         intent.putExtra(HypseusActivity.EXTRA_SMOKE, smoke);

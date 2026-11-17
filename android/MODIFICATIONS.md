@@ -141,8 +141,8 @@ retry-only scenes absent from sampled winning games. Successful independent
 replays retain timing measurements in the host audit rather than defining
 runtime coverage. Replay timing arrays are not compiled into the APK.
 The selector matches live ROM-loaded controls, windows and outcomes, preserving
-conditional inputs and skill-dependent timers. Both strategies remain available
-after alternate actions or a lost life. Structural checks reconstruct the
+conditional inputs and skill-dependent timers. The retained policies remain
+available after alternate actions or a lost life. Structural checks reconstruct the
 complete ROM inventory and reject missing decoded windows or ranked playable
 alternatives. Death, ignored and otherwise non-playable rules remain auditable
 with explicit exclusions. A player receives one selected action;
@@ -151,8 +151,16 @@ Shared rule pools use compact 16-bit strategy indices. The running ROM supplies
 timers for its current skill, operator setting and in-game difficulty progression;
 no separate expanded timing table is loaded for a difficulty level.
 
-Show moves can be Off, Max score or Fewest moves. Watch Mode follows the chosen
-set, defaulting to Max score when the move display is Off. Rankings use inputs
+After calculating both objectives, the generator applies the one-input
+retention rule using ROM room costs and scheduler contracts. It packages only
+Max score for US DL A–F and European/Italian DL; DLE21, A3 and SAE retain both.
+The complete calculated rankings and certificates remain in the source audit.
+The [ROM policy summary](moves/README.md) lists the packaged sets and calculated
+input/score ranges for every supported profile.
+The generated Java catalog and native profiles describe the same retained sets;
+the build gate rejects a mismatch. Single-policy games show Off / On, while
+DLE21, A3 and SAE offer Off, Max score and Fewest moves. Watch Mode follows the
+chosen set, defaulting to Max score when the display is Off. Rankings use inputs
 and rewards inside the current scene plus the chosen exit's continuation cost.
 Independent ROM decision-DAG and scheduler proofs establish the requested
 one-life primary objectives: an attainable smallest input count or highest
@@ -181,8 +189,9 @@ can share one data set. Combining verified game bundles preserves each game's
 original replay evidence and source fingerprints. SAE skill selection uses
 its operator DIP setting so startup retries cannot lose a skill-button press.
 
-US Dragon’s Lair revisions A–F also have complete ROM-derived policies for
-both strategies. Identical immutable arrays are stored once across revisions;
+US Dragon's Lair revisions A–F have complete calculated ROM-derived policies;
+only the retained Max score rankings are compiled into the APK. Identical
+immutable arrays are stored once across revisions;
 replay timing evidence remains in the host audit. The host verifier supplies a
 PR-7820 adapter for A–C without changing the pinned vendor sources.
 

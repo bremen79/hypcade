@@ -9,10 +9,28 @@ import json
 import os
 from pathlib import Path
 import random
+import re
 import subprocess
 import time
 import moves as move_tools
 import android_runner
+
+
+def unique_modes(modes, single_policy):
+    """Run one representative per effective policy, preferring visible Max."""
+    result = []
+    for mode in (1, 2, 0):
+        if mode not in modes:
+            continue
+        effective = 2 if mode == 2 and not single_policy else 1
+        if not any((2 if m == 2 and not single_policy else 1) == effective for m in result):
+            result.append(mode)
+    return result
+
+
+def single_policy_games(include):
+    return set(re.findall(r'ARCADE_(?:CINE|COST|EURO)_SINGLE_PROFILE\("([^"]+)"',
+                          Path(include).read_text()))
 
 
 def check_case(binary, run, args, case):
@@ -81,9 +99,11 @@ def main():
     configurations=[(g,s,d) for g in games for d in range(move_tools.rom_tables.difficulty_count(g)) for s in move_tools.rom_tables.skills(g)]
     phases=a.input_phase or (0,8,16)
     modes=a.mode or (0,1,2);detours=a.detour or (0,)
-    planned=len(configurations)*a.starts*len(modes)*len(phases)*len(detours)
+    singles=single_policy_games(a.include)
+    per_game_modes={game:unique_modes(modes,game in singles) for game in games}
     cases=[(g,s,d,q,i,delay,m,t) for g,s,d in configurations for q in phases
-           for i,delay in enumerate(delays) for m in modes for t in detours]
+           for i,delay in enumerate(delays) for m in per_game_modes[g] for t in detours]
+    planned=len(cases)
     pool=ThreadPoolExecutor(max_workers=a.jobs)
     futures=[]
     try:
@@ -93,6 +113,7 @@ def main():
             report=dict(results=results,backend=backend,include_sha256=include_sha256,source_sha256=sources,seed=a.seed,all_passed=len(results)==planned and all(x['verified'] for x in results),completed=len(results),planned=planned,
                         intentional_miss_at=a.miss_at,
                         detours_requested=sum(x['detour']>0 for x in results),detours_exercised=sum(x['detour_applied'] for x in results),
+                        retained_modes_by_game=per_game_modes,
                         all_scenes_proven=False,wall_seconds=round(time.monotonic()-started,3),
                         method='Packaged ROM-state selector, original CPU/player, IRQ guidance, 8ms controller polling, 17ms SDL input delivery with varied phases, 100ms input holds. Mode 0 tests Off selecting Max score for automation.',
                         limitations='Headless input timing model; not a physical Android device test. No claim of all retry contexts or global optimality.')

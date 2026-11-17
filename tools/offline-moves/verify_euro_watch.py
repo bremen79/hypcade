@@ -17,6 +17,7 @@ import time
 import euro_moves
 import euro_tables
 from verify_dl2_watch import driver_method
+from verify_watch_moves import unique_modes, single_policy_games
 
 REPO=euro_moves.REPO
 
@@ -137,14 +138,20 @@ def main():
     paths+=sorted(str(x.relative_to(REPO)) for package in ('os','util')
                   for x in (REPO/'android/tests/watch-stubs/android'/package).glob('*.java'))
     paths+=['android/tests/watch-stubs/org/hypseus/android/BuildConfig.java']
+    paths += ['tools/offline-moves/verify_watch_moves.py']
+    games=list(a.game or euro_tables.LAYOUTS)
+    singles=single_policy_games(REPO/'android/app/jni/arcade_euro_moves.inc')
+    modes={game:unique_modes(a.mode or (1,2),game in singles) for game in games}
+    planned=sum(len(modes[game]) for game in games)*len(a.level or range(4))*len(a.input_phase or (0,8,16))
     report=dict(backend='android-x86-java-jni' if a.android else 'host-java-jni',startup_only=a.startup_only,all_passed=False,results=[],
+                planned=planned,retained_modes_by_game=modes,
                 sources={x:hashlib.sha256((REPO/x).read_bytes()).hexdigest() for x in paths})
-    for game in a.game or euro_tables.LAYOUTS:
+    for game in games:
         rom=a.output/(game+'.bin');rom.write_bytes(euro_tables.load(a.roms/(game+'.zip'),game))
         if a.android:
             subprocess.run(adb+['push',str(rom),remote+'/'+rom.name],check=True,stdout=subprocess.DEVNULL)
         for level in a.level or range(4):
-          for mode in a.mode or (1,2):
+          for mode in modes[game]:
             for phase in a.input_phase or (0,8,16):
                 log=a.output/(game+'-level%d-mode%d-phase%d.log'%(level,mode,phase));began=time.monotonic()
                 with log.open('w') as out:
@@ -160,7 +167,7 @@ def main():
                 row=dict(game=game,level=level,mode=mode,input_phase=phase,verified=verified,returncode=result.returncode,seconds=round(time.monotonic()-began,3),final=final)
                 report['results'].append(row);(a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
                 print(json.dumps(row),flush=True)
-    report['all_passed']=all(x['verified'] for x in report['results'])
+    report['all_passed']=len(report['results'])==planned and all(x['verified'] for x in report['results'])
     (a.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     if not report['all_passed']:raise SystemExit(1)
 

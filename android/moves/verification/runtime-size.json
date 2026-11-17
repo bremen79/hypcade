@@ -17,15 +17,16 @@
     }
   },
   "cost_future": {
-    "bytes": 106496,
+    "bytes": 100462,
     "by_type": {
       "ArcadeCostRule": 43904,
-      "uint16_t": 38208,
+      "uint16_t": 32174,
       "ArcadeRomRule": 17394,
       "ArcadeEuroRule": 6990
     }
   },
-  "live_rom_saving_bytes": 160304,
-  "committed_saving_bytes": 346384,
-  "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings."
+  "live_rom_saving_bytes": 166338,
+  "committed_saving_bytes": 352418,
+  "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings.",
+  "policy_retention_saving_bytes": 6034
 }

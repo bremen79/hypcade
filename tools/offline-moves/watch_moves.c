@@ -134,7 +134,7 @@ int main(int argc,char **argv) {
                 if(fclose(watch_trace))ok=false;
                 watch_trace=NULL;offline_run_hook=NULL;
             }
-            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"score\":%d,\"moves\":%u,\"accepted_commands\":%u,\"rom_end\":%s,\"detour_applied\":%s,\"differences\":%u,\"intentional_death\":%s,\"losses\":%u}\n",ok?"true":"false",mode,score,moves_count,watch_accepted,ace?(watch_end?"true":"false"):"null",detour_applied?"true":"false",detour_seen,missed?"true":"false",losses);route_monitor=NULL;return ok?0:3;
+            printf("{\"type\":\"watch_replay\",\"verified\":%s,\"mode\":%u,\"effective_mode\":%u,\"score\":%d,\"moves\":%u,\"accepted_commands\":%u,\"rom_end\":%s,\"detour_applied\":%s,\"differences\":%u,\"intentional_death\":%s,\"losses\":%u}\n",ok?"true":"false",mode,(strategy && policy->rule_order[0]!=policy->rule_order[1])?2:1,score,moves_count,watch_accepted,ace?(watch_end?"true":"false"):"null",detour_applied?"true":"false",detour_seen,missed?"true":"false",losses);route_monitor=NULL;return ok?0:3;
         }
         if(m.board.cycles>=guide) {
             selected=(ArcadeMoveSelection){0,false,0};

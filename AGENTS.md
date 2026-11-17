@@ -80,6 +80,7 @@ from the application version in `android/app/build.gradle`.
 
 ## Workspace and build hygiene
 
+- Any run should use little memory and little cpu, ask the user permission to run heavier computations.
 - Put manually managed local tools, scratch output and private notes under the
   visible, ignored `local-tools/` directory. Leave provider metadata and
   tool-managed caches in their expected locations.

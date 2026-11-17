@@ -2,7 +2,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 package org.hypseus.android;
 
-/** Shared launcher/JNI values for the two bundled move policies. */
+/** Shared launcher/JNI values; availability comes from the generated catalog. */
 final class MoveMode {
     static final int OFF = 0;
     static final int MAX_SCORE = 1;
@@ -17,12 +17,12 @@ final class MoveMode {
     }
 
     static String[] labels(String game) {
-        return "lair2".equals(game) ? ROM_LABELS : LABELS;
+        return MovePolicyCatalog.hasFewest(game) ? LABELS : ROM_LABELS;
     }
 
     static int selected(String game, int mode) {
         int valid = selected(mode);
-        return "lair2".equals(game) && valid != OFF ? MAX_SCORE : valid;
+        return !MovePolicyCatalog.hasFewest(game) && valid != OFF ? MAX_SCORE : valid;
     }
 
 }

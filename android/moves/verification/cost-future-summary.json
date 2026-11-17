@@ -5,14 +5,14 @@
   "complete_rom_profiles": 11,
   "settings_objectives": 102,
   "host_checks": {
-    "cine_normal_independent_replays": 258,
-    "cine_recovery_independent_replays": 258,
-    "european_java_jni_cases": 48,
+    "cine_normal_independent_replays": 186,
+    "cine_recovery_independent_replays": 186,
+    "european_java_jni_cases": 24,
     "classic_primary_attainment_replays": 50,
     "space_ace_primary_attainment_replays": 36,
-    "remaining_unit_tests": 213
+    "remaining_unit_tests": 221
   },
-  "linked_apk_validation": "Four signed release APKs built and checked; complete Android API-25 x86 harness matrices and two full installed-APK launcher plays passed.",
+  "linked_apk_validation": "Four signed release APKs built and package-checked; release lint passed. Current API-25 accelerated matrices and installed arcade/mobile launcher and startup checks passed; see android-apk-plays.json for exact scope.",
   "runtime_size": {
     "previous_live_rom": {
       "bytes": 266800,
@@ -32,48 +32,36 @@
       }
     },
     "cost_future": {
-      "bytes": 106496,
+      "bytes": 100462,
       "by_type": {
         "ArcadeCostRule": 43904,
-        "uint16_t": 38208,
+        "uint16_t": 32174,
         "ArcadeRomRule": 17394,
         "ArcadeEuroRule": 6990
       }
     },
-    "live_rom_saving_bytes": 160304,
-    "committed_saving_bytes": 346384,
-    "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings."
-  },
-  "cleanup": {
-    "superseded_bundle_bytes": 187536593,
-    "removed_analysis_bytes": 899894556,
-    "retained_roms": 12,
-    "retained_scratch_sources": 3,
-    "removed_previous_integration_bytes": 369506081,
-    "removed_extra_analysis_scripts": 40,
-    "removed_associated_tests": 6,
-    "removed_redundant_native_checkers": 2,
-    "removed_obsolete_guides": 5,
-    "individual_witness_files_consolidated": 50,
-    "removed_other_run_output_bytes": 187443044,
-    "removed_final_duplicate_apk_and_probe_bytes": 56610466
+    "live_rom_saving_bytes": 166338,
+    "committed_saving_bytes": 352418,
+    "scope": "Unique native rule/index array payload including C padding; excludes catalogs, selector code, linking and APK compression. Not linked APK savings.",
+    "policy_retention_saving_bytes": 6034
   },
   "reports": {
-    "runtime-size.json": "55bff603aba7c6739e9a447edb38fe6aa70ea418b56541bf57028e07d85b7118",
-    "euro-watch.json": "4896cbafe35a1163e1fdb23e81d7473e9ede0f268eafa9c4977beccb91cf6e53",
-    "cine-watch.json": "a5c1db399818028a6340f71c183be92455cfebd1c793ca2ab266f7f7adbc953e",
-    "arm-guidance-objects.json": "70bd6ba771e6cc8874ff7757b179e8f309b4e90ffe89a17b4419dd92cfd53cda",
+    "runtime-size.json": "ca31b43d648773d6e4c33608d41c09dbc58cc060b23332eeff2b25f0f8e4f08c",
+    "euro-watch.json": "88e85c0ea04ad546fc7ca7fc5c14b02bad1b78f95c9584fa020398e41f379c36",
+    "cine-watch.json": "5cab4df1e5d80bf38d50cad69d198fc75c4ced4cf8cdb7a3e0352374023a7e18",
     "space-ace-attainment.json": "d7622879efa81850e5b8a3b400dbdf39da65bb269183e4f15d6a915cc24ee3ba",
-    "one-life-ranges.json": "4d5fdd175f207e010721e1b2da58cc4aaa570a5049fc34ce6d69959d01766f7c",
+    "one-life-ranges.json": "fbce32989007ee030b1f8a98217b425a3d755e32bcf77651d1c026e9a83738fb",
     "classic-scheduler-audit.json": "8da3cf0e83d4b4126883aa05fa0b15588f6ab42b37cbd4d9a799887fe135d4b8",
-    "cine-recovery.json": "bb6cfe8461252a036801fd7dd7898843a664d74758578271d52ce29e8e6127a5",
+    "cine-recovery.json": "e96101435aef68f0336e222fb5eb00816a5ddc052c987652fb7a2dc911bd376d",
     "classic-attainment.json": "3152cea091b9c7e38b99fed08ee1f3ee267f471ba1f6c4bf6d6b355fbce9aa96",
     "space-ace-rules-audit.json": "10f200b982130b0a77a61f6a000d666fb4320fa0c48308a36d8369e8cebdeb90",
-    "android-apk-plays.json": "21033b10b9a57095be1f3f444c87f4ec15f30bd291068574714587e592a9a566",
-    "android-cine-recovery.json": "730109b69b9f766255e85b3782f63943b26f2912ef220843dca0897eabb9ca8b",
-    "android-cine-watch.json": "e41b339a7f049f3d3bb1e3c2266a1d23e2caebfd0e08125ef5c6764899c9b423",
-    "android-euro-watch.json": "f8b1a4c7329736f5835a092025ed4c78dbc1403cd62c7c07f25681a24f8440da",
-    "release-apks.json": "907d4895a7f6548fec38a0c316af6de2cdb357a0f74c1b1d2d87283fc5358d77"
+    "android-apk-plays.json": "3a21a8e7fd52c874f3277d18be1e4195e95c79e7361645d83c271522c866f429",
+    "android-cine-watch.json": "adfb5c7af71137fa3dfe106c8be983fa54a517507babc50ff434ecb1823b3531",
+    "android-euro-watch.json": "801bcaa58cd125fae1e8b69f02df05d75af4351ffc9cf459c61e6e853ca338b2",
+    "release-apks.json": "d255e5b90c070d49af0a6bddc2447c6873d5fae0d5e4a6e154507fe590d70f1a",
+    "late-attained-ranges.json": "89e047ecf381e4d62ef84f8f7c81d746a51b629764288b3346f26391e04cdde9",
+    "counted-attained-ranges.json": "abbfe13b5571a15c57bddf5d10339b54ebe206b81d0c729e08241b2690f46fad",
+    "policy-retention.json": "8f535390efb30a5c5552cc8ccddb1d13a47481d345ac1f6373be8fd4b9546d29"
   },
   "future_rom_tools": {
     "directory": "tools/offline-moves/future_roms",
@@ -83,73 +71,188 @@
     "production_dependency": false
   },
   "android_checks": {
-    "api": 25,
-    "abi": "x86",
-    "cine_normal": 258,
-    "cine_deliberate_death_recovery": 258,
-    "european_java_jni": 48,
-    "installed_apk_full_plays": 2,
-    "emulator_shutdown": true
+    "harness_api": 25,
+    "harness_abi": "x86",
+    "cine_normal": 186,
+    "cine_deliberate_death_recovery_rerun": false,
+    "european_java_jni": 24,
+    "installed_apk_full_plays": 0,
+    "installed_arcade_policy_startups": 14,
+    "installed_mobile_policy_startups": 2,
+    "launcher_profiles_per_flavor": 12,
+    "mobile_api": 35,
+    "mobile_abi": "x86_64",
+    "emulators_shutdown": true
   },
   "release_apks": {
     "cases": [
       {
         "flavor": "arcade",
         "abi": "armeabi-v7a",
-        "apk_bytes": 5993441,
-        "sha256": "f4af3c7bebebb5c08c11470056ccae8851c29c993639560af19debada84a114c",
+        "filename": "hypcade-arcade-armeabi-v7a-release.apk",
+        "apk_bytes": 5993385,
+        "sha256": "cc3df77542854e9a6d4e6560896c0d9bf2c07c02dbb45f14064db546f9c24b54",
         "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-        "libmain_bytes": 2670800,
-        "libmain_compressed_bytes": 1473081,
-        "apk_reduction_bytes": 169880,
-        "native_reduction_bytes": 346832
+        "libmain_bytes": 2664768,
+        "uncompressed_native_bytes": 4834908,
+        "uncompressed_support_bytes": 4293786,
+        "apk_reduction_bytes": 56,
+        "native_reduction_bytes": 6032,
+        "discarded_strategy_arrays_absent": [
+          "lair_f",
+          "lair_ita",
+          "lair_d",
+          "lair_b",
+          "lair_a",
+          "lair_c",
+          "lair_e",
+          "laireuro"
+        ],
+        "version_name": "v0.2.1",
+        "version_code": 42,
+        "min_sdk": 25,
+        "target_sdk": 36
       },
       {
         "flavor": "mobile",
         "abi": "arm64-v8a",
-        "apk_bytes": 6308635,
-        "sha256": "689c4cf2c7eeb6756ffa7db7e53af8f996a1329082f51fc4ab3028d168f6d87b",
+        "filename": "hypcade-mobile-arm64-v8a-release.apk",
+        "apk_bytes": 6308471,
+        "sha256": "77ad71e559e1dd6876a5905f920087f89c31666bb8a443d3f59e34392ef4edc3",
         "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-        "libmain_bytes": 3812136,
-        "libmain_compressed_bytes": 1651016,
-        "apk_reduction_bytes": 170644,
-        "native_reduction_bytes": 346800
+        "libmain_bytes": 3806120,
+        "uncompressed_native_bytes": 6924800,
+        "uncompressed_support_bytes": 4293786,
+        "apk_reduction_bytes": 164,
+        "native_reduction_bytes": 6016,
+        "discarded_strategy_arrays_absent": [
+          "lair_f",
+          "lair_ita",
+          "lair_d",
+          "lair_b",
+          "lair_a",
+          "lair_c",
+          "lair_e",
+          "laireuro"
+        ],
+        "version_name": "v0.2.1",
+        "version_code": 42,
+        "min_sdk": 25,
+        "target_sdk": 36
       },
       {
         "flavor": "arcadeEmulator",
         "abi": "x86",
-        "apk_bytes": 6749117,
-        "sha256": "ce06d60f32a0c36149c14f0ac9eec7d2c4dd99e8c6d6922ddae6dc486ea672fd",
+        "filename": "hypcade-arcade-x86-release.apk",
+        "apk_bytes": 6749201,
+        "sha256": "b7ac3d5cabf11e874fd0221d3968e8b6288adad0ad05a3a6589fa41d16131a39",
         "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-        "libmain_bytes": 4284456,
-        "libmain_compressed_bytes": 1908566,
-        "apk_reduction_bytes": 170716,
-        "native_reduction_bytes": 346752
+        "libmain_bytes": 4278424,
+        "uncompressed_native_bytes": 7631572,
+        "uncompressed_support_bytes": 4293786,
+        "apk_reduction_bytes": -84,
+        "native_reduction_bytes": 6032,
+        "discarded_strategy_arrays_absent": [
+          "lair_f",
+          "lair_ita",
+          "lair_d",
+          "lair_b",
+          "lair_a",
+          "lair_c",
+          "lair_e",
+          "laireuro"
+        ],
+        "version_name": "v0.2.1",
+        "version_code": 42,
+        "min_sdk": 25,
+        "target_sdk": 36
       },
       {
         "flavor": "mobileEmulator",
         "abi": "x86_64",
-        "apk_bytes": 6761282,
-        "sha256": "7c6f2fb547acc8bdfdf801678631e52f8c3b13ca7f06e0c0160a6f55b0d6ce83",
+        "filename": "hypcade-mobile-x86_64-release.apk",
+        "apk_bytes": 6761162,
+        "sha256": "fe22a0f43a863093d7420021822899d0a5f7331f81af773463d7c58458a89d22",
         "certificate_sha256": "1e323dd0366b4af419d063861b00525b8c1b09acb9b87470f0a4d7b64f16dd15",
-        "libmain_bytes": 4408112,
-        "libmain_compressed_bytes": 1919889,
-        "apk_reduction_bytes": 169840,
-        "native_reduction_bytes": 347648
+        "libmain_bytes": 4402048,
+        "uncompressed_native_bytes": 7856720,
+        "uncompressed_support_bytes": 4293786,
+        "apk_reduction_bytes": 120,
+        "native_reduction_bytes": 6064,
+        "discarded_strategy_arrays_absent": [
+          "lair_f",
+          "lair_ita",
+          "lair_d",
+          "lair_b",
+          "lair_a",
+          "lair_c",
+          "lair_e",
+          "laireuro"
+        ],
+        "version_name": "v0.2.1",
+        "version_code": 42,
+        "min_sdk": 25,
+        "target_sdk": 36
       }
     ],
-    "baseline_scope": "Existing pre-change APKs; size differences include all previously unbuilt source changes, not only table data.",
+    "baseline_scope": "Signed APKs before the post-calculation one-input retention change.",
+    "all_passed": true,
     "version_name": "v0.2.1",
     "version_code": 42,
     "min_sdk": 25,
     "target_sdk": 36,
-    "all_passed": true,
+    "build": "All four signed release variants assembled sequentially with one Gradle worker; arcade and mobile release lint passed.",
     "checks": [
-      "All four APKs contain exact current complete ROM rule/index arrays.",
-      "Release certificate, APK digest, SDK/version and single ABI checked for each flavor.",
-      "ARM flavor policies and R8 mapping checked."
+      "Current retained native rule/index arrays present in all four APKs; eight omitted Fewest arrays absent.",
+      "Existing release certificate, SDK/version and single ABI verified for every flavor.",
+      "ARM flavor orientation, controls and R8 mapping verified."
     ],
-    "build": "JDK 17, Gradle 8.13, NDK 28.2.13676358; all four release variants assembled successfully with one Gradle worker.",
-    "warnings": "Existing native compiler warnings and Gradle deprecation warnings remain; no physical-device or cabinet validation."
-  }
+    "warnings": "Existing native compiler and Gradle deprecation warnings remain.",
+    "lint": {
+      "arcade": {
+        "errors": 0,
+        "warnings": 42,
+        "issue_ids": [
+          "AndroidGradlePluginVersion",
+          "DataExtractionRules",
+          "DiscouragedApi",
+          "NonResizeableActivity",
+          "ObsoleteSdkInt",
+          "ScopedStorage",
+          "SetTextI18n",
+          "StaticFieldLeak",
+          "UnusedAttribute"
+        ]
+      },
+      "mobile": {
+        "errors": 0,
+        "warnings": 37,
+        "issue_ids": [
+          "AndroidGradlePluginVersion",
+          "DataExtractionRules",
+          "DiscouragedApi",
+          "ObsoleteSdkInt",
+          "ScopedStorage",
+          "SetTextI18n",
+          "StaticFieldLeak",
+          "UnusedAttribute",
+          "ViewConstructor"
+        ]
+      }
+    }
+  },
+  "range_refinement": {
+    "roms": [
+      "lair_e",
+      "lair_f"
+    ],
+    "new_attained_endpoints": 22,
+    "fresh_watch_plays": 48,
+    "independent_watch_replays": 48,
+    "fresh_classic_replays": 8,
+    "android_rerun": false,
+    "counted_watch_plays": 43,
+    "counted_watch_independent_replays": 43
+  },
+  "policy_retention": "Eight profiles package Max score only; DLE21, Space Ace A3 and SAE retain both objectives. Mathematical source audits retain both complete calculated policies."
 }

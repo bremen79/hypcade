@@ -109,7 +109,7 @@ for other revisions. A bounded search failure is inconclusive. It must not be
 reported as an impossible ROM branch or as proof that an inferior policy is
 optimal. None of those tools supplies a runtime fallback.
 
-Current selected-policy min/max results are in
+Calculated-policy min/max results, before APK retention, are in
 `android/moves/verification/one-life-ranges.json`. US intervals are support
 enclosures apart from their attained primary endpoints; do not assume every
 other interval endpoint is jointly attainable. Arbitrary post-death continuation

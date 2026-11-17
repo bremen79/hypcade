@@ -60,6 +60,15 @@ public final class LauncherLogicTest {
         LaunchConfig defaults = config("dle21", "game.txt", "", "");
         check(defaults.moveMode == MoveMode.OFF && !defaults.timingCue, "New profiles default assistance off");
         check(MoveMode.selected(-1) == MoveMode.OFF && MoveMode.selected(3) == MoveMode.OFF, "Reject invalid move modes");
+        for (String game : new String[]{"lair_a", "lair_b", "lair_c", "lair_d", "lair_e", "lair_f", "laireuro", "lair_ita", "lair2"}) {
+            check(Arrays.equals(MoveMode.labels(game), new String[]{"Off", "On"}), "Single policy uses On/Off: " + game);
+            check(MoveMode.selected(game, MoveMode.FEWEST_MOVES) == MoveMode.MAX_SCORE, "Single-policy selection uses retained Max score: " + game);
+            check(MoveMode.selected(game, MoveMode.OFF) == MoveMode.OFF, "Single policy preserves Off: " + game);
+        }
+        for (String game : new String[]{"dle21", "ace", "sae"}) {
+            check(MoveMode.labels(game).length == 3, "Distinct policies retain both choices: " + game);
+            check(MoveMode.selected(game, MoveMode.FEWEST_MOVES) == MoveMode.FEWEST_MOVES, "Preserve distinct Fewest policy: " + game);
+        }
         LaunchConfig assisted = new LaunchConfig("old", "Game", "dle21", "game.txt", "", "", MoveMode.MAX_SCORE, true).withId("new");
         check(assisted.moveMode == MoveMode.MAX_SCORE && assisted.timingCue, "Profile identity changes preserve assistance");
         check(LaunchConfig.splitArguments(null).isEmpty(), "Null extra options should be empty");

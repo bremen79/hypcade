@@ -6,8 +6,7 @@ European Dragon’s Lair and the Italian revision. DL2 uses its own ROM prompts.
 Commercial ROMs and media are not included or packaged in the APK.
 
 See [COST-FUTURE.md](COST-FUTURE.md) for generation, proof checks, publication
-and the retained tools for extending the method to other ROMs. The older
-local-search exporter, bundle merger and matrix-building workflow are removed.
+and the reusable tools for extending the method to other ROMs.
 
 ```bash
 python3 tools/offline-moves/cost_runtime.py \
@@ -18,7 +17,9 @@ python3 android/tests/test_bundled_moves.py --roms /path/to/roms
 ```
 
 The first two commands check a candidate. The last checks the production source
-bundle and its JNI includes. Do not replace production includes until candidate
+bundle, JNI includes and generated Java policy catalog. Both objectives are
+calculated before the one-input retention rule selects which rankings to package;
+see [the retention contract](COST-FUTURE.md#policy-retention). Do not replace production includes until candidate
 proof and delivery checks pass. Python 3.9+ is required; native original-CPU
 checks additionally need a C11 compiler and zlib development headers. No video
 files, real-time waits, Android SDK or Android emulator are needed for host
@@ -30,6 +31,9 @@ The decoder verifies chip names, sizes and CRCs; it rejects unknown revisions.
 Keep ROMs and temporary results under visible `local-tools/` directories.
 
 ## Verification scope
+
+The [ROM policy results](../../android/moves/README.md) summarize all calculated
+input/score ranges and identify which policies are packaged for each ROM.
 
 Fewest moves and Max score optimize the possibility of attaining their primary
 extreme in a surviving initial game. No probability estimates are needed. Only

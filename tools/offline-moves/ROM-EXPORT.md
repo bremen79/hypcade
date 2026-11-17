@@ -1,8 +1,10 @@
 # ROM record extraction
 
 Use [the cost-plus-future generator](COST-FUTURE.md) for production policies.
-Its source bundle includes complete decoded inventories, all graph alternatives,
-ranked runtime rules, independent Bellman values and output/source fingerprints.
+Its source bundle includes complete decoded inventories, both calculated
+rankings, independent Bellman values and output/source fingerprints. The
+[retention rule](COST-FUTURE.md#policy-retention) then selects which complete
+rankings enter the APK and its generated UI catalog.
 The former standalone local-search exporter and bundle merger are removed.
 
 `rom_tables.inventory(rom, game)` decodes Cine scene/step pointer tables and
